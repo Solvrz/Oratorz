@@ -1,0 +1,38 @@
+name: mun
+description: An All-In-One MUN Sofftware.
+
+publish_to: "none"
+version: 1.0.0+4
+
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  firebase_core: ^2.1.1
+  cloud_firestore: ^4.0.3
+  firebase_storage: ^11.0.3
+  firebase_analytics: ^10.0.3
+  flutter_localized_locales: ^2.0.3
+  dropdown_search: ^5.0.3
+  url_launcher: ^6.1.6
+  google_fonts: ^3.0.1
+  intl: ^0.17.0
+  http: ^0.13.5
+
+dev_dependencies:
+  flutter_lints: ^2.0.1
+
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - assets/

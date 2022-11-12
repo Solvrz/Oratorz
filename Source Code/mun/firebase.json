@@ -1,0 +1,40 @@
+{
+  "firestore": {
+    "rules": "rules/firestore.rules",
+    "indexes": "rules/indexes.json"
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "storage": {
+    "rules": "rules/storage.rules"
+  },
+  "emulators": {
+    "firestore": {
+      "host": "localhost",
+      "port": 8080
+    },
+    "hosting": {
+      "host": "localhost",
+      "port": 5000
+    },
+    "storage": {
+      "host": "localhost",
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}

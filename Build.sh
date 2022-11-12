@@ -1,0 +1,1 @@
+cd Source\ Code/mun && flutter build web && firebase deploy --only hosting
