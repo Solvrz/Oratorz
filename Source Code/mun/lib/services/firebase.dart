@@ -7,9 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-class CloudFirestore {
-  static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+import '../config/constants.dart';
 
+class CloudFirestore {
   static bool isDoc(String path) => path.split("/").length % 2 == 0;
 
   static bool isCollection(String path) => path.split("/").length % 2 == 1;
@@ -83,8 +83,6 @@ class CloudFirestore {
 }
 
 class CloudStorage {
-  static final FirebaseStorage storage = FirebaseStorage.instance;
-
   /// Uploads the [file] at the [path]. Returns a [TaskSnapshot]
   static Future<TaskSnapshot> uploadFile(String path, File file) =>
       storage.ref(path).putFile(file);
