@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '/config/constants.dart';
+import '/config/theme.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
 
@@ -41,10 +42,12 @@ class Website extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: lightTheme,
       title: "MUN",
       initialRoute: "/",
       routes: {
         "/": (context) => const HomePage(),
+        "/setup": (context) => const SetupPage(),
       },
     );
   }
