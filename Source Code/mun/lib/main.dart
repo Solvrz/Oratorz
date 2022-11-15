@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:mun/firebase_options.dart';
 
 import '/config/constants.dart';
 import '/config/theme.dart';
@@ -17,37 +23,42 @@ void main() async {
     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
 
-  // await Firebase.initializeApp(
-  //   name: "Website",
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  // TODO: Set This & firebase.json (Website & Aler)
-  // await FirebaseFirestore.instance
-  //     .enablePersistence(const PersistenceSettings(synchronizeTabs: true));
-  // await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!TESTING);
+  final FirebaseApp app = await Firebase.initializeApp(
+    name: "MUN",
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
+  auth = FirebaseAuth.instanceFor(app: app);
+  firestore = FirebaseFirestore.instanceFor(app: app);
+  storage = FirebaseStorage.instanceFor(app: app);
+  analytics = FirebaseAnalytics.instanceFor(app: app);
+
+  await auth.setPersistence(Persistence.LOCAL);
+
+  // TODO: Set This & firebase.json (Website & Aler)
   // if (TESTING) {
-  //   FirebaseFirestore.instance.settings = const Settings(
-  //     host: "$IP:9080",
-  //     sslEnabled: false,
-  //   );
+  //   await auth.useAuthEmulator(IP, 9099);
+  //   firestore.settings = const Settings(host: "$IP:9080");
+  //   await storage.useStorageEmulator(IP, 9199);
+  //   await analytics.setAnalyticsCollectionEnabled(false);
   // }
 
-  runApp(const Website());
+  runApp(const MUN());
 }
 
-class Website extends StatelessWidget {
-  const Website({super.key});
+class MUN extends StatelessWidget {
+  const MUN({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: lightTheme,
+      theme: MUNTheme.of(context),
       title: "MUN",
       initialRoute: "/",
       routes: {
-        "/": (context) => const HomePage(),
+        "/": (context) => const WelcomePage(),
         "/setup": (context) => const SetupPage(),
+        "/home": (context) => const HomePage(),
       },
     );
   }
