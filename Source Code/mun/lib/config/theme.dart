@@ -7,9 +7,38 @@ import './constants.dart';
 // ignore: avoid_classes_with_only_static_members
 class MUNTheme {
   static ThemeData of(BuildContext context) {
+    final TextTheme textTheme = GoogleFonts.poppinsTextTheme();
+
     return ThemeData(
       primaryColor: MUNColors.PrimaryColor,
       scaffoldBackgroundColor: Colors.white,
+      textTheme: textTheme.copyWith(
+        headline5: textTheme.headline5!.copyWith(fontWeight: FontWeight.bold),
+        headline6: textTheme.headline6!.copyWith(fontSize: 18),
+        bodyText1: textTheme.bodyText1!.copyWith(fontSize: 16),
+      ),
+      cardTheme: CardTheme(
+        elevation: 10,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shadowColor: Colors.white,
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          padding:
+              MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(12)),
+          shape: MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              side: BorderSide(color: Colors.amber.shade400, width: 0.75),
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          overlayColor: MaterialStateProperty.all<Color>(
+            const Color.fromARGB(255, 255, 250, 230),
+          ),
+          foregroundColor:
+              MaterialStateProperty.all<Color>(Colors.amber.shade400),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
@@ -33,34 +62,6 @@ class MUNTheme {
           borderSide: BorderSide.none,
         ),
       ),
-
-      textTheme: ThemeData.dark()
-          .textTheme
-          .copyWith(
-            bodyLarge: GoogleFonts.eczar(
-              fontSize: 40,
-              fontWeight: FontWeight.w400,
-              letterSpacing: 1.4,
-            ),
-            bodyMedium: GoogleFonts.robotoCondensed(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              letterSpacing: 0.5,
-            ),
-            labelLarge: GoogleFonts.robotoCondensed(
-              fontWeight: FontWeight.w700,
-              letterSpacing: 2.8,
-            ),
-            headlineSmall: GoogleFonts.eczar(
-              fontSize: 40,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.4,
-            ),
-          )
-          .apply(
-            displayColor: Colors.white,
-            bodyColor: Colors.white,
-          ),
       // TODO: Use This
       // appBarTheme: const AppBarTheme(
       //   systemOverlayStyle: SystemUiOverlayStyle.light,

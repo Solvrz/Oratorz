@@ -2,8 +2,42 @@ import 'package:flutter/material.dart';
 
 import '/config/country_info.dart';
 
-class SetupPage extends StatelessWidget {
+class SetupPage extends StatefulWidget {
   const SetupPage({super.key});
+
+  @override
+  State<SetupPage> createState() => _SetupPageState();
+}
+
+class _SetupPageState extends State<SetupPage> {
+  List<String> unselected = COUNTRIES.keys.toList();
+  List<String> selected = [];
+
+  @override
+  void initState() {
+    super.initState();
+    unselected.sort((a, b) => COUNTRIES[a]!.compareTo(COUNTRIES[b]!));
+  }
+
+  void update(String country, int operation) {
+    setState(() {
+      if (operation == 1) {
+        selected.add(country);
+        unselected.remove(country);
+      } else if (operation == 2) {
+        unselected = COUNTRIES.keys.toList();
+        selected = [];
+      } else if (operation == 3) {
+        //TODO: Start Session
+      } else {
+        selected.remove(country);
+        unselected.add(country);
+      }
+
+      unselected.sort((a, b) => COUNTRIES[a]!.compareTo(COUNTRIES[b]!));
+      selected.sort((a, b) => COUNTRIES[a]!.compareTo(COUNTRIES[b]!));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +57,21 @@ class SetupPage extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: const [
-                    LoadCommitteeCard(),
-                    SizedBox(height: 12),
-                    Expanded(child: NewCommitteeCard(data: COUNTRIES)),
-                    SizedBox(height: 36),
+                  children: [
+                    const LoadCommitteeCard(),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: NewCommitteeCard(
+                        data: unselected,
+                        callback: update,
+                      ),
+                    ),
+                    const SizedBox(height: 36),
                   ],
                 ),
               ),
               const SizedBox(width: 32),
-              const Expanded(child: CommitteeCard()),
+              Expanded(child: CommitteeCard(data: selected, callback: update)),
             ],
           ),
         ),
@@ -42,7 +81,10 @@ class SetupPage extends StatelessWidget {
 }
 
 class CommitteeCard extends StatelessWidget {
-  const CommitteeCard({super.key});
+  const CommitteeCard({super.key, required this.data, required this.callback});
+
+  final List<String> data;
+  final Function(String, int) callback;
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +92,49 @@ class CommitteeCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               "Your Committee",
               style: Theme.of(context).textTheme.headline5,
+            ),
+            Text(
+              "${data.length} Countries",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (context, index) => ListTile(
+                  hoverColor: Colors.grey[100],
+                  onTap: () => callback(data[index], 0),
+                  leading: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[400],
+                  ),
+                  title: Text(
+                    COUNTRIES[data[index]]!,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  trailing: Icon(Icons.minimize, color: Colors.grey[400]),
+                ),
+                separatorBuilder: (context, index) => Divider(
+                  indent: 66,
+                  thickness: 0.5,
+                  height: 6,
+                  color: Colors.grey[400],
+                ),
+                itemCount: data.length,
+              ),
+            ),
+            TextButton(
+              onPressed: () => callback("", 2),
+              child: const Text("Clear Selection"),
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () => callback("", 3),
+              child: const Text("Start Session"),
             ),
           ],
         ),
@@ -65,11 +145,13 @@ class CommitteeCard extends StatelessWidget {
 
 class NewCommitteeCard extends StatelessWidget {
   const NewCommitteeCard({
-    Key? key,
+    super.key,
     required this.data,
-  }) : super(key: key);
+    required this.callback,
+  });
 
-  final List<Map<String, String>> data;
+  final List<String> data;
+  final Function(String, int) callback;
 
   @override
   Widget build(BuildContext context) {
@@ -77,42 +159,71 @@ class NewCommitteeCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               "Set Up New Committee",
               style: Theme.of(context).textTheme.headline5,
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12, left: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "UN Member States",
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    Expanded(
-                      child: ListView.separated(
-                        itemBuilder: (context, index) => ListTile(
-                          leading: CircleAvatar(
-                            radius: 20,
-                            child: Image.asset(data[index]["flag"]!),
-                          ),
-                          title: Text(
-                            data[index]["name"]!,
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                        separatorBuilder: (context, index) => const Divider(),
-                        itemCount: data.length,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Text(
+                "UN Member States",
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.search, color: Colors.grey[600]),
+                  Expanded(
+                    child: TextField(
+                      cursorColor: Colors.grey[600],
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        hintMaxLines: 1,
+                        hintStyle: Theme.of(context).textTheme.bodyText1,
+                        hoverColor: Colors.transparent,
+                        fillColor: Colors.transparent,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        border: InputBorder.none,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            )
+            ),
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (context, index) => ListTile(
+                  hoverColor: Colors.grey[100],
+                  onTap: () => callback(data[index], 1),
+                  leading: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[400],
+                  ),
+                  title: Text(
+                    COUNTRIES[data[index]]!,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  trailing: Icon(Icons.add, color: Colors.grey[400]),
+                ),
+                separatorBuilder: (context, index) => Divider(
+                  indent: 66,
+                  thickness: 0.5,
+                  height: 6,
+                  color: Colors.grey[400],
+                ),
+                itemCount: data.length,
+              ),
+            ),
           ],
         ),
       ),

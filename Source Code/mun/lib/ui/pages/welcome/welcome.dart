@@ -74,14 +74,14 @@ class _WelcomePageState extends State<WelcomePage> {
                             ),
                           ),
                           Image.asset(
-                            "assets/images/illustration2.png",
+                            "images/illustration2.png",
                             width: 300,
                           ),
                         ],
                       ),
                     ),
                     Image.asset(
-                      "assets/images/illustration1.png",
+                      "images/illustration1.png",
                       width: 300,
                     ),
                     Container(
