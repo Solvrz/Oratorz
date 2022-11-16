@@ -187,7 +187,7 @@ const Map<String, String> COUNTRIES = {
   "VAT": "Holy See",
   "VCT": "St. Vincent and the Grenadines",
   "VEN": "Venezuela",
-  "VNM": "Viet Nam",
+  "VNM": "Vietnam",
   "VUT": "Vanuatu",
   "WSM": "Samoa",
   "YEM": "Yemen",
