@@ -89,6 +89,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       margin: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height / 6,
                       ),
+                      // TODO: Register & CircularProgressIndicator
                       child: isSignIn ? const SignInForm() : Container(),
                     ),
                   ],

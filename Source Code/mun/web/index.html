@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base href="$FLUTTER_BASE_HREF" />
 
-    <meta charset="UTF-8" />
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="An All-In-One MUN Software." />
+<head>
+  <base href="$FLUTTER_BASE_HREF">
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="mun" />
-    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="An All-In-One MUN Software.">
 
-    <link rel="icon" type="image/png" href="favicon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="mun">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-    <title>MUN</title>
-    <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="favicon.png" />
 
-    <script>
-      var serviceWorkerVersion = null;
-    </script>
-    <script src="flutter.js" defer></script>
-  </head>
+  <title>MUN</title>
+  <link rel="manifest" href="manifest.json">
 
-  <body>
-    <script>
-      window.addEventListener("load", function (ev) {
-        _flutter.loader
-          .loadEntrypoint({
-            serviceWorker: {
-              serviceWorkerVersion: serviceWorkerVersion,
-            },
-          })
-          .then(function (engineInitializer) {
-            return engineInitializer.initializeEngine();
-          })
-          .then(function (appRunner) {
-            return appRunner.runApp();
-          });
+  <script>
+    var serviceWorkerVersion = null;
+  </script>
+  <script src="flutter.js" defer></script>
+</head>
+
+<body>
+  <script>
+    window.addEventListener('load', function (ev) {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        }
+      }).then(function (engineInitializer) {
+        return engineInitializer.initializeEngine();
+      }).then(function (appRunner) {
+        return appRunner.runApp();
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>

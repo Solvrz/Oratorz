@@ -63,6 +63,7 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
           ),
         ),
         const SizedBox(height: 30),
+        // TODO: Hide Text & Extract Field
         TextField(
           controller: _passwordContoller.value,
           decoration: InputDecoration(

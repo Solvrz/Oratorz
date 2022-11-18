@@ -58,9 +58,14 @@ class MUN extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (context) => const WelcomePage(),
-        "/setup": (context) => const SetupPage(),
         "/home": (context) => const HomePage(),
+        "/setup": (context) => const SetupPage(),
         "/committee": (context) => const CommitteePage(),
+      },
+      builder: (context, widget) {
+        theme = MUNTheme.of(context);
+
+        return widget!;
       },
     );
   }
