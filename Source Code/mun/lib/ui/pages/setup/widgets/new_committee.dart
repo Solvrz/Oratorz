@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '/config/country_info.dart';
 import '/controllers/setup_committee.dart';
+import '../../../widgets/country_tile.dart';
 
 class NewCommitteeCard extends StatelessWidget {
   const NewCommitteeCard({super.key});
@@ -68,19 +68,9 @@ class NewCommitteeCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.separated(
-                    itemBuilder: (context, index) => ListTile(
-                      hoverColor: Colors.grey[100],
+                    itemBuilder: (context, index) => CountryTile(
+                      country: data[index],
                       onTap: () => controller.add(data[index]),
-                      leading: CircleAvatar(
-                        radius: 20,
-                        child: SvgPicture.asset(
-                          "flags/${data[index]}.svg",
-                        ),
-                      ),
-                      title: Text(
-                        COUNTRIES[data[index]]!,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
                       trailing: Icon(Icons.add, color: Colors.grey[400]),
                     ),
                     separatorBuilder: (context, index) => Divider(

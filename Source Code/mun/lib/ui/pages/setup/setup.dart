@@ -14,8 +14,13 @@ class SetupPage extends StatefulWidget {
 }
 
 class _SetupPageState extends State<SetupPage> {
-  final SetupCommitteeController committee =
-      Get.put(SetupCommitteeController());
+  late final SetupCommitteeController committee;
+
+  @override
+  void initState() {
+    super.initState();
+    committee = Get.put(SetupCommitteeController());
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '/config/country_info.dart';
+import '/arguments/committee.dart';
 import '/controllers/setup_committee.dart';
 import '/ui/widgets/dialog_title.dart';
+import '../../../widgets/country_tile.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -103,19 +103,9 @@ class CommitteeCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
-                    itemBuilder: (context, index) => ListTile(
-                      hoverColor: Colors.grey[100],
+                    itemBuilder: (context, index) => CountryTile(
+                      country: controller.committee.value.countries[index],
                       onTap: () => controller.removeAt(index),
-                      leading: CircleAvatar(
-                        radius: 20,
-                        child: SvgPicture.asset(
-                          "flags/${controller.committee.value.countries[index]}.svg",
-                        ),
-                      ),
-                      title: Text(
-                        COUNTRIES[controller.committee.value.countries[index]]!,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
                       trailing: Icon(Icons.minimize, color: Colors.grey[400]),
                     ),
                     separatorBuilder: (context, index) => Divider(
@@ -134,7 +124,13 @@ class CommitteeCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.popAndPushNamed(
+                    context,
+                    "/committee",
+                    arguments: CommitteeArguments(
+                      committee: controller.committee.value,
+                    ),
+                  ),
                   child: const Text("Start Session"),
                 ),
               ],

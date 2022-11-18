@@ -16,6 +16,10 @@ class MUNTheme {
         headline5: textTheme.headline5!.copyWith(fontWeight: FontWeight.bold),
         headline6: textTheme.headline6!.copyWith(fontSize: 18),
         bodyText1: textTheme.bodyText1!.copyWith(fontSize: 16),
+        bodyText2: textTheme.bodyText2!.copyWith(
+          fontSize: 14,
+          color: Colors.white,
+        ),
       ),
       cardTheme: CardTheme(
         elevation: 10,

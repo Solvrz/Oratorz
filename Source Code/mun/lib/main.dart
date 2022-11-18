@@ -6,12 +6,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mun/firebase_options.dart';
 
 import '/config/constants.dart';
 import '/config/theme.dart';
+import '/firebase_options.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
+import 'ui/pages/committee/committee.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +60,7 @@ class MUN extends StatelessWidget {
         "/": (context) => const WelcomePage(),
         "/setup": (context) => const SetupPage(),
         "/home": (context) => const HomePage(),
+        "/committee": (context) => const CommitteePage(),
       },
     );
   }

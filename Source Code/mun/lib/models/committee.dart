@@ -9,12 +9,12 @@ class Committee {
   void removeSpeaker(String country) => speakers.remove(country);
 
   Committee({
-    String? name_,
-    List<String>? countries_,
-    List<String>? speakers_,
+    String? name,
+    List<String>? countries,
+    List<String>? speakers,
   }) {
-    name = name_ ?? "";
-    countries = countries_ ?? [];
-    speakers = speakers_ ?? [];
+    this.name = name ?? "";
+    this.countries = countries ?? [];
+    this.speakers = speakers ?? [];
   }
 }
