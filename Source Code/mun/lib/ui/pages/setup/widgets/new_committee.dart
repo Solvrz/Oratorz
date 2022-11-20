@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/config/country_info.dart';
-import '/controllers/setup_committee.dart';
-import '../../../widgets/country_tile.dart';
+import '/ui/widgets/country_tile.dart';
+import '../../../../tools/controllers/setup.dart';
 
 class NewCommitteeCard extends StatelessWidget {
   const NewCommitteeCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetX<SetupCommitteeController>(
-      init: Get.find<SetupCommitteeController>(),
+    return GetX<SetupController>(
+      init: Get.find<SetupController>(),
       builder: (controller) {
         final List<String> data = COUNTRIES.keys.toList();
         data.removeWhere(

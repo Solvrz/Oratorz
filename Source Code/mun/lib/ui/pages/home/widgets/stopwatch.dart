@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import '../../../../controllers/gsl.dart';
-import 'stopwatch_button.dart';
+import '/tools/controllers/gsl.dart';
 
 class StopwatchWidget extends StatefulWidget {
   final Function() onTimeEnd;
@@ -20,7 +19,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   final Duration duration = const Duration(minutes: 1);
   final GSLController gslController = Get.find<GSLController>();
 
-  late final Timer timer;
+  late Timer timer;
 
   @override
   void initState() {
@@ -46,6 +45,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   void dispose() {
     timer.cancel();
     gslController.stopwatch.value.stop();
+
     super.dispose();
   }
 
@@ -66,7 +66,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             circularStrokeCap: CircularStrokeCap.round,
             lineWidth: 16,
             center: Text(
-              "${timeLeft.inMinutes}:${(timeLeft.inSeconds - timeLeft.inMinutes * 60).toString().padLeft(2, '0')}",
+              "${timeLeft.inMinutes}:${(timeLeft.inSeconds - timeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
               style:
                   Theme.of(context).textTheme.headline5!.copyWith(fontSize: 32),
             ),
@@ -119,6 +119,36 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class StopwatchButton extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final Function() onPressed;
+
+  const StopwatchButton({
+    super.key,
+    required this.icon,
+    required this.color,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(color),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        overlayColor: MaterialStateProperty.all<Color>(Colors.white12),
+        side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
+      ),
+      onPressed: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Icon(icon),
       ),
     );
   }

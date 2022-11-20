@@ -15,9 +15,6 @@ late FirebaseFirestore firestore;
 late FirebaseStorage storage;
 late FirebaseAnalytics analytics;
 
-// TODO: Remove This
-const double defaultPadding = 16;
-
 const bool TESTING = kDebugMode;
 const String IP = "192.168.100.45";
 const Locale LOCALE = Locale("en", "IN");

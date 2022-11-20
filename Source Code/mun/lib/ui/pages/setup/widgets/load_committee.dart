@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/config/country_info.dart';
-import '/controllers/setup_committee.dart';
 import '/ui/widgets/dialog_title.dart';
+import '../../../../tools/controllers/setup.dart';
 
 class LoadCommitteeCard extends StatelessWidget {
   const LoadCommitteeCard({super.key});
@@ -35,8 +35,8 @@ class LoadCommitteeCard extends StatelessWidget {
                     child: const Text("From Template"),
                     onPressed: () {
                       final List<String> templates = COMMITTEES.keys.toList();
-                      final SetupCommitteeController controller =
-                          Get.find<SetupCommitteeController>();
+                      final SetupController controller =
+                          Get.find<SetupController>();
 
                       showDialog(
                         context: context,

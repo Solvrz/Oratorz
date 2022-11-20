@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../config/constants.dart';
-import '../../../../services/auth.dart';
-import '../../../../tools/extensions.dart';
+import '/config/constants.dart';
+import '/services/auth.dart';
+import '/tools/extensions.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -21,6 +21,13 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
   @override
   void initState() {
     super.initState();
+
+    if (auth.currentUser != null) {
+      Auth.login(
+        context,
+        () async => Navigator.pushNamed(context, "/setup"),
+      );
+    }
 
     _emailContoller = RestorableTextEditingController();
     _passwordContoller = RestorableTextEditingController();
@@ -107,12 +114,10 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
                 password: _passwordContoller.text(),
               );
 
-              print(auth.currentUser?.uid);
-
               if (mounted) {
                 await Auth.login(
                   context,
-                  () async => Navigator.pushNamed(context, "/home"),
+                  () async => Navigator.pushNamed(context, "/setup"),
                 );
               }
             },

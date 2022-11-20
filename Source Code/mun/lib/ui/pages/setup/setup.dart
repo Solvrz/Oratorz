@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mun/config/constants.dart';
 
-import '/controllers/setup_committee.dart';
 import './widgets/committee_card.dart';
 import './widgets/load_committee.dart';
 import './widgets/new_committee.dart';
+import '../../../tools/controllers/setup.dart';
 
 class SetupPage extends StatefulWidget {
   const SetupPage({super.key});
@@ -14,12 +15,12 @@ class SetupPage extends StatefulWidget {
 }
 
 class _SetupPageState extends State<SetupPage> {
-  late final SetupCommitteeController committee;
+  late final SetupController committee;
 
   @override
   void initState() {
     super.initState();
-    committee = Get.put(SetupCommitteeController());
+    committee = Get.put(SetupController());
   }
 
   @override
@@ -27,9 +28,9 @@ class _SetupPageState extends State<SetupPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          title: Text(
             "Setup Committee",
-            style: TextStyle(color: Colors.black),
+            style: theme.textTheme.headline5,
           ),
           backgroundColor: Colors.white,
         ),

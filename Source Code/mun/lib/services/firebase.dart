@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import '../config/constants.dart';
+import '/config/constants.dart';
 
 class CloudFirestore {
   static bool isDoc(String path) => path.split("/").length % 2 == 0;
@@ -100,14 +100,14 @@ class CloudStorage {
         url
             .replaceAll(
               RegExp(
-                'https://firebasestorage.googleapis.com/v0/b/website37.appspot.com/o/',
+                "https://firebasestorage.googleapis.com/v0/b/munsoft37.appspot.com/o/",
               ),
-              '',
+              "",
             )
-            .replaceAll(RegExp('%2F'), '/')
-            .replaceAll(RegExp(r'(\?alt).*'), '')
-            .replaceAll(RegExp('%20'), ' ')
-            .replaceAll(RegExp('%3A'), ':')
+            .replaceAll(RegExp("%2F"), "/")
+            .replaceAll(RegExp(r"(\?alt).*"), "")
+            .replaceAll(RegExp("%20"), " ")
+            .replaceAll(RegExp("%3A"), ":")
             .replaceAll(RegExp("%2C"), ",")
             .replaceAll(RegExp("%3D"), "="),
       )

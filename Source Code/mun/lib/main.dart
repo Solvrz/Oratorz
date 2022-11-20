@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:intl/intl.dart';
 
 import '/config/constants.dart';
@@ -12,11 +13,12 @@ import '/config/theme.dart';
 import '/firebase_options.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
-import 'ui/pages/committee/committee.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Intl.defaultLocale = LOCALE.code();
+
+  setUrlStrategy(PathUrlStrategy());
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await SystemChrome.setEnabledSystemUIMode(
@@ -55,12 +57,13 @@ class MUN extends StatelessWidget {
     return MaterialApp(
       theme: MUNTheme.of(context),
       title: "MUN",
-      initialRoute: "/",
+      initialRoute: "/setup",
       routes: {
-        "/": (context) => const WelcomePage(),
+        // TODO: Confrence App
+        // "/": (context) => const WelcomePage(),
         "/home": (context) => const HomePage(),
         "/setup": (context) => const SetupPage(),
-        "/committee": (context) => const CommitteePage(),
+        // "/home/motion": (context) => const MotionsPage(),
       },
       builder: (context, widget) {
         theme = MUNTheme.of(context);

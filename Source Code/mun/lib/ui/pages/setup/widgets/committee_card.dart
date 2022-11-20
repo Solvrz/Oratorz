@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/arguments/committee.dart';
-import '/controllers/setup_committee.dart';
+import '/ui/widgets/country_tile.dart';
 import '/ui/widgets/dialog_title.dart';
-import '../../../widgets/country_tile.dart';
+import '../../../../tools/arguments/home.dart';
+import '../../../../tools/controllers/setup.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetX<SetupCommitteeController>(
-      init: Get.find<SetupCommitteeController>(),
+    return GetX<SetupController>(
+      init: Get.find<SetupController>(),
       builder: (controller) {
         return Card(
           child: Padding(
@@ -23,16 +23,14 @@ class CommitteeCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      controller.committee.value.name == ""
-                          ? "Your Committee"
-                          : controller.committee.value.name,
+                      controller.committee.value.name ?? "Your Committee",
                       style: Theme.of(context).textTheme.headline5,
                     ),
                     const SizedBox(width: 16),
                     InkWell(
                       onTap: () {
-                        final SetupCommitteeController committeeController =
-                            Get.find<SetupCommitteeController>();
+                        final SetupController committeeController =
+                            Get.find<SetupController>();
 
                         final TextEditingController controller =
                             TextEditingController(
@@ -126,8 +124,8 @@ class CommitteeCard extends StatelessWidget {
                 TextButton(
                   onPressed: () => Navigator.popAndPushNamed(
                     context,
-                    "/committee",
-                    arguments: CommitteeArguments(
+                    "/home",
+                    arguments: HomeArguments(
                       committee: controller.committee.value,
                     ),
                   ),

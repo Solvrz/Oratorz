@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import './colors.dart';
-import './constants.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class MUNTheme {
@@ -58,8 +57,8 @@ class MUNTheme {
         iconColor: MUNColors.PrimaryColor,
         prefixIconColor: MUNColors.PrimaryColor,
         contentPadding: EdgeInsets.symmetric(
-          horizontal: defaultPadding,
-          vertical: defaultPadding,
+          horizontal: 16,
+          vertical: 16,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(30)),

@@ -40,22 +40,22 @@ class _WelcomePageState extends State<WelcomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${isSignIn ? "Sign In to" : "Register on"} \nMUN",
-                            style: const TextStyle(
-                              fontSize: 45,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            "${isSignIn ? "Sign In to" : "Register on"} \nOratorz",
+                            style:
+                                Theme.of(context).textTheme.headline3!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                           ),
                           const SizedBox(
                             height: 30,
                           ),
-                          const Text(
+                          Text(
                             "Don't have an account?",
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5!
+                                .copyWith(color: Colors.black54),
                           ),
                           const SizedBox(
                             height: 10,
@@ -68,7 +68,7 @@ class _WelcomePageState extends State<WelcomePage> {
                               "Register here!",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.deepPurple,
+                                // color: Colors.deepPurple,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 
 import '/models/committee.dart';
 
-class CommitteeController extends GetxController {
+class HomeController extends GetxController {
   late Rx<Committee> committee;
   late RxMap<String, int> rollCall;
 
-  CommitteeController({required Committee committee}) {
+  HomeController({required Committee committee}) {
     this.committee = committee.obs;
     rollCall = {for (var val in committee.countries) val: -1}.obs;
   }
