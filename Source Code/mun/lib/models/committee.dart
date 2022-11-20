@@ -1,3 +1,5 @@
+import '../config/country_info.dart';
+
 class Committee {
   late String? name;
   late List<String> countries;
@@ -10,6 +12,11 @@ class Committee {
   }) {
     this.countries = countries ?? [];
     this.speakers = speakers ?? [];
+  }
+
+  Committee.fromTemplate(String template) {
+    name = template;
+    countries = COMMITTEES[template]!;
   }
 
   int get count => countries.length;

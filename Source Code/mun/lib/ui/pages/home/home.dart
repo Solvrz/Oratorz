@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide TabController;
-import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:mun/config/constants.dart';
+import 'package:mun/models/committee.dart';
 import 'package:mun/ui/widgets/dialog_title.dart';
 
 import '/tools/arguments/home.dart';
@@ -24,20 +24,20 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance.addPostFrameCallback(
-      (_) {
-        if (mounted) {
-          final HomeArguments? args =
-              ModalRoute.of(context)!.settings.arguments as HomeArguments?;
+    // SchedulerBinding.instance.addPostFrameCallback(
+    //   (_) {
+    //     if (mounted) {
+    //       final HomeArguments? args =
+    //           ModalRoute.of(context)!.settings.arguments as HomeArguments?;
 
-          if (args == null) {
-            if (mounted) Navigator.popAndPushNamed(context, "/setup");
-          } else {
-            Get.put(HomeController(committee: args.committee));
-          }
-        }
-      },
-    );
+    //       if (args == null) {
+    //         Navigator.popAndPushNamed(context, "/setup");
+    //       } else {
+    //         Get.put(HomeController(committee: args.committee));
+    //       }
+    //     }
+    //   },
+    // );
 
     _tabController.tabsInfo.asMap().entries.forEach((tab) {
       _tabs.add(tab);
@@ -47,18 +47,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: Push to SetUp if Args Null
+    // final HomeArguments args =
+    //     ModalRoute.of(context)!.settings.arguments! as HomeArguments;
+
     final HomeArguments args =
-        ModalRoute.of(context)!.settings.arguments! as HomeArguments;
+        HomeArguments(committee: Committee.fromTemplate("UNSC"));
 
     Get.put(HomeController(committee: args.committee));
-
-    // final int present = 0;
-    // final int absent = 0;
-    // final List<String> speakers = controller.committee.value.countries
-    //     .where(
-    //       (element) => controller.rollCall[element]! > 0,
-    //     )
-    //     .toList();
 
     return Scaffold(
       body: SafeArea(
@@ -71,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     TabHeader(tabs: _tabs),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                     Expanded(
                       child: Obx(
                         () => _tabController.currentTab()["tab"],
@@ -92,9 +87,9 @@ class TabHeader extends StatefulWidget {
   final List<MapEntry<int, Map<String, dynamic>>> tabs;
 
   const TabHeader({
-    Key? key,
+    super.key,
     required this.tabs,
-  }) : super(key: key);
+  });
 
   @override
   State<TabHeader> createState() => _TabHeaderState();

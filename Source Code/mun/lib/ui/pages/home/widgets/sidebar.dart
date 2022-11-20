@@ -50,7 +50,7 @@ class _SidebarState extends State<Sidebar> {
               _Tile(
                 title: "Home",
                 icon: Icons.home_outlined,
-                onTap: () => Navigator.popAndPushNamed(context, "/home"),
+                onTap: () => _tabController.tabVal = 0,
               ),
               // TODO: Remove from Dropdown & Use /home/motion
               _Tile(

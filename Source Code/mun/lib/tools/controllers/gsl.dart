@@ -9,6 +9,13 @@ class GSLController extends GetxController {
   bool isAdded(String country) =>
       currentSpeaker.value == country || nextSpeakers.contains(country);
 
+  void reorder(int oldIndex, int newIndex) {
+    final String temp = nextSpeakers[oldIndex];
+
+    nextSpeakers.removeAt(oldIndex);
+    nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, temp);
+  }
+
   void addSpeaker(String country) {
     if (currentSpeaker.value == "") {
       currentSpeaker.value = country;

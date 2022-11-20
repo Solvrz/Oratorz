@@ -57,7 +57,9 @@ class MUN extends StatelessWidget {
     return MaterialApp(
       theme: MUNTheme.of(context),
       title: "MUN",
-      initialRoute: "/setup",
+      // TODO: Change after Testing
+      // initialRoute: "/setup",
+      initialRoute: "/home",
       routes: {
         // TODO: Confrence App
         // "/": (context) => const WelcomePage(),
