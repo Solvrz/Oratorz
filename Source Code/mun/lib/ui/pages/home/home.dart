@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
-import 'package:mun/config/constants.dart';
-import 'package:mun/models/committee.dart';
-import 'package:mun/ui/widgets/dialog_title.dart';
 
+import '/config/constants.dart';
+import '/models/committee.dart';
 import '/tools/arguments/home.dart';
 import '/tools/controllers/home.dart';
 import '/tools/controllers/tab.dart';
+import '/ui/widgets/dialog_title.dart';
 import 'widgets/sidebar.dart';
 
 class HomePage extends StatefulWidget {

@@ -11,6 +11,7 @@
 .svn/
 .gradle/
 build/
+.firebase
 
 # IntelliJ
 *.ipr
