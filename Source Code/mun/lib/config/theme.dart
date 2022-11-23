@@ -12,6 +12,8 @@ class MUNTheme {
       primaryColor: MUNColors.PrimaryColor,
       scaffoldBackgroundColor: Colors.white,
       textTheme: textTheme.copyWith(
+        headline1: textTheme.headline5!
+            .copyWith(fontWeight: FontWeight.bold, fontSize: 54),
         headline5: textTheme.headline5!.copyWith(fontWeight: FontWeight.bold),
         headline6: textTheme.headline6!.copyWith(fontSize: 18),
         bodyText1: textTheme.bodyText1!.copyWith(fontSize: 16),

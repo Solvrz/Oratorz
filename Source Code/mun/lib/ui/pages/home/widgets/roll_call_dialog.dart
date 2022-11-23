@@ -3,9 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '/config/country_info.dart';
+import '/tools/arguments/home.dart';
+import '/tools/controllers/home.dart';
+import '/ui/widgets/custom_button.dart';
 import '/ui/widgets/dialog_title.dart';
-import '../../../../tools/arguments/home.dart';
-import '../../../../tools/controllers/home.dart';
 
 class RollCallDialog extends StatelessWidget {
   final HomeArguments? args;
@@ -34,19 +35,19 @@ class RollCallDialog extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: RollCallButton(
+                      child: CustomButton(
                         text: "SET ALL PRESENT",
                         color: Colors.amber.shade400,
-                        selected: controller.areAllPresent,
+                        filled: controller.areAllPresent,
                         onPressed: () => controller.setAllPresent(),
                       ),
                     ),
                     const SizedBox(width: 32),
                     Expanded(
-                      child: RollCallButton(
+                      child: CustomButton(
                         text: "SET ALL ABSENT",
                         color: Colors.amber.shade400,
-                        selected: controller.areAllAbsent,
+                        filled: controller.areAllAbsent,
                         onPressed: () => controller.setAllAbsent(),
                       ),
                     ),
@@ -94,28 +95,28 @@ class RollCallDialog extends StatelessWidget {
                                 return Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    RollCallButton(
+                                    CustomButton(
                                       text: "PV",
                                       color: Colors.blue.shade400,
                                       onPressed: () =>
                                           controller.setRollCall(_country, 2),
-                                      selected: rollCall == 2,
+                                      filled: rollCall == 2,
                                     ),
                                     const SizedBox(width: 4),
-                                    RollCallButton(
+                                    CustomButton(
                                       text: "P",
                                       color: Colors.amber.shade400,
                                       onPressed: () =>
                                           controller.setRollCall(_country, 1),
-                                      selected: rollCall == 1,
+                                      filled: rollCall == 1,
                                     ),
                                     const SizedBox(width: 4),
-                                    RollCallButton(
+                                    CustomButton(
                                       text: "A",
                                       color: Colors.red.shade400,
                                       onPressed: () =>
                                           controller.setRollCall(_country, 0),
-                                      selected: rollCall == 0,
+                                      filled: rollCall == 0,
                                     ),
                                   ],
                                 );
@@ -136,60 +137,15 @@ class RollCallDialog extends StatelessWidget {
       actions: [
         SizedBox(
           width: MediaQuery.of(context).size.width / 3,
-          child: RollCallButton(
+          child: CustomButton(
             padding: const EdgeInsets.symmetric(vertical: 4),
             text: "DONE",
             color: const Color(0xff0d1520),
             onPressed: () => Navigator.of(context).pop(),
-            selected: true,
+            filled: true,
           ),
         ),
       ],
-    );
-  }
-}
-
-class RollCallButton extends StatelessWidget {
-  final String text;
-  final Color color;
-  final Function() onPressed;
-  final bool selected;
-  final EdgeInsets? padding;
-
-  const RollCallButton({
-    super.key,
-    required this.text,
-    required this.color,
-    required this.onPressed,
-    this.selected = false,
-    this.padding,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<OutlinedBorder>(
-          RoundedRectangleBorder(
-            side: BorderSide(color: color),
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        backgroundColor: MaterialStateProperty.all<Color>(
-          selected ? color : Colors.white,
-        ),
-        foregroundColor: MaterialStateProperty.all<Color>(
-          selected ? Colors.white : color,
-        ),
-        overlayColor: MaterialStateProperty.all<Color>(
-          selected ? Colors.white12 : color.withAlpha(30),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Padding(
-        padding: padding ?? EdgeInsets.zero,
-        child: Text(text),
-      ),
     );
   }
 }

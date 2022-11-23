@@ -4,6 +4,7 @@ class GSLController extends GetxController {
   RxString currentSpeaker = "".obs;
   RxList<String> nextSpeakers = <String>[].obs;
   RxList<Map<String, Duration>> pastSpeakers = <Map<String, Duration>>[].obs;
+  Rx<Duration> duration = const Duration(minutes: 1).obs;
   Rx<Stopwatch> stopwatch = Stopwatch().obs;
 
   bool isAdded(String country) =>

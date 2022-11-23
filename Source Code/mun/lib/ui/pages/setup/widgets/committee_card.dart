@@ -104,7 +104,7 @@ class CommitteeCard extends StatelessWidget {
                     itemBuilder: (context, index) => CountryTile(
                       country: controller.committee.value.countries[index],
                       onTap: () => controller.removeAt(index),
-                      trailing: Icon(Icons.minimize, color: Colors.grey[400]),
+                      trailing: Icon(Icons.remove, color: Colors.grey[400]),
                     ),
                     separatorBuilder: (context, index) => Divider(
                       indent: 66,
