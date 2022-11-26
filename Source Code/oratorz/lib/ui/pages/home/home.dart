@@ -2,10 +2,11 @@ import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
 
 import '/config/constants.dart';
+import '/models/committee.dart';
 import '/tools/arguments/home.dart';
 import '/tools/controllers/home.dart';
+import '/tools/controllers/mode.dart';
 import '/ui/widgets/dialog_title.dart';
-import '../../../tools/controllers/mode.dart';
 import 'widgets/sidebar.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,11 +47,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: Push to SetUp if Args Null
-    final HomeArguments args =
-        ModalRoute.of(context)!.settings.arguments! as HomeArguments;
-
     // final HomeArguments args =
-    //     HomeArguments(committee: Committee.fromTemplate("UNSC"));
+    //     ModalRoute.of(context)!.settings.arguments! as HomeArguments;
+
+    final HomeArguments args =
+        HomeArguments(committee: Committee.fromTemplate("UNSC"));
 
     Get.put(HomeController(committee: args.committee));
 

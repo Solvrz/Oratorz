@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/tools/arguments/home.dart';
+import '/tools/controllers/setup.dart';
 import '/ui/widgets/country_tile.dart';
 import '/ui/widgets/dialog_title.dart';
-import '../../../../tools/arguments/home.dart';
-import '../../../../tools/controllers/setup.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});

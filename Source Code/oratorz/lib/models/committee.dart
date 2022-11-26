@@ -1,4 +1,4 @@
-import '../config/country_info.dart';
+import '/config/country_info.dart';
 
 class Committee {
   late String? name;

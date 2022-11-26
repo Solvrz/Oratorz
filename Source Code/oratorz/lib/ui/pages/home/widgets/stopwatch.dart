@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/gsl.dart';
+import '/tools/controllers/home.dart';
+import '/ui/widgets/country_tile.dart';
 import '/ui/widgets/custom_button.dart';
 import '/ui/widgets/dialog_title.dart';
-import '../../../../tools/controllers/home.dart';
-import '../../../widgets/country_tile.dart';
 
 class StopwatchWidget extends StatefulWidget {
   final Function() onTimeEnd;

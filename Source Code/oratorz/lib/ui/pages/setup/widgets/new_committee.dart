@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/config/country_info.dart';
+import '/tools/controllers/setup.dart';
 import '/ui/widgets/country_tile.dart';
-import '../../../../tools/controllers/setup.dart';
 
 class NewCommitteeCard extends StatelessWidget {
   const NewCommitteeCard({super.key});

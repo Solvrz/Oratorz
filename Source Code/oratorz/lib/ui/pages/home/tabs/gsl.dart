@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/gsl.dart';
-import '../../widgets/stopwatch.dart';
-import 'add_speaker.dart';
-import 'past_speakers.dart';
-import 'speakers_info.dart';
+import '../widgets/gsl/add_speaker.dart';
+import '../widgets/gsl/past_speakers.dart';
+import '../widgets/gsl/speakers_info.dart';
+import '../widgets/stopwatch.dart';
 
 class GSLTab extends StatefulWidget {
   const GSLTab({super.key});
