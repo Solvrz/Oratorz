@@ -1,4 +1,4 @@
-# MUN
+# Oratorz
 
 # Description
-- An All-In-One MUN Software.
+- An All-In-One MUN Aid.
