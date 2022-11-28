@@ -1,4 +1,3 @@
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '/config/constants.dart';
@@ -15,8 +15,7 @@ import '/config/theme.dart';
 import '/firebase_options.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
-import '/ui/pages/home/home.dart';
-import '/ui/pages/setup/setup.dart';
+import '/ui/pages/export.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,39 +61,49 @@ class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        theme: OratorzTheme.of(context),
+  Widget build(BuildContext context) => MaterialApp.router(
         title: "Oratorz",
-        builder: (context, _) {
+        theme: OratorzTheme.of(context),
+        builder: (context, widget) {
           theme = OratorzTheme.of(context);
 
-          return AdvancedNavigator(
-            initialLocation: "/home/committee/gsl",
-            paths: {
-              "/setup": (args) {
-                Get.put(RouteController(arguments: args));
-
-                return [
-                  const MaterialPage(
-                    key: ValueKey("/setup"),
-                    child: SetupPage(),
-                  ),
-                ];
-              },
-              "/home/{tab}/{mode}": (args) {
-                Get.put(RouteController(arguments: args));
-
-                return [
-                  MaterialPage(
-                    key: ValueKey(
-                      "/home/${args.path["tab"]}/${args.path["mode"]}",
-                    ),
-                    child: const HomePage(),
-                  ),
-                ];
-              },
-            },
-          );
+          return widget!;
         },
+        routerConfig: GoRouter(
+          // TODO: Change This
+          initialLocation: "/home/committee/gsl",
+          errorBuilder: (context, args) {
+            Get.put(RouteController(arguments: args));
+
+            // TODO: Error Page
+            return const Text("Error");
+          },
+          routes: [
+            GoRoute(
+              path: "/setup",
+              builder: (context, args) {
+                Get.put(RouteController(arguments: args));
+
+                return const SetupPage();
+              },
+            ),
+            GoRoute(
+              path: "/home/:tab",
+              builder: (context, args) {
+                Get.put(RouteController(arguments: args));
+
+                return const HomePage();
+              },
+            ),
+            GoRoute(
+              path: "/home/:tab/:mode",
+              builder: (context, args) {
+                Get.put(RouteController(arguments: args));
+
+                return const HomePage();
+              },
+            ),
+          ],
+        ),
       );
 }

@@ -1,5 +1,5 @@
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/config/constants.dart';
 import '/services/auth.dart';
@@ -26,7 +26,7 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
     if (auth.currentUser != null) {
       Auth.login(
         context,
-        () async => AdvancedNavigator.openNamed(context, "/setup"),
+        () async => context.goNamed("/setup"),
       );
     }
 
@@ -117,7 +117,7 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
                 if (mounted) {
                   await Auth.login(
                     context,
-                    () async => AdvancedNavigator.openNamed(context, "/setup"),
+                    () async => context.go("/setup"),
                   );
                 }
               },

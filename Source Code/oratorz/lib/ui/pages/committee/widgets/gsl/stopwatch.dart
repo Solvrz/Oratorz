@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/comittee/gsl.dart';
@@ -163,7 +163,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                         actions: [
                           TextButton(
                             child: const Text("Change"),
-                            onPressed: () => AdvancedNavigator.pop(context),
+                            onPressed: () => context.pop(),
                           ),
                         ],
                       ),
@@ -254,7 +254,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
               padding: const EdgeInsets.symmetric(vertical: 4),
               text: "DONE",
               color: const Color(0xff0d1520),
-              onPressed: () => AdvancedNavigator.pop(context),
+              onPressed: () => context.pop(),
               filled: true,
             ),
           ),

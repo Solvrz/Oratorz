@@ -1,6 +1,6 @@
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/tools/controllers/home.dart';
@@ -72,7 +72,7 @@ class Sidebar extends StatelessWidget {
               _Tile(
                 title: "Setup",
                 icon: Icons.settings_outlined,
-                onTap: () => AdvancedNavigator.openNamed(context, "/setup"),
+                onTap: () => context.goNamed("/setup"),
               ),
               // _Tile(
               //   title: "Log Out",

@@ -1,6 +1,6 @@
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/config/data.dart';
 import '/tools/controllers/setup.dart';
@@ -66,7 +66,7 @@ class LoadCommitteeCard extends StatelessWidget {
                                                           index ~/ 2]]!
                                                       .toList(),
                                                 );
-                                                AdvancedNavigator.pop(context);
+                                                context.pop();
                                               },
                                               title: Text(
                                                 "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",

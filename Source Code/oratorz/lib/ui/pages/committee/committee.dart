@@ -1,6 +1,6 @@
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants.dart';
@@ -21,9 +21,8 @@ class CommitteePage extends StatelessWidget {
       ModeController(
         modeVal: ModeController.modesInfo
             .indexWhere(
-              (mode) => mode["route"]
-                  .toString()
-                  .contains(_routeController.path["mode"]),
+              (mode) =>
+                  mode["route"].toString().contains(_routeController.path),
             )
             .clamp(0, double.infinity)
             .toInt(),
@@ -98,7 +97,7 @@ class ModeHeader extends StatelessWidget {
                         _homeController.committee.value.agenda =
                             _controller.text;
 
-                        AdvancedNavigator.pop(context);
+                        context.pop();
                       },
                       keyboardType: TextInputType.name,
                       cursorColor: Colors.grey[600],
@@ -115,7 +114,7 @@ class ModeHeader extends StatelessWidget {
                           _homeController.committee.value.agenda =
                               _controller.text;
 
-                          AdvancedNavigator.pop(context);
+                          context.pop();
                         },
                         child: const Text("Select"),
                       )

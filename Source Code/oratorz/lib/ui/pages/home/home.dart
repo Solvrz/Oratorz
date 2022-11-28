@@ -28,9 +28,7 @@ class HomePage extends StatelessWidget {
       TabController(
         tabVal: TabController.tabsInfo
             .indexWhere(
-              (tab) => tab["route"]
-                  .toString()
-                  .contains(_routeController.path["tab"]),
+              (tab) => tab["route"].toString().contains(_routeController.path),
             )
             .clamp(0, double.infinity)
             .toInt(),

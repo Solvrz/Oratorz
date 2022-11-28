@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
@@ -112,10 +112,7 @@ class Auth {
               onPressed: () async {
                 await Auth.logout(
                   context,
-                  () async => AdvancedNavigator.openNamed(
-                    context,
-                    "/",
-                  ),
+                  () async => context.goNamed("/"),
                 );
               },
             ),

@@ -1,6 +1,6 @@
-import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/tools/arguments/home.dart';
 import '/tools/controllers/setup.dart';
@@ -48,7 +48,7 @@ class CommitteeCard extends StatelessWidget {
                               controller: _controller,
                               onSubmitted: (value) {
                                 _committeeController.setName(value);
-                                AdvancedNavigator.pop(context);
+                                context.pop();
                               },
                               keyboardType: TextInputType.name,
                               cursorColor: Colors.grey[600],
@@ -65,7 +65,7 @@ class CommitteeCard extends StatelessWidget {
                                 onPressed: () {
                                   _committeeController
                                       .setName(_controller.value.text);
-                                  AdvancedNavigator.pop(context);
+                                  context.pop();
                                 },
                                 child: const Text("Select"),
                               )
@@ -121,10 +121,9 @@ class CommitteeCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 TextButton(
-                  onPressed: () => AdvancedNavigator.openNamed(
-                    context,
+                  onPressed: () => context.goNamed(
                     "/home/committee/gsl",
-                    arguments: HomeArguments(
+                    extra: HomeArguments(
                       committee: _setupController.committee.value,
                     ),
                   ),
