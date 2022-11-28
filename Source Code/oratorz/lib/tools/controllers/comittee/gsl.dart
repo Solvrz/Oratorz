@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 class GSLController extends GetxController {
   RxString currentSpeaker = "".obs;
   RxBool isSpeaking = false.obs;
+
   RxList<String> nextSpeakers = <String>[].obs;
   RxList<Map<String, Duration>> pastSpeakers = <Map<String, Duration>>[].obs;
+
   Rx<Duration> duration = const Duration(minutes: 1).obs;
   Rx<Stopwatch> stopwatch = Stopwatch().obs;
 
@@ -41,7 +43,7 @@ class GSLController extends GetxController {
       nextSpeakers.removeAt(0);
     }
 
-    isSpeaking.value = !isSpeaking.value;
+    isSpeaking.value = false;
 
     stopwatch.value.stop();
     stopwatch.value.reset();

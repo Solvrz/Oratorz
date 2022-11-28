@@ -1,15 +1,20 @@
 import 'package:get/get.dart';
 
 import '/models/committee.dart';
+import './comittee/committee.dart';
 
 class HomeController extends GetxController {
-  late Rx<Committee> committee;
   late RxMap<String, int> rollCall;
+  late Rx<CommitteeController> committeeController;
 
   HomeController({required Committee committee}) {
-    this.committee = committee.obs;
-    rollCall = {for (var val in committee.countries) val: -1}.obs;
+    rollCall = {for (String country in committee.countries) country: -1}.obs;
+    committeeController = Get.put(
+      CommitteeController(committee: committee),
+    ).obs;
   }
+
+  Rx<Committee> get committee => committeeController.value.committee;
 
   bool get areAllPresent => rollCall.values.toList().every((call) => call == 1);
   bool get areAllAbsent => rollCall.values.toList().every((call) => call == 0);

@@ -1,3 +1,4 @@
+import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,13 +7,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '/config/constants.dart';
 import '/config/theme.dart';
 import '/firebase_options.dart';
+import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
-import '/ui/pages/export.dart';
+import '/ui/pages/home/home.dart';
+import '/ui/pages/setup/setup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,40 +42,59 @@ void main() async {
 
   await auth.setPersistence(Persistence.LOCAL);
 
-  // TODO: Set This & firebase.json (Website & Aler)
-  // if (TESTING) {
-  //   await auth.useAuthEmulator(IP, 9099);
-  //   firestore.settings = const Settings(host: "$IP:9080");
-  //   await storage.useStorageEmulator(IP, 9199);
-  //   await analytics.setAnalyticsCollectionEnabled(false);
-  // }
+  if (TESTING) {
+    await auth.useAuthEmulator(IP, 9099);
+    firestore.settings = const Settings(host: "$IP:9080");
+    await storage.useStorageEmulator(IP, 9199);
+    await analytics.setAnalyticsCollectionEnabled(false);
+  }
 
   runApp(const Oratorz());
 }
 
+// TODO: Tooltip
+// TODO: Restoration
+// TODO: Responsive
+// TODO: Suspend Users
+// TODO: Unkown Routes
+// TODO: Migrate to go_router
 class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: OratorzTheme.of(context),
-      title: "Oratorz",
-      // TODO: Change after Testing
-      // initialRoute: "/setup",
-      initialRoute: "/home",
-      routes: {
-        // TODO: Confrence App
-        // "/": (context) => const WelcomePage(),
-        "/home": (context) => const HomePage(),
-        "/setup": (context) => const SetupPage(),
-        // "/home/motion": (context) => const MotionsPage(),
-      },
-      builder: (context, widget) {
-        theme = OratorzTheme.of(context);
+  Widget build(BuildContext context) => MaterialApp(
+        theme: OratorzTheme.of(context),
+        title: "Oratorz",
+        builder: (context, _) {
+          theme = OratorzTheme.of(context);
 
-        return widget!;
-      },
-    );
-  }
+          return AdvancedNavigator(
+            initialLocation: "/home/committee/gsl",
+            paths: {
+              "/setup": (args) {
+                Get.put(RouteController(arguments: args));
+
+                return [
+                  const MaterialPage(
+                    key: ValueKey("/setup"),
+                    child: SetupPage(),
+                  ),
+                ];
+              },
+              "/home/{tab}/{mode}": (args) {
+                Get.put(RouteController(arguments: args));
+
+                return [
+                  MaterialPage(
+                    key: ValueKey(
+                      "/home/${args.path["tab"]}/${args.path["mode"]}",
+                    ),
+                    child: const HomePage(),
+                  ),
+                ];
+              },
+            },
+          );
+        },
+      );
 }

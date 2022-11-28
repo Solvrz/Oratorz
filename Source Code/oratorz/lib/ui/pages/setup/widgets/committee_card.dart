@@ -1,20 +1,22 @@
+import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/arguments/home.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/country_tile.dart';
-import '/ui/widgets/dialog_title.dart';
+import '/ui/widgets/dialog_box.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetX<SetupController>(
-      init: Get.find<SetupController>(),
-      builder: (controller) {
-        return Card(
+    final SetupController _setupController = Get.find<SetupController>();
+
+    return Obx(
+      () => Expanded(
+        child: Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -23,34 +25,30 @@ class CommitteeCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      controller.committee.value.name ?? "Your Committee",
+                      _setupController.committee.value.name,
                       style: Theme.of(context).textTheme.headline5,
                     ),
                     const SizedBox(width: 16),
                     InkWell(
                       onTap: () {
-                        final SetupController committeeController =
+                        final SetupController _committeeController =
                             Get.find<SetupController>();
 
-                        final TextEditingController controller =
+                        final TextEditingController _controller =
                             TextEditingController(
-                          text: committeeController.committee.value.name,
+                          text: _committeeController.committee.value.name,
                         );
 
                         showDialog(
                           context: context,
-                          builder: (context) => AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            title:
-                                const DialogTitle(title: "Set Committee Name"),
+                          builder: (context) => DialogBox(
+                            heading: "Set Committee Name",
                             content: TextField(
                               autofocus: true,
-                              controller: controller,
+                              controller: _controller,
                               onSubmitted: (value) {
-                                committeeController.setName(value);
-                                Navigator.of(context).pop();
+                                _committeeController.setName(value);
+                                AdvancedNavigator.pop(context);
                               },
                               keyboardType: TextInputType.name,
                               cursorColor: Colors.grey[600],
@@ -65,9 +63,9 @@ class CommitteeCard extends StatelessWidget {
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  committeeController
-                                      .setName(controller.value.text);
-                                  Navigator.of(context).pop();
+                                  _committeeController
+                                      .setName(_controller.value.text);
+                                  AdvancedNavigator.pop(context);
                                 },
                                 child: const Text("Select"),
                               )
@@ -95,15 +93,16 @@ class CommitteeCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "${controller.committee.value.count} Countries",
+                  "${_setupController.committee.value.count} Countries",
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
                     itemBuilder: (context, index) => CountryTile(
-                      country: controller.committee.value.countries[index],
-                      onTap: () => controller.removeAt(index),
+                      country:
+                          _setupController.committee.value.countries[index],
+                      onTap: () => _setupController.removeAt(index),
                       trailing: Icon(Icons.remove, color: Colors.grey[400]),
                     ),
                     separatorBuilder: (context, index) => Divider(
@@ -112,21 +111,21 @@ class CommitteeCard extends StatelessWidget {
                       height: 6,
                       color: Colors.grey[400],
                     ),
-                    itemCount: controller.committee.value.count,
+                    itemCount: _setupController.committee.value.count,
                   ),
                 ),
                 const SizedBox(height: 24),
                 TextButton(
-                  onPressed: () => controller.clear(),
+                  onPressed: () => _setupController.clear(),
                   child: const Text("Clear Selection"),
                 ),
                 const SizedBox(height: 12),
                 TextButton(
-                  onPressed: () => Navigator.popAndPushNamed(
+                  onPressed: () => AdvancedNavigator.openNamed(
                     context,
-                    "/home",
+                    "/home/committee/gsl",
                     arguments: HomeArguments(
-                      committee: controller.committee.value,
+                      committee: _setupController.committee.value,
                     ),
                   ),
                   child: const Text("Start Session"),
@@ -134,8 +133,8 @@ class CommitteeCard extends StatelessWidget {
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

@@ -17,30 +17,28 @@ class CustomButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<OutlinedBorder>(
-          RoundedRectangleBorder(
-            side: BorderSide(color: color),
-            borderRadius: BorderRadius.circular(10),
+  Widget build(BuildContext context) => TextButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              side: BorderSide(color: color),
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          backgroundColor: MaterialStateProperty.all<Color>(
+            filled ? color : Colors.white,
+          ),
+          foregroundColor: MaterialStateProperty.all<Color>(
+            filled ? Colors.white : color,
+          ),
+          overlayColor: MaterialStateProperty.all<Color>(
+            filled ? Colors.white12 : color.withAlpha(30),
           ),
         ),
-        backgroundColor: MaterialStateProperty.all<Color>(
-          filled ? color : Colors.white,
+        onPressed: onPressed,
+        child: Padding(
+          padding: padding ?? EdgeInsets.zero,
+          child: Text(text),
         ),
-        foregroundColor: MaterialStateProperty.all<Color>(
-          filled ? Colors.white : color,
-        ),
-        overlayColor: MaterialStateProperty.all<Color>(
-          filled ? Colors.white12 : color.withAlpha(30),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Padding(
-        padding: padding ?? EdgeInsets.zero,
-        child: Text(text),
-      ),
-    );
-  }
+      );
 }

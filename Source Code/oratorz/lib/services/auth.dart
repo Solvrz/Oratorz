@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/material.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -84,7 +85,6 @@ class Auth {
     if (auth.currentUser != null) {
       try {
         profile = await Profile.fromID(auth.currentUser!.uid);
-        print(profile.name);
 
         // TODO: Do This
         // alerts = Alert.fromDocs(
@@ -112,7 +112,7 @@ class Auth {
               onPressed: () async {
                 await Auth.logout(
                   context,
-                  () async => Navigator.restorablePopAndPushNamed(
+                  () async => AdvancedNavigator.openNamed(
                     context,
                     "/",
                   ),

@@ -14,7 +14,6 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-
   firebase_core: ^2.1.1
   firebase_auth: ^4.1.2
   cloud_firestore: ^4.0.3
@@ -31,7 +30,8 @@ dependencies:
   get: ^4.6.5
   flutter_svg: ^1.1.6
   percent_indicator: ^4.2.2
-  pie_chart: ^5.3.2
+  universal_html: ^2.0.8
+  advanced_navigator: ^1.0.1
 
 dev_dependencies:
   flutter_lints: ^2.0.1

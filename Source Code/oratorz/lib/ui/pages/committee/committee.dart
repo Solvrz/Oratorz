@@ -1,0 +1,219 @@
+import 'package:advanced_navigator/advanced_navigator.dart';
+import 'package:flutter/material.dart' hide TabController;
+import 'package:get/get.dart';
+import 'package:universal_html/html.dart' as html;
+
+import '/config/constants.dart';
+import '/tools/controllers/comittee/gsl.dart';
+import '/tools/controllers/comittee/mode.dart';
+import '/tools/controllers/home.dart';
+import '/tools/controllers/route.dart';
+import '/ui/widgets/dialog_box.dart';
+
+class CommitteePage extends StatelessWidget {
+  const CommitteePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final RouteController _routeController = Get.find<RouteController>();
+
+    final ModeController _modeController = Get.put(
+      ModeController(
+        modeVal: ModeController.modesInfo
+            .indexWhere(
+              (mode) => mode["route"]
+                  .toString()
+                  .contains(_routeController.path["mode"]),
+            )
+            .clamp(0, double.infinity)
+            .toInt(),
+      ),
+    );
+    // TODO: Put Other Mode Controllers
+    Get.put(GSLController());
+
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const ModeHeader(),
+          const SizedBox(height: 24),
+          Expanded(
+            child: Obx(
+              () => _modeController.currentTab()["tab"],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ModeHeader extends StatelessWidget {
+  const ModeHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final HomeController _homeController = Get.find<HomeController>();
+    final ModeController _modeController = Get.find<ModeController>();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // TODO: Not Updating
+        Row(
+          children: [
+            Obx(
+              () => RichText(
+                text: TextSpan(
+                  text: "Agenda: ",
+                  style: Theme.of(context).textTheme.headline5,
+                  children: [
+                    TextSpan(
+                      text: _homeController.committee.value.agenda,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            InkWell(
+              onTap: () {
+                final TextEditingController _controller = TextEditingController(
+                  text: _homeController.committee.value.agenda,
+                );
+
+                showDialog(
+                  context: context,
+                  builder: (context) => DialogBox(
+                    heading: "Set Committee Name",
+                    content: TextField(
+                      autofocus: true,
+                      controller: _controller,
+                      onSubmitted: (value) {
+                        _homeController.committee.value.agenda =
+                            _controller.text;
+
+                        AdvancedNavigator.pop(context);
+                      },
+                      keyboardType: TextInputType.name,
+                      cursorColor: Colors.grey[600],
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey[200],
+                        hintText: "Agenda",
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                    actionsPadding: const EdgeInsets.all(16),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          _homeController.committee.value.agenda =
+                              _controller.text;
+
+                          AdvancedNavigator.pop(context);
+                        },
+                        child: const Text("Select"),
+                      )
+                    ],
+                  ),
+                );
+              },
+              hoverColor: const Color.fromARGB(255, 250, 250, 250),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.amber.shade400),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.amber.shade400,
+                  size: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+        PopupMenuButton<int>(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xff0d1520)),
+            ),
+            child: Row(
+              children: [
+                Obx(
+                  () => Row(
+                    children: [
+                      Icon(
+                        _modeController.currentTab()["icon"],
+                        color: theme.primaryColor,
+                      ),
+                      const VerticalDivider(),
+                      Text(
+                        _modeController.currentTab()["name"],
+                        style: theme.textTheme.headline5,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 20),
+                const Icon(
+                  Icons.arrow_drop_down,
+                  color: Color(0xff0d1520),
+                  size: 36,
+                ),
+              ],
+            ),
+          ),
+          itemBuilder: (_) => List.generate(
+            _modeController.modes.length,
+            (index) {
+              final Map<String, dynamic> tab = _modeController.modes[index];
+
+              return PopupMenuItem(
+                value: index,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          tab["icon"],
+                          color: theme.primaryColor,
+                        ),
+                        const VerticalDivider(),
+                        Text(tab["name"]),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          onSelected: (index) {
+            _modeController.modeVal = index;
+            html.window.history.pushState(
+              null,
+              "mode",
+              _modeController.modes[index]["route"],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}

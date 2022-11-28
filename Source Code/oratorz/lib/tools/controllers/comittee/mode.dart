@@ -1,44 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/ui/pages/home/tabs/export.dart';
+import '/ui/pages/committee/modes/export.dart';
 
 class ModeController extends GetxController {
-  RxInt tab = 0.obs;
+  late RxInt mode;
 
-  List<Map<String, dynamic>> tabsInfo = [
+  ModeController({int modeVal = 0}) {
+    mode = RxInt(modeVal);
+  }
+
+  static final List<Map<String, dynamic>> modesInfo = [
     {
+      "route": "/home/committee/gsl",
       "name": "GSL",
       "icon": Icons.groups,
       "tab": const GSLTab(),
     },
     {
+      "route": "/home/committee/mod",
       "name": "Moderated Caucus",
       "icon": Icons.forum,
-      "tab": const ModTab(),
+      "tab": Container(),
     },
     {
+      "route": "/home/committee/unmod",
       "name": "Unmoderated Caucus",
       "icon": Icons.connect_without_contact,
-      "tab": const UnmodTab(),
+      "tab": Container(),
     },
     {
+      "route": "/home/committee/consulation",
       "name": "Consulation",
       "icon": Icons.circle_outlined,
-      "tab": const UnmodTab(),
+      "tab": Container(),
     },
     {
+      "route": "/home/committee/prayer",
       "name": "Prayer",
       "icon": Icons.church,
-      "tab": const UnmodTab(),
+      "tab": Container(),
     },
     {
+      "route": "/home/committee/adjournment",
       "name": "Adjournment",
       "icon": Icons.pause,
-      "tab": const UnmodTab(),
+      "tab": Container(),
     },
-    // TODO: Tooltip
-    // TODO: Suspend Users
     // TODO: Confrence App
     // {
     //   "name": "Resolution Vote",
@@ -51,19 +59,23 @@ class ModeController extends GetxController {
     //   "tab": const UnmodTab(),
     // },
     {
+      "route": "/home/committee/single",
       "name": "Single Speaker",
       "icon": Icons.mic,
-      "tab": const UnmodTab(),
+      "tab": Container(),
     },
     {
+      "route": "/home/committee/custom",
       "name": "Custom",
       "icon": Icons.edit,
-      "tab": const UnmodTab(),
+      "tab": Container(),
     },
   ];
 
-  int get tabVal => tab.value;
-  set tabVal(int newTab) => tab.value = newTab;
+  List<Map<String, dynamic>> get modes => modesInfo;
 
-  Map<String, dynamic> currentTab() => tabsInfo[tab.value];
+  int get modeVal => mode.value;
+  set modeVal(int newMode) => mode.value = newMode;
+
+  Map<String, dynamic> currentTab() => modes[mode.value];
 }

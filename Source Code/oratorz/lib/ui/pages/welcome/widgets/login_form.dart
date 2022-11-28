@@ -1,3 +1,4 @@
+import 'package:advanced_navigator/advanced_navigator.dart';
 import 'package:flutter/material.dart';
 
 import '/config/constants.dart';
@@ -25,7 +26,7 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
     if (auth.currentUser != null) {
       Auth.login(
         context,
-        () async => Navigator.pushNamed(context, "/setup"),
+        () async => AdvancedNavigator.openNamed(context, "/setup"),
       );
     }
 
@@ -48,96 +49,94 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: _emailContoller.value,
-          decoration: InputDecoration(
-            hintText: "Email",
-            filled: true,
-            fillColor: Colors.blueGrey[50],
-            labelStyle: const TextStyle(fontSize: 12),
-            contentPadding: const EdgeInsets.only(left: 30),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blueGrey[50]!),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blueGrey[50]!),
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
-        ),
-        const SizedBox(height: 30),
-        // TODO: Hide Text & Extract Field
-        TextField(
-          controller: _passwordContoller.value,
-          decoration: InputDecoration(
-            hintText: "Password",
-            counterText: "Forgot password?",
-            suffixIcon: const Icon(
-              Icons.visibility_off_outlined,
-              color: Colors.grey,
-            ),
-            filled: true,
-            fillColor: Colors.blueGrey[50],
-            labelStyle: const TextStyle(fontSize: 12),
-            contentPadding: const EdgeInsets.only(left: 30),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blueGrey[50]!),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blueGrey[50]!),
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
-        ),
-        const SizedBox(height: 40),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.deepPurple[100]!,
-                spreadRadius: 10,
-                blurRadius: 20,
+  Widget build(BuildContext context) => Column(
+        children: [
+          TextField(
+            controller: _emailContoller.value,
+            decoration: InputDecoration(
+              hintText: "Email",
+              filled: true,
+              fillColor: Colors.blueGrey[50],
+              labelStyle: const TextStyle(fontSize: 12),
+              contentPadding: const EdgeInsets.only(left: 30),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueGrey[50]!),
+                borderRadius: BorderRadius.circular(15),
               ),
-            ],
-          ),
-          child: ElevatedButton(
-            onPressed: () async {
-              await auth.signInWithEmailAndPassword(
-                email: _emailContoller.text().toLowerCase(),
-                password: _passwordContoller.text(),
-              );
-
-              if (mounted) {
-                await Auth.login(
-                  context,
-                  () async => Navigator.pushNamed(context, "/setup"),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueGrey[50]!),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
-            child: const SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: Center(
-                child: Text("Sign In"),
+          ),
+          const SizedBox(height: 30),
+          // TODO: Hide Text & Extract Field
+          TextField(
+            controller: _passwordContoller.value,
+            decoration: InputDecoration(
+              hintText: "Password",
+              counterText: "Forgot password?",
+              suffixIcon: const Icon(
+                Icons.visibility_off_outlined,
+                color: Colors.grey,
+              ),
+              filled: true,
+              fillColor: Colors.blueGrey[50],
+              labelStyle: const TextStyle(fontSize: 12),
+              contentPadding: const EdgeInsets.only(left: 30),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueGrey[50]!),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueGrey[50]!),
+                borderRadius: BorderRadius.circular(15),
               ),
             ),
           ),
-        ),
-      ],
-    );
-  }
+          const SizedBox(height: 40),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.deepPurple[100]!,
+                  spreadRadius: 10,
+                  blurRadius: 20,
+                ),
+              ],
+            ),
+            child: ElevatedButton(
+              onPressed: () async {
+                await auth.signInWithEmailAndPassword(
+                  email: _emailContoller.text().toLowerCase(),
+                  password: _passwordContoller.text(),
+                );
+
+                if (mounted) {
+                  await Auth.login(
+                    context,
+                    () async => AdvancedNavigator.openNamed(context, "/setup"),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              child: const SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: Center(
+                  child: Text("Sign In"),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
 }
