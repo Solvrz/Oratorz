@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants.dart';
@@ -97,7 +96,7 @@ class ModeHeader extends StatelessWidget {
                         _homeController.committee.value.agenda =
                             _controller.text;
 
-                        context.pop();
+                        Navigator.pop(context);
                       },
                       keyboardType: TextInputType.name,
                       cursorColor: Colors.grey[600],
@@ -114,7 +113,7 @@ class ModeHeader extends StatelessWidget {
                           _homeController.committee.value.agenda =
                               _controller.text;
 
-                          context.pop();
+                          Navigator.pop(context);
                         },
                         child: const Text("Select"),
                       )

@@ -112,7 +112,7 @@ class Auth {
               onPressed: () async {
                 await Auth.logout(
                   context,
-                  () async => context.goNamed("/"),
+                  () async => context.go("/"),
                 );
               },
             ),

@@ -26,7 +26,7 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
     if (auth.currentUser != null) {
       Auth.login(
         context,
-        () async => context.goNamed("/setup"),
+        () async => context.go("/"),
       );
     }
 
@@ -117,7 +117,7 @@ class _SignInFormState extends State<SignInForm> with RestorationMixin {
                 if (mounted) {
                   await Auth.login(
                     context,
-                    () async => context.go("/setup"),
+                    () async => context.go("/"),
                   );
                 }
               },

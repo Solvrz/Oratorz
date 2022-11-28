@@ -66,6 +66,7 @@ class NewCommitteeCard extends StatelessWidget {
                   ],
                 ),
               ),
+              // TODO: Not Updating
               Expanded(
                 child: ListView.separated(
                   itemBuilder: (context, index) => CountryTile(

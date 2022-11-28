@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class DialogBox extends AlertDialog {
   final String heading;
@@ -28,7 +27,7 @@ class DialogBox extends AlertDialog {
                 const SizedBox(width: 24),
                 const Spacer(),
                 InkWell(
-                  onTap: () => context.pop(),
+                  onTap: () => Navigator.pop(context),
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Icon(

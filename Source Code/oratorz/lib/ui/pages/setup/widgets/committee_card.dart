@@ -48,7 +48,7 @@ class CommitteeCard extends StatelessWidget {
                               controller: _controller,
                               onSubmitted: (value) {
                                 _committeeController.setName(value);
-                                context.pop();
+                                Navigator.pop(context);
                               },
                               keyboardType: TextInputType.name,
                               cursorColor: Colors.grey[600],
@@ -65,7 +65,7 @@ class CommitteeCard extends StatelessWidget {
                                 onPressed: () {
                                   _committeeController
                                       .setName(_controller.value.text);
-                                  context.pop();
+                                  Navigator.pop(context);
                                 },
                                 child: const Text("Select"),
                               )
@@ -121,7 +121,7 @@ class CommitteeCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 TextButton(
-                  onPressed: () => context.goNamed(
+                  onPressed: () => context.go(
                     "/home/committee/gsl",
                     extra: HomeArguments(
                       committee: _setupController.committee.value,

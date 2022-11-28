@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
+import 'package:oratorz/models/committee.dart';
 
-import '/models/committee.dart';
 import '/tools/arguments/home.dart';
 import '/tools/controllers/home.dart';
 import '/tools/controllers/route.dart';
@@ -17,11 +17,12 @@ class HomePage extends StatelessWidget {
     final RouteController _routeController = Get.find<RouteController>();
 
     // TODO: Remove after Testing
-    final HomeArguments args = _routeController.args.value as HomeArguments? ??
+    final HomeArguments args =
+        // _routeController.args.value as HomeArguments? ??
         HomeArguments(committee: Committee.fromTemplate("UNSC"));
 
     // if (args == null) {
-    //   AdvancedNavigator.openNamed(context, "/setup");
+    //   context.go("/setup");
     // } else {
     Get.put(HomeController(committee: args.committee));
     _tabController = Get.put(

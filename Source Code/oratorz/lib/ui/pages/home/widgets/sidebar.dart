@@ -72,7 +72,7 @@ class Sidebar extends StatelessWidget {
               _Tile(
                 title: "Setup",
                 icon: Icons.settings_outlined,
-                onTap: () => context.goNamed("/setup"),
+                onTap: () => context.go("/setup"),
               ),
               // _Tile(
               //   title: "Log Out",

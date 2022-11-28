@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/ui/widgets/round_button.dart';
+import './round_button.dart';
 
 class Menu extends StatelessWidget {
   final bool isSignIn;

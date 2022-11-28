@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' hide PageController;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
 import '/config/data.dart';
 import '/tools/controllers/home.dart';
@@ -131,7 +130,7 @@ class RollCallDialog extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4),
             text: "DONE",
             color: const Color(0xff0d1520),
-            onPressed: () => context.pop(),
+            onPressed: () => Navigator.pop(context),
             filled: true,
           ),
         ),

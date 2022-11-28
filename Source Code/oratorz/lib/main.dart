@@ -17,6 +17,11 @@ import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
 
+// TODO: Tooltip
+// TODO: User Guide
+// TODO: Responsive
+// TODO: Restoration
+// TODO: Suspend Users
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Intl.defaultLocale = LOCALE.code();
@@ -51,12 +56,6 @@ void main() async {
   runApp(const Oratorz());
 }
 
-// TODO: Tooltip
-// TODO: Restoration
-// TODO: Responsive
-// TODO: Suspend Users
-// TODO: Unkown Routes
-// TODO: Migrate to go_router
 class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 

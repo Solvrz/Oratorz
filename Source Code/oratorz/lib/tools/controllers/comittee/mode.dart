@@ -47,17 +47,6 @@ class ModeController extends GetxController {
       "icon": Icons.pause,
       "tab": Container(),
     },
-    // TODO: Confrence App
-    // {
-    //   "name": "Resolution Vote",
-    //   "icon": Icons.restore_page_sharp,
-    //   "tab": const UnmodTab(),
-    // },
-    // {
-    //   "name": "Amendment",
-    //   "icon": Icons.edit_note,
-    //   "tab": const UnmodTab(),
-    // },
     {
       "route": "/home/committee/single",
       "name": "Single Speaker",

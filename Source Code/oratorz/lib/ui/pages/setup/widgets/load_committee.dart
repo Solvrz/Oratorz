@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
 import '/config/data.dart';
 import '/tools/controllers/setup.dart';
@@ -66,7 +65,8 @@ class LoadCommitteeCard extends StatelessWidget {
                                                           index ~/ 2]]!
                                                       .toList(),
                                                 );
-                                                context.pop();
+
+                                                Navigator.pop(context);
                                               },
                                               title: Text(
                                                 "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",
