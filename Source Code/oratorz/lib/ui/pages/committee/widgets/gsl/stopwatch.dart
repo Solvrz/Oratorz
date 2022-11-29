@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:oratorz/ui/widgets/filled_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/comittee/gsl.dart';
 import '/tools/controllers/home.dart';
 import '/ui/widgets/country_tile.dart';
-import '/ui/widgets/custom_button.dart';
 import '/ui/widgets/dialog_box.dart';
+import '../../../../widgets/border_button.dart';
 
 class StopwatchWidget extends StatefulWidget {
   final Function() onTimeEnd;
@@ -88,7 +89,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                StopwatchButton(
+                FilledButton(
                   icon: _gslController.isSpeaking.value
                       ? Icons.stop
                       : Icons.play_arrow,
@@ -102,7 +103,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                   },
                   color: Colors.blueGrey.shade600,
                 ),
-                StopwatchButton(
+                FilledButton(
                   icon: Icons.restart_alt,
                   onPressed: () {
                     _gslController.stopwatch.value.reset();
@@ -112,7 +113,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                   },
                   color: Colors.blue.shade400,
                 ),
-                StopwatchButton(
+                FilledButton(
                   icon: Icons.settings,
                   onPressed: () {
                     _gslController.stopwatch.value.stop();
@@ -170,7 +171,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                   },
                   color: Colors.amber.shade400,
                 ),
-                StopwatchButton(
+                FilledButton(
                   icon: Icons.person,
                   onPressed: () {
                     final HomeController _homeController =
@@ -250,7 +251,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
         actions: [
           SizedBox(
             width: MediaQuery.of(context).size.width / 3,
-            child: CustomButton(
+            child: BorderButton(
               padding: const EdgeInsets.symmetric(vertical: 4),
               text: "DONE",
               color: const Color(0xff0d1520),
@@ -262,44 +263,16 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
       );
 }
 
-class StopwatchButton extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  final Function() onPressed;
-
-  const StopwatchButton({
-    super.key,
-    required this.icon,
-    required this.color,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) => TextButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(color),
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          overlayColor: MaterialStateProperty.all<Color>(Colors.white12),
-          side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
-        ),
-        onPressed: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Icon(icon),
-        ),
-      );
-}
-
 class TimerButton extends StatelessWidget {
   final int value;
-  final Function(int) change;
   final String subtitle;
+  final Function(int) change;
 
   const TimerButton({
     super.key,
     required this.value,
-    required this.change,
     required this.subtitle,
+    required this.change,
   });
 
   @override

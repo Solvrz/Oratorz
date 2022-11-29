@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '/config/data.dart';
 import '/tools/controllers/home.dart';
-import '/ui/widgets/custom_button.dart';
+import '/ui/widgets/border_button.dart';
 import '/ui/widgets/dialog_box.dart';
 
 class RollCallDialog extends StatelessWidget {
@@ -25,7 +25,7 @@ class RollCallDialog extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: CustomButton(
+                  child: BorderButton(
                     text: "SET ALL PRESENT",
                     color: Colors.amber.shade400,
                     filled: _homeController.areAllPresent,
@@ -34,7 +34,7 @@ class RollCallDialog extends StatelessWidget {
                 ),
                 const SizedBox(width: 32),
                 Expanded(
-                  child: CustomButton(
+                  child: BorderButton(
                     text: "SET ALL ABSENT",
                     color: Colors.amber.shade400,
                     filled: _homeController.areAllAbsent,
@@ -86,7 +86,7 @@ class RollCallDialog extends StatelessWidget {
                             return Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                CustomButton(
+                                BorderButton(
                                   text: "PV",
                                   color: Colors.blue.shade400,
                                   onPressed: () =>
@@ -94,7 +94,7 @@ class RollCallDialog extends StatelessWidget {
                                   filled: rollCall == 2,
                                 ),
                                 const SizedBox(width: 4),
-                                CustomButton(
+                                BorderButton(
                                   text: "P",
                                   color: Colors.amber.shade400,
                                   onPressed: () =>
@@ -102,7 +102,7 @@ class RollCallDialog extends StatelessWidget {
                                   filled: rollCall == 1,
                                 ),
                                 const SizedBox(width: 4),
-                                CustomButton(
+                                BorderButton(
                                   text: "A",
                                   color: Colors.red.shade400,
                                   onPressed: () =>
@@ -126,7 +126,7 @@ class RollCallDialog extends StatelessWidget {
       actions: [
         SizedBox(
           width: MediaQuery.of(context).size.width / 3,
-          child: CustomButton(
+          child: BorderButton(
             padding: const EdgeInsets.symmetric(vertical: 4),
             text: "DONE",
             color: const Color(0xff0d1520),

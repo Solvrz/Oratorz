@@ -26,7 +26,7 @@ class ModeController extends GetxController {
     {
       "route": "/home/committee/unmod",
       "name": "Unmoderated Caucus",
-      "icon": Icons.connect_without_contact,
+      "icon": Icons.workspaces,
       "tab": Container(),
     },
     {
@@ -43,8 +43,20 @@ class ModeController extends GetxController {
     },
     {
       "route": "/home/committee/adjournment",
-      "name": "Adjournment",
+      "name": "Adjourn Meeting",
       "icon": Icons.pause,
+      "tab": Container(),
+    },
+    {
+      "route": "/home/committee/resolution",
+      "name": "Resolution Vote",
+      "icon": Icons.ballot,
+      "tab": Container(),
+    },
+    {
+      "route": "/home/committee/amendmant",
+      "name": "Amendmant",
+      "icon": Icons.published_with_changes,
       "tab": Container(),
     },
     {

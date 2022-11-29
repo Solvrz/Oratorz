@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
+import '/config/constants.dart';
+
+class BorderButton extends StatelessWidget {
   final String text;
   final Color color;
-  final Function() onPressed;
   final bool filled;
+  final Function() onPressed;
   final EdgeInsets? padding;
+  final IconData? icon;
 
-  const CustomButton({
+  const BorderButton({
     super.key,
     required this.text,
     required this.color,
     required this.onPressed,
     this.filled = false,
     this.padding,
+    this.icon,
   });
 
   @override
@@ -38,7 +42,18 @@ class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         child: Padding(
           padding: padding ?? EdgeInsets.zero,
-          child: Text(text),
+          child: Row(
+            children: [
+              if (icon != null) ...[
+                Icon(icon),
+                const VerticalDivider(
+                  thickness: 0.5,
+                  color: Colors.black,
+                ),
+              ],
+              Text(text, style: theme.textTheme.bodyText1),
+            ],
+          ),
         ),
       );
 }
