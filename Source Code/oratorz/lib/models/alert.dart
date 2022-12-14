@@ -85,7 +85,6 @@ class Alert {
         "message": message,
         "type": type.toText(),
         "time": time,
-        "icon": icon,
         "reference": reference,
       };
 }

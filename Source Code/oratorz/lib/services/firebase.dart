@@ -7,8 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import '/config/constants.dart';
 import '/firebase_options.dart';
+import '../config/constants/constants.dart';
 
 class CloudFirestore {
   static bool isDoc(String path) => path.split("/").length % 2 == 0;

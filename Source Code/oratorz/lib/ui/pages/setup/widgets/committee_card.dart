@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/tools/arguments/home.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/country_tile.dart';
 import '/ui/widgets/dialog_box.dart';
+import '../../../../tools/arguments/committee.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -122,8 +122,8 @@ class CommitteeCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => context.go(
-                    "/home/committee/gsl",
-                    extra: HomeArguments(
+                    "/committee/gsl",
+                    extra: CommitteeArguments(
                       committee: _setupController.committee.value,
                     ),
                   ),

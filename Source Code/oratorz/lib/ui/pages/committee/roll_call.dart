@@ -3,16 +3,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '/config/data.dart';
-import '/tools/controllers/home.dart';
 import '/ui/widgets/border_button.dart';
 import '/ui/widgets/dialog_box.dart';
+import '../../../tools/controllers/comittee/committee.dart';
 
 class RollCallDialog extends StatelessWidget {
   const RollCallDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final HomeController _homeController = Get.find<HomeController>();
+    final CommitteeController _committeeController =
+        Get.find<CommitteeController>();
 
     return DialogBox(
       heading: "Roll Call",
@@ -28,8 +29,8 @@ class RollCallDialog extends StatelessWidget {
                   child: BorderButton(
                     text: "SET ALL PRESENT",
                     color: Colors.amber.shade400,
-                    filled: _homeController.areAllPresent,
-                    onPressed: () => _homeController.setAllPresent(),
+                    filled: _committeeController.areAllPresent,
+                    onPressed: () => _committeeController.setAllPresent(),
                   ),
                 ),
                 const SizedBox(width: 32),
@@ -37,8 +38,8 @@ class RollCallDialog extends StatelessWidget {
                   child: BorderButton(
                     text: "SET ALL ABSENT",
                     color: Colors.amber.shade400,
-                    filled: _homeController.areAllAbsent,
-                    onPressed: () => _homeController.setAllAbsent(),
+                    filled: _committeeController.areAllAbsent,
+                    onPressed: () => _committeeController.setAllAbsent(),
                   ),
                 ),
               ],
@@ -48,10 +49,10 @@ class RollCallDialog extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: List.generate(
-                    _homeController.committee.value.count,
+                    _committeeController.committee.value.count,
                     (index) {
                       final String _country =
-                          _homeController.committee.value.countries[index];
+                          _committeeController.committee.value.countries[index];
 
                       return ListTile(
                         hoverColor: Colors.grey[100],
@@ -80,7 +81,7 @@ class RollCallDialog extends StatelessWidget {
                         trailing: Builder(
                           builder: (context) {
                             final int rollCall =
-                                _homeController.rollCall[_country]!;
+                                _committeeController.rollCall[_country]!;
 
                             // TODO: Not Updating
                             return Row(
@@ -89,24 +90,24 @@ class RollCallDialog extends StatelessWidget {
                                 BorderButton(
                                   text: "PV",
                                   color: Colors.blue.shade400,
-                                  onPressed: () =>
-                                      _homeController.setRollCall(_country, 2),
+                                  onPressed: () => _committeeController
+                                      .setRollCall(_country, 2),
                                   filled: rollCall == 2,
                                 ),
                                 const SizedBox(width: 4),
                                 BorderButton(
                                   text: "P",
                                   color: Colors.amber.shade400,
-                                  onPressed: () =>
-                                      _homeController.setRollCall(_country, 1),
+                                  onPressed: () => _committeeController
+                                      .setRollCall(_country, 1),
                                   filled: rollCall == 1,
                                 ),
                                 const SizedBox(width: 4),
                                 BorderButton(
                                   text: "A",
                                   color: Colors.red.shade400,
-                                  onPressed: () =>
-                                      _homeController.setRollCall(_country, 0),
+                                  onPressed: () => _committeeController
+                                      .setRollCall(_country, 0),
                                   filled: rollCall == 0,
                                 ),
                               ],

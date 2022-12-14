@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:oratorz/ui/widgets/filled_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/gsl.dart';
-import '/tools/controllers/home.dart';
+import '/ui/widgets/border_button.dart';
 import '/ui/widgets/country_tile.dart';
 import '/ui/widgets/dialog_box.dart';
-import '../../../../widgets/border_button.dart';
+import '/ui/widgets/filled_button.dart';
 
 class StopwatchWidget extends StatefulWidget {
   final Function() onTimeEnd;
@@ -174,13 +174,13 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                 FilledButton(
                   icon: Icons.person,
                   onPressed: () {
-                    final HomeController _homeController =
-                        Get.find<HomeController>();
+                    final CommitteeController _committeeController =
+                        Get.find<CommitteeController>();
 
                     // TODO: Add Overtime Support
                     // TODO: Change to Present Speakers & Not Working
                     final List<String> countries =
-                        _homeController.committee.value.countries;
+                        _committeeController.committee.value.countries;
 
                     if (_gslController.currentSpeaker.value != "") {
                       countries.remove(_gslController.currentSpeaker.value);

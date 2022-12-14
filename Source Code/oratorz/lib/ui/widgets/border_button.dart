@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/config/constants.dart';
+import '../../config/constants/constants.dart';
 
 class BorderButton extends StatelessWidget {
   final String text;
@@ -43,6 +43,7 @@ class BorderButton extends StatelessWidget {
         child: Padding(
           padding: padding ?? EdgeInsets.zero,
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (icon != null) ...[
                 Icon(icon),

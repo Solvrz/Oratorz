@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '/config/constants.dart';
 import '/services/auth.dart';
 import '/tools/extensions.dart';
+import '../../../../config/constants/constants.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/gsl.dart';
-import '/tools/controllers/home.dart';
 import '/ui/widgets/country_tile.dart';
+import '../../../../tools/controllers/comittee/committee.dart';
 
 class AddSpeakerCard extends StatelessWidget {
   const AddSpeakerCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final HomeController _homeController = Get.find<HomeController>();
+    final CommitteeController _committeeController =
+        Get.find<CommitteeController>();
     final GSLController _gslController = Get.find<GSLController>();
 
     return Expanded(
@@ -30,9 +31,10 @@ class AddSpeakerCard extends StatelessWidget {
               const SizedBox(height: 8),
               Obx(() {
                 final List<String> speakers =
-                    _homeController.committee.value.countries
+                    _committeeController.committee.value.countries
                         .where(
-                          (element) => _homeController.rollCall[element]! > 0,
+                          (element) =>
+                              _committeeController.rollCall[element]! > 0,
                         )
                         .toList();
 

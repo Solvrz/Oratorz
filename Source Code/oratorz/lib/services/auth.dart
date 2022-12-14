@@ -7,10 +7,10 @@ import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 import '/config/colors.dart';
-import '/config/constants.dart';
 import '/models/profile.dart';
 import './firebase.dart';
 import './user_manager.dart';
+import '../config/constants/constants.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Auth {

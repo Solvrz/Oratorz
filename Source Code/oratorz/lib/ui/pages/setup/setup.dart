@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants.dart';
 import '/tools/controllers/setup.dart';
 import './widgets/committee_card.dart';
 import './widgets/load_committee.dart';
 import './widgets/new_committee.dart';
+import '../../../config/constants/constants.dart';
 
 class SetupPage extends StatelessWidget {
   const SetupPage({super.key});

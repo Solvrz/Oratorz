@@ -3,17 +3,18 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '/tools/controllers/home.dart';
-import '/tools/controllers/tabs.dart';
+import '/services/auth.dart';
+import '/tools/controllers/comittee/committee.dart';
 import './roll_call_dialog.dart';
+import '../../../../config/constants/committee.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final HomeController _homeController = Get.find<HomeController>();
-    final TabController _tabController = Get.find<TabController>();
+    final CommitteeController _committeeController =
+        Get.find<CommitteeController>();
 
     return SizedBox(
       width: MediaQuery.of(context).size.width / 8,
@@ -31,7 +32,7 @@ class Sidebar extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                _homeController.committee.value.name,
+                _committeeController.committee.value.name,
                 style: Theme.of(context)
                     .textTheme
                     .headline5!
@@ -39,27 +40,26 @@ class Sidebar extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
-              ...List.generate(_tabController.tabs.length, (index) {
-                final Map<String, dynamic> _tab = _tabController.tabs[index];
+              ...List.generate(COMMITTEE_TABS.length, (index) {
+                final Map<String, dynamic> _tab = COMMITTEE_TABS[index];
 
                 return Obx(
                   () => _Tile(
                     title: _tab["title"],
                     icon: _tab["icon"],
                     onTap: () {
-                      _tabController.tabVal = index;
+                      _committeeController.tabVal = index;
                       html.window.history.pushState(
                         null,
                         "tab",
-                        _tabController.tabs[index]["route"],
+                        COMMITTEE_TABS[index]["route"],
                       );
                     },
-                    selected: _tabController.tabVal == index,
+                    selected: _committeeController.tabVal == index,
                     iconColor: _tab["color"],
                   ),
                 );
               }),
-
               _Tile(
                 title: "Roll Call",
                 icon: Icons.fact_check_outlined,
@@ -74,15 +74,16 @@ class Sidebar extends StatelessWidget {
                 icon: Icons.settings_outlined,
                 onTap: () => context.go("/setup"),
               ),
-              // _Tile(
-              //   title: "Log Out",
-              //   icon: Icons.power_settings_new,
-              //   iconColor: Colors.redAccent,
-              //   onTap: () => Auth.logout(
-              //     context,
-              //     () => AdvancedNavigator.openNamed(context, "/"),
-              //   ),
-              // ),
+              _Tile(
+                title: "Log Out",
+                icon: Icons.power_settings_new,
+                iconColor: Colors.redAccent,
+                onTap: () => Auth.logout(
+                  context,
+                  () {},
+                  // () => AdvancedNavigator.openNamed(context, "/"),
+                ),
+              ),
             ],
           ),
         ),

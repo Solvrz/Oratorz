@@ -2,10 +2,10 @@ import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '/config/constants.dart';
-import '/tools/controllers/comittee/gsl.dart';
+import '/config/constants/committee.dart';
+import '/config/constants/constants.dart';
+import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/mode.dart';
-import '/tools/controllers/home.dart';
 import '/tools/controllers/route.dart';
 import '/ui/widgets/dialog_box.dart';
 
@@ -18,7 +18,7 @@ class CommitteePage extends StatelessWidget {
 
     final ModeController _modeController = Get.put(
       ModeController(
-        modeVal: ModeController.modesInfo
+        modeVal: COMMITTEE_MODES
             .indexWhere(
               (mode) =>
                   mode["route"].toString().contains(_routeController.path),
@@ -27,8 +27,6 @@ class CommitteePage extends StatelessWidget {
             .toInt(),
       ),
     );
-    // TODO: Put Other Mode Controllers
-    Get.put(GSLController());
 
     return Container(
       margin: const EdgeInsets.all(16),
@@ -52,7 +50,8 @@ class ModeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeController _homeController = Get.find<HomeController>();
+    final CommitteeController _committeeController =
+        Get.find<CommitteeController>();
     final ModeController _modeController = Get.find<ModeController>();
 
     return Row(
@@ -68,7 +67,7 @@ class ModeHeader extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5,
                   children: [
                     TextSpan(
-                      text: _homeController.committee.value.agenda,
+                      text: _committeeController.committee.value.agenda,
                       style: Theme.of(context)
                           .textTheme
                           .headline5!
@@ -82,7 +81,7 @@ class ModeHeader extends StatelessWidget {
             InkWell(
               onTap: () {
                 final TextEditingController _controller = TextEditingController(
-                  text: _homeController.committee.value.agenda,
+                  text: _committeeController.committee.value.agenda,
                 );
 
                 showDialog(
@@ -93,7 +92,7 @@ class ModeHeader extends StatelessWidget {
                       autofocus: true,
                       controller: _controller,
                       onSubmitted: (value) {
-                        _homeController.committee.value.agenda =
+                        _committeeController.committee.value.agenda =
                             _controller.text;
 
                         Navigator.pop(context);
@@ -110,7 +109,7 @@ class ModeHeader extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          _homeController.committee.value.agenda =
+                          _committeeController.committee.value.agenda =
                               _controller.text;
 
                           Navigator.pop(context);
@@ -179,9 +178,9 @@ class ModeHeader extends StatelessWidget {
             ),
           ),
           itemBuilder: (_) => List.generate(
-            _modeController.modes.length,
+            COMMITTEE_MODES.length,
             (index) {
-              final Map<String, dynamic> tab = _modeController.modes[index];
+              final Map<String, dynamic> tab = COMMITTEE_MODES[index];
 
               return PopupMenuItem(
                 value: index,
@@ -207,7 +206,7 @@ class ModeHeader extends StatelessWidget {
             html.window.history.pushState(
               null,
               "mode",
-              _modeController.modes[index]["route"],
+              COMMITTEE_MODES[index]["route"],
             );
           },
         ),

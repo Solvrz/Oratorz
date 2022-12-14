@@ -84,7 +84,7 @@ class MotionsPage extends StatelessWidget {
                 ],
               ),
             ),
-            AddMotionsCard(),
+            const AddMotionsCard(),
           ],
         ),
       );
@@ -170,62 +170,29 @@ class AddMotionsCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline5,
               ),
               const SizedBox(height: 18),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...List.generate(
-                        motions.length ~/ 2,
-                        (index) {
-                          final Map<String, dynamic> _motion = motions[index];
+              Expanded(
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: List.generate(
+                    motions.length,
+                    (index) {
+                      final Map<String, dynamic> _motion = motions[index];
 
-                          return Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: BorderButton(
-                              text: _motion["name"],
-                              icon: _motion["icon"],
-                              color: Colors.amber.shade400,
-                              onPressed: _motion["onTap"],
-                              padding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: (_motion["name"].toString().length)
-                                    .toDouble(),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                      return BorderButton(
+                        text: _motion["name"],
+                        icon: _motion["icon"],
+                        color: Colors.amber.shade400,
+                        onPressed: _motion["onTap"],
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal:
+                              (_motion["name"].toString().length).toDouble(),
+                        ),
+                      );
+                    },
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...List.generate(
-                        motions.length ~/ 2,
-                        (index) {
-                          final Map<String, dynamic> _motion =
-                              motions[index + motions.length ~/ 2];
-
-                          return Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: BorderButton(
-                              text: _motion["name"],
-                              icon: _motion["icon"],
-                              color: Colors.amber.shade400,
-                              onPressed: _motion["onTap"],
-                              padding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: (_motion["name"].toString().length)
-                                    .toDouble(),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ],
           ),
