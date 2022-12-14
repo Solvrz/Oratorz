@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/tools/controllers/comittee/gsl.dart';
+import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/country_tile.dart';
 
 class SpeakersInfoWidget extends StatelessWidget {
-  const SpeakersInfoWidget({super.key});
+  final String tag;
+
+  const SpeakersInfoWidget({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
-    final GSLController _gslController = Get.find<GSLController>();
+    final SpeechController _speechController =
+        Get.find<SpeechController>(tag: tag);
 
     return Expanded(
       child: Column(
@@ -23,7 +26,7 @@ class SpeakersInfoWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline5,
               ),
               TextButton(
-                onPressed: _gslController.nextSpeaker,
+                onPressed: _speechController.nextSpeaker,
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.blue.shade400),
@@ -37,7 +40,7 @@ class SpeakersInfoWidget extends StatelessWidget {
                 ),
                 child: Obx(
                   () => Text(
-                    _gslController.isSpeaking.value ? "Done" : "Next",
+                    _speechController.isSpeaking.value ? "Done" : "Next",
                   ),
                 ),
               ),
@@ -45,9 +48,9 @@ class SpeakersInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Obx(
-            () => _gslController.currentSpeaker.value != ""
+            () => _speechController.currentSpeaker.value != ""
                 ? CountryTile(
-                    country: _gslController.currentSpeaker.value,
+                    country: _speechController.currentSpeaker.value,
                     contentPadding: EdgeInsets.zero,
                   )
                 : Text(
@@ -63,13 +66,13 @@ class SpeakersInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Obx(
-            () => _gslController.nextSpeakers.isNotEmpty
+            () => _speechController.nextSpeakers.isNotEmpty
                 ? Expanded(
                     child: ReorderableListView.builder(
                       buildDefaultDragHandles: false,
                       onReorder: (oldIndex, newIndex) =>
-                          _gslController.reorder(oldIndex, newIndex),
-                      itemCount: _gslController.nextSpeakers.length,
+                          _speechController.reorder(oldIndex, newIndex),
+                      itemCount: _speechController.nextSpeakers.length,
                       itemBuilder: (context, index) =>
                           ReorderableDragStartListener(
                         key: ValueKey(index),
@@ -77,14 +80,15 @@ class SpeakersInfoWidget extends StatelessWidget {
                         child: Column(
                           children: [
                             CountryTile(
-                              country: _gslController.nextSpeakers[index],
+                              country: _speechController.nextSpeakers[index],
                               contentPadding: EdgeInsets.zero,
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   InkWell(
-                                    onTap: () => _gslController.removeSpeaker(
-                                      _gslController.nextSpeakers[index],
+                                    onTap: () =>
+                                        _speechController.removeSpeaker(
+                                      _speechController.nextSpeakers[index],
                                     ),
                                     child: Container(
                                       decoration: BoxDecoration(
@@ -110,7 +114,8 @@ class SpeakersInfoWidget extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            if (index != _gslController.nextSpeakers.length - 1)
+                            if (index !=
+                                _speechController.nextSpeakers.length - 1)
                               Divider(
                                 height: 6,
                                 color: Colors.grey.shade400,

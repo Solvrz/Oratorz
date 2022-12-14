@@ -64,7 +64,7 @@ class Oratorz extends StatelessWidget {
         },
         routerConfig: GoRouter(
           // TODO: Change This
-          initialLocation: "/home/committee/gsl",
+          initialLocation: "/committee/gsl",
           errorBuilder: (context, args) {
             Get.put(RouteController(arguments: args));
 

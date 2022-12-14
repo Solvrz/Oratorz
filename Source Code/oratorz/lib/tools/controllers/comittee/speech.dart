@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class GSLController extends GetxController {
+class SpeechController extends GetxController {
   RxString currentSpeaker = "".obs;
   RxBool isSpeaking = false.obs;
 

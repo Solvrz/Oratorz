@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/tools/controllers/comittee/gsl.dart';
+import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/country_tile.dart';
 
 class PastSpeakersCard extends StatelessWidget {
-  const PastSpeakersCard({super.key});
+  final String tag;
+
+  const PastSpeakersCard({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
-    final GSLController _gslController = Get.find<GSLController>();
+    final SpeechController _speechController =
+        Get.find<SpeechController>(tag: tag);
 
     return Expanded(
       child: Card(
@@ -25,7 +28,7 @@ class PastSpeakersCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Obx(
-                () => _gslController.pastSpeakers.isEmpty
+                () => _speechController.pastSpeakers.isEmpty
                     ? Text(
                         "No past speakers have been recorded",
                         style: Theme.of(context).textTheme.bodyText1,
@@ -34,7 +37,7 @@ class PastSpeakersCard extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: Column(
                             children: List.generate(
-                              _gslController.pastSpeakers.length * 2 - 1,
+                              _speechController.pastSpeakers.length * 2 - 1,
                               (index) {
                                 if (index % 2 == 1) {
                                   return Divider(
@@ -44,7 +47,7 @@ class PastSpeakersCard extends StatelessWidget {
                                 }
 
                                 final Map<String, Duration> speaker =
-                                    _gslController.pastSpeakers[index ~/ 2];
+                                    _speechController.pastSpeakers[index ~/ 2];
                                 final int inMinutes =
                                     speaker.values.first.inMinutes;
                                 final int inSeconds =

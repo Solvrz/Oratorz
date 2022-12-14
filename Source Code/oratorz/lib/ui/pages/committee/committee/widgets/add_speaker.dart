@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/tools/controllers/comittee/gsl.dart';
+import '/tools/controllers/comittee/committee.dart';
+import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/country_tile.dart';
-import '../../../../tools/controllers/comittee/committee.dart';
 
 class AddSpeakerCard extends StatelessWidget {
-  const AddSpeakerCard({super.key});
+  final String tag;
+
+  const AddSpeakerCard({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
     final CommitteeController _committeeController =
         Get.find<CommitteeController>();
-    final GSLController _gslController = Get.find<GSLController>();
+    final SpeechController _speechController =
+        Get.find<SpeechController>(tag: tag);
 
     return Expanded(
       child: Card(
@@ -45,7 +48,7 @@ class AddSpeakerCard extends StatelessWidget {
                             children: List.generate(
                               speakers.length * 2 - 1,
                               (index) {
-                                final bool isAdded = _gslController
+                                final bool isAdded = _speechController
                                     .isAdded(speakers[index ~/ 2]);
 
                                 return index % 2 == 0
@@ -55,7 +58,8 @@ class AddSpeakerCard extends StatelessWidget {
                                           country: speakers[index ~/ 2],
                                           onTap: isAdded
                                               ? null
-                                              : () => _gslController.addSpeaker(
+                                              : () =>
+                                                  _speechController.addSpeaker(
                                                     speakers[index ~/ 2],
                                                   ),
                                           contentPadding: EdgeInsets.zero,

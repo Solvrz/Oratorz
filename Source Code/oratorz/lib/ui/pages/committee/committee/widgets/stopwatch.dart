@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/comittee/committee.dart';
-import '/tools/controllers/comittee/gsl.dart';
+import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/border_button.dart';
 import '/ui/widgets/country_tile.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -14,17 +14,23 @@ import '/ui/widgets/filled_button.dart';
 
 class StopwatchWidget extends StatefulWidget {
   final Function() onTimeEnd;
+  final String tag;
+  final bool canYield;
 
-  const StopwatchWidget({super.key, required this.onTimeEnd});
+  const StopwatchWidget({
+    super.key,
+    required this.onTimeEnd,
+    required this.tag,
+    this.canYield = true,
+  });
 
   @override
   State<StopwatchWidget> createState() => _StopwatchWidgetState();
 }
 
 class _StopwatchWidgetState extends State<StopwatchWidget> {
-  // TODO: Extract for Others
   late Timer timer;
-  final GSLController _gslController = Get.find<GSLController>();
+  late final SpeechController _speechController;
 
   Duration timeLeft = Duration.zero;
 
@@ -32,20 +38,21 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   void initState() {
     super.initState();
 
+    _speechController = Get.find<SpeechController>(tag: widget.tag);
     setupTimer();
-    timeLeft = _gslController.duration.value;
+    timeLeft = _speechController.duration.value;
   }
 
   void setupTimer() => timer = Timer.periodic(
         const Duration(milliseconds: 500),
         (_) {
           setState(() {
-            timeLeft = _gslController.duration.value -
-                _gslController.stopwatch.value.elapsed;
+            timeLeft = _speechController.duration.value -
+                _speechController.stopwatch.value.elapsed;
 
             if (timeLeft.inMilliseconds < 0) {
               widget.onTimeEnd();
-              _gslController.stopwatch.value.stop();
+              _speechController.stopwatch.value.stop();
 
               timeLeft = Duration.zero;
               timer.cancel();
@@ -57,7 +64,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   @override
   void dispose() {
     timer.cancel();
-    _gslController.stopwatch.value.stop();
+    _speechController.stopwatch.value.stop();
 
     super.dispose();
   }
@@ -71,7 +78,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             CircularPercentIndicator(
               radius: 100,
               percent: (timeLeft.inSeconds /
-                      _gslController.duration.value.inSeconds) *
+                      _speechController.duration.value.inSeconds) *
                   0.975,
               progressColor: const Color(0xff0d1520).withAlpha(200),
               backgroundColor: const Color(0xff0d1520).withAlpha(135),
@@ -90,23 +97,24 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FilledButton(
-                  icon: _gslController.isSpeaking.value
+                  icon: _speechController.isSpeaking.value
                       ? Icons.stop
                       : Icons.play_arrow,
                   onPressed: () {
-                    _gslController.isSpeaking.value || timeLeft.inSeconds == 0
-                        ? _gslController.stopwatch.value.stop()
-                        : _gslController.stopwatch.value.start();
+                    _speechController.isSpeaking.value ||
+                            timeLeft.inSeconds == 0
+                        ? _speechController.stopwatch.value.stop()
+                        : _speechController.stopwatch.value.start();
 
-                    _gslController.isSpeaking.value =
-                        !_gslController.isSpeaking.value;
+                    _speechController.isSpeaking.value =
+                        !_speechController.isSpeaking.value;
                   },
                   color: Colors.blueGrey.shade600,
                 ),
                 FilledButton(
                   icon: Icons.restart_alt,
                   onPressed: () {
-                    _gslController.stopwatch.value.reset();
+                    _speechController.stopwatch.value.reset();
                     timer.cancel();
 
                     setupTimer();
@@ -116,8 +124,8 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                 FilledButton(
                   icon: Icons.settings,
                   onPressed: () {
-                    _gslController.stopwatch.value.stop();
-                    _gslController.stopwatch.value.reset();
+                    _speechController.stopwatch.value.stop();
+                    _speechController.stopwatch.value.reset();
 
                     showDialog(
                       context: context,
@@ -132,26 +140,27 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   TimerButton(
-                                    value:
-                                        _gslController.duration.value.inMinutes,
+                                    value: _speechController
+                                        .duration.value.inMinutes,
                                     change: (value) {
-                                      if (_gslController
+                                      if (_speechController
                                                   .duration.value.inMinutes +
                                               value <=
                                           60) {
-                                        _gslController.duration.value +=
+                                        _speechController.duration.value +=
                                             Duration(minutes: value);
                                       }
                                     },
                                     subtitle: "minutes",
                                   ),
                                   TimerButton(
-                                    value: _gslController
+                                    value: _speechController
                                             .duration.value.inSeconds -
-                                        _gslController
+                                        _speechController
                                                 .duration.value.inMinutes *
                                             60,
-                                    change: (value) => _gslController.duration
+                                    change: (value) => _speechController
+                                        .duration
                                         .value += Duration(seconds: value),
                                     subtitle: "seconds",
                                   ),
@@ -171,29 +180,31 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                   },
                   color: Colors.amber.shade400,
                 ),
-                FilledButton(
-                  icon: Icons.person,
-                  onPressed: () {
-                    final CommitteeController _committeeController =
-                        Get.find<CommitteeController>();
+                if (widget.canYield)
+                  FilledButton(
+                    icon: Icons.person,
+                    onPressed: () {
+                      final CommitteeController _committeeController =
+                          Get.find<CommitteeController>();
 
-                    // TODO: Add Overtime Support
-                    // TODO: Change to Present Speakers & Not Working
-                    final List<String> countries =
-                        _committeeController.committee.value.countries;
+                      // TODO: Add Overtime Support
+                      // TODO: Change to Present Speakers & Not Working
+                      final List<String> countries =
+                          _committeeController.committee.value.countries;
 
-                    if (_gslController.currentSpeaker.value != "") {
-                      countries.remove(_gslController.currentSpeaker.value);
-                    }
+                      if (_speechController.currentSpeaker.value != "") {
+                        countries
+                            .remove(_speechController.currentSpeaker.value);
+                      }
 
-                    return showDialog(
-                      context: context,
-                      builder: (context) =>
-                          YieldSpeakerDialog(countries: countries),
-                    );
-                  },
-                  color: Colors.grey.shade800,
-                ),
+                      return showDialog(
+                        context: context,
+                        builder: (context) =>
+                            YieldSpeakerDialog(countries: countries),
+                      );
+                    },
+                    color: Colors.grey.shade800,
+                  ),
               ],
             ),
           ],

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '/ui/pages/committee/modes/gsl.dart';
 import '/ui/pages/export.dart';
+import '../../ui/pages/committee/committee/modes/gsl.dart';
+import '../../ui/pages/committee/committee/modes/mod.dart';
+import '../../ui/pages/committee/committee/modes/unmod.dart';
 
 const List<Map<String, dynamic>> COMMITTEE_TABS = [
   {
@@ -29,13 +31,13 @@ const List<Map<String, dynamic>> COMMITTEE_MODES = [
     "route": "/committee/mod",
     "name": "Moderated Caucus",
     "icon": Icons.forum,
-    "tab": Text("Moderated Caucus"),
+    "tab": ModTab(),
   },
   {
     "route": "/committee/unmod",
     "name": "Unmoderated Caucus",
     "icon": Icons.workspaces,
-    "tab": Text("Unmoderated Caucus"),
+    "tab": UnmodTab(),
   },
   {
     "route": "/committee/consulation",
