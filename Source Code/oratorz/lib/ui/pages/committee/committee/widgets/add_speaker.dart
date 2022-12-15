@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/ui/widgets/country_tile.dart';
+import '/ui/widgets/delegate_tile.dart';
 
 class AddSpeakerCard extends StatelessWidget {
   final String tag;
@@ -29,12 +30,12 @@ class AddSpeakerCard extends StatelessWidget {
             children: [
               Text(
                 "Add Speaker",
-                style: Theme.of(context).textTheme.headline5,
+                style: theme.textTheme.headline5,
               ),
               const SizedBox(height: 8),
               Obx(() {
                 final List<String> speakers =
-                    _committeeController.committee.value.countries
+                    _committeeController.committee.value.delegates
                         .where(
                           (element) =>
                               _committeeController.rollCall[element]! > 0,
@@ -54,8 +55,8 @@ class AddSpeakerCard extends StatelessWidget {
                                 return index % 2 == 0
                                     ? Opacity(
                                         opacity: isAdded ? 0.6 : 1,
-                                        child: CountryTile(
-                                          country: speakers[index ~/ 2],
+                                        child: DelegateTile(
+                                          delegate: speakers[index ~/ 2],
                                           onTap: isAdded
                                               ? null
                                               : () =>
@@ -76,7 +77,7 @@ class AddSpeakerCard extends StatelessWidget {
                       )
                     : Text(
                         "Conduct a roll call before adding speakers",
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: theme.textTheme.bodyText1,
                       );
               }),
             ],

@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/ui/widgets/border_button.dart';
-import '/ui/widgets/country_tile.dart';
+import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/filled_button.dart';
 
@@ -80,16 +80,13 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
               percent: (timeLeft.inSeconds /
                       _speechController.duration.value.inSeconds) *
                   0.975,
-              progressColor: const Color(0xff0d1520).withAlpha(200),
-              backgroundColor: const Color(0xff0d1520).withAlpha(135),
+              progressColor: theme.colorScheme.secondary.withAlpha(200),
+              backgroundColor: theme.colorScheme.secondary.withAlpha(135),
               circularStrokeCap: CircularStrokeCap.round,
               lineWidth: 16,
               center: Text(
                 "${timeLeft.inMinutes}:${(timeLeft.inSeconds - timeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(fontSize: 32),
+                style: theme.textTheme.headline5!.copyWith(fontSize: 32),
               ),
             ),
             const SizedBox(width: 24),
@@ -97,9 +94,6 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FilledButton(
-                  icon: _speechController.isSpeaking.value
-                      ? Icons.stop
-                      : Icons.play_arrow,
                   onPressed: () {
                     _speechController.isSpeaking.value ||
                             timeLeft.inSeconds == 0
@@ -110,9 +104,13 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                         !_speechController.isSpeaking.value;
                   },
                   color: Colors.blueGrey.shade600,
+                  child: Icon(
+                    _speechController.isSpeaking.value
+                        ? Icons.stop
+                        : Icons.play_arrow,
+                  ),
                 ),
                 FilledButton(
-                  icon: Icons.restart_alt,
                   onPressed: () {
                     _speechController.stopwatch.value.reset();
                     timer.cancel();
@@ -120,9 +118,9 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                     setupTimer();
                   },
                   color: Colors.blue.shade400,
+                  child: const Icon(Icons.restart_alt),
                 ),
                 FilledButton(
-                  icon: Icons.settings,
                   onPressed: () {
                     _speechController.stopwatch.value.stop();
                     _speechController.stopwatch.value.reset();
@@ -179,32 +177,30 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                     );
                   },
                   color: Colors.amber.shade400,
+                  child: const Icon(Icons.settings),
                 ),
-                if (widget.canYield)
-                  FilledButton(
-                    icon: Icons.person,
-                    onPressed: () {
-                      final CommitteeController _committeeController =
-                          Get.find<CommitteeController>();
+                FilledButton(
+                  onPressed: () {
+                    final CommitteeController _committeeController =
+                        Get.find<CommitteeController>();
 
-                      // TODO: Add Overtime Support
-                      // TODO: Change to Present Speakers & Not Working
-                      final List<String> countries =
-                          _committeeController.committee.value.countries;
+                    // TODO: Change to Present Speakers & Not Working
+                    final List<String> delegates =
+                        _committeeController.committee.value.delegates;
 
-                      if (_speechController.currentSpeaker.value != "") {
-                        countries
-                            .remove(_speechController.currentSpeaker.value);
-                      }
+                    if (_speechController.currentSpeaker.value != "") {
+                      delegates.remove(_speechController.currentSpeaker.value);
+                    }
 
-                      return showDialog(
-                        context: context,
-                        builder: (context) =>
-                            YieldSpeakerDialog(countries: countries),
-                      );
-                    },
-                    color: Colors.grey.shade800,
-                  ),
+                    return showDialog(
+                      context: context,
+                      builder: (context) =>
+                          YieldSpeakerDialog(delegates: delegates),
+                    );
+                  },
+                  color: Colors.grey.shade800,
+                  child: const Icon(Icons.person),
+                ),
               ],
             ),
           ],
@@ -213,12 +209,12 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 }
 
 class YieldSpeakerDialog extends StatefulWidget {
+  final List<String> delegates;
+
   const YieldSpeakerDialog({
     super.key,
-    required this.countries,
+    required this.delegates,
   });
-
-  final List<String> countries;
 
   @override
   State<YieldSpeakerDialog> createState() => _YieldSpeakerDialogState();
@@ -235,9 +231,9 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
           child: SingleChildScrollView(
             child: Column(
               children: List.generate(
-                widget.countries.length,
-                (index) => CountryTile(
-                  country: widget.countries[index],
+                widget.delegates.length,
+                (index) => DelegateTile(
+                  delegate: widget.delegates[index],
                   onTap: () => setState(() => selected = index),
                   trailing: Radio(
                     hoverColor: Colors.transparent,
@@ -262,12 +258,10 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
         actions: [
           SizedBox(
             width: MediaQuery.of(context).size.width / 3,
-            child: BorderButton(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              text: "DONE",
-              color: const Color(0xff0d1520),
+            child: FilledButton(
+              color: theme.colorScheme.secondary,
               onPressed: () => Navigator.pop(context),
-              filled: true,
+              child: const Text("DONE"),
             ),
           ),
         ],
@@ -299,11 +293,9 @@ class TimerButton extends StatelessWidget {
       children: [
         Card(
           margin: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-          elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
-          color: const Color(0xfffcfcfc),
           child: Container(
             width: 140,
             padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -318,10 +310,9 @@ class TimerButton extends StatelessWidget {
                       border: InputBorder.none,
                       fillColor: Colors.transparent,
                       hintText: "00",
-                      hintStyle:
-                          Theme.of(context).textTheme.headline1!.copyWith(
-                                color: Colors.grey.shade400,
-                              ),
+                      hintStyle: theme.textTheme.headline1!.copyWith(
+                        color: Colors.grey.shade400,
+                      ),
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -337,9 +328,9 @@ class TimerButton extends StatelessWidget {
                         TextPosition(offset: controller.text.length),
                       );
                     },
-                    style: Theme.of(context).textTheme.headline1!.copyWith(
-                          color: Colors.grey.shade700,
-                        ),
+                    style: theme.textTheme.headline1!.copyWith(
+                      color: Colors.grey.shade700,
+                    ),
                   ),
                 ),
                 Column(
@@ -349,7 +340,6 @@ class TimerButton extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => change(1),
                         child: Card(
-                          elevation: 4,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -362,7 +352,6 @@ class TimerButton extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => change(-1),
                         child: Card(
-                          elevation: 4,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -378,11 +367,11 @@ class TimerButton extends StatelessWidget {
         ),
         Text(
           subtitle.toUpperCase(),
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                fontSize: 12,
-                color: Colors.grey.shade600,
-                letterSpacing: 1.5,
-              ),
+          style: theme.textTheme.bodyText1!.copyWith(
+            fontSize: 12,
+            color: Colors.grey.shade600,
+            letterSpacing: 1.5,
+          ),
         ),
       ],
     );

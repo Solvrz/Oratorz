@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/config/constants/constants.dart';
 import '/ui/widgets/border_button.dart';
 import '/ui/widgets/filled_button.dart';
 
@@ -22,12 +23,12 @@ class MotionsPage extends StatelessWidget {
                         children: [
                           Text(
                             "Motion on Floor",
-                            style: Theme.of(context).textTheme.headline5,
+                            style: theme.textTheme.headline5,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             "No motions currently on the floor",
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: theme.textTheme.bodyText1,
                           ),
                           const Divider(height: 16),
                           const SizedBox(height: 8),
@@ -35,24 +36,25 @@ class MotionsPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               FilledButton(
-                                icon: Icons.connect_without_contact,
-                                color: const Color(0xFFFBAD30),
+                                color: Colors.amber,
                                 onPressed: () {},
+                                child:
+                                    const Icon(Icons.connect_without_contact),
                               ),
                               FilledButton(
-                                icon: Icons.how_to_vote,
-                                color: const Color(0xFF3BA7C5),
+                                color: Colors.lightBlue,
                                 onPressed: () {},
+                                child: const Icon(Icons.how_to_vote),
                               ),
                               FilledButton(
-                                icon: Icons.close,
-                                color: const Color(0xFFE34F62),
+                                color: Colors.redAccent,
                                 onPressed: () {},
+                                child: const Icon(Icons.close),
                               ),
                               FilledButton(
-                                icon: Icons.check,
-                                color: const Color(0xFF53BD6B),
+                                color: Colors.green,
                                 onPressed: () {},
+                                child: const Icon(Icons.check),
                               ),
                             ],
                           ),
@@ -68,12 +70,12 @@ class MotionsPage extends StatelessWidget {
                         children: [
                           Text(
                             "Future Motions",
-                            style: Theme.of(context).textTheme.headline5,
+                            style: theme.textTheme.headline5,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             "No future motions added",
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: theme.textTheme.bodyText1,
                           ),
                           const Divider(height: 16),
                           const SizedBox(height: 8),
@@ -167,7 +169,7 @@ class AddMotionsCard extends StatelessWidget {
             children: [
               Text(
                 "Add Motions",
-                style: Theme.of(context).textTheme.headline5,
+                style: theme.textTheme.headline5,
               ),
               const SizedBox(height: 18),
               Expanded(
@@ -179,20 +181,40 @@ class AddMotionsCard extends StatelessWidget {
                     (index) {
                       final Map<String, dynamic> _motion = motions[index];
 
-                      return BorderButton(
-                        text: _motion["name"],
-                        icon: _motion["icon"],
-                        color: Colors.amber.shade400,
-                        onPressed: _motion["onTap"],
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal:
-                              (_motion["name"].toString().length).toDouble(),
+                      return Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: BorderButton(
+                          text: _motion["name"],
+                          icon: _motion["icon"],
+                          color: Colors.amber.shade400,
+                          onPressed: _motion["onTap"],
                         ),
                       );
                     },
                   ),
                 ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...List.generate(
+                    motions.length ~/ 2,
+                    (index) {
+                      final Map<String, dynamic> _motion =
+                          motions[index + motions.length ~/ 2];
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: BorderButton(
+                          text: _motion["name"],
+                          icon: _motion["icon"],
+                          color: Colors.amber.shade400,
+                          onPressed: _motion["onTap"],
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),

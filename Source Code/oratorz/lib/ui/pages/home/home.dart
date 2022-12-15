@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide TabController;
 
+import '/config/constants/constants.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -10,7 +12,7 @@ class HomePage extends StatelessWidget {
         child: Center(
           child: Text(
             "HOME PAGE",
-            style: Theme.of(context).textTheme.headline5,
+            style: theme.textTheme.headline5,
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/config/constants/constants.dart';
 import '/config/data.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -17,7 +18,7 @@ class LoadCommitteeCard extends StatelessWidget {
             children: [
               Text(
                 "Load Committee",
-                style: Theme.of(context).textTheme.headline5,
+                style: theme.textTheme.headline5,
               ),
               const SizedBox(height: 18),
               Row(
@@ -70,9 +71,8 @@ class LoadCommitteeCard extends StatelessWidget {
                                               },
                                               title: Text(
                                                 "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1,
+                                                style:
+                                                    theme.textTheme.bodyText1,
                                               ),
                                             )
                                           : Divider(

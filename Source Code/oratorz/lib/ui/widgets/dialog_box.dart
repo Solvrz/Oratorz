@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/config/constants/constants.dart';
+
 class DialogBox extends AlertDialog {
   final String heading;
 
@@ -22,7 +24,7 @@ class DialogBox extends AlertDialog {
               children: [
                 Text(
                   heading,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: theme.textTheme.headline5,
                 ),
                 const SizedBox(width: 24),
                 const Spacer(),

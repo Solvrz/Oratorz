@@ -11,31 +11,32 @@ class SetupController extends GetxController {
   void setName(String newName) =>
       committee.update((value) => value?.name = newName);
 
-  void setAs(List<String> countries) => committee.update((value) {
-        value!.countries = countries;
+  void setAs(List<String> delegates) => committee.update((value) {
+        value!.delegates = delegates;
         sort();
       });
 
-  void add(String country) => committee.update((value) {
-        value!.countries.add(country);
+  void add(String delegate) => committee.update((value) {
+        value!.delegates.add(delegate);
         sort();
       });
 
-  void remove(String country) => committee.update((value) {
-        value!.countries.remove(country);
+  void remove(String delegate) => committee.update((value) {
+        value!.delegates.remove(delegate);
         sort();
       });
 
   void removeAt(int index) => committee.update((value) {
-        value!.countries.removeAt(index);
+        value!.delegates.removeAt(index);
         sort();
       });
 
   void clear() => committee.update((value) {
-        value!.countries.clear();
+        value!.delegates.clear();
         value.name = "";
       });
 
+  // TODO: Change to Delegates
   void sort() =>
-      _value.countries.sort((a, b) => COUNTRIES[a]!.compareTo(COUNTRIES[b]!));
+      _value.delegates.sort((a, b) => COUNTRIES[a]!.compareTo(COUNTRIES[b]!));
 }

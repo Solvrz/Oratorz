@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/ui/widgets/country_tile.dart';
+import '/ui/widgets/delegate_tile.dart';
 
 class SpeakersInfoWidget extends StatelessWidget {
   final String tag;
@@ -23,7 +24,7 @@ class SpeakersInfoWidget extends StatelessWidget {
             children: [
               Text(
                 "Current Speaker",
-                style: Theme.of(context).textTheme.headline5,
+                style: theme.textTheme.headline5,
               ),
               TextButton(
                 onPressed: _speechController.nextSpeaker,
@@ -49,20 +50,20 @@ class SpeakersInfoWidget extends StatelessWidget {
           const SizedBox(height: 8),
           Obx(
             () => _speechController.currentSpeaker.value != ""
-                ? CountryTile(
-                    country: _speechController.currentSpeaker.value,
+                ? DelegateTile(
+                    delegate: _speechController.currentSpeaker.value,
                     contentPadding: EdgeInsets.zero,
                   )
                 : Text(
                     "No speaker currently added",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: theme.textTheme.bodyText1,
                   ),
           ),
           const Divider(height: 16),
           const SizedBox(height: 8),
           Text(
             "Upcoming Speakers",
-            style: Theme.of(context).textTheme.headline5,
+            style: theme.textTheme.headline5,
           ),
           const SizedBox(height: 8),
           Obx(
@@ -79,8 +80,8 @@ class SpeakersInfoWidget extends StatelessWidget {
                         index: index,
                         child: Column(
                           children: [
-                            CountryTile(
-                              country: _speechController.nextSpeakers[index],
+                            DelegateTile(
+                              delegate: _speechController.nextSpeakers[index],
                               contentPadding: EdgeInsets.zero,
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -127,7 +128,7 @@ class SpeakersInfoWidget extends StatelessWidget {
                   )
                 : Text(
                     "No upcoming speakers",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: theme.textTheme.bodyText1,
                   ),
           ),
           const SizedBox(height: 8),

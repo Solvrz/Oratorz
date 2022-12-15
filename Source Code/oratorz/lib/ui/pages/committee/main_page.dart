@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
+import '/config/constants/constants.dart';
 import '/models/committee.dart';
-import '/services/auth.dart';
 import '/tools/arguments/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
@@ -62,9 +62,7 @@ class CommitteeMainPage extends StatelessWidget {
                     children: [
                       Text(
                         _committeeController.committee.value.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
+                        style: theme.textTheme.headline5!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -102,16 +100,6 @@ class CommitteeMainPage extends StatelessWidget {
                         title: "Setup",
                         icon: Icons.settings_outlined,
                         onTap: () => context.go("/setup"),
-                      ),
-                      SidebarTile(
-                        title: "Log Out",
-                        icon: Icons.power_settings_new,
-                        iconColor: Colors.redAccent,
-                        onTap: () => Auth.logout(
-                          context,
-                          () {},
-                          // () => AdvancedNavigator.openNamed(context, "/"),
-                        ),
                       ),
                     ],
                   ),
@@ -168,7 +156,7 @@ class SidebarTile extends StatelessWidget {
           tileColor:
               selected ? const Color(0xff2a313b) : const Color(0xff0d1520),
           leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
-          title: Text(title, style: Theme.of(context).textTheme.bodyText2),
+          title: Text(title, style: theme.textTheme.bodyText2),
         ),
       );
 }

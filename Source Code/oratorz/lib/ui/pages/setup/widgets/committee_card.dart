@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/config/constants/constants.dart';
+import '/tools/arguments/committee.dart';
 import '/tools/controllers/setup.dart';
-import '/ui/widgets/country_tile.dart';
+import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
-import '../../../../tools/arguments/committee.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -26,7 +27,7 @@ class CommitteeCard extends StatelessWidget {
                   children: [
                     Text(
                       _setupController.committee.value.name,
-                      style: Theme.of(context).textTheme.headline5,
+                      style: theme.textTheme.headline5,
                     ),
                     const SizedBox(width: 16),
                     InkWell(
@@ -93,15 +94,15 @@ class CommitteeCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "${_setupController.committee.value.count} Countries",
-                  style: Theme.of(context).textTheme.headline6,
+                  "${_setupController.committee.value.count} Delegates",
+                  style: theme.textTheme.headline6,
                 ),
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
-                    itemBuilder: (context, index) => CountryTile(
-                      country:
-                          _setupController.committee.value.countries[index],
+                    itemBuilder: (context, index) => DelegateTile(
+                      delegate:
+                          _setupController.committee.value.delegates[index],
                       onTap: () => _setupController.removeAt(index),
                       trailing: Icon(Icons.remove, color: Colors.grey[400]),
                     ),

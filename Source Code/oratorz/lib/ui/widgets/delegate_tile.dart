@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '/config/constants/constants.dart';
 import '/config/data.dart';
 
-class CountryTile extends StatelessWidget {
-  final String country;
+class DelegateTile extends StatelessWidget {
+  final String delegate;
   final Function()? onTap;
   final Widget? trailing;
   final EdgeInsets? contentPadding;
 
-  const CountryTile({
+  const DelegateTile({
     super.key,
-    required this.country,
+    required this.delegate,
     this.onTap,
     this.trailing,
     this.contentPadding,
@@ -36,11 +37,12 @@ class CountryTile extends StatelessWidget {
               ),
             ],
           ),
-          child: SvgPicture.asset("flags/$country.svg"),
+          child: SvgPicture.asset("flags/$delegate.svg"),
         ),
+        // TODO: Change to Delegates
         title: Text(
-          COUNTRIES[country]!,
-          style: Theme.of(context).textTheme.bodyText1,
+          COUNTRIES[delegate]!,
+          style: theme.textTheme.bodyText1,
         ),
         trailing: trailing,
       );

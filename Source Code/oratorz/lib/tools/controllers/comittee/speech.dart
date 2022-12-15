@@ -10,8 +10,8 @@ class SpeechController extends GetxController {
   Rx<Duration> duration = const Duration(minutes: 1).obs;
   Rx<Stopwatch> stopwatch = Stopwatch().obs;
 
-  bool isAdded(String country) =>
-      currentSpeaker.value == country || nextSpeakers.contains(country);
+  bool isAdded(String delegate) =>
+      currentSpeaker.value == delegate || nextSpeakers.contains(delegate);
 
   void reorder(int oldIndex, int newIndex) {
     final String temp = nextSpeakers[oldIndex];
@@ -20,16 +20,16 @@ class SpeechController extends GetxController {
     nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, temp);
   }
 
-  void addSpeaker(String country) {
+  void addSpeaker(String delegate) {
     if (currentSpeaker.value == "") {
-      currentSpeaker.value = country;
+      currentSpeaker.value = delegate;
       return;
     }
 
-    nextSpeakers.add(country);
+    nextSpeakers.add(delegate);
   }
 
-  void removeSpeaker(String country) => nextSpeakers.remove(country);
+  void removeSpeaker(String delegate) => nextSpeakers.remove(delegate);
 
   void nextSpeaker() {
     if (currentSpeaker.value == "") return;

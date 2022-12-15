@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/config/constants/constants.dart';
 import '/config/data.dart';
 import '/tools/controllers/setup.dart';
-import '/ui/widgets/country_tile.dart';
+import '/ui/widgets/delegate_tile.dart';
 
 class NewCommitteeCard extends StatelessWidget {
   const NewCommitteeCard({super.key});
@@ -12,9 +13,10 @@ class NewCommitteeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final SetupController _setupController = Get.find<SetupController>();
 
+    // TODO: Change to Delegates
     final List<String> data = COUNTRIES.keys.toList();
     data.removeWhere(
-      (element) => _setupController.committee.value.countries.contains(element),
+      (element) => _setupController.committee.value.delegates.contains(element),
     );
 
     return Expanded(
@@ -26,7 +28,7 @@ class NewCommitteeCard extends StatelessWidget {
             children: [
               Text(
                 "Set Up New Committee",
-                style: Theme.of(context).textTheme.headline5,
+                style: theme.textTheme.headline5,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -35,7 +37,7 @@ class NewCommitteeCard extends StatelessWidget {
                 ),
                 child: Text(
                   "UN Member States",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: theme.textTheme.headline6,
                 ),
               ),
               Container(
@@ -54,7 +56,7 @@ class NewCommitteeCard extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: "Search",
                           hintMaxLines: 1,
-                          hintStyle: Theme.of(context).textTheme.bodyText1,
+                          hintStyle: theme.textTheme.bodyText1,
                           hoverColor: Colors.transparent,
                           fillColor: Colors.transparent,
                           enabledBorder: InputBorder.none,
@@ -69,8 +71,8 @@ class NewCommitteeCard extends StatelessWidget {
               // TODO: Not Updating
               Expanded(
                 child: ListView.separated(
-                  itemBuilder: (context, index) => CountryTile(
-                    country: data[index],
+                  itemBuilder: (context, index) => DelegateTile(
+                    delegate: data[index],
                     onTap: () => _setupController.add(data[index]),
                     trailing: Icon(Icons.add, color: Colors.grey[400]),
                   ),

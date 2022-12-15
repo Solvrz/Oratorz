@@ -11,11 +11,6 @@ import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
 import 'config/constants/constants.dart';
 
-// TODO: Tooltip
-// TODO: User Guide
-// TODO: Responsive
-// TODO: Restoration
-// TODO: Suspend Users
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Intl.defaultLocale = LOCALE.code();
@@ -27,25 +22,6 @@ void main() async {
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
-
-  // final FirebaseApp app = await Firebase.initializeApp(
-  //   name: "Oratorz",
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-
-  // auth = FirebaseAuth.instanceFor(app: app);
-  // firestore = FirebaseFirestore.instanceFor(app: app);
-  // storage = FirebaseStorage.instanceFor(app: app);
-  // analytics = FirebaseAnalytics.instanceFor(app: app);
-
-  // await auth.setPersistence(Persistence.LOCAL);
-
-  // if (TESTING) {
-  //   await auth.useAuthEmulator(IP, 9099);
-  //   firestore.settings = const Settings(host: "$IP:9080");
-  //   await storage.useStorageEmulator(IP, 9199);
-  //   await analytics.setAnalyticsCollectionEnabled(false);
-  // }
 
   runApp(const Oratorz());
 }
@@ -68,7 +44,6 @@ class Oratorz extends StatelessWidget {
           errorBuilder: (context, args) {
             Get.put(RouteController(arguments: args));
 
-            // TODO: Error Page
             return const Text("Error");
           },
           routes: [

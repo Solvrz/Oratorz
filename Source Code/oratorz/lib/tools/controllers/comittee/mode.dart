@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../config/constants/committee.dart';
+import '/config/constants/committee.dart';
 
 class ModeController extends GetxController {
   late RxInt mode;

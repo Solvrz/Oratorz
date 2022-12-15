@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../config/constants/constants.dart';
+import '/config/constants/constants.dart';
 
 class BorderButton extends StatelessWidget {
   final String text;
   final Color color;
   final bool filled;
   final Function() onPressed;
-  final EdgeInsets? padding;
+  final TextStyle? style;
   final IconData? icon;
 
   const BorderButton({
@@ -16,7 +16,7 @@ class BorderButton extends StatelessWidget {
     required this.color,
     required this.onPressed,
     this.filled = false,
-    this.padding,
+    this.style,
     this.icon,
   });
 
@@ -41,9 +41,12 @@ class BorderButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: Padding(
-          padding: padding ?? EdgeInsets.zero,
+          padding: EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: (text.length).toDouble(),
+          ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (icon != null) ...[
                 Icon(icon),
@@ -52,7 +55,7 @@ class BorderButton extends StatelessWidget {
                   color: Colors.black,
                 ),
               ],
-              Text(text, style: theme.textTheme.bodyText1),
+              Text(text, style: style ?? theme.textTheme.bodyLarge),
             ],
           ),
         ),

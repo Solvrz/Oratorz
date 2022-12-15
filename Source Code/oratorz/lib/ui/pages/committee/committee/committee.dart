@@ -64,13 +64,11 @@ class ModeHeader extends StatelessWidget {
               () => RichText(
                 text: TextSpan(
                   text: "Agenda: ",
-                  style: Theme.of(context).textTheme.headline5,
+                  style: theme.textTheme.headline5,
                   children: [
                     TextSpan(
                       text: _committeeController.committee.value.agenda,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5!
+                      style: theme.textTheme.headline5!
                           .copyWith(fontWeight: FontWeight.w500),
                     ),
                   ],
@@ -149,7 +147,7 @@ class ModeHeader extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: const Color(0xff0d1520)),
+              border: Border.all(color: theme.colorScheme.secondary),
             ),
             child: Row(
               children: [
@@ -158,7 +156,7 @@ class ModeHeader extends StatelessWidget {
                     children: [
                       Icon(
                         _modeController.currentTab()["icon"],
-                        color: theme.primaryColor,
+                        color: theme.colorScheme.tertiary,
                       ),
                       const VerticalDivider(),
                       Text(
@@ -169,9 +167,9 @@ class ModeHeader extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 20),
-                const Icon(
+                Icon(
                   Icons.arrow_drop_down,
-                  color: Color(0xff0d1520),
+                  color: theme.colorScheme.secondary,
                   size: 36,
                 ),
               ],
@@ -190,7 +188,7 @@ class ModeHeader extends StatelessWidget {
                       children: [
                         Icon(
                           tab["icon"],
-                          color: theme.primaryColor,
+                          color: theme.colorScheme.tertiary,
                         ),
                         const VerticalDivider(),
                         Text(tab["name"]),

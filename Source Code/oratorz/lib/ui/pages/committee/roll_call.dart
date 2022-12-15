@@ -2,10 +2,12 @@ import 'package:flutter/material.dart' hide PageController;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '/config/constants/constants.dart';
 import '/config/data.dart';
+import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/border_button.dart';
 import '/ui/widgets/dialog_box.dart';
-import '../../../tools/controllers/comittee/committee.dart';
+import '/ui/widgets/filled_button.dart';
 
 class RollCallDialog extends StatelessWidget {
   const RollCallDialog({super.key});
@@ -51,8 +53,8 @@ class RollCallDialog extends StatelessWidget {
                   children: List.generate(
                     _committeeController.committee.value.count,
                     (index) {
-                      final String _country =
-                          _committeeController.committee.value.countries[index];
+                      final String _delegate =
+                          _committeeController.committee.value.delegates[index];
 
                       return ListTile(
                         hoverColor: Colors.grey[100],
@@ -71,17 +73,18 @@ class RollCallDialog extends StatelessWidget {
                             ],
                           ),
                           child: SvgPicture.asset(
-                            "flags/$_country.svg",
+                            "flags/$_delegate.svg",
                           ),
                         ),
+                        // TODO: Change to Delegates
                         title: Text(
-                          COUNTRIES[_country]!,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          COUNTRIES[_delegate]!,
+                          style: theme.textTheme.bodyText1,
                         ),
                         trailing: Builder(
                           builder: (context) {
                             final int rollCall =
-                                _committeeController.rollCall[_country]!;
+                                _committeeController.rollCall[_delegate]!;
 
                             // TODO: Not Updating
                             return Row(
@@ -91,7 +94,7 @@ class RollCallDialog extends StatelessWidget {
                                   text: "PV",
                                   color: Colors.blue.shade400,
                                   onPressed: () => _committeeController
-                                      .setRollCall(_country, 2),
+                                      .setRollCall(_delegate, 2),
                                   filled: rollCall == 2,
                                 ),
                                 const SizedBox(width: 4),
@@ -99,7 +102,7 @@ class RollCallDialog extends StatelessWidget {
                                   text: "P",
                                   color: Colors.amber.shade400,
                                   onPressed: () => _committeeController
-                                      .setRollCall(_country, 1),
+                                      .setRollCall(_delegate, 1),
                                   filled: rollCall == 1,
                                 ),
                                 const SizedBox(width: 4),
@@ -107,7 +110,7 @@ class RollCallDialog extends StatelessWidget {
                                   text: "A",
                                   color: Colors.red.shade400,
                                   onPressed: () => _committeeController
-                                      .setRollCall(_country, 0),
+                                      .setRollCall(_delegate, 0),
                                   filled: rollCall == 0,
                                 ),
                               ],
@@ -127,12 +130,10 @@ class RollCallDialog extends StatelessWidget {
       actions: [
         SizedBox(
           width: MediaQuery.of(context).size.width / 3,
-          child: BorderButton(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            text: "DONE",
-            color: const Color(0xff0d1520),
+          child: FilledButton(
+            color: theme.colorScheme.secondary,
             onPressed: () => Navigator.pop(context),
-            filled: true,
+            child: const Text("DONE"),
           ),
         ),
       ],

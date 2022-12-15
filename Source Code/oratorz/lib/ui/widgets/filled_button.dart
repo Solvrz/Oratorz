@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class FilledButton extends StatelessWidget {
   final Color color;
-  final IconData icon;
+  final Widget child;
   final Function() onPressed;
 
   const FilledButton({
     super.key,
-    required this.icon,
+    required this.child,
     required this.color,
     required this.onPressed,
   });
@@ -23,7 +23,7 @@ class FilledButton extends StatelessWidget {
         onPressed: onPressed,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Icon(icon),
+          child: child,
         ),
       );
 }

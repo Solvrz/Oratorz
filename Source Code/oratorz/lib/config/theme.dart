@@ -9,8 +9,13 @@ class OratorzTheme {
     final TextTheme textTheme = GoogleFonts.poppinsTextTheme();
 
     return ThemeData(
-      primaryColor: OratorzColors.PrimaryColor,
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: OratorzColors.primaryColor,
+      // TODO: Add More & Use This
+      colorScheme: const ColorScheme.light().copyWith(
+        primary: OratorzColors.primaryColor,
+        secondary: OratorzColors.secondaryColor,
+        tertiary: OratorzColors.tertiaryColor,
+      ),
       // TODO: Add More & Use This
       textTheme: textTheme.copyWith(
         headline1: textTheme.headline5!.copyWith(
@@ -32,9 +37,9 @@ class OratorzTheme {
         ),
       ),
       cardTheme: CardTheme(
-        elevation: 10,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 5,
         shadowColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -42,7 +47,10 @@ class OratorzTheme {
               MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(12)),
           shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
-              side: BorderSide(color: Colors.amber.shade400, width: 0.75),
+              side: BorderSide(
+                color: Colors.amber.shade400,
+                width: 0.75,
+              ),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
@@ -56,17 +64,15 @@ class OratorzTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor: OratorzColors.PrimaryColor,
+          backgroundColor: OratorzColors.primaryColor,
           shape: const StadiumBorder(),
           maximumSize: const Size(double.infinity, 56),
           minimumSize: const Size(double.infinity, 56),
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(
-        filled: true,
-        fillColor: OratorzColors.PrimaryLightColor,
-        iconColor: OratorzColors.PrimaryColor,
-        prefixIconColor: OratorzColors.PrimaryColor,
+        iconColor: OratorzColors.primaryColor,
+        prefixIconColor: OratorzColors.primaryColor,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 16,
@@ -76,51 +82,22 @@ class OratorzTheme {
           borderSide: BorderSide.none,
         ),
       ),
-      // TODO: Use This
-      // scrollbarTheme: ScrollbarThemeData(
-      //   radius: const Radius.circular(10),
-      //   thumbColor: MaterialStateProperty.all(AlerColors.buttonColor),
-      //   thickness: MaterialStateProperty.all(2),
-      //   interactive: true,
-      // ),
-      // inputDecorationTheme: const InputDecorationTheme(
-      //   labelStyle: TextStyle(
-      //     color: AlerColors.gray,
-      //     fontWeight: FontWeight.w500,
-      //   ),
-      //   filled: true,
-      //   fillColor: AlerColors.inputBackground,
-      //   focusedBorder: InputBorder.none,
-      // ),
-      // snackBarTheme: const SnackBarThemeData(
-      //   elevation: 10,
-      //   backgroundColor: AlerColors.buttonColor,
-      //   contentTextStyle: TextStyle(color: Colors.white),
-      // ),
-      // bottomSheetTheme: const BottomSheetThemeData(
-      //   backgroundColor: AlerColors.primaryBackground,
-      //   modalBackgroundColor: Colors.transparent,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.only(
-      //       topRight: Radius.circular(25),
-      //       topLeft: Radius.circular(25),
-      //     ),
-      //   ),
-      // ),
-      // floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      //   elevation: 10,
-      //   backgroundColor: AlerColors.buttonColor,
-      //   foregroundColor: AlerColors.primaryBackground,
-      // ),
-      // textButtonTheme: TextButtonThemeData(
-      //   style: ButtonStyle(
-      //     textStyle: MaterialStateProperty.all<TextStyle>(
-      //       const TextStyle(color: AlerColors.white60),
-      //     ),
-      //     foregroundColor:
-      //         MaterialStateProperty.all<Color>(AlerColors.buttonColor),
-      //   ),
-      // ),
+      scrollbarTheme: ScrollbarThemeData(
+        radius: const Radius.circular(10),
+        thumbColor: MaterialStateProperty.all(OratorzColors.secondaryColor),
+        thickness: MaterialStateProperty.all(2),
+        interactive: true,
+      ),
+      snackBarTheme: const SnackBarThemeData(
+        elevation: 10,
+        backgroundColor: OratorzColors.secondaryColor,
+        contentTextStyle: TextStyle(color: Colors.white),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        elevation: 10,
+        foregroundColor: OratorzColors.primaryColor,
+        backgroundColor: OratorzColors.secondaryColor,
+      ),
     );
   }
 }

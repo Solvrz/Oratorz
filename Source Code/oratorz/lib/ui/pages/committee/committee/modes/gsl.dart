@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../tools/controllers/comittee/speech.dart';
+import '/tools/controllers/comittee/speech.dart';
 import '../widgets/add_speaker.dart';
 import '../widgets/past_speakers.dart';
 import '../widgets/speakers_info.dart';

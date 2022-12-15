@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OratorzColors {
-  static const Color PrimaryColor = Color(0xFF6F35A5);
-  static const Color PrimaryLightColor = Color(0xFFF1E6FF);
+  static const Color primaryColor = Colors.white;
+  static const Color secondaryColor = Color(0xff0d1520);
+  static const Color tertiaryColor = Colors.purple;
 }

@@ -3,27 +3,27 @@ import '/config/data.dart';
 class Committee {
   late String name;
   late String agenda;
-  late List<String> countries;
+  late List<String> delegates;
   late List<String> speakers;
 
   Committee({
     this.name = "Your Committee",
     this.agenda = "Your Agenda",
-    List<String>? countries,
+    List<String>? delegates,
     List<String>? speakers,
   }) {
-    this.countries = countries ?? [];
+    this.delegates = delegates ?? [];
     this.speakers = speakers ?? [];
   }
 
   Committee.fromTemplate(String template) {
     name = template;
     agenda = "Your Agenda";
-    countries = COMMITTEES[template]!;
+    delegates = COMMITTEES[template]!;
   }
 
-  int get count => countries.length;
+  int get count => delegates.length;
 
-  void addSpeaker(String country) => speakers.add(country);
-  void removeSpeaker(String country) => speakers.remove(country);
+  void addSpeaker(String delegate) => speakers.add(delegate);
+  void removeSpeaker(String delegate) => speakers.remove(delegate);
 }
