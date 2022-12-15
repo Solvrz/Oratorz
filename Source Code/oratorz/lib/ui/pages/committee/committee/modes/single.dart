@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/add_speaker.dart';
-import '../widgets/past_speakers.dart';
 import '../widgets/speakers_info.dart';
 import '../widgets/stopwatch.dart';
 
-class GSLTab extends StatelessWidget {
-  const GSLTab({super.key});
+class SingleTab extends StatelessWidget {
+  const SingleTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController(), tag: "gsl");
+    Get.put(SpeechController(), tag: "single");
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,24 +33,26 @@ class GSLTab extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Center(
-                        child: StopwatchWidget(
-                          tag: "gsl",
-                          canYield: true,
-                        ),
+                        child: StopwatchWidget(tag: "single"),
                       ),
                       SizedBox(width: 48),
-                      SpeakersInfoWidget(tag: "gsl"),
+                      SpeakersInfoWidget(tag: "single"),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              const PastSpeakersCard(tag: "gsl"),
+              const SizedBox(height: 50),
+              Center(
+                child: Text(
+                  "Carousel Placeholder",
+                  style: theme.textTheme.bodyText1,
+                ),
+              ),
             ],
           ),
         ),
         const SizedBox(width: 36),
-        const AddSpeakerCard(tag: "gsl"),
+        const AddSpeakerCard(tag: "single"),
       ],
     );
   }

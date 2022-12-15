@@ -18,8 +18,8 @@ class CommitteeCard extends StatelessWidget {
     return Obx(
       () => Expanded(
         child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
+          child: Container(
+            margin: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

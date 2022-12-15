@@ -36,7 +36,6 @@ class SetupController extends GetxController {
         value.name = "";
       });
 
-  // TODO: Change to Delegates
   void sort() =>
-      _value.delegates.sort((a, b) => COUNTRIES[a]!.compareTo(COUNTRIES[b]!));
+      _value.delegates.sort((a, b) => DELEGATES[a]!.compareTo(DELEGATES[b]!));
 }

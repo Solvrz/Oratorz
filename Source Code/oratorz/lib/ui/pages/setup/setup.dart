@@ -23,8 +23,8 @@ class SetupPage extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
+        body: Container(
+          margin: const EdgeInsets.all(16),
           child: Row(
             children: [
               Expanded(

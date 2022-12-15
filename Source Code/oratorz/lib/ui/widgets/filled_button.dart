@@ -21,8 +21,8 @@ class FilledButton extends StatelessWidget {
           side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
         ),
         onPressed: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8),
           child: child,
         ),
       );

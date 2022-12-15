@@ -9,8 +9,8 @@ class CommitteeController extends GetxController {
   late RxInt tab;
 
   CommitteeController({required Committee committee, int tabVal = 0}) {
-    rollCall = {for (String delegate in committee.delegates) delegate: -1}.obs;
     this.committee = committee.obs;
+    rollCall = {for (String delegate in committee.delegates) delegate: -1}.obs;
     tab = tabVal.obs;
   }
 

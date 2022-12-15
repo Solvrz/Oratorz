@@ -31,16 +31,12 @@ class ModTab extends StatelessWidget {
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Center(
-                        child: StopwatchWidget(
-                          onTimeEnd: () {},
-                          tag: "mod",
-                          canYield: false,
-                        ),
+                        child: StopwatchWidget(tag: "mod"),
                       ),
-                      const SizedBox(width: 48),
-                      const SpeakersInfoWidget(tag: "mod"),
+                      SizedBox(width: 48),
+                      SpeakersInfoWidget(tag: "mod"),
                     ],
                   ),
                 ),

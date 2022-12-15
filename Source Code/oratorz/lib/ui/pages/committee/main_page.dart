@@ -16,29 +16,31 @@ class CommitteeMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late final CommitteeController _committeeController;
     final RouteController _routeController = Get.find<RouteController>();
 
     // TODO: Remove after Testing
-    final CommitteeArguments args =
-        // _routeController.args.value as CommitteeArguments? ??
-        CommitteeArguments(committee: Committee.fromTemplate("UNSC"));
+    // ignore: unnecessary_nullable_for_final_variable_declarations
+    final CommitteeArguments? args =
+        _routeController.args.value as CommitteeArguments? ??
+            CommitteeArguments(committee: Committee.fromTemplate("UNSC"));
 
-    // if (args == null) {
-    //   context.go("/setup");
-    // } else {
-    final CommitteeController _committeeController =
-        Get.put<CommitteeController>(
-      CommitteeController(
-        committee: args.committee,
-        tabVal: COMMITTEE_TABS
-            .indexWhere(
-              (tab) => tab["route"].toString().contains(_routeController.path),
-            )
-            .clamp(0, double.infinity)
-            .toInt(),
-      ),
-    );
-    // }
+    if (args == null) {
+      context.go("/setup");
+    } else {
+      _committeeController = Get.put<CommitteeController>(
+        CommitteeController(
+          committee: args.committee,
+          tabVal: COMMITTEE_TABS
+              .indexWhere(
+                (tab) =>
+                    tab["route"].toString().contains(_routeController.path),
+              )
+              .clamp(0, double.infinity)
+              .toInt(),
+        ),
+      );
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -55,14 +57,14 @@ class CommitteeMainPage extends StatelessWidget {
                     bottomRight: Radius.circular(10),
                   ),
                 ),
-                child: Padding(
-                  padding:
+                child: Container(
+                  margin:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: Column(
                     children: [
                       Text(
                         _committeeController.committee.value.name,
-                        style: theme.textTheme.headline5!
+                        style: theme.textTheme.headline2!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -109,15 +111,8 @@ class CommitteeMainPage extends StatelessWidget {
             Expanded(
               child: Container(
                 margin: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 24),
-                    Expanded(
-                      child: Obx(
-                        () => _committeeController.currentTab()["tab"],
-                      ),
-                    ),
-                  ],
+                child: Obx(
+                  () => _committeeController.currentTab()["tab"],
                 ),
               ),
             ),
@@ -145,16 +140,17 @@ class SidebarTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 4),
+  Widget build(BuildContext context) => Container(
+        margin: const EdgeInsets.only(bottom: 4),
         child: ListTile(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          horizontalTitleGap: 8,
           onTap: onTap,
+          horizontalTitleGap: 8,
           hoverColor: selected ? Colors.transparent : Colors.white12,
           tileColor:
               selected ? const Color(0xff2a313b) : const Color(0xff0d1520),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
           title: Text(title, style: theme.textTheme.bodyText2),
         ),

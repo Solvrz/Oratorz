@@ -30,8 +30,8 @@ class DialogBox extends AlertDialog {
                 const Spacer(),
                 InkWell(
                   onTap: () => Navigator.pop(context),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
+                  child: Container(
+                    margin: const EdgeInsets.all(8),
                     child: Icon(
                       Icons.close,
                       color: Colors.grey.shade600,

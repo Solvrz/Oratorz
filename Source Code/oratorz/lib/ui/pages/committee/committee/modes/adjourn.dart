@@ -5,12 +5,12 @@ import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/stopwatch.dart';
 
-class UnmodTab extends StatelessWidget {
-  const UnmodTab({super.key});
+class AdjournTab extends StatelessWidget {
+  const AdjournTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController(), tag: "unmod");
+    Get.put(SpeechController(), tag: "adjourn");
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -22,7 +22,7 @@ class UnmodTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const StopwatchWidget(tag: "unmod"),
+            child: const StopwatchWidget(tag: "adjourn"),
           ),
         ),
         Text("Carousel Placeholder", style: theme.textTheme.bodyText1),

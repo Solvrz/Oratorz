@@ -1,4 +1,4 @@
-const Map<String, String> COUNTRIES = {
+const Map<String, String> DELEGATES = {
   "AND": "Andorra",
   "ARE": "United Arab Emirates",
   "AFG": "Afghanistan",

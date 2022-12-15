@@ -16,8 +16,8 @@ class MotionsPage extends StatelessWidget {
               child: Column(
                 children: [
                   Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
+                    child: Container(
+                      margin: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -63,8 +63,8 @@ class MotionsPage extends StatelessWidget {
                     ),
                   ),
                   Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
+                    child: Container(
+                      margin: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -109,7 +109,7 @@ class AddMotionsCard extends StatelessWidget {
         "onTap": () {},
       },
       {
-        "name": "Consulation",
+        "name": "Consultation",
         "icon": Icons.circle_outlined,
         "onTap": () {},
       },
@@ -139,7 +139,7 @@ class AddMotionsCard extends StatelessWidget {
         "onTap": () {}
       },
       {
-        "name": "Suspend Meeting",
+        "name": "End Meeting",
         "icon": Icons.stop,
         "onTap": () {},
       },
@@ -162,8 +162,8 @@ class AddMotionsCard extends StatelessWidget {
 
     return Expanded(
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        child: Container(
+          margin: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -171,7 +171,7 @@ class AddMotionsCard extends StatelessWidget {
                 "Add Motions",
                 style: theme.textTheme.headline5,
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 10),
               Expanded(
                 child: Wrap(
                   spacing: 8,
@@ -181,40 +181,15 @@ class AddMotionsCard extends StatelessWidget {
                     (index) {
                       final Map<String, dynamic> _motion = motions[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: BorderButton(
-                          text: _motion["name"],
-                          icon: _motion["icon"],
-                          color: Colors.amber.shade400,
-                          onPressed: _motion["onTap"],
-                        ),
+                      return BorderButton(
+                        text: _motion["name"],
+                        icon: _motion["icon"],
+                        color: Colors.amber.shade400,
+                        onPressed: _motion["onTap"],
                       );
                     },
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...List.generate(
-                    motions.length ~/ 2,
-                    (index) {
-                      final Map<String, dynamic> _motion =
-                          motions[index + motions.length ~/ 2];
-
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: BorderButton(
-                          text: _motion["name"],
-                          icon: _motion["icon"],
-                          color: Colors.amber.shade400,
-                          onPressed: _motion["onTap"],
-                        ),
-                      );
-                    },
-                  ),
-                ],
               ),
             ],
           ),

@@ -39,9 +39,8 @@ class DelegateTile extends StatelessWidget {
           ),
           child: SvgPicture.asset("flags/$delegate.svg"),
         ),
-        // TODO: Change to Delegates
         title: Text(
-          COUNTRIES[delegate]!,
+          DELEGATES[delegate]!,
           style: theme.textTheme.bodyText1,
         ),
         trailing: trailing,

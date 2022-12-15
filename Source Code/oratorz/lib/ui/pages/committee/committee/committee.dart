@@ -57,14 +57,13 @@ class ModeHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // TODO: Not Updating
         Row(
           children: [
-            Obx(
-              () => RichText(
+            GetBuilder<CommitteeController>(
+              builder: (_) => RichText(
                 text: TextSpan(
                   text: "Agenda: ",
-                  style: theme.textTheme.headline5,
+                  style: theme.textTheme.headline2,
                   children: [
                     TextSpan(
                       text: _committeeController.committee.value.agenda,
@@ -77,12 +76,12 @@ class ModeHeader extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 final TextEditingController _controller = TextEditingController(
                   text: _committeeController.committee.value.agenda,
                 );
 
-                showDialog(
+                await showDialog(
                   context: context,
                   builder: (context) => DialogBox(
                     heading: "Set Committee Name",
@@ -117,6 +116,8 @@ class ModeHeader extends StatelessWidget {
                     ],
                   ),
                 );
+
+                _committeeController.update();
               },
               hoverColor: const Color.fromARGB(255, 250, 250, 250),
               child: Container(

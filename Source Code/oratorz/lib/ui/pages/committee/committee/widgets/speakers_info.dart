@@ -60,12 +60,13 @@ class SpeakersInfoWidget extends StatelessWidget {
                   ),
           ),
           const Divider(height: 16),
-          const SizedBox(height: 8),
-          Text(
-            "Upcoming Speakers",
-            style: theme.textTheme.headline5,
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              "Upcoming Speakers",
+              style: theme.textTheme.headline5,
+            ),
           ),
-          const SizedBox(height: 8),
           Obx(
             () => _speechController.nextSpeakers.isNotEmpty
                 ? Expanded(

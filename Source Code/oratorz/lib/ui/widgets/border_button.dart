@@ -40,8 +40,8 @@ class BorderButton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
+        child: Container(
+          margin: EdgeInsets.symmetric(
             vertical: 8,
             horizontal: (text.length).toDouble(),
           ),
