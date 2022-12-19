@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 
 class SpeechController extends GetxController {
   RxString currentSpeaker = "".obs;
+  RxMap<String, String> subtopic = {"": ""}.obs;
+
+  RxBool hasSubtopic = false.obs;
   RxBool isSpeaking = false.obs;
 
   RxList<String> nextSpeakers = <String>[].obs;

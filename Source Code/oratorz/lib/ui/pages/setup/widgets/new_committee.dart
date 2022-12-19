@@ -13,16 +13,10 @@ class NewCommitteeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final SetupController _setupController = Get.find<SetupController>();
 
-    // TODO: Change to Delegates
-    final List<String> data = COUNTRIES.keys.toList();
-    data.removeWhere(
-      (element) => _setupController.committee.value.delegates.contains(element),
-    );
-
     return Expanded(
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        child: Container(
+          margin: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -30,8 +24,8 @@ class NewCommitteeCard extends StatelessWidget {
                 "Set Up New Committee",
                 style: theme.textTheme.headline5,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
+              Container(
+                margin: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 12,
                 ),
@@ -40,6 +34,7 @@ class NewCommitteeCard extends StatelessWidget {
                   style: theme.textTheme.headline6,
                 ),
               ),
+              // TODO: Search not Working
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -47,43 +42,49 @@ class NewCommitteeCard extends StatelessWidget {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.search, color: Colors.grey[600]),
-                    Expanded(
-                      child: TextField(
-                        cursorColor: Colors.grey[600],
-                        decoration: InputDecoration(
-                          hintText: "Search",
-                          hintMaxLines: 1,
-                          hintStyle: theme.textTheme.bodyText1,
-                          hoverColor: Colors.transparent,
-                          fillColor: Colors.transparent,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          border: InputBorder.none,
-                        ),
-                      ),
+                child: Expanded(
+                  child: TextField(
+                    cursorColor: Colors.grey[600],
+                    decoration: InputDecoration(
+                      hintText: "Search",
+                      prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                      hintStyle: theme.textTheme.bodyText1,
+                      hoverColor: Colors.transparent,
+                      fillColor: Colors.transparent,
+                      focusedBorder: InputBorder.none,
+                      border: InputBorder.none,
                     ),
-                  ],
+                  ),
                 ),
               ),
-              // TODO: Not Updating
-              Expanded(
-                child: ListView.separated(
-                  itemBuilder: (context, index) => DelegateTile(
-                    delegate: data[index],
-                    onTap: () => _setupController.add(data[index]),
-                    trailing: Icon(Icons.add, color: Colors.grey[400]),
-                  ),
-                  separatorBuilder: (context, index) => Divider(
-                    indent: 66,
-                    thickness: 0.5,
-                    height: 6,
-                    color: Colors.grey[400],
-                  ),
-                  itemCount: data.length,
-                ),
+              GetBuilder<SetupController>(
+                builder: (_) {
+                  final List<String> data = DELEGATES.keys.toList()
+                    ..removeWhere(
+                      (_delegate) => _setupController.committee.value.delegates
+                          .contains(_delegate),
+                    );
+
+                  return Expanded(
+                    child: ListView.separated(
+                      itemBuilder: (context, index) => DelegateTile(
+                        delegate: data[index],
+                        onTap: () {
+                          _setupController.add(data[index]);
+                          _setupController.update();
+                        },
+                        trailing: Icon(Icons.add, color: Colors.grey[400]),
+                      ),
+                      separatorBuilder: (context, index) => Divider(
+                        indent: 66,
+                        thickness: 0.5,
+                        height: 6,
+                        color: Colors.grey[400],
+                      ),
+                      itemCount: data.length,
+                    ),
+                  );
+                },
               ),
             ],
           ),

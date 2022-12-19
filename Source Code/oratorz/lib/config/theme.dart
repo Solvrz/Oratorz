@@ -10,17 +10,19 @@ class OratorzTheme {
 
     return ThemeData(
       scaffoldBackgroundColor: OratorzColors.primaryColor,
-      // TODO: Add More & Use This
       colorScheme: const ColorScheme.light().copyWith(
         primary: OratorzColors.primaryColor,
         secondary: OratorzColors.secondaryColor,
         tertiary: OratorzColors.tertiaryColor,
       ),
-      // TODO: Add More & Use This
       textTheme: textTheme.copyWith(
         headline1: textTheme.headline5!.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 54,
+        ),
+        headline2: textTheme.headline5!.copyWith(
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
         ),
         headline5: textTheme.headline5!.copyWith(
           fontWeight: FontWeight.bold,
@@ -78,9 +80,11 @@ class OratorzTheme {
           horizontal: 16,
           vertical: 16,
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
       ),
       scrollbarTheme: ScrollbarThemeData(

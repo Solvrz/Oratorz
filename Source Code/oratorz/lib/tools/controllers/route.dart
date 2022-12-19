@@ -7,7 +7,6 @@ class RouteController extends GetxController {
 
   RouteController({required GoRouterState arguments}) {
     path = arguments.location.obs;
-    // TODO: Check This
     args = arguments.extra.obs;
   }
 }

@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/add_speaker.dart';
 import '../widgets/past_speakers.dart';
 import '../widgets/speakers_info.dart';
 import '../widgets/stopwatch.dart';
 
-class GSLTab extends StatelessWidget {
-  const GSLTab({super.key});
+class TourDeTableTab extends StatelessWidget {
+  const TourDeTableTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController(), tag: "gsl");
+    final SpeechController _speechController =
+        Get.put(SpeechController(), tag: "tourdetable");
+
+    _speechController.hasSubtopic.value = true;
+    _speechController.subtopic.value = {"Topic": ""};
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,26 +36,39 @@ class GSLTab extends StatelessWidget {
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Center(
-                        child: StopwatchWidget(
-                          tag: "gsl",
-                          canYield: true,
+                    children: [
+                      // TODO: Ask opnion On Input UI
+                      Obx(
+                        () => RichText(
+                          text: TextSpan(
+                            text: "${_speechController.subtopic.keys.first}: ",
+                            style: theme.textTheme.headline2,
+                            children: [
+                              TextSpan(
+                                text: _speechController.subtopic.values.first,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                      SizedBox(width: 48),
-                      SpeakersInfoWidget(tag: "gsl"),
+                      const Center(
+                        child: StopwatchWidget(
+                          tag: "tourdetable",
+                        ),
+                      ),
+                      const SizedBox(width: 48),
+                      const SpeakersInfoWidget(tag: "tourdetable"),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 12),
-              const PastSpeakersCard(tag: "gsl"),
+              const PastSpeakersCard(tag: "tourdetable"),
             ],
           ),
         ),
         const SizedBox(width: 36),
-        const AddSpeakerCard(tag: "gsl"),
+        const AddSpeakerCard(tag: "tourdetable"),
       ],
     );
   }
