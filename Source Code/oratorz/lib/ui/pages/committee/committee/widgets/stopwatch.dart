@@ -71,98 +71,136 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 250,
-        child: Row(
-          children: [
-            CircularPercentIndicator(
-              radius: 100,
-              percent: (timeLeft.inSeconds /
-                      _speechController.duration.value.inSeconds) *
-                  0.975,
-              progressColor: theme.colorScheme.secondary.withAlpha(200),
-              backgroundColor: theme.colorScheme.secondary.withAlpha(135),
-              circularStrokeCap: CircularStrokeCap.round,
-              lineWidth: 16,
-              center: Text(
-                "${timeLeft.inMinutes}:${(timeLeft.inSeconds - timeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
-                style: theme.textTheme.headline5!.copyWith(fontSize: 32),
+  Widget build(BuildContext context) {
+    Duration? overallTimeLeft;
+
+    if (_speechController.overallDuration != null) {
+      overallTimeLeft = _speechController.overallDuration! -
+          _speechController.stopwatch.value.elapsed;
+    }
+
+    return SizedBox(
+      height: 250,
+      child: Column(
+        children: [
+          if (_speechController.subtopic.values.first != "")
+            RichText(
+              text: TextSpan(
+                text: "${_speechController.subtopic.keys.first}: ",
+                style: theme.textTheme.headline2,
+                children: [
+                  TextSpan(text: _speechController.subtopic.values.first)
+                ],
               ),
             ),
-            const SizedBox(width: 24),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Expanded(
+            child: Row(
               children: [
-                FilledButton(
-                  onPressed: () {
-                    _speechController.isSpeaking.value ||
-                            timeLeft.inSeconds == 0
-                        ? _speechController.stopwatch.value.stop()
-                        : _speechController.stopwatch.value.start();
-
-                    _speechController.isSpeaking.value =
-                        !_speechController.isSpeaking.value;
-                  },
-                  color: Colors.blueGrey.shade600,
-                  child: Icon(
-                    _speechController.isSpeaking.value
-                        ? Icons.stop
-                        : Icons.play_arrow,
-                  ),
-                ),
-                FilledButton(
-                  onPressed: () {
-                    _speechController.stopwatch.value.reset();
-                    timer.cancel();
-
-                    setupTimer();
-                  },
-                  color: Colors.blue.shade400,
-                  child: const Icon(Icons.restart_alt),
-                ),
-                FilledButton(
-                  onPressed: () async {
-                    _speechController.stopwatch.value.stop();
-                    _speechController.stopwatch.value.reset();
-
-                    await showDialog(
-                      context: context,
-                      builder: (context) =>
-                          SettingsDialog(controller: _speechController),
-                    );
-                  },
-                  color: Colors.amber.shade400,
-                  child: const Icon(Icons.settings),
-                ),
-                if (widget.canYield)
-                  FilledButton(
-                    onPressed: () {
-                      final CommitteeController _committeeController =
-                          Get.find<CommitteeController>();
-                      final List<String> delegates =
-                          _committeeController.committee.value.presentDelegates;
-
-                      if (_speechController.currentSpeaker.value != "") {
-                        delegates
-                            .remove(_speechController.currentSpeaker.value);
-                      }
-
-                      return showDialog(
-                        context: context,
-                        builder: (context) => YieldSpeakerDialog(
-                          delegates: delegates,
-                          controller: _speechController,
+                CircularPercentIndicator(
+                  radius: 100,
+                  percent: (timeLeft.inSeconds /
+                          _speechController.duration.value.inSeconds) *
+                      0.975,
+                  progressColor: theme.colorScheme.secondary.withAlpha(200),
+                  backgroundColor: theme.colorScheme.secondary.withAlpha(135),
+                  circularStrokeCap: CircularStrokeCap.round,
+                  lineWidth: 16,
+                  center: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (overallTimeLeft != null)
+                        Text(
+                          "${overallTimeLeft.inMinutes}:${(overallTimeLeft.inSeconds - overallTimeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
+                          style:
+                              theme.textTheme.headline5!.copyWith(fontSize: 20),
                         ),
-                      );
-                    },
-                    color: Colors.grey.shade800,
-                    child: const Icon(Icons.person),
+                      Text(
+                        "${timeLeft.inMinutes}:${(timeLeft.inSeconds - timeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
+                        style:
+                            theme.textTheme.headline5!.copyWith(fontSize: 32),
+                      ),
+                    ],
                   ),
+                ),
+                const SizedBox(width: 24),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FilledButton(
+                      onPressed: () {
+                        _speechController.isSpeaking.value ||
+                                timeLeft.inSeconds == 0
+                            ? _speechController.stopwatch.value.stop()
+                            : _speechController.stopwatch.value.start();
+
+                        _speechController.isSpeaking.value =
+                            !_speechController.isSpeaking.value;
+                      },
+                      color: Colors.blueGrey.shade600,
+                      child: Icon(
+                        _speechController.isSpeaking.value
+                            ? Icons.stop
+                            : Icons.play_arrow,
+                      ),
+                    ),
+                    FilledButton(
+                      onPressed: () {
+                        _speechController.stopwatch.value.reset();
+                        timer.cancel();
+
+                        setupTimer();
+                      },
+                      color: Colors.blue.shade400,
+                      child: const Icon(Icons.restart_alt),
+                    ),
+                    FilledButton(
+                      onPressed: () async {
+                        _speechController.stopwatch.value.stop();
+                        _speechController.stopwatch.value.reset();
+
+                        await showDialog(
+                          context: context,
+                          builder: (context) =>
+                              SettingsDialog(controller: _speechController),
+                        );
+                      },
+                      color: Colors.amber.shade400,
+                      child: const Icon(Icons.settings),
+                    ),
+                    if (widget.canYield)
+                      FilledButton(
+                        onPressed: () {
+                          final CommitteeController _committeeController =
+                              Get.find<CommitteeController>();
+                          final List<String> delegates = _committeeController
+                              .committee.value.presentDelegates;
+
+                          if (_speechController.currentSpeaker.value != "") {
+                            delegates.remove(
+                              _speechController.currentSpeaker.value,
+                            );
+                          }
+
+                          return showDialog(
+                            context: context,
+                            builder: (context) => YieldSpeakerDialog(
+                              delegates: delegates,
+                              controller: _speechController,
+                            ),
+                          );
+                        },
+                        color: Colors.grey.shade800,
+                        child: const Icon(Icons.person),
+                      ),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class YieldSpeakerDialog extends StatefulWidget {

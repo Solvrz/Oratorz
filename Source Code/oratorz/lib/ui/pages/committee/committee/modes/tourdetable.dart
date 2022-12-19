@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/add_speaker.dart';
 import '../widgets/past_speakers.dart';
@@ -16,7 +15,6 @@ class TourDeTableTab extends StatelessWidget {
     final SpeechController _speechController =
         Get.put(SpeechController(), tag: "tourdetable");
 
-    _speechController.hasSubtopic.value = true;
     _speechController.subtopic.value = {"Topic": ""};
 
     return Row(
@@ -36,28 +34,15 @@ class TourDeTableTab extends StatelessWidget {
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       // TODO: Ask opnion On Input UI
-                      Obx(
-                        () => RichText(
-                          text: TextSpan(
-                            text: "${_speechController.subtopic.keys.first}: ",
-                            style: theme.textTheme.headline2,
-                            children: [
-                              TextSpan(
-                                text: _speechController.subtopic.values.first,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Center(
+                      Center(
                         child: StopwatchWidget(
                           tag: "tourdetable",
                         ),
                       ),
-                      const SizedBox(width: 48),
-                      const SpeakersInfoWidget(tag: "tourdetable"),
+                      SizedBox(width: 48),
+                      SpeakersInfoWidget(tag: "tourdetable"),
                     ],
                   ),
                 ),

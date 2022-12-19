@@ -43,6 +43,7 @@ class SettingsDialog extends StatelessWidget {
                         },
                         subtitle: "minutes",
                       ),
+                      const SizedBox(width: 16),
                       TimerButton(
                         value: controller.duration.value.inSeconds -
                             controller.duration.value.inMinutes * 60,
@@ -53,7 +54,7 @@ class SettingsDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (controller.hasSubtopic.value) ...[
+                if (controller.hasSubtopic) ...[
                   const SizedBox(height: 20),
                   Text(
                     controller.subtopic.keys.first,

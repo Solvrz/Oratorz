@@ -13,7 +13,6 @@ class PrayerTab extends StatelessWidget {
     final SpeechController _speechController =
         Get.put(SpeechController(), tag: "prayer");
 
-    _speechController.hasSubtopic.value = true;
     _speechController.subtopic.value = {"Cause": ""};
 
     return Column(
@@ -26,23 +25,7 @@ class PrayerTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Obx(
-                  () => RichText(
-                    text: TextSpan(
-                      text: "${_speechController.subtopic.keys.first}: ",
-                      style: theme.textTheme.headline2,
-                      children: [
-                        TextSpan(text: _speechController.subtopic.values.first)
-                      ],
-                    ),
-                  ),
-                ),
-                const StopwatchWidget(tag: "prayer"),
-              ],
-            ),
+            child: const StopwatchWidget(tag: "prayer"),
           ),
         ),
         Text("Carousel Placeholder", style: theme.textTheme.bodyText1),

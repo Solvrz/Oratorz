@@ -59,8 +59,8 @@ class ModeHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            GetBuilder<CommitteeController>(
-              builder: (_) => RichText(
+            Obx(
+              () => RichText(
                 text: TextSpan(
                   text: "Agenda: ",
                   style: theme.textTheme.headline2,
