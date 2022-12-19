@@ -181,40 +181,15 @@ class AddMotionsCard extends StatelessWidget {
                     (index) {
                       final Map<String, dynamic> _motion = motions[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: BorderButton(
-                          text: _motion["name"],
-                          icon: _motion["icon"],
-                          color: Colors.amber.shade400,
-                          onPressed: _motion["onTap"],
-                        ),
+                      return BorderButton(
+                        text: _motion["name"],
+                        icon: _motion["icon"],
+                        color: Colors.amber.shade400,
+                        onPressed: _motion["onTap"],
                       );
                     },
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...List.generate(
-                    motions.length ~/ 2,
-                    (index) {
-                      final Map<String, dynamic> _motion =
-                          motions[index + motions.length ~/ 2];
-
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: BorderButton(
-                          text: _motion["name"],
-                          icon: _motion["icon"],
-                          color: Colors.amber.shade400,
-                          onPressed: _motion["onTap"],
-                        ),
-                      );
-                    },
-                  ),
-                ],
               ),
             ],
           ),

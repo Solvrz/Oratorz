@@ -24,6 +24,7 @@ class OratorzTheme {
         ),
         headline5: textTheme.headline5!.copyWith(
           fontWeight: FontWeight.bold,
+          fontSize: 24,
         ),
         headline6: textTheme.headline6!.copyWith(
           fontSize: 18,

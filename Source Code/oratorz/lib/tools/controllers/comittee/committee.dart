@@ -14,6 +14,12 @@ class CommitteeController extends GetxController {
     tab = tabVal.obs;
   }
 
+  void setAgenda(String agenda) {
+    committee.update((val) {
+      val!.agenda = agenda;
+    });
+  }
+
   bool get areAllPresent => rollCall.values.toList().every((call) => call == 1);
   bool get areAllAbsent => rollCall.values.toList().every((call) => call == 0);
 

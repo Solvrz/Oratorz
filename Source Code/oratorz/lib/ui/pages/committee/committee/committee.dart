@@ -90,14 +90,14 @@ class ModeHeader extends StatelessWidget {
                       autofocus: true,
                       controller: _controller,
                       onSubmitted: (value) {
-                        _committeeController.committee.value.agenda =
-                            _controller.text;
+                        _committeeController.setAgenda(_controller.text);
 
                         Navigator.pop(context);
                       },
                       keyboardType: TextInputType.name,
                       cursorColor: Colors.grey[600],
                       decoration: InputDecoration(
+                        filled: true,
                         fillColor: Colors.grey[200],
                         hintText: "Agenda",
                       ),
@@ -107,8 +107,7 @@ class ModeHeader extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          _committeeController.committee.value.agenda =
-                              _controller.text;
+                          _committeeController.setAgenda(_controller.text);
 
                           Navigator.pop(context);
                         },
@@ -161,7 +160,7 @@ class ModeHeader extends StatelessWidget {
                       const VerticalDivider(),
                       Text(
                         _modeController.currentTab()["name"],
-                        style: theme.textTheme.headline5,
+                        style: theme.textTheme.headline6,
                       ),
                     ],
                   ),
