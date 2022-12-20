@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/arguments/committee.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
@@ -27,7 +26,7 @@ class CommitteeCard extends StatelessWidget {
                   children: [
                     Text(
                       _setupController.committee.value.name,
-                      style: theme.textTheme.headline5,
+                      style: context.textTheme.headline5,
                     ),
                     const SizedBox(width: 16),
                     InkWell(
@@ -95,7 +94,7 @@ class CommitteeCard extends StatelessWidget {
                 ),
                 Text(
                   "${_setupController.committee.value.count} Delegates",
-                  style: theme.textTheme.headline6,
+                  style: context.textTheme.headline6,
                 ),
                 const SizedBox(height: 12),
                 Expanded(

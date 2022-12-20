@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/config/data.dart';
 
 class DelegateTile extends StatelessWidget {
@@ -37,11 +36,11 @@ class DelegateTile extends StatelessWidget {
               ),
             ],
           ),
-          child: SvgPicture.asset("flags/$delegate.svg"),
+          child: Image.asset("flags/${delegate.split(" ")[0]}.png"),
         ),
         title: Text(
           DELEGATES[delegate]!,
-          style: theme.textTheme.bodyText1,
+          style: context.textTheme.bodyText1,
         ),
         trailing: trailing,
       );

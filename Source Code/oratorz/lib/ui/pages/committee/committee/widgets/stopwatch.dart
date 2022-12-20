@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
@@ -87,7 +86,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             RichText(
               text: TextSpan(
                 text: "${_speechController.subtopic.keys.first}: ",
-                style: theme.textTheme.headline2,
+                style: context.theme.textTheme.headline2,
                 children: [
                   TextSpan(text: _speechController.subtopic.values.first)
                 ],
@@ -101,8 +100,10 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                   percent: (timeLeft.inSeconds /
                           _speechController.duration.value.inSeconds) *
                       0.975,
-                  progressColor: theme.colorScheme.secondary.withAlpha(200),
-                  backgroundColor: theme.colorScheme.secondary.withAlpha(135),
+                  progressColor:
+                      context.theme.colorScheme.secondary.withAlpha(200),
+                  backgroundColor:
+                      context.theme.colorScheme.secondary.withAlpha(135),
                   circularStrokeCap: CircularStrokeCap.round,
                   lineWidth: 16,
                   center: Column(
@@ -111,13 +112,13 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                       if (overallTimeLeft != null)
                         Text(
                           "${overallTimeLeft.inMinutes}:${(overallTimeLeft.inSeconds - overallTimeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
-                          style:
-                              theme.textTheme.headline5!.copyWith(fontSize: 20),
+                          style: context.textTheme.headline5!
+                              .copyWith(fontSize: 20),
                         ),
                       Text(
                         "${timeLeft.inMinutes}:${(timeLeft.inSeconds - timeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
                         style:
-                            theme.textTheme.headline5!.copyWith(fontSize: 32),
+                            context.textTheme.headline5!.copyWith(fontSize: 32),
                       ),
                     ],
                   ),
@@ -173,7 +174,8 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                           final CommitteeController _committeeController =
                               Get.find<CommitteeController>();
                           final List<String> delegates = _committeeController
-                              .committee.value.presentDelegates;
+                                  .committee.value?.presentDelegates ??
+                              [];
 
                           if (_speechController.currentSpeaker.value != "") {
                             delegates.remove(
@@ -224,7 +226,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
   Widget build(BuildContext context) => DialogBox(
         heading: "Yield to Speaker",
         content: SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
+          height: context.height / 2,
           child: widget.delegates.isNotEmpty
               ? SingleChildScrollView(
                   child: Column(
@@ -272,15 +274,15 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
               : Center(
                   child: Text(
                     "Conduct a roll call before yielding speakers",
-                    style: theme.textTheme.bodyText1,
+                    style: context.textTheme.bodyText1,
                   ),
                 ),
         ),
         actions: [
           SizedBox(
-            width: MediaQuery.of(context).size.width / 3,
+            width: context.width / 3,
             child: FilledButton(
-              color: theme.colorScheme.secondary,
+              color: context.theme.colorScheme.secondary,
               onPressed: () => Navigator.pop(context),
               child: const Text("DONE"),
             ),

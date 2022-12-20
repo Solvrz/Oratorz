@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/setup.dart';
 import './widgets/committee_card.dart';
 import './widgets/load_committee.dart';
@@ -19,7 +18,7 @@ class SetupPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             "Setup Committee",
-            style: theme.textTheme.headline5,
+            style: context.textTheme.headline5,
           ),
           backgroundColor: Colors.white,
         ),
@@ -29,7 +28,6 @@ class SetupPage extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: const [
                     LoadCommitteeCard(),
                     SizedBox(height: 12),

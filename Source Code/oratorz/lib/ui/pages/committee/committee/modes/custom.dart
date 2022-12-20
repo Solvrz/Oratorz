@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/stopwatch.dart';
 
@@ -20,7 +19,7 @@ class CustomTab extends StatelessWidget {
       children: [
         Card(
           child: Container(
-            width: MediaQuery.of(context).size.width / 5,
+            width: context.width / 5,
             margin: const EdgeInsets.symmetric(
               horizontal: 100,
               vertical: 18,
@@ -28,7 +27,7 @@ class CustomTab extends StatelessWidget {
             child: const StopwatchWidget(tag: "custom"),
           ),
         ),
-        Text("Carousel Placeholder", style: theme.textTheme.bodyText1),
+        Text("Carousel Placeholder", style: context.textTheme.bodyText1),
       ],
     );
   }

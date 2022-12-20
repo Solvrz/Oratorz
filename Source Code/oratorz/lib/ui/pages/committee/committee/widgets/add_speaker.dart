@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
@@ -22,7 +21,7 @@ class AddSpeakerCard extends StatelessWidget {
       child: Card(
         child: Container(
           constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.8,
+            maxHeight: context.height * 0.8,
           ),
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -30,12 +29,13 @@ class AddSpeakerCard extends StatelessWidget {
             children: [
               Text(
                 "Add Speaker",
-                style: theme.textTheme.headline5,
+                style: context.textTheme.headline5,
               ),
               const SizedBox(height: 8),
               Obx(() {
                 final List<String> speakers =
-                    _committeeController.committee.value.presentDelegates;
+                    _committeeController.committee.value?.presentDelegates ??
+                        [];
 
                 return speakers.isNotEmpty
                     ? Expanded(
@@ -72,7 +72,7 @@ class AddSpeakerCard extends StatelessWidget {
                       )
                     : Text(
                         "Conduct a roll call before adding speakers",
-                        style: theme.textTheme.bodyText1,
+                        style: context.textTheme.bodyText1,
                       );
               }),
             ],

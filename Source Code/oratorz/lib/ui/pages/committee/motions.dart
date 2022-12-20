@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/ui/widgets/border_button.dart';
 import '/ui/widgets/filled_button.dart';
 
@@ -23,12 +23,12 @@ class MotionsPage extends StatelessWidget {
                         children: [
                           Text(
                             "Motion on Floor",
-                            style: theme.textTheme.headline5,
+                            style: context.textTheme.headline5,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             "No motions currently on the floor",
-                            style: theme.textTheme.bodyText1,
+                            style: context.textTheme.bodyText1,
                           ),
                           const Divider(height: 16),
                           const SizedBox(height: 8),
@@ -70,12 +70,12 @@ class MotionsPage extends StatelessWidget {
                         children: [
                           Text(
                             "Future Motions",
-                            style: theme.textTheme.headline5,
+                            style: context.textTheme.headline5,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             "No future motions added",
-                            style: theme.textTheme.bodyText1,
+                            style: context.textTheme.bodyText1,
                           ),
                           const Divider(height: 16),
                           const SizedBox(height: 8),
@@ -149,6 +149,11 @@ class AddMotionsCard extends StatelessWidget {
         "onTap": () {},
       },
       {
+        "name": "Tour de Table",
+        "icon": Icons.autorenew,
+        "onTap": () {},
+      },
+      {
         "name": "Appeal Chair's Decision",
         "icon": Icons.block,
         "onTap": () {},
@@ -169,26 +174,25 @@ class AddMotionsCard extends StatelessWidget {
             children: [
               Text(
                 "Add Motions",
-                style: theme.textTheme.headline5,
+                style: context.textTheme.headline5,
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: List.generate(
-                    motions.length,
-                    (index) {
-                      final Map<String, dynamic> _motion = motions[index];
+                child: ListView.builder(
+                  itemCount: motions.length,
+                  itemBuilder: (context, index) {
+                    final Map<String, dynamic> _motion = motions[index];
 
-                      return BorderButton(
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: BorderButton(
                         text: _motion["name"],
                         icon: _motion["icon"],
                         color: Colors.amber.shade400,
                         onPressed: _motion["onTap"],
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

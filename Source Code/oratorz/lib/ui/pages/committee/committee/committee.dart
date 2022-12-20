@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/mode.dart';
 import '/tools/controllers/route.dart';
@@ -63,11 +62,11 @@ class ModeHeader extends StatelessWidget {
               () => RichText(
                 text: TextSpan(
                   text: "Agenda: ",
-                  style: theme.textTheme.headline2,
+                  style: context.textTheme.headline2,
                   children: [
                     TextSpan(
-                      text: _committeeController.committee.value.agenda,
-                      style: theme.textTheme.headline5!
+                      text: _committeeController.committee.value?.agenda,
+                      style: context.textTheme.headline5!
                           .copyWith(fontWeight: FontWeight.w500),
                     ),
                   ],
@@ -78,7 +77,7 @@ class ModeHeader extends StatelessWidget {
             InkWell(
               onTap: () async {
                 final TextEditingController _controller = TextEditingController(
-                  text: _committeeController.committee.value.agenda,
+                  text: _committeeController.committee.value?.agenda,
                 );
 
                 await showDialog(
@@ -89,7 +88,8 @@ class ModeHeader extends StatelessWidget {
                       autofocus: true,
                       controller: _controller,
                       onSubmitted: (value) {
-                        _committeeController.setAgenda(_controller.text);
+                        _committeeController.committee.value?.agenda =
+                            _controller.text;
 
                         Navigator.pop(context);
                       },
@@ -106,7 +106,8 @@ class ModeHeader extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          _committeeController.setAgenda(_controller.text);
+                          _committeeController.committee.value?.agenda =
+                              _controller.text;
 
                           Navigator.pop(context);
                         },
@@ -147,7 +148,7 @@ class ModeHeader extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: theme.colorScheme.secondary),
+              border: Border.all(color: context.theme.colorScheme.secondary),
             ),
             child: Row(
               children: [
@@ -156,12 +157,12 @@ class ModeHeader extends StatelessWidget {
                     children: [
                       Icon(
                         _modeController.currentTab()["icon"],
-                        color: theme.colorScheme.tertiary,
+                        color: context.theme.colorScheme.tertiary,
                       ),
                       const VerticalDivider(),
                       Text(
                         _modeController.currentTab()["name"],
-                        style: theme.textTheme.headline6,
+                        style: context.textTheme.bodyText1,
                       ),
                     ],
                   ),
@@ -169,7 +170,7 @@ class ModeHeader extends StatelessWidget {
                 const SizedBox(width: 20),
                 Icon(
                   Icons.arrow_drop_down,
-                  color: theme.colorScheme.secondary,
+                  color: context.theme.colorScheme.secondary,
                   size: 36,
                 ),
               ],
@@ -188,7 +189,7 @@ class ModeHeader extends StatelessWidget {
                       children: [
                         Icon(
                           tab["icon"],
-                          color: theme.colorScheme.tertiary,
+                          color: context.theme.colorScheme.tertiary,
                         ),
                         const VerticalDivider(),
                         Text(tab["name"]),

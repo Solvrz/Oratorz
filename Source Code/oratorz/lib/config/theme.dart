@@ -88,10 +88,11 @@ class OratorzTheme {
         ),
       ),
       scrollbarTheme: ScrollbarThemeData(
-        radius: const Radius.circular(10),
-        thumbColor: MaterialStateProperty.all(OratorzColors.secondaryColor),
-        thickness: MaterialStateProperty.all(2),
         interactive: true,
+        crossAxisMargin: -2,
+        thumbColor: MaterialStateProperty.all(OratorzColors.secondaryColor),
+        thickness: MaterialStateProperty.all(5),
+        radius: const Radius.circular(20),
       ),
       snackBarTheme: const SnackBarThemeData(
         elevation: 10,

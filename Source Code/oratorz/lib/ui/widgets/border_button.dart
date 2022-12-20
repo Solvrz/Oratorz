@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '/config/constants/constants.dart';
+import 'package:get/get.dart';
 
 class BorderButton extends StatelessWidget {
   final String text;
@@ -56,7 +55,7 @@ class BorderButton extends StatelessWidget {
                   color: Colors.black,
                 ),
               ],
-              Text(text, style: style ?? theme.textTheme.bodyLarge),
+              Text(text, style: style ?? context.textTheme.bodyLarge),
             ],
           ),
         ),

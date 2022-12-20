@@ -30,11 +30,15 @@ class Committee {
     final CommitteeController _committeeController =
         Get.find<CommitteeController>();
 
-    return delegates
-        .where(
-          (element) => _committeeController.rollCall[element]! > 0,
-        )
-        .toList();
+    if (_committeeController.rollCall != null) {
+      return delegates
+          .where(
+            (element) => _committeeController.rollCall![element]! > 0,
+          )
+          .toList();
+    } else {
+      return [];
+    }
   }
 
   void addSpeaker(String delegate) => speakers.add(delegate);

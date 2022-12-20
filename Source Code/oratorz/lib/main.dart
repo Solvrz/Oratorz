@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '/config/constants/constants.dart';
 import '/config/theme.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
-import 'config/constants/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,11 +33,6 @@ class Oratorz extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp.router(
         title: "Oratorz",
         theme: OratorzTheme.of(context),
-        builder: (context, widget) {
-          theme = OratorzTheme.of(context);
-
-          return widget!;
-        },
         routerConfig: GoRouter(
           // TODO: Remove after Testing
           initialLocation: "/committee/gsl",

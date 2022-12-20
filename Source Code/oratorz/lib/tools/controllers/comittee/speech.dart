@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 class SpeechController extends GetxController {
   final Duration? overallDuration;
 
+  SpeechController({this.overallDuration});
+
   RxString currentSpeaker = "".obs;
   RxMap<String, String> subtopic = {"": ""}.obs;
-
-  SpeechController({this.overallDuration});
 
   bool get hasSubtopic => subtopic.keys.first != "";
   RxBool isSpeaking = false.obs;

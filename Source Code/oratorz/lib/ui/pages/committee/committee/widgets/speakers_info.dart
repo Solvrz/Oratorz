@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
 
@@ -24,7 +23,7 @@ class SpeakersInfoWidget extends StatelessWidget {
             children: [
               Text(
                 "Current Speaker",
-                style: theme.textTheme.headline5,
+                style: context.textTheme.headline5,
               ),
               TextButton(
                 onPressed: _speechController.nextSpeaker,
@@ -56,7 +55,7 @@ class SpeakersInfoWidget extends StatelessWidget {
                   )
                 : Text(
                     "No speaker currently added",
-                    style: theme.textTheme.bodyText1,
+                    style: context.textTheme.bodyText1,
                   ),
           ),
           const Divider(height: 16),
@@ -64,7 +63,7 @@ class SpeakersInfoWidget extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
               "Upcoming Speakers",
-              style: theme.textTheme.headline5,
+              style: context.textTheme.headline5,
             ),
           ),
           Obx(
@@ -129,7 +128,7 @@ class SpeakersInfoWidget extends StatelessWidget {
                   )
                 : Text(
                     "No upcoming speakers",
-                    style: theme.textTheme.bodyText1,
+                    style: context.textTheme.bodyText1,
                   ),
           ),
           const SizedBox(height: 8),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '/config/constants/constants.dart';
+import 'package:get/get.dart';
 
 class VoteTab extends StatelessWidget {
   const VoteTab({super.key});
@@ -8,7 +7,7 @@ class VoteTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
+      width: context.width / 2,
       child: Card(
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -16,7 +15,7 @@ class VoteTab extends StatelessWidget {
             vertical: 18,
           ),
           child: Center(
-            child: Text("Vote Tab", style: theme.textTheme.headline2),
+            child: Text("Vote Tab", style: context.textTheme.headline2),
           ),
         ),
       ),

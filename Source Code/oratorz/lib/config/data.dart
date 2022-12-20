@@ -1,4 +1,4 @@
-const Map<String, String> DELEGATES = {
+const Map<String, String> COUNTRIES = {
   "AND": "Andorra",
   "ARE": "United Arab Emirates",
   "AFG": "Afghanistan",
@@ -48,7 +48,7 @@ const Map<String, String> DELEGATES = {
   "DMA": "Dominica",
   "DOM": "Dominican Republic",
   "DZA": "Algeria",
-  "EU": "European Union",
+  "EUR": "European Union",
   "ECU": "Ecuador",
   "EST": "Estonia",
   "ESH": "Sahrawi",
@@ -195,8 +195,19 @@ const Map<String, String> DELEGATES = {
   "YEM": "Yemen",
   "ZAF": "South Africa",
   "ZMB": "Zambia",
-  "ZWE": "Zimbabwe"
+  "ZWE": "Zimbabwe",
 };
+
+const Map<String, String> AIPPM = {
+  "BJP 1": "Narendra Modi",
+  "BJP 2": "Amit Shah",
+  "INC 1": "Rahul Gandhi",
+  "INC 2": "Priyanka Gandhi",
+  "AAP 1": "Arvind Kejriwal",
+  "AAP 2": "Manish Sisodhia",
+};
+
+const Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
 
 const Map<String, List<String>> COMMITTEES = {
   "UNSC": [
@@ -834,7 +845,7 @@ const Map<String, List<String>> COMMITTEES = {
     "BRA",
     "CAN",
     "CHN",
-    "EU",
+    "EUR",
     "DEU",
     "FRA",
     "GBR",

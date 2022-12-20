@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
 
@@ -18,21 +17,21 @@ class PastSpeakersCard extends StatelessWidget {
     return Expanded(
       child: Card(
         child: Container(
-          height: MediaQuery.of(context).size.height / 2.5,
+          height: context.height / 2.5,
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Past Speakers",
-                style: theme.textTheme.headline5,
+                style: context.textTheme.headline5,
               ),
               const SizedBox(height: 8),
               Obx(
                 () => _speechController.pastSpeakers.isEmpty
                     ? Text(
                         "No past speakers have been recorded",
-                        style: theme.textTheme.bodyText1,
+                        style: context.textTheme.bodyText1,
                       )
                     : Expanded(
                         child: SingleChildScrollView(
@@ -59,7 +58,7 @@ class PastSpeakersCard extends StatelessWidget {
                                   contentPadding: EdgeInsets.zero,
                                   trailing: Text(
                                     "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, '0')}",
-                                    style: theme.textTheme.bodyText1,
+                                    style: context.textTheme.bodyText1,
                                   ),
                                 );
                               },

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/dialog_box.dart';
 
@@ -24,7 +23,7 @@ class SettingsDialog extends StatelessWidget {
               children: [
                 Text(
                   "Speaker Time",
-                  style: theme.textTheme.headline5,
+                  style: context.textTheme.headline5,
                 ),
                 const SizedBox(height: 10),
                 Container(
@@ -57,19 +56,53 @@ class SettingsDialog extends StatelessWidget {
                 if (controller.hasSubtopic) ...[
                   const SizedBox(height: 20),
                   Text(
-                    controller.subtopic.keys.first,
-                    style: theme.textTheme.headline5,
+                    "Speaker Time",
+                    style: context.textTheme.headline5,
                   ),
                   const SizedBox(height: 10),
                   Container(
                     margin: const EdgeInsets.only(left: 10),
-                    child: TextField(
-                      cursorColor: Colors.black,
-                      onChanged: (value) => controller
-                          .subtopic[controller.subtopic.keys.first] = value,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TimerButton(
+                          value: controller.duration.value.inMinutes,
+                          change: (value) {
+                            if (controller.duration.value.inMinutes + value <=
+                                60) {
+                              controller.duration.value +=
+                                  Duration(minutes: value);
+                            }
+                          },
+                          subtitle: "minutes",
+                        ),
+                        TimerButton(
+                          value: controller.duration.value.inSeconds -
+                              controller.duration.value.inMinutes * 60,
+                          change: (value) => controller.duration.value +=
+                              Duration(seconds: value),
+                          subtitle: "seconds",
+                        ),
+                      ],
                     ),
-                  )
-                ]
+                  ),
+                  if (controller.hasSubtopic) ...[
+                    const SizedBox(height: 20),
+                    Text(
+                      controller.subtopic.keys.first,
+                      style: context.textTheme.headline5,
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      child: TextField(
+                        cursorColor: Colors.black,
+                        onChanged: (value) => controller
+                            .subtopic[controller.subtopic.keys.first] = value,
+                      ),
+                    )
+                  ]
+                ],
               ],
             ),
           ),
@@ -127,7 +160,7 @@ class TimerButton extends StatelessWidget {
                       border: InputBorder.none,
                       fillColor: Colors.transparent,
                       hintText: "00",
-                      hintStyle: theme.textTheme.headline1!.copyWith(
+                      hintStyle: context.textTheme.headline1!.copyWith(
                         color: Colors.grey.shade400,
                       ),
                     ),
@@ -145,7 +178,7 @@ class TimerButton extends StatelessWidget {
                         TextPosition(offset: controller.text.length),
                       );
                     },
-                    style: theme.textTheme.headline1!.copyWith(
+                    style: context.textTheme.headline1!.copyWith(
                       color: Colors.grey.shade700,
                     ),
                   ),
@@ -184,7 +217,7 @@ class TimerButton extends StatelessWidget {
         ),
         Text(
           subtitle.toUpperCase(),
-          style: theme.textTheme.bodyText1!.copyWith(
+          style: context.textTheme.bodyText1!.copyWith(
             fontSize: 12,
             color: Colors.grey.shade600,
             letterSpacing: 1.5,

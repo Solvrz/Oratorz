@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/constants.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/add_speaker.dart';
 import '../widgets/speakers_info.dart';
@@ -18,13 +17,13 @@ class SingleTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width / 2,
+          width: context.width / 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Card(
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 2.25,
+                  height: context.height / 2.25,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 18,
@@ -45,7 +44,7 @@ class SingleTab extends StatelessWidget {
               Center(
                 child: Text(
                   "Carousel Placeholder",
-                  style: theme.textTheme.bodyText1,
+                  style: context.textTheme.bodyText1,
                 ),
               ),
             ],

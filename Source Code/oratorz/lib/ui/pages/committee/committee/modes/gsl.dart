@@ -18,13 +18,13 @@ class GSLTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width / 2,
+          width: context.width / 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Card(
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 2.25,
+                  height: context.height / 2.25,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 18,
