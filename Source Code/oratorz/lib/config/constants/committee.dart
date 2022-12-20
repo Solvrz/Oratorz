@@ -61,12 +61,13 @@ const List<Map<String, dynamic>> COMMITTEE_MODES = [
     "icon": Icons.autorenew,
     "tab": TourDeTableTab(),
   },
-  {
-    "route": "/committee/vote",
-    "name": "Vote",
-    "icon": Icons.ballot,
-    "tab": VoteTab(),
-  },
+  // TODO: Remove
+  // {
+  //   "route": "/committee/vote",
+  //   "name": "Vote",
+  //   "icon": Icons.ballot,
+  //   "tab": VoteTab(),
+  // },
   {
     "route": "/committee/single",
     "name": "Single Speaker",

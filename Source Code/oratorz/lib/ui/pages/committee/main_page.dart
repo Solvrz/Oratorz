@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart' hide TabController;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:oratorz/models/committee.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
+import '/models/committee.dart';
 import '/tools/arguments/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
-import 'roll_call.dart';
+import './roll_call.dart';
 
+// TODO: Fix Mode Double Timer
+// TODO: Extra Not passing through Go Router
 class CommitteeMainPage extends StatefulWidget {
   const CommitteeMainPage({super.key});
 
@@ -24,6 +26,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final RouteController _routeController = Get.find<RouteController>();
 
+      // ignore: unnecessary_nullable_for_final_variable_declarations
       final CommitteeArguments? args =
           _routeController.args.value as CommitteeArguments?
               // TODO: Remove after Testing

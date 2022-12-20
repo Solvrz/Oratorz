@@ -26,6 +26,7 @@ void main() async {
   runApp(const Oratorz());
 }
 
+// TODO: Flags not loading on Firebase Hosting
 class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 
