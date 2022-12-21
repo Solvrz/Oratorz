@@ -15,7 +15,7 @@ class TourDeTableTab extends StatelessWidget {
     final SpeechController _speechController =
         Get.put(SpeechController(), tag: "tourdetable");
 
-    _speechController.subtopic.value = {"Topic": ""};
+    _speechController.subtopic.value = {"Topic": "Your Topic"};
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,10 +35,7 @@ class TourDeTableTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      // TODO: Ask opnion On Input UI
-                      Center(
-                        child: StopwatchWidget(tag: "tourdetable"),
-                      ),
+                      Center(child: StopwatchWidget(tag: "tourdetable")),
                       SizedBox(width: 48),
                       SpeakersInfoWidget(tag: "tourdetable"),
                     ],

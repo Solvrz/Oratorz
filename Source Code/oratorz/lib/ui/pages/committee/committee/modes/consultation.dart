@@ -12,7 +12,7 @@ class ConsultationTab extends StatelessWidget {
     final SpeechController _speechController =
         Get.put(SpeechController(), tag: "consultation");
 
-    _speechController.subtopic.value = {"Topic": ""};
+    _speechController.subtopic.value = {"Topic": "Your Topic"};
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

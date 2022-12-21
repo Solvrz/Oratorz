@@ -31,9 +31,7 @@ class SingleTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Center(
-                        child: StopwatchWidget(tag: "single"),
-                      ),
+                      Center(child: StopwatchWidget(tag: "single")),
                       SizedBox(width: 48),
                       SpeakersInfoWidget(tag: "single"),
                     ],

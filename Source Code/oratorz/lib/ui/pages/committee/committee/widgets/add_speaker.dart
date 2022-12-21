@@ -34,8 +34,7 @@ class AddSpeakerCard extends StatelessWidget {
               const SizedBox(height: 8),
               Obx(() {
                 final List<String> speakers =
-                    _committeeController.committee.value?.presentDelegates ??
-                        [];
+                    _committeeController.committee.value.presentDelegates;
 
                 return speakers.isNotEmpty
                     ? Expanded(

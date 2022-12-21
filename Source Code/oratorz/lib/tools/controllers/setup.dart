@@ -33,7 +33,7 @@ class SetupController extends GetxController {
 
   void clear() => committee.update((value) {
         value!.delegates.clear();
-        value.name = "";
+        value.name = "Your Committee";
       });
 
   void sort() =>

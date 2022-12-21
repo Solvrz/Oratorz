@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '/config/data.dart';
 import '/tools/controllers/setup.dart';
+import '/tools/extensions.dart';
 import '/ui/widgets/delegate_tile.dart';
 
 class NewCommitteeCard extends StatelessWidget {
@@ -64,40 +65,44 @@ class CommitteeType extends StatefulWidget {
 
 class _CommitteeTypeState extends State<CommitteeType> {
   final SetupController _setupController = Get.find<SetupController>();
-  bool open = false;
+  final TextEditingController _searchController = TextEditingController();
 
-  // TODO: Search not Working
+  bool open = false;
 
   @override
   Widget build(BuildContext context) => SizedBox(
         height: open ? context.height / 2.1 : 65,
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => setState(() => open = !open),
-                    icon:
-                        Icon(open ? Icons.arrow_right : Icons.arrow_drop_down),
-                  ),
-                  Text(
-                    widget.title,
-                    style: context.textTheme.headline6,
-                  ),
-                ],
+            InkWell(
+              onTap: () => setState(() => open = !open),
+              hoverColor: const Color.fromARGB(255, 250, 250, 250),
+              child: Container(
+                margin: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Icon(open ? Icons.arrow_right : Icons.arrow_drop_down),
+                    Text(
+                      widget.title,
+                      style: context.textTheme.headline6,
+                    ),
+                  ],
+                ),
               ),
             ),
             if (open) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextField(
+                  controller: _searchController,
+                  onChanged: (_) => _setupController.update(),
                   cursorColor: Colors.grey[600],
                   decoration: InputDecoration(
                     hintText: "Search",
@@ -111,29 +116,47 @@ class _CommitteeTypeState extends State<CommitteeType> {
                 ),
               ),
               GetBuilder<SetupController>(
-                builder: (_) => Expanded(
-                  child: ListView.separated(
-                    itemCount: widget.delegates.length,
-                    itemBuilder: (context, index) {
-                      final String _delegate = widget.delegates[index];
+                builder: (_) {
+                  final List<String> _delegates = [];
+                  widget.delegates.forEach(
+                    (_delegate) {
+                      final String _search = _searchController.toText();
 
-                      return DelegateTile(
-                        delegate: _delegate,
-                        onTap: () {
-                          _setupController.add(_delegate);
-                          _setupController.update();
-                        },
-                        trailing: Icon(Icons.add, color: Colors.grey[400]),
-                      );
+                      if (_search != "") {
+                        if (DELEGATES[_delegate]!
+                            .toLowerCase()
+                            .contains(_search.toLowerCase())) {
+                          _delegates.add(_delegate);
+                        }
+                      } else {
+                        _delegates.add(_delegate);
+                      }
                     },
-                    separatorBuilder: (context, index) => Divider(
-                      indent: 65,
-                      height: 5,
-                      thickness: 0.5,
-                      color: Colors.grey[400],
-                    ),
-                  ),
-                ),
+                  );
+
+                  return _delegates.isNotEmpty
+                      ? Expanded(
+                          child: ListView.separated(
+                            itemCount: _delegates.length,
+                            itemBuilder: (context, index) => DelegateTile(
+                              delegate: _delegates[index],
+                              onTap: () {
+                                _setupController.add(_delegates[index]);
+                                _setupController.update();
+                              },
+                              trailing:
+                                  Icon(Icons.add, color: Colors.grey[400]),
+                            ),
+                            separatorBuilder: (context, index) => Divider(
+                              indent: 65,
+                              height: 5,
+                              thickness: 0.5,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                        )
+                      : const Text("Delegate matching your search not found.");
+                },
               ),
             ],
           ],

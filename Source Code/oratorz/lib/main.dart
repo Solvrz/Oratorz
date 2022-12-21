@@ -26,7 +26,6 @@ void main() async {
   runApp(const Oratorz());
 }
 
-// TODO: Flags not loading on Firebase Hosting
 class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 
@@ -35,8 +34,7 @@ class Oratorz extends StatelessWidget {
         title: "Oratorz",
         theme: OratorzTheme.of(context),
         routerConfig: GoRouter(
-          // TODO: Remove after Testing
-          initialLocation: "/committee/gsl",
+          initialLocation: "/setup",
           errorBuilder: (context, args) {
             Get.put(RouteController(arguments: args));
 

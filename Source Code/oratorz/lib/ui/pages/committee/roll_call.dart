@@ -50,103 +50,101 @@ class RollCallDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: _committeeController.committee.value != null
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: List.generate(
-                          _committeeController.committee.value!.count,
-                          (index) {
-                            final String _delegate = _committeeController
-                                .committee.value!.delegates[index];
+              child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(
+                    _committeeController.committee.value.count,
+                    (index) {
+                      final String _delegate =
+                          _committeeController.committee.value.delegates[index];
 
-                            return GetBuilder<CommitteeController>(
-                              builder: (_) => Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                child: ListTile(
-                                  hoverColor: Colors.grey[100],
-                                  leading: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.shade400,
-                                          offset: const Offset(1, 1),
-                                          blurRadius: 4,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Image.asset(
-                                      "flags/${_delegate.split(" ")[0]}.png",
-                                    ),
+                      return GetBuilder<CommitteeController>(
+                        builder: (_) => Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          child: ListTile(
+                            hoverColor: Colors.grey[100],
+                            leading: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade400,
+                                    offset: const Offset(1, 1),
+                                    blurRadius: 4,
                                   ),
-                                  title: Text(
-                                    DELEGATES[_delegate]!,
-                                    style: context.textTheme.bodyText1,
-                                  ),
-                                  trailing: Builder(
-                                    builder: (context) {
-                                      final int? rollCall = _committeeController
-                                          .rollCall?[_delegate];
-
-                                      return Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          BorderButton(
-                                            text: "PV",
-                                            color: Colors.blue.shade400,
-                                            onPressed: () {
-                                              _committeeController.setRollCall(
-                                                _delegate,
-                                                2,
-                                              );
-
-                                              _committeeController.update();
-                                            },
-                                            filled: rollCall == 2,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          BorderButton(
-                                            text: "P",
-                                            color: Colors.amber.shade400,
-                                            onPressed: () {
-                                              _committeeController.setRollCall(
-                                                _delegate,
-                                                1,
-                                              );
-
-                                              _committeeController.update();
-                                            },
-                                            filled: rollCall == 1,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          BorderButton(
-                                            text: "A",
-                                            color: Colors.red.shade400,
-                                            onPressed: () {
-                                              _committeeController.setRollCall(
-                                                _delegate,
-                                                0,
-                                              );
-
-                                              _committeeController.update();
-                                            },
-                                            filled: rollCall == 0,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
+                                ],
                               ),
-                            );
-                          },
+                              child: Image.asset(
+                                "flags/${_delegate.split(" ")[0]}.png",
+                              ),
+                            ),
+                            title: Text(
+                              DELEGATES[_delegate]!,
+                              style: context.textTheme.bodyText1,
+                            ),
+                            trailing: Builder(
+                              builder: (context) {
+                                final int? rollCall =
+                                    _committeeController.rollCall[_delegate];
+
+                                return Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    BorderButton(
+                                      text: "PV",
+                                      color: Colors.blue.shade400,
+                                      onPressed: () {
+                                        _committeeController.setRollCall(
+                                          _delegate,
+                                          2,
+                                        );
+
+                                        _committeeController.update();
+                                      },
+                                      filled: rollCall == 2,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    BorderButton(
+                                      text: "P",
+                                      color: Colors.amber.shade400,
+                                      onPressed: () {
+                                        _committeeController.setRollCall(
+                                          _delegate,
+                                          1,
+                                        );
+
+                                        _committeeController.update();
+                                      },
+                                      filled: rollCall == 1,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    BorderButton(
+                                      text: "A",
+                                      color: Colors.red.shade400,
+                                      onPressed: () {
+                                        _committeeController.setRollCall(
+                                          _delegate,
+                                          0,
+                                        );
+
+                                        _committeeController.update();
+                                      },
+                                      filled: rollCall == 0,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                    )
-                  : const CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
           ],
         ),

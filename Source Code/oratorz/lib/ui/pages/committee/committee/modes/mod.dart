@@ -17,7 +17,7 @@ class ModTab extends StatelessWidget {
       tag: "mod",
     );
 
-    _speechController.subtopic.value = {"Topic": ""};
+    _speechController.subtopic.value = {"Topic": "Your Topic"};
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,9 +37,7 @@ class ModTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Center(
-                        child: StopwatchWidget(tag: "mod"),
-                      ),
+                      Center(child: StopwatchWidget(tag: "mod")),
                       SizedBox(width: 48),
                       SpeakersInfoWidget(tag: "mod"),
                     ],

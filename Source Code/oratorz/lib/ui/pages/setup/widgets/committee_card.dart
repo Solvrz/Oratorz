@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/tools/arguments/committee.dart';
+import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -121,12 +121,15 @@ class CommitteeCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 TextButton(
-                  onPressed: () => context.go(
-                    "/committee/gsl",
-                    extra: CommitteeArguments(
-                      committee: _setupController.committee.value,
-                    ),
-                  ),
+                  onPressed: () {
+                    Get.put<CommitteeController>(
+                      CommitteeController(
+                        committee: _setupController.committee.value,
+                      ),
+                    );
+
+                    context.pushReplacement("/committee/gsl");
+                  },
                   child: const Text("Start Session"),
                 ),
               ],

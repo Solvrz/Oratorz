@@ -79,19 +79,94 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
     }
 
     return SizedBox(
-      height: 250,
+      height: context.height / 2,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (_speechController.subtopic.values.first != "")
-            RichText(
-              text: TextSpan(
-                text: "${_speechController.subtopic.keys.first}: ",
-                style: context.theme.textTheme.headline2,
-                children: [
-                  TextSpan(text: _speechController.subtopic.values.first)
-                ],
-              ),
+          if (_speechController.subtopic.keys.first != "") ...[
+            Row(
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: "${_speechController.subtopic.keys.first}: ",
+                    style: context.textTheme.headline2,
+                    children: [
+                      TextSpan(
+                        text: _speechController.subtopic.values.first,
+                        style: context.textTheme.headline5!
+                            .copyWith(fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                InkWell(
+                  onTap: () async {
+                    final _subtopic = _speechController.subtopic.keys.first;
+                    final TextEditingController _controller =
+                        TextEditingController(
+                      text: _speechController.subtopic[_subtopic],
+                    );
+
+                    await showDialog(
+                      context: context,
+                      builder: (context) => DialogBox(
+                        heading: "Set $_subtopic",
+                        content: TextField(
+                          autofocus: true,
+                          controller: _controller,
+                          onSubmitted: (value) {
+                            _speechController.subtopic[_subtopic] =
+                                _controller.text;
+
+                            Navigator.pop(context);
+                          },
+                          keyboardType: TextInputType.name,
+                          cursorColor: Colors.grey[600],
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            hintText: _subtopic,
+                          ),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                        actionsPadding: const EdgeInsets.all(16),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              _speechController.subtopic[_subtopic] =
+                                  _controller.text;
+
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Select"),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                  hoverColor: const Color.fromARGB(255, 250, 250, 250),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.amber.shade400),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.amber.shade400,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 10),
+          ],
           Expanded(
             child: Row(
               children: [
@@ -174,8 +249,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                           final CommitteeController _committeeController =
                               Get.find<CommitteeController>();
                           final List<String> delegates = _committeeController
-                                  .committee.value?.presentDelegates ??
-                              [];
+                              .committee.value.presentDelegates;
 
                           if (_speechController.currentSpeaker.value != "") {
                             delegates.remove(

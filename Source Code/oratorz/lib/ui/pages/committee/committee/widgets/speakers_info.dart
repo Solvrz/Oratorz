@@ -91,6 +91,12 @@ class SpeakersInfoWidget extends StatelessWidget {
                                         _speechController.removeSpeaker(
                                       _speechController.nextSpeakers[index],
                                     ),
+                                    hoverColor: const Color.fromARGB(
+                                      255,
+                                      250,
+                                      250,
+                                      250,
+                                    ),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),

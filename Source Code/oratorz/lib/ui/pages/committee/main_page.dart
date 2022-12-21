@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart' hide TabController;
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
-import '/models/committee.dart';
-import '/tools/arguments/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import './roll_call.dart';
 
-// TODO: Fix Mode Double Timer
-// TODO: Extra Not passing through Go Router
 class CommitteeMainPage extends StatefulWidget {
   const CommitteeMainPage({super.key});
 
@@ -20,52 +17,26 @@ class CommitteeMainPage extends StatefulWidget {
 }
 
 class _CommitteeMainPageState extends State<CommitteeMainPage> {
-  CommitteeController? _committeeController;
-
-  void setArgs() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RouteController _routeController = Get.find<RouteController>();
-
-      // ignore: unnecessary_nullable_for_final_variable_declarations
-      final CommitteeArguments? args =
-          _routeController.args.value as CommitteeArguments?
-              // TODO: Remove after Testing
-              ??
-              CommitteeArguments(committee: Committee.fromTemplate("UNSC"));
-
-      // if (args == null) {
-      //   context.go("/setup");
-      // } else {
-      _committeeController = Get.put<CommitteeController>(
-        CommitteeController(
-          committee: args?.committee,
-          tabVal: COMMITTEE_TABS
-              .indexWhere(
-                (tab) =>
-                    tab["route"].toString().contains(_routeController.path),
-              )
-              .clamp(0, double.infinity)
-              .toInt(),
-        ),
-      );
-
-      setState(() {});
-      // }
-    });
-  }
+  late final CommitteeController _committeeController;
 
   @override
   void initState() {
     super.initState();
 
-    setArgs();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    setArgs();
+    if (Get.isRegistered<CommitteeController>()) {
+      _committeeController = Get.find<CommitteeController>()
+        ..tabVal = COMMITTEE_TABS
+            .indexWhere(
+              (tab) => tab["route"]
+                  .toString()
+                  .contains(Get.find<RouteController>().path),
+            )
+            .clamp(0, double.infinity)
+            .toInt();
+    } else {
+      SchedulerBinding.instance
+          .addPostFrameCallback((_) => context.pushReplacement("/setup"));
+    }
   }
 
   @override
@@ -91,7 +62,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                   child: Column(
                     children: [
                       Text(
-                        _committeeController?.committee.value?.name ?? "",
+                        _committeeController.committee.value.name,
                         style: context.textTheme.headline2!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
@@ -100,25 +71,22 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                       ...List.generate(COMMITTEE_TABS.length, (index) {
                         final Map<String, dynamic> _tab = COMMITTEE_TABS[index];
 
-                        return _committeeController != null
-                            ? Obx(
-                                () => SidebarTile(
-                                  title: _tab["title"],
-                                  icon: _tab["icon"],
-                                  onTap: () {
-                                    _committeeController?.tabVal = index;
-                                    html.window.history.pushState(
-                                      null,
-                                      "tab",
-                                      COMMITTEE_TABS[index]["route"],
-                                    );
-                                  },
-                                  selected:
-                                      _committeeController?.tabVal == index,
-                                  iconColor: _tab["color"],
-                                ),
-                              )
-                            : const CircularProgressIndicator();
+                        return Obx(
+                          () => SidebarTile(
+                            title: _tab["title"],
+                            icon: _tab["icon"],
+                            onTap: () {
+                              _committeeController.tabVal = index;
+                              html.window.history.pushState(
+                                null,
+                                "tab",
+                                COMMITTEE_TABS[index]["route"],
+                              );
+                            },
+                            selected: _committeeController.tabVal == index,
+                            iconColor: _tab["color"],
+                          ),
+                        );
                       }),
                       SidebarTile(
                         title: "Roll Call",
@@ -132,7 +100,10 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                       SidebarTile(
                         title: "Setup",
                         icon: Icons.settings_outlined,
-                        onTap: () => context.go("/setup"),
+                        onTap: () {
+                          Get.delete<CommitteeController>();
+                          context.pushReplacement("/setup");
+                        },
                       ),
                     ],
                   ),
@@ -142,11 +113,9 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
             Expanded(
               child: Container(
                 margin: const EdgeInsets.all(16),
-                child: _committeeController != null
-                    ? Obx(
-                        () => _committeeController!.currentTab()["tab"],
-                      )
-                    : const CircularProgressIndicator(),
+                child: Obx(
+                  () => _committeeController.currentTab()["tab"],
+                ),
               ),
             ),
           ],

@@ -56,87 +56,88 @@ class ModeHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            Obx(
-              () => RichText(
+        GetBuilder<CommitteeController>(
+          builder: (controller) => Row(
+            children: [
+              RichText(
                 text: TextSpan(
                   text: "Agenda: ",
                   style: context.textTheme.headline2,
                   children: [
                     TextSpan(
-                      text: _committeeController.committee.value?.agenda,
+                      text: _committeeController.committee.value.agenda,
                       style: context.textTheme.headline5!
                           .copyWith(fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(width: 16),
-            InkWell(
-              onTap: () async {
-                final TextEditingController _controller = TextEditingController(
-                  text: _committeeController.committee.value?.agenda,
-                );
+              const SizedBox(width: 16),
+              InkWell(
+                onTap: () async {
+                  final TextEditingController _controller =
+                      TextEditingController(
+                    text: _committeeController.committee.value.agenda,
+                  );
 
-                await showDialog(
-                  context: context,
-                  builder: (context) => DialogBox(
-                    heading: "Set Committee Name",
-                    content: TextField(
-                      autofocus: true,
-                      controller: _controller,
-                      onSubmitted: (value) {
-                        _committeeController.committee.value?.agenda =
-                            _controller.text;
-
-                        Navigator.pop(context);
-                      },
-                      keyboardType: TextInputType.name,
-                      cursorColor: Colors.grey[600],
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        hintText: "Agenda",
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                    actionsPadding: const EdgeInsets.all(16),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          _committeeController.committee.value?.agenda =
+                  await showDialog(
+                    context: context,
+                    builder: (context) => DialogBox(
+                      heading: "Set Committee Name",
+                      content: TextField(
+                        autofocus: true,
+                        controller: _controller,
+                        onSubmitted: (value) {
+                          _committeeController.committee.value.agenda =
                               _controller.text;
 
                           Navigator.pop(context);
                         },
-                        child: const Text("Select"),
-                      )
-                    ],
-                  ),
-                );
+                        keyboardType: TextInputType.name,
+                        cursorColor: Colors.grey[600],
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          hintText: "Agenda",
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                      actionsPadding: const EdgeInsets.all(16),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            _committeeController.committee.value.agenda =
+                                _controller.text;
 
-                _committeeController.update();
-              },
-              hoverColor: const Color.fromARGB(255, 250, 250, 250),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.amber.shade400),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 4,
-                ),
-                child: Icon(
-                  Icons.edit,
-                  color: Colors.amber.shade400,
-                  size: 20,
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Select"),
+                        )
+                      ],
+                    ),
+                  );
+
+                  _committeeController.update();
+                },
+                hoverColor: const Color.fromARGB(255, 250, 250, 250),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.amber.shade400),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.amber.shade400,
+                    size: 20,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         PopupMenuButton<int>(
           elevation: 10,

@@ -36,9 +36,8 @@ extension ToolsDateTime on DateTime {
   String toFormattedDate() => DateFormat("dd MMMM").format(this);
 }
 
-extension ToolsRestorableTextEditingController
-    on RestorableTextEditingController {
-  String text() => value.text.trim();
+extension ToolsTextEditingController on TextEditingController {
+  String toText() => text.trim();
 }
 
 extension ToolsAlert on AlertType {

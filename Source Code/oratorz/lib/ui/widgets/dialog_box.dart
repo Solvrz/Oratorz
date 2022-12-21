@@ -29,6 +29,7 @@ class DialogBox extends AlertDialog {
                 const Spacer(),
                 InkWell(
                   onTap: () => Navigator.pop(context),
+                  hoverColor: const Color.fromARGB(255, 250, 250, 250),
                   child: Container(
                     margin: const EdgeInsets.all(8),
                     child: Icon(

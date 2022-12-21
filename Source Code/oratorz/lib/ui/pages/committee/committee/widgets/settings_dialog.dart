@@ -187,8 +187,9 @@ class TimerButton extends StatelessWidget {
                   children: [
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () => change(1),
+                        hoverColor: const Color.fromARGB(255, 250, 250, 250),
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -199,8 +200,9 @@ class TimerButton extends StatelessWidget {
                     ),
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () => change(-1),
+                        hoverColor: const Color.fromARGB(255, 250, 250, 250),
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
