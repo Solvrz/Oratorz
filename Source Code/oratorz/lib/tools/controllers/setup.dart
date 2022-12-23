@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '/config/data.dart';
+import '/config/constants/data.dart';
 import '/models/committee.dart';
 
 class SetupController extends GetxController {

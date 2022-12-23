@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '/config/data.dart';
+import '/config/constants/data.dart';
 import '/tools/controllers/comittee/committee.dart';
 
 class Committee {

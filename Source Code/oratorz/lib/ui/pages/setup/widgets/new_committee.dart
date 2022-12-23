@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/data.dart';
+import '/config/constants/data.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/delegate_tile.dart';
@@ -26,7 +26,7 @@ class NewCommitteeCard extends StatelessWidget {
                 style: context.textTheme.headline5,
               ),
               CommitteeType(
-                title: "UN Memeber States",
+                title: "UN Member States",
                 delegates: COUNTRIES.keys.toList()
                   ..removeWhere(
                     (_delegate) => _setupController.committee.value.delegates
@@ -34,7 +34,7 @@ class NewCommitteeCard extends StatelessWidget {
                   ),
               ),
               CommitteeType(
-                title: "AIPPM Memebers",
+                title: "AIPPM Members",
                 delegates: AIPPM.keys.toList()
                   ..removeWhere(
                     (_delegate) => _setupController.committee.value.delegates
@@ -118,6 +118,7 @@ class _CommitteeTypeState extends State<CommitteeType> {
               GetBuilder<SetupController>(
                 builder: (_) {
                   final List<String> _delegates = [];
+
                   widget.delegates.forEach(
                     (_delegate) {
                       final String _search = _searchController.toText();
@@ -134,9 +135,9 @@ class _CommitteeTypeState extends State<CommitteeType> {
                     },
                   );
 
-                  return _delegates.isNotEmpty
-                      ? Expanded(
-                          child: ListView.separated(
+                  return Expanded(
+                    child: _delegates.isNotEmpty
+                        ? ListView.separated(
                             itemCount: _delegates.length,
                             itemBuilder: (context, index) => DelegateTile(
                               delegate: _delegates[index],
@@ -153,9 +154,14 @@ class _CommitteeTypeState extends State<CommitteeType> {
                               thickness: 0.5,
                               color: Colors.grey[400],
                             ),
+                          )
+                        : Center(
+                            child: Text(
+                              "Member matching your search not found.",
+                              style: context.textTheme.bodyText1,
+                            ),
                           ),
-                        )
-                      : const Text("Delegate matching your search not found.");
+                  );
                 },
               ),
             ],

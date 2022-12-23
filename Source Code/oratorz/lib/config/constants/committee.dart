@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/ui/pages/committee/committee/modes/export.dart';
-import '/ui/pages/export.dart';
+import '/ui/pages/committee/export.dart';
 
 const List<Map<String, dynamic>> COMMITTEE_TABS = [
   {

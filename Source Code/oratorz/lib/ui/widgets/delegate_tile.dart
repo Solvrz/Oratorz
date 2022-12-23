@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/data.dart';
+import '/config/constants/data.dart';
 
 class DelegateTile extends StatelessWidget {
   final String delegate;

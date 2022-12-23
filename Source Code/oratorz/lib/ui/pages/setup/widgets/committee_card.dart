@@ -117,7 +117,7 @@ class CommitteeCard extends StatelessWidget {
                 const SizedBox(height: 24),
                 TextButton(
                   onPressed: () => _setupController.clear(),
-                  child: const Text("Clear Selection"),
+                  child: const Text("Reset Selection"),
                 ),
                 const SizedBox(height: 12),
                 TextButton(

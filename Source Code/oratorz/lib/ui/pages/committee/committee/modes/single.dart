@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
-import '../widgets/add_speaker.dart';
-import '../widgets/speakers_info.dart';
-import '../widgets/stopwatch.dart';
+import '../../widgets/committee/add_speaker.dart';
+import '../../widgets/committee/speakers_info.dart';
+import '../../widgets/committee/stopwatch.dart';
 
 class SingleTab extends StatelessWidget {
   const SingleTab({super.key});

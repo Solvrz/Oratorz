@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart' hide PageController;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/data.dart';
+import '/config/constants/data.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/border_button.dart';
 import '/ui/widgets/dialog_box.dart';

@@ -1,4 +1,6 @@
-const Map<String, String> COUNTRIES = {
+// ignore_for_file: non_constant_identifier_names
+
+final Map<String, String> COUNTRIES = {
   "AND": "Andorra",
   "ARE": "United Arab Emirates",
   "AFG": "Afghanistan",
@@ -28,8 +30,8 @@ const Map<String, String> COUNTRIES = {
   "BLR": "Belarus",
   "BLZ": "Belize",
   "CAN": "Canada",
-  "COD": "DR Congo",
-  "CAF": "Central African Republic",
+  "COD": "Democratic Republic of the Congo",
+  "CAF": "Central African Republcoic",
   "COG": "Congo",
   "CHE": "Switzerland",
   "CIV": "Côte d'Ivoire",
@@ -93,7 +95,7 @@ const Map<String, String> COUNTRIES = {
   "KIR": "Kiribati",
   "COM": "Comoros",
   "KNA": "St. Kitts and Nevis",
-  "PRK": "DPR Korea",
+  "PRK": "Democratic Pepole's Repulic of Korea",
   "KOR": "Republic of Korea",
   "KWT": "Kuwait",
   "KAZ": "Kazakhstan",
@@ -198,16 +200,16 @@ const Map<String, String> COUNTRIES = {
   "ZWE": "Zimbabwe",
 };
 
-const Map<String, String> AIPPM = {
-  "BJP 1": "Narendra Modi",
-  "BJP 2": "Amit Shah",
-  "INC 1": "Rahul Gandhi",
-  "INC 2": "Priyanka Gandhi",
-  "AAP 1": "Arvind Kejriwal",
-  "AAP 2": "Manish Sisodhia",
+final Map<String, String> AIPPM = {
+  "BJP 0": "Narendra Modi",
+  "BJP 1": "Amit Shah",
+  "INC 0": "Rahul Gandhi",
+  "INC 1": "Priyanka Gandhi",
+  "AAP 0": "Arvind Kejriwal",
+  "AAP 1": "Manish Sisodhia",
 };
 
-const Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
+final Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
 
 const Map<String, List<String>> COMMITTEES = {
   "UNSC": [
@@ -481,6 +483,7 @@ const Map<String, List<String>> COMMITTEES = {
     "ZMB",
     "ZWE"
   ],
+  // TODO: India Not Here
   "UNHRC": [
     "AFG",
     "AGO",
