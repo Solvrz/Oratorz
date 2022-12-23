@@ -14,7 +14,7 @@ class NewCommitteeCard extends StatelessWidget {
     final SetupController _setupController = Get.find<SetupController>();
 
     return SizedBox(
-      height: context.height / 1.52,
+      height: context.height / 1.55,
       child: Card(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -26,6 +26,7 @@ class NewCommitteeCard extends StatelessWidget {
                 style: context.textTheme.headline5,
               ),
               CommitteeType(
+                index: 0,
                 title: "UN Member States",
                 delegates: COUNTRIES.keys.toList()
                   ..removeWhere(
@@ -34,6 +35,7 @@ class NewCommitteeCard extends StatelessWidget {
                   ),
               ),
               CommitteeType(
+                index: 1,
                 title: "AIPPM Members",
                 delegates: AIPPM.keys.toList()
                   ..removeWhere(
@@ -50,11 +52,13 @@ class NewCommitteeCard extends StatelessWidget {
 }
 
 class CommitteeType extends StatefulWidget {
+  final int index;
   final String title;
   final List<String> delegates;
 
   const CommitteeType({
     super.key,
+    required this.index,
     required this.title,
     required this.delegates,
   });
@@ -64,108 +68,116 @@ class CommitteeType extends StatefulWidget {
 }
 
 class _CommitteeTypeState extends State<CommitteeType> {
-  final SetupController _setupController = Get.find<SetupController>();
   final TextEditingController _searchController = TextEditingController();
 
-  bool open = false;
-
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: open ? context.height / 2.1 : 65,
-        child: Column(
-          children: [
-            InkWell(
-              onTap: () => setState(() => open = !open),
-              hoverColor: const Color.fromARGB(255, 250, 250, 250),
-              child: Container(
-                margin: const EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    Icon(open ? Icons.arrow_right : Icons.arrow_drop_down),
-                    Text(
-                      widget.title,
-                      style: context.textTheme.headline6,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (open) ...[
-              Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (_) => _setupController.update(),
-                  cursorColor: Colors.grey[600],
-                  decoration: InputDecoration(
-                    hintText: "Search",
-                    prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                    hintStyle: context.textTheme.bodyText1,
-                    hoverColor: Colors.transparent,
-                    fillColor: Colors.transparent,
-                    focusedBorder: InputBorder.none,
-                    border: InputBorder.none,
+  Widget build(BuildContext context) {
+    return GetBuilder<SetupController>(
+      builder: (controller) {
+        final bool open = controller.openType.value == widget.index;
+
+        return SizedBox(
+          height: open ? context.height / 2.2 : 65,
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  controller.openType.value = widget.index;
+                  controller.update();
+                },
+                hoverColor: const Color.fromARGB(255, 250, 250, 250),
+                child: Container(
+                  margin: const EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      Icon(open ? Icons.arrow_right : Icons.arrow_drop_down),
+                      Text(
+                        widget.title,
+                        style: context.textTheme.headline6,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              GetBuilder<SetupController>(
-                builder: (_) {
-                  final List<String> _delegates = [];
+              if (open) ...[
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (_) => controller.update(),
+                    cursorColor: Colors.grey[600],
+                    decoration: InputDecoration(
+                      hintText: "Search",
+                      prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                      hintStyle: context.textTheme.bodyText1,
+                      hoverColor: Colors.transparent,
+                      fillColor: Colors.transparent,
+                      focusedBorder: InputBorder.none,
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                GetBuilder<SetupController>(
+                  builder: (_) {
+                    final List<String> _delegates = [];
 
-                  widget.delegates.forEach(
-                    (_delegate) {
-                      final String _search = _searchController.toText();
+                    widget.delegates.forEach(
+                      (_delegate) {
+                        final String _search = _searchController.toText();
 
-                      if (_search != "") {
-                        if (DELEGATES[_delegate]!
-                            .toLowerCase()
-                            .contains(_search.toLowerCase())) {
+                        if (_search != "") {
+                          if (DELEGATES[_delegate]!
+                              .toLowerCase()
+                              .contains(_search.toLowerCase())) {
+                            _delegates.add(_delegate);
+                          }
+                        } else {
                           _delegates.add(_delegate);
                         }
-                      } else {
-                        _delegates.add(_delegate);
-                      }
-                    },
-                  );
+                      },
+                    );
 
-                  return Expanded(
-                    child: _delegates.isNotEmpty
-                        ? ListView.separated(
-                            itemCount: _delegates.length,
-                            itemBuilder: (context, index) => DelegateTile(
-                              delegate: _delegates[index],
-                              onTap: () {
-                                _setupController.add(_delegates[index]);
-                                _setupController.update();
-                              },
-                              trailing:
-                                  Icon(Icons.add, color: Colors.grey[400]),
+                    return Expanded(
+                      child: _delegates.isNotEmpty
+                          ? ListView.separated(
+                              itemCount: _delegates.length,
+                              itemBuilder: (context, index) => DelegateTile(
+                                delegate: _delegates[index],
+                                onTap: () {
+                                  controller.add(_delegates[index]);
+                                  controller.update();
+                                },
+                                trailing:
+                                    Icon(Icons.add, color: Colors.grey[400]),
+                              ),
+                              separatorBuilder: (context, index) => Divider(
+                                indent: 65,
+                                height: 5,
+                                thickness: 0.5,
+                                color: Colors.grey[400],
+                              ),
+                            )
+                          : Center(
+                              child: Text(
+                                "Member matching your search not found.",
+                                style: context.textTheme.bodyText1,
+                              ),
                             ),
-                            separatorBuilder: (context, index) => Divider(
-                              indent: 65,
-                              height: 5,
-                              thickness: 0.5,
-                              color: Colors.grey[400],
-                            ),
-                          )
-                        : Center(
-                            child: Text(
-                              "Member matching your search not found.",
-                              style: context.textTheme.bodyText1,
-                            ),
-                          ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
+              ],
             ],
-          ],
-        ),
-      );
+          ),
+        );
+      },
+    );
+  }
 }

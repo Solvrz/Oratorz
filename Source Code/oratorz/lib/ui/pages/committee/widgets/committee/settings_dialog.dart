@@ -53,10 +53,10 @@ class SettingsDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (controller.hasSubtopic) ...[
+                if (controller.overallDuration != null) ...[
                   const SizedBox(height: 20),
                   Text(
-                    "Speaker Time",
+                    "Caucus Time",
                     style: context.textTheme.headline5,
                   ),
                   const SizedBox(height: 10),
@@ -66,9 +66,10 @@ class SettingsDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         TimerButton(
-                          value: controller.duration.value.inMinutes,
+                          value: controller.overallDuration!.value.inMinutes,
                           change: (value) {
-                            if (controller.duration.value.inMinutes + value <=
+                            if (controller.overallDuration!.value.inMinutes +
+                                    value <=
                                 60) {
                               controller.duration.value +=
                                   Duration(minutes: value);
@@ -76,32 +77,33 @@ class SettingsDialog extends StatelessWidget {
                           },
                           subtitle: "minutes",
                         ),
+                        const SizedBox(width: 16),
                         TimerButton(
-                          value: controller.duration.value.inSeconds -
-                              controller.duration.value.inMinutes * 60,
-                          change: (value) => controller.duration.value +=
-                              Duration(seconds: value),
+                          value: controller.overallDuration!.value.inSeconds -
+                              controller.overallDuration!.value.inMinutes * 60,
+                          change: (value) => controller.overallDuration!
+                              .value += Duration(seconds: value),
                           subtitle: "seconds",
                         ),
                       ],
                     ),
                   ),
-                  if (controller.hasSubtopic) ...[
-                    const SizedBox(height: 20),
-                    Text(
-                      controller.subtopic.keys.first,
-                      style: context.textTheme.headline5,
+                ],
+                if (controller.hasSubtopic) ...[
+                  const SizedBox(height: 20),
+                  Text(
+                    controller.subtopic.keys.first,
+                    style: context.textTheme.headline5,
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    child: TextField(
+                      cursorColor: Colors.black,
+                      onChanged: (value) => controller
+                          .subtopic[controller.subtopic.keys.first] = value,
                     ),
-                    const SizedBox(height: 10),
-                    Container(
-                      margin: const EdgeInsets.only(left: 10),
-                      child: TextField(
-                        cursorColor: Colors.black,
-                        onChanged: (value) => controller
-                            .subtopic[controller.subtopic.keys.first] = value,
-                      ),
-                    )
-                  ]
+                  ),
                 ],
               ],
             ),

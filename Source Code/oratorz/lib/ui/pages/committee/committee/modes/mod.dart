@@ -13,10 +13,11 @@ class ModTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SpeechController _speechController = Get.put(
-      SpeechController(overallDuration: const Duration(minutes: 15)),
+      SpeechController(),
       tag: "mod",
     );
 
+    _speechController.overallDuration = const Duration(minutes: 15).obs;
     _speechController.subtopic.value = {"Topic": "Your Topic"};
 
     return Row(

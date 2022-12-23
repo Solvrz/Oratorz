@@ -5,6 +5,7 @@ import '/models/committee.dart';
 
 class SetupController extends GetxController {
   final Rx<Committee> committee = Rx<Committee>(Committee());
+  RxInt openType = 0.obs;
 
   Committee get _value => committee.value;
 

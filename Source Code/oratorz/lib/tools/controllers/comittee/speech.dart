@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
 
 class SpeechController extends GetxController {
-  final Duration? overallDuration;
-
-  SpeechController({this.overallDuration});
+  Rx<Duration>? overallDuration;
+  Rx<Stopwatch> overallStopwatch = Stopwatch().obs;
 
   RxString currentSpeaker = "".obs;
   RxMap<String, String> subtopic = {"": ""}.obs;

@@ -52,7 +52,9 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 
             if (timeLeft.inMilliseconds < 0) {
               (widget.onTimeEnd ?? () {})();
+
               _speechController.stopwatch.value.stop();
+              _speechController.overallStopwatch.value.stop();
 
               timeLeft = Duration.zero;
               timer.cancel();
@@ -65,6 +67,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   void dispose() {
     timer.cancel();
     _speechController.stopwatch.value.stop();
+    _speechController.overallStopwatch.value.stop();
 
     super.dispose();
   }
@@ -74,8 +77,8 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
     Duration? overallTimeLeft;
 
     if (_speechController.overallDuration != null) {
-      overallTimeLeft = _speechController.overallDuration! -
-          _speechController.stopwatch.value.elapsed;
+      overallTimeLeft = _speechController.overallDuration!.value -
+          _speechController.overallStopwatch.value.elapsed;
     }
 
     return SizedBox(
@@ -84,86 +87,18 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (_speechController.subtopic.keys.first != "") ...[
-            Row(
-              children: [
-                RichText(
-                  text: TextSpan(
-                    text: "${_speechController.subtopic.keys.first}: ",
-                    style: context.textTheme.headline2,
-                    children: [
-                      TextSpan(
-                        text: _speechController.subtopic.values.first,
-                        style: context.textTheme.headline5!
-                            .copyWith(fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16),
-                InkWell(
-                  onTap: () async {
-                    final _subtopic = _speechController.subtopic.keys.first;
-                    final TextEditingController _controller =
-                        TextEditingController(
-                      text: _speechController.subtopic[_subtopic],
-                    );
-
-                    await showDialog(
-                      context: context,
-                      builder: (context) => DialogBox(
-                        heading: "Set $_subtopic",
-                        content: TextField(
-                          autofocus: true,
-                          controller: _controller,
-                          onSubmitted: (value) {
-                            _speechController.subtopic[_subtopic] =
-                                _controller.text;
-
-                            Navigator.pop(context);
-                          },
-                          keyboardType: TextInputType.name,
-                          cursorColor: Colors.grey[600],
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            hintText: _subtopic,
-                          ),
-                        ),
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                        actionsPadding: const EdgeInsets.all(16),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              _speechController.subtopic[_subtopic] =
-                                  _controller.text;
-
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Select"),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                  hoverColor: const Color.fromARGB(255, 250, 250, 250),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.amber.shade400),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
-                    ),
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.amber.shade400,
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ],
+            RichText(
+              text: TextSpan(
+                text: "${_speechController.subtopic.keys.first}: ",
+                style: context.textTheme.headline2,
+                children: [
+                  TextSpan(
+                    text: _speechController.subtopic.values.first,
+                    style: context.textTheme.headline5!
+                        .copyWith(fontWeight: FontWeight.w500),
+                  )
+                ],
+              ),
             ),
             const SizedBox(height: 10),
           ],
@@ -204,10 +139,14 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                   children: [
                     FilledButton(
                       onPressed: () {
-                        _speechController.isSpeaking.value ||
-                                timeLeft.inSeconds == 0
-                            ? _speechController.stopwatch.value.stop()
-                            : _speechController.stopwatch.value.start();
+                        if (_speechController.isSpeaking.value ||
+                            timeLeft.inSeconds == 0) {
+                          _speechController.stopwatch.value.stop();
+                          _speechController.overallStopwatch.value.stop();
+                        } else {
+                          _speechController.stopwatch.value.start();
+                          _speechController.overallStopwatch.value.start();
+                        }
 
                         _speechController.isSpeaking.value =
                             !_speechController.isSpeaking.value;
@@ -221,6 +160,14 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                     ),
                     FilledButton(
                       onPressed: () {
+                        if (_speechController
+                                .stopwatch.value.elapsed.inSeconds ==
+                            0) {
+                          //TODO: Confirmation Dialog
+                          _speechController.overallStopwatch.value.reset();
+                          return;
+                        }
+
                         _speechController.stopwatch.value.reset();
                         timer.cancel();
 
@@ -232,6 +179,8 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                     FilledButton(
                       onPressed: () async {
                         _speechController.stopwatch.value.stop();
+                        _speechController.overallStopwatch.value.stop();
+
                         _speechController.stopwatch.value.reset();
 
                         await showDialog(

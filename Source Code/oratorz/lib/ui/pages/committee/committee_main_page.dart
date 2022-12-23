@@ -40,88 +40,89 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Row(
-            children: [
-              SizedBox(
-                width: context.width / 8,
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  color: const Color(0xff0d1520),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Column(
-                      children: [
-                        Text(
-                          _committeeController.committee.value.name,
-                          style: context.textTheme.headline2!
-                              .copyWith(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 32),
-                        ...List.generate(COMMITTEE_TABS.length, (index) {
-                          final Map<String, dynamic> _tab =
-                              COMMITTEE_TABS[index];
-
-                          return Obx(
-                            () => SidebarTile(
-                              title: _tab["title"],
-                              icon: _tab["icon"],
-                              onTap: () {
-                                _committeeController.tabVal = index;
-                                html.window.history.pushState(
-                                  null,
-                                  "tab",
-                                  COMMITTEE_TABS[index]["route"],
-                                );
-                              },
-                              selected: _committeeController.tabVal == index,
-                              iconColor: _tab["color"],
-                            ),
-                          );
-                        }),
-                        SidebarTile(
-                          title: "Roll Call",
-                          icon: Icons.fact_check_outlined,
-                          onTap: () => showDialog(
-                            context: context,
-                            builder: (context) => const RollCallDialog(),
-                          ),
-                        ),
-                        const Spacer(),
-                        SidebarTile(
-                          title: "Setup",
-                          icon: Icons.settings_outlined,
-                          onTap: () {
-                            Get.delete<CommitteeController>();
-                            context.pushReplacement("/setup");
-                          },
-                        ),
-                      ],
-                    ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Row(
+          children: [
+            SizedBox(
+              width: context.width / 8,
+              child: Card(
+                margin: EdgeInsets.zero,
+                color: const Color(0xff0d1520),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
                   ),
                 ),
-              ),
-              Expanded(
                 child: Container(
-                  margin: const EdgeInsets.all(16),
-                  child: Obx(
-                    () => _committeeController.currentTab()["tab"],
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Column(
+                    children: [
+                      Text(
+                        _committeeController.committee.value.name,
+                        style: context.textTheme.headline2!
+                            .copyWith(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      ...List.generate(COMMITTEE_TABS.length, (index) {
+                        final Map<String, dynamic> _tab = COMMITTEE_TABS[index];
+
+                        return Obx(
+                          () => SidebarTile(
+                            title: _tab["title"],
+                            icon: _tab["icon"],
+                            onTap: () {
+                              _committeeController.tabVal = index;
+                              html.window.history.pushState(
+                                null,
+                                "tab",
+                                COMMITTEE_TABS[index]["route"],
+                              );
+                            },
+                            selected: _committeeController.tabVal == index,
+                            iconColor: _tab["color"],
+                          ),
+                        );
+                      }),
+                      SidebarTile(
+                        title: "Roll Call",
+                        icon: Icons.fact_check_outlined,
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => const RollCallDialog(),
+                        ),
+                      ),
+                      const Spacer(),
+                      SidebarTile(
+                        title: "Setup",
+                        icon: Icons.settings_outlined,
+                        onTap: () {
+                          Get.delete<CommitteeController>();
+                          context.pushReplacement("/setup");
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                child: Obx(
+                  () => _committeeController.currentTab()["tab"],
+                ),
+              ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }
 
 class SidebarTile extends StatelessWidget {
