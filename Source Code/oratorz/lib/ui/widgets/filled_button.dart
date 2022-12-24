@@ -15,17 +15,23 @@ class FilledButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => TextButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(color),
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          overlayColor: MaterialStateProperty.all<Color>(Colors.white12),
-          side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
-        ),
-        onPressed: onPressed,
-        child: Container(
-          margin: padding ?? const EdgeInsets.symmetric(horizontal: 8),
-          child: child,
-        ),
-      );
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(color),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        overlayColor: MaterialStateProperty.all<Color>(Colors.white12),
+        side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
+      ),
+      onPressed: onPressed,
+      child: Container(
+        margin: padding ??
+            const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+        child: child,
+      ),
+    );
+  }
 }

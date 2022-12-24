@@ -19,7 +19,7 @@ class VotingCard extends StatelessWidget {
       child: Card(
         child: Container(
           constraints: BoxConstraints(
-            maxHeight: context.height * 0.8,
+            maxHeight: context.height * 0.9,
           ),
           padding: const EdgeInsets.all(24),
           child: Column(

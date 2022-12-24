@@ -79,6 +79,9 @@ class AddMotionsCard extends StatelessWidget {
     return Expanded(
       child: Card(
         child: Container(
+          constraints: BoxConstraints(
+            maxHeight: context.height * 0.9,
+          ),
           margin: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,11 +98,11 @@ class AddMotionsCard extends StatelessWidget {
                     final Map<String, dynamic> _motion = motions[index];
 
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8),
+                      // TODO: Decide Color
                       child: BorderButton(
                         text: _motion["name"],
                         icon: _motion["icon"],
-                        color: Colors.amber.shade400,
                         onPressed: _motion["onTap"],
                       ),
                     );

@@ -24,70 +24,71 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
   int selected = -1;
 
   @override
-  Widget build(BuildContext context) => DialogBox(
-        heading: "Yield to Speaker",
-        content: SizedBox(
-          height: context.height / 2,
-          child: widget.delegates.isNotEmpty
-              ? SingleChildScrollView(
-                  child: Column(
-                    children: List.generate(
-                      widget.delegates.length,
-                      (index) {
-                        final String _delegate = widget.delegates[index];
+  Widget build(BuildContext context) {
+    return DialogBox(
+      heading: "Yield to Speaker",
+      content: SizedBox(
+        height: context.height / 2,
+        child: widget.delegates.isNotEmpty
+            ? SingleChildScrollView(
+                child: Column(
+                  children: List.generate(
+                    widget.delegates.length,
+                    (index) {
+                      final String _delegate = widget.delegates[index];
 
-                        return DelegateTile(
-                          delegate: widget.delegates[index],
-                          contentPadding: const EdgeInsets.all(5),
-                          onTap: () {
-                            setState(() => selected = index);
+                      return DelegateTile(
+                        delegate: widget.delegates[index],
+                        contentPadding: const EdgeInsets.all(5),
+                        onTap: () {
+                          setState(() => selected = index);
 
-                            widget.controller.currentSpeaker.value = _delegate;
-                            widget.controller.nextSpeakers.remove(_delegate);
-                          },
-                          trailing: Radio(
-                            value: index,
-                            groupValue: selected,
-                            hoverColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            overlayColor: MaterialStateProperty.all<Color>(
-                              Colors.transparent,
-                            ),
-                            fillColor: MaterialStateProperty.all<Color>(
-                              Colors.grey.shade700,
-                            ),
-                            onChanged: (value) => setState(() {
-                              if (value != null) {
-                                selected = value as int;
-
-                                widget.controller.currentSpeaker.value =
-                                    _delegate;
-                                widget.controller.nextSpeakers
-                                    .remove(_delegate);
-                              }
-                            }),
+                          widget.controller.currentSpeaker.value = _delegate;
+                          widget.controller.nextSpeakers.remove(_delegate);
+                        },
+                        trailing: Radio(
+                          value: index,
+                          groupValue: selected,
+                          hoverColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          overlayColor: MaterialStateProperty.all<Color>(
+                            Colors.transparent,
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                )
-              : Center(
-                  child: Text(
-                    "Conduct a roll call before yielding speakers",
-                    style: context.textTheme.bodyText1,
+                          fillColor: MaterialStateProperty.all<Color>(
+                            Colors.grey.shade700,
+                          ),
+                          onChanged: (value) => setState(() {
+                            if (value != null) {
+                              selected = value as int;
+
+                              widget.controller.currentSpeaker.value =
+                                  _delegate;
+                              widget.controller.nextSpeakers.remove(_delegate);
+                            }
+                          }),
+                        ),
+                      );
+                    },
                   ),
                 ),
-        ),
-        actions: [
-          SizedBox(
-            width: context.width / 3,
-            child: FilledButton(
-              color: context.theme.colorScheme.secondary,
-              onPressed: () => Navigator.pop(context),
-              child: const Text("DONE"),
-            ),
+              )
+            : Center(
+                child: Text(
+                  "Conduct a roll call before yielding speakers",
+                  style: context.textTheme.bodyText1,
+                ),
+              ),
+      ),
+      actions: [
+        SizedBox(
+          width: context.width / 3,
+          child: FilledButton(
+            color: context.theme.colorScheme.secondary,
+            onPressed: () => Navigator.pop(context),
+            child: const Text("DONE"),
           ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
 }

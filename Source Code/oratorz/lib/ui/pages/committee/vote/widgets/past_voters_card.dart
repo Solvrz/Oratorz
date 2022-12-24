@@ -12,7 +12,7 @@ class PastVoterCard extends StatelessWidget {
     final VoteController _voteController = Get.find<VoteController>();
 
     return SizedBox(
-      height: context.height / 2.5,
+      height: context.height / 2.46,
       width: context.width / 4,
       child: Card(
         child: Container(

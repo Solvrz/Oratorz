@@ -19,30 +19,32 @@ class DelegateTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => ListTile(
-        contentPadding: contentPadding,
-        hoverColor: Colors.grey[100],
-        onTap: onTap,
-        leading: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade400,
-                offset: const Offset(1, 1),
-                blurRadius: 4,
-              ),
-            ],
-          ),
-          child: flag(delegate.split(" ")[0]),
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: contentPadding,
+      hoverColor: Colors.grey[100],
+      onTap: onTap,
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade400,
+              offset: const Offset(1, 1),
+              blurRadius: 4,
+            ),
+          ],
         ),
-        title: Text(
-          DELEGATES[delegate]!,
-          style: context.textTheme.bodyText1,
-        ),
-        trailing: trailing,
-      );
+        child: flag(delegate.split(" ")[0]),
+      ),
+      title: Text(
+        DELEGATES[delegate]!,
+        style: context.textTheme.bodyText1,
+      ),
+      trailing: trailing,
+    );
+  }
 }

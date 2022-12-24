@@ -9,7 +9,7 @@ import '/config/constants/committee.dart';
 import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
-import 'widgets/roll_call_dialog.dart';
+import './widgets/roll_call_dialog.dart';
 
 class CommitteeMainPage extends StatefulWidget {
   const CommitteeMainPage({super.key});
@@ -164,19 +164,20 @@ class _SidebarTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.only(bottom: 4),
-        child: ListTile(
-          onTap: onTap,
-          horizontalTitleGap: 8,
-          hoverColor: selected ? Colors.transparent : Colors.white12,
-          tileColor:
-              selected ? const Color(0xff2a313b) : const Color(0xff0d1520),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
-          title: Text(title, style: context.textTheme.bodyText2),
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 4),
+      child: ListTile(
+        onTap: onTap,
+        horizontalTitleGap: 8,
+        hoverColor: selected ? Colors.transparent : Colors.white12,
+        tileColor: selected ? const Color(0xff2a313b) : const Color(0xff0d1520),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
-      );
+        leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
+        title: Text(title, style: context.textTheme.bodyText2),
+      ),
+    );
+  }
 }

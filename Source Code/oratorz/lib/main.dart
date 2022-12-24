@@ -22,46 +22,48 @@ class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        title: "Oratorz",
-        theme: OratorzTheme.of(context),
-        routerConfig: GoRouter(
-          initialLocation: "/setup",
-          errorBuilder: (_, args) {
-            Get.put(RouteController(arguments: args));
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: "Oratorz",
+      theme: OratorzTheme.of(context),
+      routerConfig: GoRouter(
+        initialLocation: "/setup",
+        errorBuilder: (_, args) {
+          Get.put(RouteController(arguments: args));
 
-            return const Text("Error");
-          },
-          routes: [
-            GoRoute(
-              path: "/",
-              redirect: (_, __) => "/setup",
-            ),
-            GoRoute(
-              path: "/setup",
-              builder: (_, args) {
-                Get.put(RouteController(arguments: args));
+          return const Text("Error");
+        },
+        routes: [
+          GoRoute(
+            path: "/",
+            redirect: (_, __) => "/setup",
+          ),
+          GoRoute(
+            path: "/setup",
+            builder: (_, args) {
+              Get.put(RouteController(arguments: args));
 
-                return const SetupPage();
-              },
-            ),
-            GoRoute(
-              path: "/:tab",
-              builder: (_, args) {
-                Get.put(RouteController(arguments: args));
+              return const SetupPage();
+            },
+          ),
+          GoRoute(
+            path: "/:tab",
+            builder: (_, args) {
+              Get.put(RouteController(arguments: args));
 
-                return const CommitteeMainPage();
-              },
-            ),
-            GoRoute(
-              path: "/committee/:mode",
-              builder: (_, args) {
-                Get.put(RouteController(arguments: args));
+              return const CommitteeMainPage();
+            },
+          ),
+          GoRoute(
+            path: "/committee/:mode",
+            builder: (_, args) {
+              Get.put(RouteController(arguments: args));
 
-                return const CommitteeMainPage();
-              },
-            ),
-          ],
-        ),
-      );
+              return const CommitteeMainPage();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

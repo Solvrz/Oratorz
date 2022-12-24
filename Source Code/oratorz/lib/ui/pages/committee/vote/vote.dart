@@ -20,19 +20,21 @@ class VotePage extends StatelessWidget {
         children: [
           const Header(),
           const SizedBox(height: 24),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: const [
-                  ResultCard(),
-                  SizedBox(height: 12),
-                  PastVoterCard(),
-                ],
-              ),
-              const SizedBox(width: 36),
-              const VotingCard(),
-            ],
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: const [
+                    ResultCard(),
+                    SizedBox(height: 12),
+                    PastVoterCard(),
+                  ],
+                ),
+                const SizedBox(width: 36),
+                const VotingCard(),
+              ],
+            ),
           ),
         ],
       ),

@@ -18,9 +18,8 @@ class SetupPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             "Setup Committee",
-            style: context.textTheme.headline5,
+            style: context.textTheme.headline5?.copyWith(color: Colors.white),
           ),
-          backgroundColor: Colors.white,
         ),
         body: Container(
           margin: const EdgeInsets.all(16),

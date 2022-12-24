@@ -29,7 +29,6 @@ class RollCallDialog extends StatelessWidget {
                 Expanded(
                   child: BorderButton(
                     text: "SET ALL PRESENT",
-                    color: Colors.amber.shade400,
                     onPressed: () {
                       _committeeController.setAllPresent();
                       _committeeController.update();
@@ -40,7 +39,6 @@ class RollCallDialog extends StatelessWidget {
                 Expanded(
                   child: BorderButton(
                     text: "SET ALL ABSENT",
-                    color: Colors.amber.shade400,
                     onPressed: () {
                       _committeeController.setAllAbsent();
                       _committeeController.update();

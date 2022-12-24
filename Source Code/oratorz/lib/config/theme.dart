@@ -39,6 +39,9 @@ class OratorzTheme {
           color: Colors.white,
         ),
       ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: OratorzColors.secondaryColor,
+      ),
       cardTheme: CardTheme(
         elevation: 5,
         shadowColor: Colors.white,

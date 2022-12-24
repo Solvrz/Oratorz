@@ -9,24 +9,31 @@ class MotionsPage extends StatelessWidget {
   const MotionsPage({super.key});
 
   @override
-  Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const Expanded(child: Header()),
-            const SizedBox(height: 24),
-            Row(
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const Header(),
+          const SizedBox(height: 24),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   children: const [
                     CurrentMotionCard(),
+                    SizedBox(height: 12),
                     FutureMotionsCard(),
                   ],
                 ),
+                const SizedBox(width: 36),
                 const AddMotionsCard(),
               ],
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }

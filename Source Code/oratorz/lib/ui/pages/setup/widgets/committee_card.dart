@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/setup.dart';
+import '/ui/widgets/border_button.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
+import '/ui/widgets/filled_button.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -115,12 +117,13 @@ class CommitteeCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                TextButton(
+                BorderButton(
                   onPressed: () => _setupController.clear(),
-                  child: const Text("Reset Selection"),
+                  color: context.theme.colorScheme.secondary,
+                  text: "Reset Selection",
                 ),
                 const SizedBox(height: 12),
-                TextButton(
+                FilledButton(
                   onPressed: () {
                     Get.put<CommitteeController>(
                       CommitteeController(
@@ -130,6 +133,7 @@ class CommitteeCard extends StatelessWidget {
 
                     context.pushReplacement("/committee/gsl");
                   },
+                  color: context.theme.colorScheme.secondary,
                   child: const Text("Start Session"),
                 ),
               ],
