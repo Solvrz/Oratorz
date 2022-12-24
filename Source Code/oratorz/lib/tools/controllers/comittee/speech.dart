@@ -52,6 +52,8 @@ class SpeechController extends GetxController {
     isSpeaking.value = false;
 
     stopwatch.value.stop();
+    overallStopwatch.value.stop();
+
     stopwatch.value.reset();
   }
 }

@@ -303,7 +303,8 @@ final Map<String, String> AIPPM = {
   "YSRCP 0": "YS Jagan Mohan Reddy",
 };
 
-// TODO: AIMIM, RJD, PDP, SP, ADS Flags
+// TODO: AIMIM, RJD, PDP, SP, ADS & Others Flags
+// TODO: Strech Paty Icons
 // TODO: Check These: @Lovish
 
 final Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};

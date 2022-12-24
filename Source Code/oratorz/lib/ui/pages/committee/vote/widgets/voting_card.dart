@@ -13,7 +13,7 @@ class VotingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final VoteController _voteController = Get.find<VoteController>();
 
-    // TODO: Voters Not Updating after roll call
+    // TODO: Voters Not Updating after Roll Call
 
     return Expanded(
       child: Card(
@@ -53,9 +53,25 @@ class VotingCard extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          flag(
-                                            _voteController.currentVoter
-                                                .split(" ")[0],
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.shade400,
+                                                  offset: const Offset(1, 1),
+                                                  blurRadius: 4,
+                                                ),
+                                              ],
+                                            ),
+                                            child: flag(
+                                              size: 50,
+                                              _voteController.currentVoter
+                                                  .split(" ")[0],
+                                            ),
                                           ),
                                           const SizedBox(height: 12),
                                           Text(
@@ -127,11 +143,11 @@ class VotingCard extends StatelessWidget {
                                   children: [
                                     TextSpan(
                                       text:
-                                          "\nResult: Vote ${_voteController.inFavor > _voteController.majorityVal() ? "Passed" : "Failed"}!",
+                                          "\nResult: Vote ${_voteController.inFavor >= _voteController.majorityVal() ? "Passed" : "Failed"}!",
                                       style:
                                           context.textTheme.headline5?.copyWith(
                                         fontSize: 30,
-                                        color: _voteController.inFavor >
+                                        color: _voteController.inFavor >=
                                                 _voteController.majorityVal()
                                             ? Colors.green
                                             : Colors.red,
