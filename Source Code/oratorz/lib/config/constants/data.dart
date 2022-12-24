@@ -579,7 +579,6 @@ const Map<String, List<String>> COMMITTEES = {
     "ZMB",
     "ZWE"
   ],
-  // TODO: India Not Here
   "UNHRC": [
     "AFG",
     "AGO",

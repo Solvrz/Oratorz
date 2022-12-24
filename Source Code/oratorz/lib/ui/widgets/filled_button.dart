@@ -4,12 +4,14 @@ class FilledButton extends StatelessWidget {
   final Color color;
   final Widget child;
   final Function() onPressed;
+  final EdgeInsets? padding;
 
   const FilledButton({
     super.key,
     required this.child,
     required this.color,
     required this.onPressed,
+    this.padding,
   });
 
   @override
@@ -22,7 +24,7 @@ class FilledButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
+          margin: padding ?? const EdgeInsets.symmetric(horizontal: 8),
           child: child,
         ),
       );

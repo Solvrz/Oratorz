@@ -27,7 +27,7 @@ class Oratorz extends StatelessWidget {
         theme: OratorzTheme.of(context),
         routerConfig: GoRouter(
           initialLocation: "/setup",
-          errorBuilder: (context, args) {
+          errorBuilder: (_, args) {
             Get.put(RouteController(arguments: args));
 
             return const Text("Error");
@@ -39,15 +39,23 @@ class Oratorz extends StatelessWidget {
             ),
             GoRoute(
               path: "/setup",
-              builder: (context, args) {
+              builder: (_, args) {
                 Get.put(RouteController(arguments: args));
 
                 return const SetupPage();
               },
             ),
             GoRoute(
+              path: "/:tab",
+              builder: (_, args) {
+                Get.put(RouteController(arguments: args));
+
+                return const CommitteeMainPage();
+              },
+            ),
+            GoRoute(
               path: "/committee/:mode",
-              builder: (context, args) {
+              builder: (_, args) {
                 Get.put(RouteController(arguments: args));
 
                 return const CommitteeMainPage();

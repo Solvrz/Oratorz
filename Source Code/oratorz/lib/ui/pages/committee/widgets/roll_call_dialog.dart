@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '/config/constants/data.dart';
 import '/tools/controllers/comittee/committee.dart';
+import '/tools/functions.dart';
 import '/ui/widgets/border_button.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/filled_button.dart';
@@ -77,16 +78,14 @@ class RollCallDialog extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              child: Image.asset(
-                                "flags/${_delegate.split(" ")[0]}.png",
-                              ),
+                              child: flag(_delegate.split(" ")[0]),
                             ),
                             title: Text(
                               DELEGATES[_delegate]!,
                               style: context.textTheme.bodyText1,
                             ),
                             trailing: Builder(
-                              builder: (context) {
+                              builder: (_) {
                                 final int? rollCall =
                                     _committeeController.rollCall[_delegate];
 

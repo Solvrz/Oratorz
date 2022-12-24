@@ -25,7 +25,7 @@ class NewCommitteeCard extends StatelessWidget {
                 "Set Up New Committee",
                 style: context.textTheme.headline5,
               ),
-              CommitteeType(
+              _CommitteeType(
                 index: 0,
                 title: "UN Member States",
                 delegates: COUNTRIES.keys.toList()
@@ -34,7 +34,7 @@ class NewCommitteeCard extends StatelessWidget {
                         .contains(_delegate),
                   ),
               ),
-              CommitteeType(
+              _CommitteeType(
                 index: 1,
                 title: "AIPPM Members",
                 delegates: AIPPM.keys.toList()
@@ -51,30 +51,30 @@ class NewCommitteeCard extends StatelessWidget {
   }
 }
 
-class CommitteeType extends StatefulWidget {
+class _CommitteeType extends StatefulWidget {
   final int index;
   final String title;
   final List<String> delegates;
 
-  const CommitteeType({
-    super.key,
+  const _CommitteeType({
     required this.index,
     required this.title,
     required this.delegates,
   });
 
   @override
-  State<CommitteeType> createState() => _CommitteeTypeState();
+  State<_CommitteeType> createState() => _CommitteeTypeState();
 }
 
-class _CommitteeTypeState extends State<CommitteeType> {
+class _CommitteeTypeState extends State<_CommitteeType> {
+  final SetupController _setupController = Get.find<SetupController>();
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SetupController>(
-      builder: (controller) {
-        final bool open = controller.openType.value == widget.index;
+      builder: (_) {
+        final bool open = _setupController.openType.value == widget.index;
 
         return SizedBox(
           height: open ? context.height / 2.2 : 65,
@@ -82,8 +82,8 @@ class _CommitteeTypeState extends State<CommitteeType> {
             children: [
               InkWell(
                 onTap: () {
-                  controller.openType.value = widget.index;
-                  controller.update();
+                  _setupController.openType.value = widget.index;
+                  _setupController.update();
                 },
                 hoverColor: const Color.fromARGB(255, 250, 250, 250),
                 child: Container(
@@ -111,7 +111,7 @@ class _CommitteeTypeState extends State<CommitteeType> {
                   ),
                   child: TextField(
                     controller: _searchController,
-                    onChanged: (_) => controller.update(),
+                    onChanged: (_) => _setupController.update(),
                     cursorColor: Colors.grey[600],
                     decoration: InputDecoration(
                       hintText: "Search",
@@ -148,16 +148,33 @@ class _CommitteeTypeState extends State<CommitteeType> {
                       child: _delegates.isNotEmpty
                           ? ListView.separated(
                               itemCount: _delegates.length,
-                              itemBuilder: (context, index) => DelegateTile(
-                                delegate: _delegates[index],
-                                onTap: () {
-                                  controller.add(_delegates[index]);
-                                  controller.update();
-                                },
-                                trailing:
-                                    Icon(Icons.add, color: Colors.grey[400]),
-                              ),
-                              separatorBuilder: (context, index) => Divider(
+                              itemBuilder: (_, index) {
+                                final String _delegate = _delegates[index];
+
+                                return Opacity(
+                                  opacity: _setupController
+                                          .committee.value.delegates
+                                          .contains(_delegate)
+                                      ? 0.6
+                                      : 1,
+                                  child: DelegateTile(
+                                    delegate: _delegates[index],
+                                    onTap: () {
+                                      if (!_setupController
+                                          .committee.value.delegates
+                                          .contains(_delegate)) {
+                                        _setupController.add(_delegate);
+                                        _setupController.update();
+                                      }
+                                    },
+                                    trailing: Icon(
+                                      Icons.add,
+                                      color: Colors.grey[400],
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (_, index) => Divider(
                                 indent: 65,
                                 height: 5,
                                 thickness: 0.5,

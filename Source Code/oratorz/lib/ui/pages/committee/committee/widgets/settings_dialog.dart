@@ -21,6 +21,22 @@ class SettingsDialog extends StatelessWidget {
             () => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (controller.hasSubtopic) ...[
+                  Text(
+                    controller.subtopic.keys.first,
+                    style: context.textTheme.headline5,
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    child: TextField(
+                      cursorColor: Colors.black,
+                      onChanged: (value) => controller
+                          .subtopic[controller.subtopic.keys.first] = value,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
                 Text(
                   "Speaker Time",
                   style: context.textTheme.headline5,
@@ -31,7 +47,7 @@ class SettingsDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      TimerButton(
+                      _TimerButton(
                         value: controller.duration.value.inMinutes,
                         change: (value) {
                           if (controller.duration.value.inMinutes + value <=
@@ -43,7 +59,7 @@ class SettingsDialog extends StatelessWidget {
                         subtitle: "minutes",
                       ),
                       const SizedBox(width: 16),
-                      TimerButton(
+                      _TimerButton(
                         value: controller.duration.value.inSeconds -
                             controller.duration.value.inMinutes * 60,
                         change: (value) => controller.duration.value +=
@@ -65,7 +81,7 @@ class SettingsDialog extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TimerButton(
+                        _TimerButton(
                           value: controller.overallDuration!.value.inMinutes,
                           change: (value) {
                             if (controller.overallDuration!.value.inMinutes +
@@ -78,7 +94,7 @@ class SettingsDialog extends StatelessWidget {
                           subtitle: "minutes",
                         ),
                         const SizedBox(width: 16),
-                        TimerButton(
+                        _TimerButton(
                           value: controller.overallDuration!.value.inSeconds -
                               controller.overallDuration!.value.inMinutes * 60,
                           change: (value) => controller.overallDuration!
@@ -86,22 +102,6 @@ class SettingsDialog extends StatelessWidget {
                           subtitle: "seconds",
                         ),
                       ],
-                    ),
-                  ),
-                ],
-                if (controller.hasSubtopic) ...[
-                  const SizedBox(height: 20),
-                  Text(
-                    controller.subtopic.keys.first,
-                    style: context.textTheme.headline5,
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    child: TextField(
-                      cursorColor: Colors.black,
-                      onChanged: (value) => controller
-                          .subtopic[controller.subtopic.keys.first] = value,
                     ),
                   ),
                 ],
@@ -120,13 +120,12 @@ class SettingsDialog extends StatelessWidget {
   }
 }
 
-class TimerButton extends StatelessWidget {
+class _TimerButton extends StatelessWidget {
   final int value;
   final String subtitle;
   final Function(int) change;
 
-  const TimerButton({
-    super.key,
+  const _TimerButton({
     required this.value,
     required this.subtitle,
     required this.change,

@@ -7,4 +7,3 @@ export 'prayer.dart';
 export 'single.dart';
 export 'tourdetable.dart';
 export 'unmod.dart';
-export 'vote.dart';

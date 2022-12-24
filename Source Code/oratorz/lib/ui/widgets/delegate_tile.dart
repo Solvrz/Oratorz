@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/config/constants/data.dart';
+import '/tools/functions.dart';
 
 class DelegateTile extends StatelessWidget {
   final String delegate;
@@ -36,7 +37,7 @@ class DelegateTile extends StatelessWidget {
               ),
             ],
           ),
-          child: Image.asset("flags/${delegate.split(" ")[0]}.png"),
+          child: flag(delegate.split(" ")[0]),
         ),
         title: Text(
           DELEGATES[delegate]!,

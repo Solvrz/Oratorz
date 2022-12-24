@@ -74,8 +74,7 @@ class SpeakersInfoWidget extends StatelessWidget {
                       onReorder: (oldIndex, newIndex) =>
                           _speechController.reorder(oldIndex, newIndex),
                       itemCount: _speechController.nextSpeakers.length,
-                      itemBuilder: (context, index) =>
-                          ReorderableDragStartListener(
+                      itemBuilder: (_, index) => ReorderableDragStartListener(
                         key: ValueKey(index),
                         index: index,
                         child: Column(

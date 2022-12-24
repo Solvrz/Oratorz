@@ -3,10 +3,9 @@ import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
-import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/mode.dart';
 import '/tools/controllers/route.dart';
-import '/ui/widgets/dialog_box.dart';
+import '../widgets/header.dart';
 
 class CommitteePage extends StatelessWidget {
   const CommitteePage({super.key});
@@ -31,7 +30,7 @@ class CommitteePage extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       child: Column(
         children: [
-          const ModeHeader(),
+          Header(trailing: _ModeSelector()),
           const SizedBox(height: 24),
           Expanded(
             child: Obx(
@@ -44,173 +43,81 @@ class CommitteePage extends StatelessWidget {
   }
 }
 
-class ModeHeader extends StatelessWidget {
-  const ModeHeader({super.key});
-
+class _ModeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final CommitteeController _committeeController =
-        Get.find<CommitteeController>();
     final ModeController _modeController = Get.find<ModeController>();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GetBuilder<CommitteeController>(
-          builder: (controller) => Row(
-            children: [
-              RichText(
-                text: TextSpan(
-                  text: "Agenda: ",
-                  style: context.textTheme.headline2,
-                  children: [
-                    TextSpan(
-                      text: _committeeController.committee.value.agenda,
-                      style: context.textTheme.headline5!
-                          .copyWith(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16),
-              InkWell(
-                onTap: () async {
-                  final TextEditingController _controller =
-                      TextEditingController(
-                    text: _committeeController.committee.value.agenda,
-                  );
-
-                  await showDialog(
-                    context: context,
-                    builder: (context) => DialogBox(
-                      heading: "Set Committee Name",
-                      content: TextField(
-                        autofocus: true,
-                        controller: _controller,
-                        onSubmitted: (value) {
-                          _committeeController.committee.value.agenda =
-                              _controller.text;
-
-                          Navigator.pop(context);
-                        },
-                        keyboardType: TextInputType.name,
-                        cursorColor: Colors.grey[600],
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          hintText: "Agenda",
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                      actionsPadding: const EdgeInsets.all(16),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            _committeeController.committee.value.agenda =
-                                _controller.text;
-
-                            Navigator.pop(context);
-                          },
-                          child: const Text("Select"),
-                        )
-                      ],
-                    ),
-                  );
-
-                  _committeeController.update();
-                },
-                hoverColor: const Color.fromARGB(255, 250, 250, 250),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.amber.shade400),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.amber.shade400,
-                    size: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
+    return PopupMenuButton<int>(
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: context.theme.colorScheme.secondary),
         ),
-        PopupMenuButton<int>(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: context.theme.colorScheme.secondary),
-            ),
-            child: Row(
-              children: [
-                Obx(
-                  () => Row(
-                    children: [
-                      Icon(
-                        _modeController.currentTab()["icon"],
-                        color: context.theme.colorScheme.tertiary,
-                      ),
-                      const VerticalDivider(),
-                      Text(
-                        _modeController.currentTab()["name"],
-                        style: context.textTheme.bodyText1,
-                      ),
-                    ],
+        child: Row(
+          children: [
+            Obx(
+              () => Row(
+                children: [
+                  Icon(
+                    _modeController.currentTab()["icon"],
+                    color: context.theme.colorScheme.tertiary,
                   ),
-                ),
-                const SizedBox(width: 20),
-                Icon(
-                  Icons.arrow_drop_down,
-                  color: context.theme.colorScheme.secondary,
-                  size: 36,
+                  const VerticalDivider(),
+                  Text(
+                    _modeController.currentTab()["name"],
+                    style: context.textTheme.bodyText1,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 20),
+            Icon(
+              Icons.arrow_drop_down,
+              color: context.theme.colorScheme.secondary,
+              size: 36,
+            ),
+          ],
+        ),
+      ),
+      itemBuilder: (_) => List.generate(
+        COMMITTEE_MODES.length,
+        (index) {
+          final Map<String, dynamic> tab = COMMITTEE_MODES[index];
+
+          return PopupMenuItem(
+            value: index,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      tab["icon"],
+                      color: context.theme.colorScheme.tertiary,
+                    ),
+                    const VerticalDivider(),
+                    Text(tab["name"]),
+                  ],
                 ),
               ],
             ),
-          ),
-          itemBuilder: (_) => List.generate(
-            COMMITTEE_MODES.length,
-            (index) {
-              final Map<String, dynamic> tab = COMMITTEE_MODES[index];
-
-              return PopupMenuItem(
-                value: index,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          tab["icon"],
-                          color: context.theme.colorScheme.tertiary,
-                        ),
-                        const VerticalDivider(),
-                        Text(tab["name"]),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          onSelected: (index) {
-            _modeController.modeVal = index;
-            html.window.history.pushState(
-              null,
-              "mode",
-              COMMITTEE_MODES[index]["route"],
-            );
-          },
-        ),
-      ],
+          );
+        },
+      ),
+      onSelected: (index) {
+        _modeController.modeVal = index;
+        html.window.history.pushState(
+          null,
+          "mode",
+          COMMITTEE_MODES[index]["route"],
+        );
+      },
     );
   }
 }

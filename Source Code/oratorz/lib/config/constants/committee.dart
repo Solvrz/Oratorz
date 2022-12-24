@@ -11,7 +11,13 @@ const List<Map<String, dynamic>> COMMITTEE_TABS = [
     "tab": CommitteePage(),
   },
   {
-    "route": "/committee/motions",
+    "route": "/vote",
+    "title": "Vote",
+    "icon": Icons.how_to_vote,
+    "tab": VotePage(),
+  },
+  {
+    "route": "/motions",
     "title": "Motions",
     "icon": Icons.ballot_outlined,
     "tab": MotionsPage(),
@@ -60,12 +66,6 @@ const List<Map<String, dynamic>> COMMITTEE_MODES = [
     "name": "Tour de Table",
     "icon": Icons.autorenew,
     "tab": TourDeTableTab(),
-  },
-  {
-    "route": "/committee/vote",
-    "name": "Vote",
-    "icon": Icons.ballot,
-    "tab": VoteTab(),
   },
   {
     "route": "/committee/single",

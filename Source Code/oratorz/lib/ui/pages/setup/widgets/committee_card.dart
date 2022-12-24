@@ -41,7 +41,7 @@ class CommitteeCard extends StatelessWidget {
 
                         showDialog(
                           context: context,
-                          builder: (context) => DialogBox(
+                          builder: (_) => DialogBox(
                             heading: "Set Committee Name",
                             content: TextField(
                               autofocus: true,
@@ -99,13 +99,13 @@ class CommitteeCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
-                    itemBuilder: (context, index) => DelegateTile(
+                    itemBuilder: (_, index) => DelegateTile(
                       delegate:
                           _setupController.committee.value.delegates[index],
                       onTap: () => _setupController.removeAt(index),
                       trailing: Icon(Icons.remove, color: Colors.grey[400]),
                     ),
-                    separatorBuilder: (context, index) => Divider(
+                    separatorBuilder: (_, index) => Divider(
                       indent: 66,
                       thickness: 0.5,
                       height: 6,

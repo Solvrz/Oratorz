@@ -11,98 +11,90 @@ import '/ui/widgets/dialog_box.dart';
 class LoadCommitteeCard extends StatelessWidget {
   const LoadCommitteeCard({super.key});
 
-  List<String> toAIPPM(List<List<Data?>> rows) {
+  List<String> createDelegates(List<List<Data?>> rows) {
     final List<String> _delegates = [];
 
     for (final List<Data?> row in rows) {
       final String? name = row[0]?.value.toString();
-      final String? party = row[1]?.value.toString();
+      final String? type = row[1]?.value.toString();
 
-      //TODO: Party Check in list of usual names
-
-      if (party != null &&
-          party.isNotEmpty &&
-          name != null &&
-          name.isNotEmpty) {
-        if (AIPPM.values
-            .where(
-              (_delegate) =>
-                  _delegate.toLowerCase() == name.toLowerCase().trim(),
-            )
-            .isNotEmpty) {
-          _delegates.add(
-            AIPPM.entries
-                .where(
-                  (_entry) =>
-                      _entry.value.toLowerCase() == name.toLowerCase().trim(),
-                )
-                .first
-                .key,
-          );
-        } else {
-          AIPPM.entries.toList().forEach((_) {
-            if (AIPPM.containsKey("$party 0")) {
-              int _members = 0;
-
-              _members = AIPPM.keys
+      if (name != null && name.isNotEmpty) {
+        if (type?.toLowerCase().trim() == "un") {
+          if (COUNTRIES.values
+              .where(
+                (_delegate) =>
+                    _delegate.toLowerCase() == name.toLowerCase().trim(),
+              )
+              .isNotEmpty) {
+            _delegates.add(
+              COUNTRIES.entries
                   .where(
-                    (_party) => _party.contains(party),
+                    (_entry) =>
+                        _entry.value.toLowerCase() == name.toLowerCase().trim(),
                   )
-                  .toList()
-                  .last
-                  .split(" ")[1]
-                  .toInt();
+                  .first
+                  .key,
+            );
+          } else {
+            COUNTRIES[name] = name;
+            DELEGATES[name] = name;
 
-              AIPPM["$party $_members"] = name;
-              DELEGATES["$party $_members"] = name;
+            _delegates.add(name);
+          }
+        } else if (type?.toLowerCase().trim() == "aippm") {
+          final String? party = row[2]?.value.toString();
 
-              if (!_delegates.contains("$party $_members")) {
-                _delegates.add("$party $_members");
-              }
-            } else {
-              AIPPM["$party 0"] = name;
-              DELEGATES["$party 0"] = name;
-
-              _delegates.add("$party 0");
-            }
-          });
-        }
-      }
-    }
-
-    return _delegates;
-  }
-
-  List<String> toUN(List<List<Data?>> rows) {
-    final List<String> _delegates = [];
-
-    for (final List<Data?> row in rows) {
-      final String? country = row[0]?.value.toString();
-
-      if (country != null && country.isNotEmpty) {
-        if (COUNTRIES.values
-            .where(
-              (_delegate) =>
-                  _delegate.toLowerCase() == country.toLowerCase().trim(),
-            )
-            .isNotEmpty) {
-          _delegates.add(
-            COUNTRIES.entries
+          if (party != null && party.isNotEmpty) {
+            if (AIPPM.values
                 .where(
-                  (_entry) =>
-                      _entry.value.toLowerCase() ==
-                      country.toLowerCase().trim(),
+                  (_delegate) =>
+                      _delegate.toLowerCase() == name.toLowerCase().trim(),
                 )
-                .first
-                .key,
-          );
-        } else {
-          // TODO: Random String
-          COUNTRIES[country] = country;
-          DELEGATES[country] = country;
+                .isNotEmpty) {
+              _delegates.add(
+                AIPPM.entries
+                    .where(
+                      (_entry) =>
+                          _entry.value.toLowerCase() ==
+                          name.toLowerCase().trim(),
+                    )
+                    .first
+                    .key,
+              );
+            } else {
+              AIPPM.entries.toList().forEach((_) {
+                if (AIPPM.containsKey("$party 0")) {
+                  int _members = 0;
 
-          _delegates.add(country);
+                  _members = AIPPM.keys
+                      .where(
+                        (_party) => _party.contains(party),
+                      )
+                      .toList()
+                      .last
+                      .split(" ")[1]
+                      .toInt();
+
+                  AIPPM["$party $_members"] = name;
+                  DELEGATES["$party $_members"] = name;
+
+                  if (!_delegates.contains("$party $_members")) {
+                    _delegates.add("$party $_members");
+                  }
+                } else {
+                  AIPPM["$party 0"] = name;
+                  DELEGATES["$party 0"] = name;
+
+                  _delegates.add("$party 0");
+                }
+              });
+            }
+          }
+        } else {
+          return [];
         }
+      } else {
+        return [];
       }
     }
 
@@ -132,10 +124,6 @@ class LoadCommitteeCard extends StatelessWidget {
                     child: TextButton(
                       child: const Text("From File"),
                       onPressed: () async {
-                        // TODO: Improve Code
-                        // TODO: Others Flag
-                        // TODO: Make Sure AIPPM & COuntries are not in same committee
-
                         try {
                           final FilePickerResult? _result =
                               await FilePicker.platform.pickFiles(
@@ -148,51 +136,39 @@ class LoadCommitteeCard extends StatelessWidget {
                                 Excel.decodeBytes(_result.files.single.bytes!);
 
                             for (final String table in excel.tables.keys) {
-                              final List<List<Data?>> rows =
-                                  excel.tables[table]!.rows;
-                              final String type =
-                                  rows.removeAt(0)[0]!.value.toString();
+                              final Sheet? sheet = excel.tables[table];
 
-                              List<String> _delegates = [];
+                              if (sheet != null && sheet.maxCols == 3) {
+                                final List<List<Data?>> rows = sheet.rows;
+                                final List<String> _delegates =
+                                    createDelegates(rows..removeAt(0));
 
-                              if (type.toLowerCase() == "name") {
-                                if (excel.tables[table]!.maxCols != 2) {
+                                if (_delegates.isNotEmpty) {
+                                  _delegates.forEach(
+                                    (_delegate) {
+                                      if (!_setupController
+                                          .committee.value.delegates
+                                          .contains(_delegate)) {
+                                        _setupController.add(_delegate);
+                                      }
+                                    },
+                                  );
+                                  _setupController.update();
+
                                   return;
                                 }
-
-                                _delegates = toAIPPM(rows);
-                              } else if (type.toLowerCase() == "country") {
-                                if (excel.tables[table]!.maxCols != 1) {
-                                  return;
-                                }
-
-                                _delegates = toUN(rows);
-                              } else {
-                                print("Hi");
-                                return;
-                              }
-
-                              if (_delegates.isNotEmpty) {
-                                _delegates.forEach(
-                                  (_delegate) =>
-                                      _setupController.add(_delegate),
-                                );
-                                _setupController.update();
-
-                                return;
                               }
                             }
 
-                            print("hi");
-                            // TODOD: Check if This Works
                             throw Exception([
-                              "The file is invalid. Please Check the file & Try Again."
+                              "The file is invalid. Please check the file & Try again..."
+                            ]);
+                          } else {
+                            throw Exception([
+                              "An unkown error occured. Please check the file & Try again..."
                             ]);
                           }
-                          print("hi");
-                        } catch (e, s) {
-                          print(e);
-                          print(s);
+                        } catch (e) {
                           // TODO: Show Error
                         }
                       },
@@ -209,14 +185,14 @@ class LoadCommitteeCard extends StatelessWidget {
 
                         showDialog(
                           context: context,
-                          builder: (context) => DialogBox(
+                          builder: (_) => DialogBox(
                             heading: "Select Template",
                             content: SizedBox(
                               height: context.height / 2,
                               width: context.width / 2.5,
                               child: ListView.builder(
                                 itemCount: COMMITTEES.length * 2 - 1,
-                                itemBuilder: (context, index) => index % 2 == 0
+                                itemBuilder: (_, index) => index % 2 == 0
                                     ? ListTile(
                                         hoverColor: Colors.grey[100],
                                         onTap: () {

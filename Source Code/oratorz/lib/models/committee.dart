@@ -31,6 +31,11 @@ class Committee {
         (element) => Get.find<CommitteeController>().rollCall[element]! > 0,
       )
       .toList();
+  List<String> get presentAndVotingDelegates => delegates
+      .where(
+        (element) => Get.find<CommitteeController>().rollCall[element]! > 1,
+      )
+      .toList();
 
   void addSpeaker(String delegate) => speakers.add(delegate);
   void removeSpeaker(String delegate) => speakers.remove(delegate);

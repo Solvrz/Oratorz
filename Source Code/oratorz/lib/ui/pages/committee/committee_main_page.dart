@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide TabController;
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -5,9 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
+import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
-import './widgets/roll_call.dart';
+import 'widgets/roll_call_dialog.dart';
 
 class CommitteeMainPage extends StatefulWidget {
   const CommitteeMainPage({super.key});
@@ -23,6 +25,25 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   void initState() {
     super.initState();
 
+    // TODO: Remove after Testing
+    if (kDebugMode) {
+      _committeeController = Get.put(
+        CommitteeController(
+          committee: Committee.fromTemplate("UNSC"),
+          tabVal: COMMITTEE_TABS
+              .indexWhere(
+                (tab) => tab["route"]
+                    .toString()
+                    .contains(Get.find<RouteController>().path),
+              )
+              .clamp(0, double.infinity)
+              .toInt(),
+        ),
+      );
+
+      return;
+    }
+
     if (Get.isRegistered<CommitteeController>()) {
       _committeeController = Get.find<CommitteeController>()
         ..tabVal = COMMITTEE_TABS
@@ -34,6 +55,8 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
             .clamp(0, double.infinity)
             .toInt();
     } else {
+      Get.deleteAll();
+
       SchedulerBinding.instance
           .addPostFrameCallback((_) => context.pushReplacement("/setup"));
     }
@@ -72,7 +95,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                         final Map<String, dynamic> _tab = COMMITTEE_TABS[index];
 
                         return Obx(
-                          () => SidebarTile(
+                          () => _SidebarTile(
                             title: _tab["title"],
                             icon: _tab["icon"],
                             onTap: () {
@@ -88,7 +111,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                           ),
                         );
                       }),
-                      SidebarTile(
+                      _SidebarTile(
                         title: "Roll Call",
                         icon: Icons.fact_check_outlined,
                         onTap: () => showDialog(
@@ -97,7 +120,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                         ),
                       ),
                       const Spacer(),
-                      SidebarTile(
+                      _SidebarTile(
                         title: "Setup",
                         icon: Icons.settings_outlined,
                         onTap: () {
@@ -125,15 +148,14 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   }
 }
 
-class SidebarTile extends StatelessWidget {
+class _SidebarTile extends StatelessWidget {
   final String title;
   final IconData icon;
   final Function() onTap;
   final bool selected;
   final Color? iconColor;
 
-  const SidebarTile({
-    super.key,
+  const _SidebarTile({
     required this.title,
     required this.icon,
     required this.onTap,

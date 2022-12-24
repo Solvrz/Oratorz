@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
-import '../../widgets/committee/add_speaker.dart';
-import '../../widgets/committee/past_speakers.dart';
-import '../../widgets/committee/speakers_info.dart';
-import '../../widgets/committee/stopwatch.dart';
+import '../widgets/add_speaker_card.dart';
+import '../widgets/past_speakers_card.dart';
+import '../widgets/speakers_info_card.dart';
+import '../widgets/stopwatch.dart';
 
 class ModTab extends StatelessWidget {
   const ModTab({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
-import '../../widgets/committee/stopwatch.dart';
+import '../widgets/stopwatch.dart';
 
 class UnmodTab extends StatelessWidget {
   const UnmodTab({super.key});

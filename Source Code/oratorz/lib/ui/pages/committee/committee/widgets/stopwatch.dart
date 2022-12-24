@@ -6,10 +6,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/ui/widgets/delegate_tile.dart';
-import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/filled_button.dart';
 import './settings_dialog.dart';
+import './yield_spaeaker_dialog.dart';
 
 class StopwatchWidget extends StatefulWidget {
   final String tag;
@@ -185,7 +184,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 
                         await showDialog(
                           context: context,
-                          builder: (context) =>
+                          builder: (_) =>
                               SettingsDialog(controller: _speechController),
                         );
                       },
@@ -208,7 +207,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 
                           return showDialog(
                             context: context,
-                            builder: (context) => YieldSpeakerDialog(
+                            builder: (_) => YieldSpeakerDialog(
                               delegates: delegates,
                               controller: _speechController,
                             ),
@@ -226,90 +225,4 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
       ),
     );
   }
-}
-
-class YieldSpeakerDialog extends StatefulWidget {
-  final List<String> delegates;
-  final SpeechController controller;
-
-  const YieldSpeakerDialog({
-    super.key,
-    required this.delegates,
-    required this.controller,
-  });
-
-  @override
-  State<YieldSpeakerDialog> createState() => _YieldSpeakerDialogState();
-}
-
-class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
-  int selected = -1;
-
-  @override
-  Widget build(BuildContext context) => DialogBox(
-        heading: "Yield to Speaker",
-        content: SizedBox(
-          height: context.height / 2,
-          child: widget.delegates.isNotEmpty
-              ? SingleChildScrollView(
-                  child: Column(
-                    children: List.generate(
-                      widget.delegates.length,
-                      (index) {
-                        final String _delegate = widget.delegates[index];
-
-                        return DelegateTile(
-                          delegate: widget.delegates[index],
-                          contentPadding: const EdgeInsets.all(5),
-                          onTap: () {
-                            setState(() => selected = index);
-
-                            widget.controller.currentSpeaker.value = _delegate;
-                            widget.controller.nextSpeakers.remove(_delegate);
-                          },
-                          trailing: Radio(
-                            value: index,
-                            groupValue: selected,
-                            hoverColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            overlayColor: MaterialStateProperty.all<Color>(
-                              Colors.transparent,
-                            ),
-                            fillColor: MaterialStateProperty.all<Color>(
-                              Colors.grey.shade700,
-                            ),
-                            onChanged: (value) => setState(() {
-                              if (value != null) {
-                                selected = value as int;
-
-                                widget.controller.currentSpeaker.value =
-                                    _delegate;
-                                widget.controller.nextSpeakers
-                                    .remove(_delegate);
-                              }
-                            }),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                )
-              : Center(
-                  child: Text(
-                    "Conduct a roll call before yielding speakers",
-                    style: context.textTheme.bodyText1,
-                  ),
-                ),
-        ),
-        actions: [
-          SizedBox(
-            width: context.width / 3,
-            child: FilledButton(
-              color: context.theme.colorScheme.secondary,
-              onPressed: () => Navigator.pop(context),
-              child: const Text("DONE"),
-            ),
-          ),
-        ],
-      );
 }
