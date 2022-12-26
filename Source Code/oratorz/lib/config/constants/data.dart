@@ -1,5 +1,4 @@
 // ignore_for_file: non_constant_identifier_names
-// TODO: Drag & Drop
 
 final Map<String, String> COUNTRIES = {
   "AND": "Andorra",
@@ -209,9 +208,9 @@ final Map<String, String> AIPPM = {
   "ADS 0": "Anupriya Patel",
   "AIADMK 0": "EK Palaniswami",
   "AIMIM 0": "Asadudin Owaisi",
-  "AITNC 0": "Mamata Banerjee",
-  "AITNC 1": "Mahua Moitra",
-  "AITNC 2": "Abhishek Banerjee",
+  "AITMC 0": "Mamata Banerjee",
+  "AITMC 1": "Mahua Moitra",
+  "AITMC 2": "Abhishek Banerjee",
   "BBSS 0": "Eknath Shinde",
   "BJD 0": "Naveen Patnaik",
   "BJP 0": "Narendra Modi",
@@ -285,11 +284,11 @@ final Map<String, String> AIPPM = {
   "JDU 0": "Nitish Kumar",
   "JMM 0": "Hemant Soren",
   "MNF 0": "Zoramthanga",
-  "NCP 0": "Omar Abdullah",
-  "NCP 1": "Supriya Sule",
-  "NCP 2": "Ajit Pawar",
-  "NCP 3": "Sharad Pawar",
-  "NCP 4": "Farrukh Abdullah",
+  "NC 0": "Omar Abdullah",
+  "NC 1": "Farrukh Abdullah",
+  "NCP 0": "Supriya Sule",
+  "NCP 1": "Ajit Pawar",
+  "NCP 2": "Sharad Pawar",
   "NDPP 0": "Neiphiu Rio",
   "NPP 0": "Conrad Sangma",
   "PDP 0": "Mehbooba Mufti",
@@ -304,9 +303,8 @@ final Map<String, String> AIPPM = {
   "YSRCP 0": "YS Jagan Mohan Reddy",
 };
 
-// TODO: AIMIM, RJD, PDP, SP, ADS & Others Flags
+// TODO: Others Flags
 // TODO: Strech Paty Icons
-// TODO: Check These: @Lovish
 
 final Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
 
@@ -1025,8 +1023,8 @@ const Map<String, List<String>> COMMITTEES = {
     "ADS 0",
     "AIADMK 0",
     "AIMIM 0",
-    "AITNC 0",
-    "AITNC 1",
+    "AITMC 0",
+    "AITMC 1",
     "BBSS 0",
     "BJD 0",
     "BJP 0",
@@ -1075,9 +1073,9 @@ const Map<String, List<String>> COMMITTEES = {
     "ADS 0",
     "AIADMK 0",
     "AIMIM 0",
-    "AITNC 0",
-    "AITNC 1",
-    "AITNC 2",
+    "AITMC 0",
+    "AITMC 1",
+    "AITMC 2",
     "BBSS 0",
     "BJD 0",
     "BJP 0",
@@ -1149,11 +1147,11 @@ const Map<String, List<String>> COMMITTEES = {
     "JDU 0",
     "JMM 0",
     "MNF 0",
+    "NC 0",
+    "NC 1",
     "NCP 0",
     "NCP 1",
     "NCP 2",
-    "NCP 3",
-    "NCP 4",
     "NDPP 0",
     "NPP 0",
     "PDP 0",
