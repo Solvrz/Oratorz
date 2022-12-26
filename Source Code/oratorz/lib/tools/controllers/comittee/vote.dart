@@ -10,10 +10,10 @@ class VoteController extends GetxController {
   RxList<Map<String, bool>> pastVoters = <Map<String, bool>>[].obs;
 
   String get topic => _topic.value;
-  set topic(String newTopic) => topic = newTopic;
+  set topic(String newTopic) => _topic.value = newTopic;
 
   int get majority => _majority.value;
-  set majority(int newMajority) => majority = newMajority;
+  set majority(int newMajority) => _majority.value = newMajority;
 
   String get currentVoter => voters.isNotEmpty ? voters[0] : "";
   int get totalVoters => voters.length + pastVoters.length;

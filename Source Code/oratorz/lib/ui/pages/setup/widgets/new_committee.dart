@@ -51,7 +51,7 @@ class NewCommitteeCard extends StatelessWidget {
   }
 }
 
-class _CommitteeType extends StatefulWidget {
+class _CommitteeType extends StatelessWidget {
   final int index;
   final String title;
   final List<String> delegates;
@@ -63,18 +63,13 @@ class _CommitteeType extends StatefulWidget {
   });
 
   @override
-  State<_CommitteeType> createState() => _CommitteeTypeState();
-}
-
-class _CommitteeTypeState extends State<_CommitteeType> {
-  final SetupController _setupController = Get.find<SetupController>();
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final SetupController _setupController = Get.find<SetupController>();
+    final TextEditingController _searchController = TextEditingController();
+
     return GetBuilder<SetupController>(
       builder: (_) {
-        final bool _open = _setupController.committeeType == widget.index;
+        final bool _open = _setupController.committeeType == index;
 
         return SizedBox(
           height: _open ? context.height / 2.2 : 65,
@@ -82,7 +77,7 @@ class _CommitteeTypeState extends State<_CommitteeType> {
             children: [
               InkWell(
                 onTap: () {
-                  _setupController.committeeType = widget.index;
+                  _setupController.committeeType = index;
                   _setupController.update();
                 },
                 hoverColor: const Color.fromARGB(255, 250, 250, 250),
@@ -92,7 +87,7 @@ class _CommitteeTypeState extends State<_CommitteeType> {
                     children: [
                       Icon(_open ? Icons.arrow_right : Icons.arrow_drop_down),
                       Text(
-                        widget.title,
+                        title,
                         style: context.textTheme.headline6,
                       ),
                     ],
@@ -128,7 +123,7 @@ class _CommitteeTypeState extends State<_CommitteeType> {
                   builder: (_) {
                     final List<String> _delegates = [];
 
-                    widget.delegates.forEach(
+                    delegates.forEach(
                       (_delegate) {
                         final String _search = _searchController.toText();
 

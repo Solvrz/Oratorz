@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
+import '/tools/functions.dart';
 import '../widgets/stopwatch.dart';
 
 class PrayerTab extends StatelessWidget {
@@ -27,7 +28,7 @@ class PrayerTab extends StatelessWidget {
             child: const StopwatchWidget(tag: "prayer"),
           ),
         ),
-        Text("Carousel Placeholder", style: context.textTheme.bodyText1),
+        carousel(context),
       ],
     );
   }

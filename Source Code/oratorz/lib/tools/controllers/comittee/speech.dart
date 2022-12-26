@@ -16,7 +16,8 @@ class SpeechController extends GetxController {
   RxList<Map<String, Duration>> pastSpeakers = <Map<String, Duration>>[].obs;
 
   Map<String, String> get subtopic => _subtopic;
-  set subtopic(Map<String, String> newSubtopic) => subtopic = newSubtopic;
+  set subtopic(Map<String, String> newSubtopic) =>
+      _subtopic.value = newSubtopic;
 
   bool get hasSubtopic => subtopic.keys.first.isNotEmpty;
   bool get hasOverallDuration => overallDuration.inSeconds > 0;
@@ -26,14 +27,15 @@ class SpeechController extends GetxController {
 
   Duration get overallDuration => _overallDuration.value;
   Duration get duration => _duration.value;
-  set overallDuration(Duration? newDuration) => overallDuration = newDuration;
-  set duration(Duration newDuration) => duration = newDuration;
+  set overallDuration(Duration newDuration) =>
+      _overallDuration.value = newDuration;
+  set duration(Duration newDuration) => _duration.value = newDuration;
 
   String get currentSpeaker => _currentSpeaker.value;
-  set currentSpeaker(String newSpeaker) => currentSpeaker = newSpeaker;
+  set currentSpeaker(String newSpeaker) => _currentSpeaker.value = newSpeaker;
 
   bool get isSpeaking => _isSpeaking.value;
-  set isSpeaking(bool newSpeaker) => isSpeaking = newSpeaker;
+  set isSpeaking(bool newSpeaker) => _isSpeaking.value = newSpeaker;
 
   bool isAdded(String delegate) =>
       currentSpeaker == delegate || nextSpeakers.contains(delegate);

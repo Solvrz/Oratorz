@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 Widget flag(String delegate, {double? size}) => Image.asset(
       height: size,
@@ -11,3 +12,7 @@ Widget flag(String delegate, {double? size}) => Image.asset(
       ) =>
           Container(),
     );
+
+// TODO: Carousel
+Widget carousel(BuildContext context) =>
+    Text("Carousel Placeholder", style: context.textTheme.bodyText1);

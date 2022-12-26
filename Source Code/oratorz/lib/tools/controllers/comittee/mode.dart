@@ -10,7 +10,7 @@ class ModeController extends GetxController {
   }
 
   int get mode => _mode.value;
-  set mode(int newMode) => mode = newMode;
+  set mode(int newMode) => _mode.value = newMode;
 
   dynamic get currentMode => COMMITTEE_MODES[mode]["tab"];
   Map<String, dynamic> get currentModeDetails => COMMITTEE_MODES[mode];

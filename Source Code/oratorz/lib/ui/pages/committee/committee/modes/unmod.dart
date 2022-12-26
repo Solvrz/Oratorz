@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
+import '/tools/functions.dart';
 import '../widgets/stopwatch.dart';
 
 class UnmodTab extends StatelessWidget {
@@ -24,7 +25,7 @@ class UnmodTab extends StatelessWidget {
             child: const StopwatchWidget(tag: "unmod"),
           ),
         ),
-        Text("Carousel Placeholder", style: context.textTheme.bodyText1),
+        carousel(context),
       ],
     );
   }

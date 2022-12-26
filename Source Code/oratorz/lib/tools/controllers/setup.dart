@@ -10,7 +10,8 @@ class SetupController extends GetxController {
   Committee get committee => _committee.value;
 
   int get committeeType => _committeeType.value;
-  set committeeType(int newCommitteeType) => committeeType = newCommitteeType;
+  set committeeType(int newCommitteeType) =>
+      _committeeType.value = newCommitteeType;
 
   void setName(String newName) =>
       _committee.update((value) => value?.name = newName);
