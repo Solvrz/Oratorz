@@ -7,6 +7,7 @@ import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import '../../../../services/local_storage.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -120,11 +121,13 @@ class CommitteeCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 RoundedButton(
                   onPressed: () {
-                    Get.put<CommitteeController>(
-                      CommitteeController(
-                        committee: _setupController.committee,
-                      ),
+                    final CommitteeController controller = CommitteeController(
+                      committee: _setupController.committee,
                     );
+
+                    Get.put<CommitteeController>(controller);
+
+                    LocalStorage.saveCommittee(controller);
 
                     context.pushReplacement("/committee/gsl");
                   },

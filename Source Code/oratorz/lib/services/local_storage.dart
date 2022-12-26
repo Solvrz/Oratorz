@@ -1,19 +1,47 @@
-import 'dart:async';
-import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import '../models/committee.dart';
+import '../tools/controllers/comittee/committee.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {
-  static Future<void> set(String location, String data) async =>
-      (await SharedPreferences.getInstance()).setString(location, data);
+  static GetStorage box = GetStorage();
 
-  static Future<Map<String, dynamic>> get(String location, String value) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  static void saveCommittee(CommitteeController committee) {
+    //TODO: Assign a unique ID to each committee
+    box.write("committee", committee.toJson());
+  }
 
-    String? result = prefs.getString(location);
-    if (result == null || result.isEmpty) result = value;
+  static bool updateCommittee(String key, dynamic value) {
+    final Map<String, dynamic>? data = box.read("committee");
 
-    return jsonDecode(result) as Map<String, dynamic>;
+    if (data == null) return false;
+
+    data[key] = value;
+
+    box.write("committee", data);
+
+    return true;
+  }
+
+  static bool loadCommittee() {
+    final Map<String, dynamic>? data = box.read("committee");
+
+    if (data == null) return false;
+
+    final Committee committee = Committee(
+      name: data["committee"]["name"],
+      agenda: data["committee"]["agenda"],
+      delegates: data["committee"]["delegates"].cast<String>(),
+    );
+
+    final CommitteeController controller =
+        CommitteeController(committee: committee);
+    controller.rollCall = Map<String, int>.from(data["rollCall"]);
+
+    Get.put<CommitteeController>(controller);
+
+    return true;
   }
 }

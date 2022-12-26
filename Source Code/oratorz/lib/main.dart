@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -9,10 +10,13 @@ import '/config/theme.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
+import 'services/local_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Intl.defaultLocale = LOCALE.code();
+
+  await GetStorage.init();
 
   setUrlStrategy(PathUrlStrategy());
   runApp(const Oratorz());
@@ -27,7 +31,7 @@ class Oratorz extends StatelessWidget {
       title: "Oratorz",
       theme: OratorzTheme.of(context),
       routerConfig: GoRouter(
-        initialLocation: "/setup",
+        initialLocation: "/",
         errorBuilder: (_, args) {
           Get.put(RouteController(arguments: args));
 
@@ -36,7 +40,11 @@ class Oratorz extends StatelessWidget {
         routes: [
           GoRoute(
             path: "/",
-            redirect: (_, __) => "/setup",
+            redirect: (_, __) {
+              final exists = LocalStorage.loadCommittee();
+
+              return exists ? "/committee/gsl" : "/setup";
+            },
           ),
           GoRoute(
             path: "/setup",
@@ -54,6 +62,7 @@ class Oratorz extends StatelessWidget {
               return const CommitteeMainPage();
             },
           ),
+          GoRoute(path: "/committee", redirect: (_, __) => "/committee/gsl"),
           GoRoute(
             path: "/committee/:mode",
             builder: (_, args) {

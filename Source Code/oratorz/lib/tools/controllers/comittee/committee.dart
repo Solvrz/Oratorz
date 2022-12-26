@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '/config/constants/committee.dart';
 import '/models/committee.dart';
+import '../../../services/local_storage.dart';
 
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
@@ -16,7 +17,18 @@ class CommitteeController extends GetxController {
   }
 
   Committee get committee => _committee.value;
+
+  void setAgenda(String agenda) {
+    _committee.update((val) {
+      if (val != null) val.agenda = agenda;
+    });
+
+    LocalStorage.updateCommittee("committee", committee.toJson());
+  }
+
   Map<String, int> get rollCall => _rollCall;
+
+  set rollCall(Map<String, int> newRollCall) => _rollCall.value = newRollCall;
 
   bool? get areAllPresent => rollCall.values.toList().every(
         (call) => call >= 1,
@@ -25,10 +37,22 @@ class CommitteeController extends GetxController {
         (call) => call == 0,
       );
 
-  void setAllPresent() => rollCall.updateAll((key, value) => 1);
-  void setAllAbsent() => rollCall.updateAll((key, value) => 0);
-  void setRollCall(String delegate, int attendance) =>
-      rollCall[delegate] = attendance;
+  void _saveRollCall() => LocalStorage.updateCommittee("rollCall", _rollCall);
+
+  void setAllPresent() {
+    _rollCall.updateAll((key, value) => 1);
+    _saveRollCall();
+  }
+
+  void setAllAbsent() {
+    _rollCall.updateAll((key, value) => 0);
+    _saveRollCall();
+  }
+
+  void setRollCall(String delegate, int attendance) {
+    _rollCall[delegate] = attendance;
+    _saveRollCall();
+  }
 
   int get tab => _tab.value;
   set tab(int newTab) => _tab.value = newTab;
@@ -40,7 +64,6 @@ class CommitteeController extends GetxController {
     return {
       "committee": committee.toJson(),
       "rollCall": rollCall,
-      "tab": tab,
     };
   }
 }

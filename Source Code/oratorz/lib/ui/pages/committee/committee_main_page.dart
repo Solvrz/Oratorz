@@ -5,11 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
-import '/config/constants/constants.dart';
-import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
-import '/tools/controllers/route.dart';
 import './widgets/roll_call_dialog.dart';
+import '../../../services/local_storage.dart';
 
 class CommitteeMainPage extends StatefulWidget {
   const CommitteeMainPage({super.key});
@@ -25,40 +23,48 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   void initState() {
     super.initState();
 
-    if (TESTING) {
-      _committeeController = Get.put(
-        CommitteeController(
-          committee: Committee.fromTemplate("UNSC"),
-          tab: COMMITTEE_TABS
-              .indexWhere(
-                (tab) => tab["route"]
-                    .toString()
-                    .contains(Get.find<RouteController>().path),
-              )
-              .clamp(0, double.infinity)
-              .toInt(),
-        ),
-      );
+    final bool exists = LocalStorage.loadCommittee();
 
-      return;
-    }
-
-    if (Get.isRegistered<CommitteeController>()) {
-      _committeeController = Get.find<CommitteeController>()
-        ..tab = COMMITTEE_TABS
-            .indexWhere(
-              (tab) => tab["route"]
-                  .toString()
-                  .contains(Get.find<RouteController>().path),
-            )
-            .clamp(0, double.infinity)
-            .toInt();
+    if (exists) {
+      _committeeController = Get.find<CommitteeController>();
     } else {
-      Get.deleteAll();
-
       SchedulerBinding.instance
           .addPostFrameCallback((_) => context.pushReplacement("/setup"));
     }
+
+    // if (TESTING) {
+    //   _committeeController = Get.put(
+    //     CommitteeController(
+    //       committee: Committee.fromTemplate("UNSC"),
+    //       tab: COMMITTEE_TABS
+    //           .indexWhere(
+    //             (tab) => tab["route"]
+    //                 .toString()
+    //                 .contains(Get.find<RouteController>().path),
+    //           )
+    //           .clamp(0, double.infinity)
+    //           .toInt(),
+    //     ),
+    //   );
+
+    //   return;
+    // }
+
+    // if (Get.isRegistered<CommitteeController>()) {
+    //   _committeeController = Get.find<CommitteeController>()
+    //     ..tab = COMMITTEE_TABS
+    //         .indexWhere(
+    //           (tab) => tab["route"]
+    //               .toString()
+    //               .contains(Get.find<RouteController>().path),
+    //         )
+    //         .clamp(0, double.infinity)
+    //         .toInt();
+    // } else {
+    //   Get.deleteAll();
+
+    // SchedulerBinding.instance
+    //     .addPostFrameCallback((_) => context.pushReplacement("/setup"));
   }
 
   @override

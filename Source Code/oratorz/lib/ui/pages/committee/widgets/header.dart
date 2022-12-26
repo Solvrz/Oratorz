@@ -19,8 +19,8 @@ class Header extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          GetBuilder<CommitteeController>(
-            builder: (controller) => Row(
+          Obx(
+            () => Row(
               children: [
                 RichText(
                   text: TextSpan(
@@ -51,8 +51,7 @@ class Header extends StatelessWidget {
                           autofocus: true,
                           controller: _controller,
                           onSubmitted: (value) {
-                            _committeeController.committee.agenda =
-                                _controller.text;
+                            _committeeController.setAgenda(_controller.text);
 
                             Navigator.pop(context);
                           },
@@ -70,8 +69,7 @@ class Header extends StatelessWidget {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              _committeeController.committee.agenda =
-                                  _controller.text;
+                              _committeeController.setAgenda(_controller.text);
 
                               Navigator.pop(context);
                             },
@@ -80,8 +78,6 @@ class Header extends StatelessWidget {
                         ],
                       ),
                     );
-
-                    _committeeController.update();
                   },
                   hoverColor: const Color.fromARGB(255, 250, 250, 250),
                   child: Container(
