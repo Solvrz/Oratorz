@@ -3,11 +3,17 @@ import 'package:get/get.dart';
 import './committee.dart';
 
 class VoteController extends GetxController {
-  RxString topic = "Your Topic".obs;
-  RxInt majority = 0.obs;
+  final RxString _topic = "Your Topic".obs;
+  final RxInt _majority = 0.obs;
 
   RxList<String> voters = <String>[].obs;
   RxList<Map<String, bool>> pastVoters = <Map<String, bool>>[].obs;
+
+  String get topic => _topic.value;
+  set topic(String newTopic) => topic = newTopic;
+
+  int get majority => _majority.value;
+  set majority(int newMajority) => majority = newMajority;
 
   String get currentVoter => voters.isNotEmpty ? voters[0] : "";
   int get totalVoters => voters.length + pastVoters.length;
@@ -33,7 +39,7 @@ class VoteController extends GetxController {
   }
 
   int majorityVal({int? value}) {
-    switch (value ?? majority.value) {
+    switch (value ?? majority) {
       case 0:
         return (totalVoters / 2 + (totalVoters > 0 ? 1 : 0)).floor();
       case 1:
@@ -57,10 +63,8 @@ class VoteController extends GetxController {
   }
 
   void reset() {
-    voters.value = Get.find<CommitteeController>()
-        .committee
-        .value
-        .presentAndVotingDelegates;
+    voters.value =
+        Get.find<CommitteeController>().committee.presentAndVotingDelegates;
     pastVoters.value = [];
   }
 

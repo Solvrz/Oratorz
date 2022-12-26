@@ -4,18 +4,20 @@ import '/config/constants/committee.dart';
 import '/models/committee.dart';
 
 class CommitteeController extends GetxController {
-  late Rx<Committee> committee;
+  late Rx<Committee> _committee;
   late RxMap<String, int> rollCall;
-  late RxInt tab;
+  late RxInt _tab;
 
-  CommitteeController({required Committee committee, int tabVal = 0}) {
-    this.committee = committee.obs;
+  CommitteeController({required Committee committee, int tab = 0}) {
+    _tab = tab.obs;
+    _committee = committee.obs;
     rollCall = {for (String delegate in committee.delegates) delegate: -1}.obs;
-    tab = tabVal.obs;
   }
 
+  Committee get committee => _committee.value;
+
   bool? get areAllPresent => rollCall.values.toList().every(
-        (call) => call == 1,
+        (call) => call >= 1,
       );
   bool? get areAllAbsent => rollCall.values.toList().every(
         (call) => call == 0,
@@ -26,8 +28,17 @@ class CommitteeController extends GetxController {
   void setRollCall(String delegate, int attendance) =>
       rollCall[delegate] = attendance;
 
-  int get tabVal => tab.value;
-  set tabVal(int newTab) => tab.value = newTab;
+  int get tab => _tab.value;
+  set tab(int newTab) => tab = newTab;
 
-  Map<String, dynamic> currentTab() => COMMITTEE_TABS[tab.value];
+  dynamic get currentTab => COMMITTEE_TABS[tab]["tab"];
+  Map<String, dynamic> get currentTabDetails => COMMITTEE_TABS[tab];
+
+  Map<String, dynamic> toJson() {
+    return {
+      "committee": committee.toJson(),
+      "rollCall": rollCall,
+      "tab": tab,
+    };
+  }
 }

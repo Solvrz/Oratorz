@@ -146,8 +146,7 @@ class LoadCommitteeCard extends StatelessWidget {
                                 if (_delegates.isNotEmpty) {
                                   _delegates.forEach(
                                     (_delegate) {
-                                      if (!_setupController
-                                          .committee.value.delegates
+                                      if (!_setupController.committee.delegates
                                           .contains(_delegate)) {
                                         _setupController.add(_delegate);
                                       }

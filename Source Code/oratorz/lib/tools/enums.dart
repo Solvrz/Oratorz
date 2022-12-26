@@ -1,7 +1,17 @@
-enum AlertType {
-  Urgent,
-  Error,
-  Infoformation,
-  Update,
-  Notification,
+enum Tab {
+  COMMITTEE,
+  MOTIONS,
+  VOTE,
+}
+
+enum Mode {
+  GSL,
+  MOD,
+  UNMOD,
+  PRAYER,
+  CONSULTATION,
+  SUSPENSION,
+  TOURdeTABLE,
+  SINGLE,
+  CUSTOM,
 }

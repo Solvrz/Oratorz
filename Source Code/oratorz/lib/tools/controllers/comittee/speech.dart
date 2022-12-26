@@ -1,23 +1,42 @@
 import 'package:get/get.dart';
 
 class SpeechController extends GetxController {
-  Rx<Duration>? overallDuration;
-  Rx<Stopwatch> overallStopwatch = Stopwatch().obs;
+  final RxMap<String, String> _subtopic = {"": ""}.obs;
 
-  RxString currentSpeaker = "".obs;
-  RxMap<String, String> subtopic = {"": ""}.obs;
+  final Rx<Stopwatch> _overallStopwatch = Stopwatch().obs;
+  final Rx<Stopwatch> _stopwatch = Stopwatch().obs;
 
-  bool get hasSubtopic => subtopic.keys.first != "";
-  RxBool isSpeaking = false.obs;
+  final Rx<Duration> _duration = const Duration(minutes: 1).obs;
+  final Rx<Duration> _overallDuration = Duration.zero.obs;
+
+  final RxString _currentSpeaker = "".obs;
+  final RxBool _isSpeaking = false.obs;
 
   RxList<String> nextSpeakers = <String>[].obs;
   RxList<Map<String, Duration>> pastSpeakers = <Map<String, Duration>>[].obs;
 
-  Rx<Duration> duration = const Duration(minutes: 1).obs;
-  Rx<Stopwatch> stopwatch = Stopwatch().obs;
+  Map<String, String> get subtopic => _subtopic;
+  set subtopic(Map<String, String> newSubtopic) => subtopic = newSubtopic;
+
+  bool get hasSubtopic => subtopic.keys.first.isNotEmpty;
+  bool get hasOverallDuration => overallDuration.inSeconds > 0;
+
+  Stopwatch get overallStopwatch => _overallStopwatch.value;
+  Stopwatch get stopwatch => _stopwatch.value;
+
+  Duration get overallDuration => _overallDuration.value;
+  Duration get duration => _duration.value;
+  set overallDuration(Duration? newDuration) => overallDuration = newDuration;
+  set duration(Duration newDuration) => duration = newDuration;
+
+  String get currentSpeaker => _currentSpeaker.value;
+  set currentSpeaker(String newSpeaker) => currentSpeaker = newSpeaker;
+
+  bool get isSpeaking => _isSpeaking.value;
+  set isSpeaking(bool newSpeaker) => isSpeaking = newSpeaker;
 
   bool isAdded(String delegate) =>
-      currentSpeaker.value == delegate || nextSpeakers.contains(delegate);
+      currentSpeaker == delegate || nextSpeakers.contains(delegate);
 
   void reorder(int oldIndex, int newIndex) {
     final String temp = nextSpeakers[oldIndex];
@@ -27,8 +46,8 @@ class SpeechController extends GetxController {
   }
 
   void addSpeaker(String delegate) {
-    if (currentSpeaker.value == "") {
-      currentSpeaker.value = delegate;
+    if (currentSpeaker.isEmpty) {
+      currentSpeaker = delegate;
       return;
     }
 
@@ -38,22 +57,22 @@ class SpeechController extends GetxController {
   void removeSpeaker(String delegate) => nextSpeakers.remove(delegate);
 
   void nextSpeaker() {
-    if (currentSpeaker.value == "") return;
+    if (currentSpeaker.isEmpty) return;
 
-    pastSpeakers.add({currentSpeaker.value: stopwatch.value.elapsed});
+    pastSpeakers.add({currentSpeaker: stopwatch.elapsed});
 
     if (nextSpeakers.isEmpty) {
-      currentSpeaker.value = "";
+      currentSpeaker = "";
     } else {
-      currentSpeaker.value = nextSpeakers.first;
+      currentSpeaker = nextSpeakers.first;
       nextSpeakers.removeAt(0);
     }
 
-    isSpeaking.value = false;
+    isSpeaking = false;
 
-    stopwatch.value.stop();
-    overallStopwatch.value.stop();
+    stopwatch.stop();
+    overallStopwatch.stop();
 
-    stopwatch.value.reset();
+    stopwatch.reset();
   }
 }

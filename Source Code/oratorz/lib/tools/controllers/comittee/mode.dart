@@ -3,14 +3,15 @@ import 'package:get/get.dart';
 import '/config/constants/committee.dart';
 
 class ModeController extends GetxController {
-  late RxInt mode;
+  late RxInt _mode;
 
-  ModeController({int modeVal = 0}) {
-    mode = RxInt(modeVal);
+  ModeController({int mode = 0}) {
+    _mode = mode.obs;
   }
 
-  int get modeVal => mode.value;
-  set modeVal(int newMode) => mode.value = newMode;
+  int get mode => _mode.value;
+  set mode(int newMode) => mode = newMode;
 
-  Map<String, dynamic> currentTab() => COMMITTEE_MODES[mode.value];
+  dynamic get currentMode => COMMITTEE_MODES[mode]["tab"];
+  Map<String, dynamic> get currentModeDetails => COMMITTEE_MODES[mode];
 }

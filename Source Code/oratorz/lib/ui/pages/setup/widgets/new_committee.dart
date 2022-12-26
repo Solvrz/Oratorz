@@ -30,7 +30,7 @@ class NewCommitteeCard extends StatelessWidget {
                 title: "UN Member States",
                 delegates: COUNTRIES.keys.toList()
                   ..removeWhere(
-                    (_delegate) => _setupController.committee.value.delegates
+                    (_delegate) => _setupController.committee.delegates
                         .contains(_delegate),
                   ),
               ),
@@ -39,7 +39,7 @@ class NewCommitteeCard extends StatelessWidget {
                 title: "AIPPM Members",
                 delegates: AIPPM.keys.toList()
                   ..removeWhere(
-                    (_delegate) => _setupController.committee.value.delegates
+                    (_delegate) => _setupController.committee.delegates
                         .contains(_delegate),
                   ),
               ),
@@ -74,15 +74,15 @@ class _CommitteeTypeState extends State<_CommitteeType> {
   Widget build(BuildContext context) {
     return GetBuilder<SetupController>(
       builder: (_) {
-        final bool open = _setupController.openType.value == widget.index;
+        final bool _open = _setupController.committeeType == widget.index;
 
         return SizedBox(
-          height: open ? context.height / 2.2 : 65,
+          height: _open ? context.height / 2.2 : 65,
           child: Column(
             children: [
               InkWell(
                 onTap: () {
-                  _setupController.openType.value = widget.index;
+                  _setupController.committeeType = widget.index;
                   _setupController.update();
                 },
                 hoverColor: const Color.fromARGB(255, 250, 250, 250),
@@ -90,7 +90,7 @@ class _CommitteeTypeState extends State<_CommitteeType> {
                   margin: const EdgeInsets.all(12),
                   child: Row(
                     children: [
-                      Icon(open ? Icons.arrow_right : Icons.arrow_drop_down),
+                      Icon(_open ? Icons.arrow_right : Icons.arrow_drop_down),
                       Text(
                         widget.title,
                         style: context.textTheme.headline6,
@@ -99,7 +99,7 @@ class _CommitteeTypeState extends State<_CommitteeType> {
                   ),
                 ),
               ),
-              if (open) ...[
+              if (_open) ...[
                 Container(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -132,7 +132,7 @@ class _CommitteeTypeState extends State<_CommitteeType> {
                       (_delegate) {
                         final String _search = _searchController.toText();
 
-                        if (_search != "") {
+                        if (_search.isNotEmpty) {
                           if (DELEGATES[_delegate]!
                               .toLowerCase()
                               .contains(_search.toLowerCase())) {
@@ -152,16 +152,14 @@ class _CommitteeTypeState extends State<_CommitteeType> {
                                 final String _delegate = _delegates[index];
 
                                 return Opacity(
-                                  opacity: _setupController
-                                          .committee.value.delegates
+                                  opacity: _setupController.committee.delegates
                                           .contains(_delegate)
                                       ? 0.6
                                       : 1,
                                   child: DelegateTile(
                                     delegate: _delegates[index],
                                     onTap: () {
-                                      if (!_setupController
-                                          .committee.value.delegates
+                                      if (!_setupController.committee.delegates
                                           .contains(_delegate)) {
                                         _setupController.add(_delegate);
                                         _setupController.update();

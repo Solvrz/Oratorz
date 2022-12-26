@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Tab;
 import 'package:intl/intl.dart';
 
 import './enums.dart';
@@ -12,8 +12,14 @@ extension ToolsString on String {
   double toDouble() => double.parse(this);
   int toInt() => int.parse(this);
 
-  AlertType toAlertType() => AlertType.values.firstWhere(
-        (e) => e.toString() == "AlertType.${toString().split(" ").join()}",
+  // TODO: Use These
+  Tab toTab() => Tab.values.firstWhere(
+        (e) =>
+            e.toString() == "Tab.${toString().split("/").last.toUpperCase()}",
+      );
+  Mode toMode() => Mode.values.firstWhere(
+        (e) =>
+            e.toString() == "Mode.${toString().split("/").last.toUpperCase()}",
       );
 }
 
@@ -40,7 +46,12 @@ extension ToolsTextEditingController on TextEditingController {
   String toText() => text.trim();
 }
 
-extension ToolsAlert on AlertType {
+extension ToolsTab on Tab {
+  String toText() =>
+      toString().split(".")[1].split(RegExp("(?=(?!^)[A-Z])")).join(" ");
+}
+
+extension ToolsMode on Mode {
   String toText() =>
       toString().split(".")[1].split(RegExp("(?=(?!^)[A-Z])")).join(" ");
 }

@@ -28,7 +28,7 @@ class Header extends StatelessWidget {
                     style: context.textTheme.headline2,
                     children: [
                       TextSpan(
-                        text: _committeeController.committee.value.agenda,
+                        text: _committeeController.committee.agenda,
                         style: context.textTheme.headline5!
                             .copyWith(fontWeight: FontWeight.w500),
                       ),
@@ -40,7 +40,7 @@ class Header extends StatelessWidget {
                   onTap: () async {
                     final TextEditingController _controller =
                         TextEditingController(
-                      text: _committeeController.committee.value.agenda,
+                      text: _committeeController.committee.agenda,
                     );
 
                     await showDialog(
@@ -51,7 +51,7 @@ class Header extends StatelessWidget {
                           autofocus: true,
                           controller: _controller,
                           onSubmitted: (value) {
-                            _committeeController.committee.value.agenda =
+                            _committeeController.committee.agenda =
                                 _controller.text;
 
                             Navigator.pop(context);
@@ -70,7 +70,7 @@ class Header extends StatelessWidget {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              _committeeController.committee.value.agenda =
+                              _committeeController.committee.agenda =
                                   _controller.text;
 
                               Navigator.pop(context);

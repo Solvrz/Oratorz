@@ -16,7 +16,7 @@ class CommitteePage extends StatelessWidget {
 
     final ModeController _modeController = Get.put(
       ModeController(
-        modeVal: COMMITTEE_MODES
+        mode: COMMITTEE_MODES
             .indexWhere(
               (mode) =>
                   mode["route"].toString().contains(_routeController.path),
@@ -34,7 +34,7 @@ class CommitteePage extends StatelessWidget {
           const SizedBox(height: 24),
           Expanded(
             child: Obx(
-              () => _modeController.currentTab()["tab"],
+              () => _modeController.currentMode,
             ),
           ),
         ],
@@ -66,12 +66,12 @@ class _ModeSelector extends StatelessWidget {
               () => Row(
                 children: [
                   Icon(
-                    _modeController.currentTab()["icon"],
+                    _modeController.currentModeDetails["icon"],
                     color: context.theme.colorScheme.tertiary,
                   ),
                   const VerticalDivider(),
                   Text(
-                    _modeController.currentTab()["name"],
+                    _modeController.currentModeDetails["name"],
                     style: context.textTheme.bodyText1,
                   ),
                 ],
@@ -111,11 +111,11 @@ class _ModeSelector extends StatelessWidget {
         },
       ),
       onSelected: (index) {
-        _modeController.modeVal = index;
+        _modeController.mode = index;
         html.window.history.pushState(
           null,
           "mode",
-          COMMITTEE_MODES[index]["route"],
+          _modeController.currentModeDetails["route"],
         );
       },
     );

@@ -40,7 +40,7 @@ class SpeakersInfoWidget extends StatelessWidget {
                 ),
                 child: Obx(
                   () => Text(
-                    _speechController.isSpeaking.value ? "Done" : "Next",
+                    _speechController.isSpeaking ? "Done" : "Next",
                   ),
                 ),
               ),
@@ -48,9 +48,9 @@ class SpeakersInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Obx(
-            () => _speechController.currentSpeaker.value != ""
+            () => _speechController.currentSpeaker.isNotEmpty
                 ? DelegateTile(
-                    delegate: _speechController.currentSpeaker.value,
+                    delegate: _speechController.currentSpeaker,
                     contentPadding: EdgeInsets.zero,
                   )
                 : Text(

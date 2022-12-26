@@ -15,7 +15,7 @@ class TourDeTableTab extends StatelessWidget {
     final SpeechController _speechController =
         Get.put(SpeechController(), tag: "tourdetable");
 
-    _speechController.subtopic.value = {"Topic": "Your Topic"};
+    _speechController.subtopic = {"Topic": "Your Topic"};
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

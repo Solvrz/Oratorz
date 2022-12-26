@@ -7,22 +7,23 @@ class Committee {
   late String name;
   late String agenda;
   late List<String> delegates;
-  late List<String> speakers;
 
   Committee({
     this.name = "Your Committee",
     this.agenda = "Your Agenda",
-    List<String>? delegates,
-    List<String>? speakers,
-  }) {
-    this.delegates = delegates ?? [];
-    this.speakers = speakers ?? [];
-  }
+    this.delegates = const [],
+  });
 
   Committee.fromTemplate(String template) {
     name = template;
     agenda = "Your Agenda";
     delegates = COMMITTEES[template]!;
+  }
+
+  Committee.fromJson(Map<String, dynamic> data) {
+    name = data["name"];
+    agenda = data["agenda"];
+    delegates = data["delegates"];
   }
 
   int get count => delegates.length;
@@ -37,6 +38,9 @@ class Committee {
       )
       .toList();
 
-  void addSpeaker(String delegate) => speakers.add(delegate);
-  void removeSpeaker(String delegate) => speakers.remove(delegate);
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "agenda": agenda,
+        "delegates": delegates,
+      };
 }

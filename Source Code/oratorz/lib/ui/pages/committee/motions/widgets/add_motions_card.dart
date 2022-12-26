@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/ui/widgets/border_button.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class AddMotionsCard extends StatelessWidget {
   const AddMotionsCard({super.key});
@@ -99,11 +99,24 @@ class AddMotionsCard extends StatelessWidget {
 
                     return Padding(
                       padding: const EdgeInsets.all(8),
-                      // TODO: Decide Color
-                      child: BorderButton(
-                        text: _motion["name"],
-                        icon: _motion["icon"],
+                      child: RoundedButton(
+                        border: true,
                         onPressed: _motion["onTap"],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(_motion["icon"]),
+                            const VerticalDivider(
+                              thickness: 0.5,
+                              color: Colors.black,
+                            ),
+                            Text(
+                              _motion["name"],
+                              style: context.textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

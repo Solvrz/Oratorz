@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/vote.dart';
-import '/ui/widgets/filled_button.dart';
+import '/ui/widgets/rounded_button.dart';
 import './settings_dialog.dart';
 
 class ResultCard extends StatelessWidget {
@@ -31,7 +31,7 @@ class ResultCard extends StatelessWidget {
                         style: context.textTheme.headline2,
                         children: [
                           TextSpan(
-                            text: _voteController.topic.value,
+                            text: _voteController.topic,
                             style: context.textTheme.headline5!
                                 .copyWith(fontWeight: FontWeight.w500),
                           )
@@ -100,11 +100,10 @@ class ResultCard extends StatelessWidget {
                         ],
                       ),
                       Align(
-                        alignment: _voteController.majority.value == 0
+                        alignment: _voteController.majority == 0
                             ? Alignment.center
                             : Alignment.centerRight,
-                        widthFactor:
-                            _voteController.majority.value == 1 ? 15 : null,
+                        widthFactor: _voteController.majority == 1 ? 15 : null,
                         child: const VerticalDivider(
                           thickness: 1.5,
                           color: Colors.black,
@@ -117,7 +116,7 @@ class ResultCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FilledButton(
+                  RoundedButton(
                     color: Colors.amber.shade400,
                     onPressed: () async => showDialog(
                       context: context,
@@ -129,7 +128,7 @@ class ResultCard extends StatelessWidget {
                     ),
                     child: const Icon(Icons.settings),
                   ),
-                  FilledButton(
+                  RoundedButton(
                     color: Colors.blue.shade400,
                     onPressed: _voteController.reset,
                     padding: const EdgeInsets.symmetric(

@@ -6,7 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/ui/widgets/filled_button.dart';
+import '/ui/widgets/rounded_button.dart';
 import './settings_dialog.dart';
 import './yield_spaeaker_dialog.dart';
 
@@ -39,21 +39,21 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
     _speechController = Get.find<SpeechController>(tag: widget.tag);
     setupTimer();
 
-    timeLeft = _speechController.duration.value;
+    timeLeft = _speechController.duration;
   }
 
   void setupTimer() => timer = Timer.periodic(
         const Duration(milliseconds: 500),
         (_) {
           setState(() {
-            timeLeft = _speechController.duration.value -
-                _speechController.stopwatch.value.elapsed;
+            timeLeft = _speechController.duration -
+                _speechController.stopwatch.elapsed;
 
             if (timeLeft.inMilliseconds < 0) {
               (widget.onTimeEnd ?? () {})();
 
-              _speechController.stopwatch.value.stop();
-              _speechController.overallStopwatch.value.stop();
+              _speechController.stopwatch.stop();
+              _speechController.overallStopwatch.stop();
 
               timeLeft = Duration.zero;
               timer.cancel();
@@ -65,8 +65,8 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   @override
   void dispose() {
     timer.cancel();
-    _speechController.stopwatch.value.stop();
-    _speechController.overallStopwatch.value.stop();
+    _speechController.stopwatch.stop();
+    _speechController.overallStopwatch.stop();
 
     super.dispose();
   }
@@ -75,9 +75,9 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   Widget build(BuildContext context) {
     Duration? overallTimeLeft;
 
-    if (_speechController.overallDuration != null) {
-      overallTimeLeft = _speechController.overallDuration!.value -
-          _speechController.overallStopwatch.value.elapsed;
+    if (_speechController.hasOverallDuration) {
+      overallTimeLeft = _speechController.overallDuration -
+          _speechController.overallStopwatch.elapsed;
     }
 
     return SizedBox(
@@ -85,7 +85,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (_speechController.subtopic.keys.first != "") ...[
+          if (_speechController.subtopic.keys.first.isNotEmpty) ...[
             RichText(
               text: TextSpan(
                 text: "${_speechController.subtopic.keys.first}: ",
@@ -107,7 +107,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                 CircularPercentIndicator(
                   radius: 100,
                   percent: (timeLeft.inSeconds /
-                          _speechController.duration.value.inSeconds) *
+                          _speechController.duration.inSeconds) *
                       0.975,
                   progressColor:
                       context.theme.colorScheme.secondary.withAlpha(200),
@@ -136,38 +136,37 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    FilledButton(
+                    RoundedButton(
                       onPressed: () {
-                        if (_speechController.isSpeaking.value ||
+                        if (_speechController.isSpeaking ||
                             timeLeft.inSeconds == 0) {
-                          _speechController.stopwatch.value.stop();
-                          _speechController.overallStopwatch.value.stop();
+                          _speechController.stopwatch.stop();
+                          _speechController.overallStopwatch.stop();
                         } else {
-                          _speechController.stopwatch.value.start();
-                          _speechController.overallStopwatch.value.start();
+                          _speechController.stopwatch.start();
+                          _speechController.overallStopwatch.start();
                         }
 
-                        _speechController.isSpeaking.value =
-                            !_speechController.isSpeaking.value;
+                        _speechController.isSpeaking =
+                            !_speechController.isSpeaking;
                       },
                       color: Colors.blueGrey.shade600,
                       child: Icon(
-                        _speechController.isSpeaking.value
+                        _speechController.isSpeaking
                             ? Icons.stop
                             : Icons.play_arrow,
                       ),
                     ),
-                    FilledButton(
+                    RoundedButton(
                       onPressed: () {
-                        if (_speechController
-                                .stopwatch.value.elapsed.inSeconds ==
+                        if (_speechController.stopwatch.elapsed.inSeconds ==
                             0) {
                           //TODO: Confirmation Dialog
-                          _speechController.overallStopwatch.value.reset();
+                          _speechController.overallStopwatch.reset();
                           return;
                         }
 
-                        _speechController.stopwatch.value.reset();
+                        _speechController.stopwatch.reset();
                         timer.cancel();
 
                         setupTimer();
@@ -175,12 +174,12 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                       color: Colors.blue.shade400,
                       child: const Icon(Icons.restart_alt),
                     ),
-                    FilledButton(
+                    RoundedButton(
                       onPressed: () async {
-                        _speechController.stopwatch.value.stop();
-                        _speechController.overallStopwatch.value.stop();
+                        _speechController.stopwatch.stop();
+                        _speechController.overallStopwatch.stop();
 
-                        _speechController.stopwatch.value.reset();
+                        _speechController.stopwatch.reset();
 
                         await showDialog(
                           context: context,
@@ -192,16 +191,16 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                       child: const Icon(Icons.settings),
                     ),
                     if (widget.canYield)
-                      FilledButton(
+                      RoundedButton(
                         onPressed: () {
-                          final CommitteeController _committeeController =
-                              Get.find<CommitteeController>();
-                          final List<String> delegates = _committeeController
-                              .committee.value.presentDelegates;
+                          final List<String> delegates =
+                              Get.find<CommitteeController>()
+                                  .committee
+                                  .presentDelegates;
 
-                          if (_speechController.currentSpeaker.value != "") {
+                          if (_speechController.currentSpeaker.isNotEmpty) {
                             delegates.remove(
-                              _speechController.currentSpeaker.value,
+                              _speechController.currentSpeaker,
                             );
                           }
 

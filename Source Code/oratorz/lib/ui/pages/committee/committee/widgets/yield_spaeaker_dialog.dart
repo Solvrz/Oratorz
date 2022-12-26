@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
-import '/ui/widgets/filled_button.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class YieldSpeakerDialog extends StatefulWidget {
   final List<String> delegates;
@@ -43,7 +43,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                         onTap: () {
                           setState(() => selected = index);
 
-                          widget.controller.currentSpeaker.value = _delegate;
+                          widget.controller.currentSpeaker = _delegate;
                           widget.controller.nextSpeakers.remove(_delegate);
                         },
                         trailing: Radio(
@@ -61,8 +61,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                             if (value != null) {
                               selected = value as int;
 
-                              widget.controller.currentSpeaker.value =
-                                  _delegate;
+                              widget.controller.currentSpeaker = _delegate;
                               widget.controller.nextSpeakers.remove(_delegate);
                             }
                           }),
@@ -82,8 +81,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
       actions: [
         SizedBox(
           width: context.width / 3,
-          child: FilledButton(
-            color: context.theme.colorScheme.secondary,
+          child: RoundedButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("DONE"),
           ),

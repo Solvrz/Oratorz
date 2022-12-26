@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide TabController;
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -6,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
+import '/config/constants/constants.dart';
 import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
@@ -25,12 +25,11 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   void initState() {
     super.initState();
 
-    // TODO: Remove after Testing
-    if (kDebugMode) {
+    if (TESTING) {
       _committeeController = Get.put(
         CommitteeController(
           committee: Committee.fromTemplate("UNSC"),
-          tabVal: COMMITTEE_TABS
+          tab: COMMITTEE_TABS
               .indexWhere(
                 (tab) => tab["route"]
                     .toString()
@@ -46,7 +45,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
 
     if (Get.isRegistered<CommitteeController>()) {
       _committeeController = Get.find<CommitteeController>()
-        ..tabVal = COMMITTEE_TABS
+        ..tab = COMMITTEE_TABS
             .indexWhere(
               (tab) => tab["route"]
                   .toString()
@@ -85,7 +84,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                   child: Column(
                     children: [
                       Text(
-                        _committeeController.committee.value.name,
+                        _committeeController.committee.name,
                         style: context.textTheme.headline2!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
@@ -99,14 +98,14 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                             title: _tab["title"],
                             icon: _tab["icon"],
                             onTap: () {
-                              _committeeController.tabVal = index;
+                              _committeeController.tab = index;
                               html.window.history.pushState(
                                 null,
                                 "tab",
-                                COMMITTEE_TABS[index]["route"],
+                                _committeeController.currentTabDetails["route"],
                               );
                             },
-                            selected: _committeeController.tabVal == index,
+                            selected: _committeeController.tab == index,
                             iconColor: _tab["color"],
                           ),
                         );
@@ -137,7 +136,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
               child: Container(
                 margin: const EdgeInsets.all(16),
                 child: Obx(
-                  () => _committeeController.currentTab()["tab"],
+                  () => _committeeController.currentTab,
                 ),
               ),
             ),

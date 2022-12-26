@@ -4,10 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/setup.dart';
-import '/ui/widgets/border_button.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
-import '/ui/widgets/filled_button.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -27,18 +26,15 @@ class CommitteeCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      _setupController.committee.value.name,
+                      _setupController.committee.name,
                       style: context.textTheme.headline5,
                     ),
                     const SizedBox(width: 16),
                     InkWell(
                       onTap: () {
-                        final SetupController _committeeController =
-                            Get.find<SetupController>();
-
                         final TextEditingController _controller =
                             TextEditingController(
-                          text: _committeeController.committee.value.name,
+                          text: _setupController.committee.name,
                         );
 
                         showDialog(
@@ -49,7 +45,7 @@ class CommitteeCard extends StatelessWidget {
                               autofocus: true,
                               controller: _controller,
                               onSubmitted: (value) {
-                                _committeeController.setName(value);
+                                _setupController.setName(value);
                                 Navigator.pop(context);
                               },
                               keyboardType: TextInputType.name,
@@ -65,7 +61,7 @@ class CommitteeCard extends StatelessWidget {
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  _committeeController
+                                  _setupController
                                       .setName(_controller.value.text);
                                   Navigator.pop(context);
                                 },
@@ -95,15 +91,14 @@ class CommitteeCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "${_setupController.committee.value.count} Delegates",
+                  "${_setupController.committee.count} Delegates",
                   style: context.textTheme.headline6,
                 ),
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
                     itemBuilder: (_, index) => DelegateTile(
-                      delegate:
-                          _setupController.committee.value.delegates[index],
+                      delegate: _setupController.committee.delegates[index],
                       onTap: () => _setupController.removeAt(index),
                       trailing: Icon(Icons.remove, color: Colors.grey[400]),
                     ),
@@ -113,27 +108,26 @@ class CommitteeCard extends StatelessWidget {
                       height: 6,
                       color: Colors.grey[400],
                     ),
-                    itemCount: _setupController.committee.value.count,
+                    itemCount: _setupController.committee.count,
                   ),
                 ),
                 const SizedBox(height: 24),
-                BorderButton(
+                RoundedButton(
+                  border: true,
                   onPressed: () => _setupController.clear(),
-                  color: context.theme.colorScheme.secondary,
-                  text: "Reset Selection",
+                  child: const Text("Reset Selection"),
                 ),
                 const SizedBox(height: 12),
-                FilledButton(
+                RoundedButton(
                   onPressed: () {
                     Get.put<CommitteeController>(
                       CommitteeController(
-                        committee: _setupController.committee.value,
+                        committee: _setupController.committee,
                       ),
                     );
 
                     context.pushReplacement("/committee/gsl");
                   },
-                  color: context.theme.colorScheme.secondary,
                   child: const Text("Start Session"),
                 ),
               ],

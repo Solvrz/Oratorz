@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/ui/widgets/filled_button.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class CurrentMotionCard extends StatelessWidget {
   const CurrentMotionCard({super.key});
@@ -31,22 +31,22 @@ class CurrentMotionCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FilledButton(
+                  RoundedButton(
                     color: Colors.amber,
                     onPressed: () {},
                     child: const Icon(Icons.connect_without_contact),
                   ),
-                  FilledButton(
+                  RoundedButton(
                     color: Colors.lightBlue,
                     onPressed: () {},
                     child: const Icon(Icons.how_to_vote),
                   ),
-                  FilledButton(
+                  RoundedButton(
                     color: Colors.redAccent,
                     onPressed: () {},
                     child: const Icon(Icons.close),
                   ),
-                  FilledButton(
+                  RoundedButton(
                     color: Colors.green,
                     onPressed: () {},
                     child: const Icon(Icons.check),

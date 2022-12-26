@@ -48,28 +48,26 @@ class SettingsDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _TimerButton(
-                        value: controller.duration.value.inMinutes,
+                        value: controller.duration.inMinutes,
                         change: (value) {
-                          if (controller.duration.value.inMinutes + value <=
-                              60) {
-                            controller.duration.value +=
-                                Duration(minutes: value);
+                          if (controller.duration.inMinutes + value <= 60) {
+                            controller.duration += Duration(minutes: value);
                           }
                         },
                         subtitle: "minutes",
                       ),
                       const SizedBox(width: 16),
                       _TimerButton(
-                        value: controller.duration.value.inSeconds -
-                            controller.duration.value.inMinutes * 60,
-                        change: (value) => controller.duration.value +=
-                            Duration(seconds: value),
+                        value: controller.duration.inSeconds -
+                            controller.duration.inMinutes * 60,
+                        change: (value) =>
+                            controller.duration += Duration(seconds: value),
                         subtitle: "seconds",
                       ),
                     ],
                   ),
                 ),
-                if (controller.overallDuration != null) ...[
+                if (controller.hasOverallDuration) ...[
                   const SizedBox(height: 20),
                   Text(
                     "Caucus Time",
@@ -82,23 +80,22 @@ class SettingsDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _TimerButton(
-                          value: controller.overallDuration!.value.inMinutes,
+                          value: controller.overallDuration.inMinutes,
                           change: (value) {
-                            if (controller.overallDuration!.value.inMinutes +
-                                    value <=
+                            if (controller.overallDuration.inMinutes + value <=
                                 60) {
-                              controller.duration.value +=
-                                  Duration(minutes: value);
+                              controller.duration += Duration(minutes: value);
                             }
                           },
                           subtitle: "minutes",
                         ),
                         const SizedBox(width: 16),
                         _TimerButton(
-                          value: controller.overallDuration!.value.inSeconds -
-                              controller.overallDuration!.value.inMinutes * 60,
-                          change: (value) => controller.overallDuration!
-                              .value += Duration(seconds: value),
+                          value: controller.overallDuration.inSeconds -
+                              controller.overallDuration.inMinutes * 60,
+                          change: (value) => controller.overallDuration =
+                              controller.overallDuration +
+                                  Duration(seconds: value),
                           subtitle: "seconds",
                         ),
                       ],

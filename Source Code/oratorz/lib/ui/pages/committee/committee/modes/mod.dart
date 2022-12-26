@@ -12,13 +12,11 @@ class ModTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController = Get.put(
-      SpeechController(),
-      tag: "mod",
-    );
+    final SpeechController _speechController =
+        Get.put(SpeechController(), tag: "mod");
 
-    _speechController.overallDuration = const Duration(minutes: 15).obs;
-    _speechController.subtopic.value = {"Topic": "Your Topic"};
+    _speechController.overallDuration = const Duration(minutes: 15);
+    _speechController.subtopic = {"Topic": "Your Topic"};
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

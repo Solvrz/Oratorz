@@ -12,7 +12,7 @@ class PrayerTab extends StatelessWidget {
     final SpeechController _speechController =
         Get.put(SpeechController(), tag: "prayer");
 
-    _speechController.subtopic.value = {"Cause": "Your Cause"};
+    _speechController.subtopic = {"Cause": "Your Cause"};
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

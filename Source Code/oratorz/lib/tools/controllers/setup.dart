@@ -4,39 +4,42 @@ import '/config/constants/data.dart';
 import '/models/committee.dart';
 
 class SetupController extends GetxController {
-  final Rx<Committee> committee = Rx<Committee>(Committee());
-  RxInt openType = 0.obs;
+  final Rx<Committee> _committee = Rx<Committee>(Committee());
+  final RxInt _committeeType = 0.obs;
 
-  Committee get _value => committee.value;
+  Committee get committee => _committee.value;
+
+  int get committeeType => _committeeType.value;
+  set committeeType(int newCommitteeType) => committeeType = newCommitteeType;
 
   void setName(String newName) =>
-      committee.update((value) => value?.name = newName);
+      _committee.update((value) => value?.name = newName);
 
-  void setAs(List<String> delegates) => committee.update((value) {
+  void setAs(List<String> delegates) => _committee.update((value) {
         value!.delegates = delegates;
         sort();
       });
 
-  void add(String delegate) => committee.update((value) {
+  void add(String delegate) => _committee.update((value) {
         value!.delegates.add(delegate);
         sort();
       });
 
-  void remove(String delegate) => committee.update((value) {
+  void remove(String delegate) => _committee.update((value) {
         value!.delegates.remove(delegate);
         sort();
       });
 
-  void removeAt(int index) => committee.update((value) {
+  void removeAt(int index) => _committee.update((value) {
         value!.delegates.removeAt(index);
         sort();
       });
 
-  void clear() => committee.update((value) {
+  void clear() => _committee.update((value) {
         value!.delegates.clear();
         value.name = "Your Committee";
       });
 
-  void sort() =>
-      _value.delegates.sort((a, b) => DELEGATES[a]!.compareTo(DELEGATES[b]!));
+  void sort() => committee.delegates
+      .sort((a, b) => DELEGATES[a]!.compareTo(DELEGATES[b]!));
 }

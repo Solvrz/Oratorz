@@ -5,7 +5,7 @@ import '/config/constants/data.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/delegate_tile.dart';
-import '/ui/widgets/filled_button.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class VotingCard extends StatelessWidget {
   const VotingCard({super.key});
@@ -85,7 +85,7 @@ class VotingCard extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          FilledButton(
+                                          RoundedButton(
                                             color: Colors.green,
                                             onPressed: () => _voteController
                                                 .nextVoter(vote: true),
@@ -96,7 +96,7 @@ class VotingCard extends StatelessWidget {
                                             child: const Text("In Favor"),
                                           ),
                                           const SizedBox(height: 8),
-                                          FilledButton(
+                                          RoundedButton(
                                             color: Colors.red,
                                             onPressed: () => _voteController
                                                 .nextVoter(vote: false),

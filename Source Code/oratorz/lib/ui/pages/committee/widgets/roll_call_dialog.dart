@@ -4,9 +4,8 @@ import 'package:get/get.dart';
 import '/config/constants/data.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/functions.dart';
-import '/ui/widgets/border_button.dart';
 import '/ui/widgets/dialog_box.dart';
-import '/ui/widgets/filled_button.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class RollCallDialog extends StatelessWidget {
   const RollCallDialog({super.key});
@@ -27,22 +26,24 @@ class RollCallDialog extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: BorderButton(
-                    text: "SET ALL PRESENT",
+                  child: RoundedButton(
+                    border: true,
                     onPressed: () {
                       _committeeController.setAllPresent();
                       _committeeController.update();
                     },
+                    child: const Text("SET ALL PRESENT"),
                   ),
                 ),
                 const SizedBox(width: 32),
                 Expanded(
-                  child: BorderButton(
-                    text: "SET ALL ABSENT",
+                  child: RoundedButton(
+                    border: true,
                     onPressed: () {
                       _committeeController.setAllAbsent();
                       _committeeController.update();
                     },
+                    child: const Text("SET ALL ABSENT"),
                   ),
                 ),
               ],
@@ -52,10 +53,10 @@ class RollCallDialog extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: List.generate(
-                    _committeeController.committee.value.count,
+                    _committeeController.committee.count,
                     (index) {
                       final String _delegate =
-                          _committeeController.committee.value.delegates[index];
+                          _committeeController.committee.delegates[index];
 
                       return GetBuilder<CommitteeController>(
                         builder: (_) => Container(
@@ -90,8 +91,8 @@ class RollCallDialog extends StatelessWidget {
                                 return Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    BorderButton(
-                                      text: "PV",
+                                    RoundedButton(
+                                      border: rollCall != 2,
                                       color: Colors.blue.shade400,
                                       onPressed: () {
                                         _committeeController.setRollCall(
@@ -101,11 +102,11 @@ class RollCallDialog extends StatelessWidget {
 
                                         _committeeController.update();
                                       },
-                                      filled: rollCall == 2,
+                                      child: const Text("PV"),
                                     ),
                                     const SizedBox(width: 4),
-                                    BorderButton(
-                                      text: "P",
+                                    RoundedButton(
+                                      border: rollCall != 1,
                                       color: Colors.amber.shade400,
                                       onPressed: () {
                                         _committeeController.setRollCall(
@@ -115,11 +116,11 @@ class RollCallDialog extends StatelessWidget {
 
                                         _committeeController.update();
                                       },
-                                      filled: rollCall == 1,
+                                      child: const Text("P"),
                                     ),
                                     const SizedBox(width: 4),
-                                    BorderButton(
-                                      text: "A",
+                                    RoundedButton(
+                                      border: rollCall != 0,
                                       color: Colors.red.shade400,
                                       onPressed: () {
                                         _committeeController.setRollCall(
@@ -129,7 +130,7 @@ class RollCallDialog extends StatelessWidget {
 
                                         _committeeController.update();
                                       },
-                                      filled: rollCall == 0,
+                                      child: const Text("A"),
                                     ),
                                   ],
                                 );
@@ -150,8 +151,7 @@ class RollCallDialog extends StatelessWidget {
       actions: [
         SizedBox(
           width: context.width / 3,
-          child: FilledButton(
-            color: context.theme.colorScheme.secondary,
+          child: RoundedButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("DONE"),
           ),

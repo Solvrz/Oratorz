@@ -28,7 +28,7 @@ class SettingsDialog extends StatelessWidget {
                 margin: const EdgeInsets.only(left: 10),
                 child: TextField(
                   cursorColor: Colors.black,
-                  onChanged: (value) => _voteController.topic.value = value,
+                  onChanged: (value) => _voteController.topic = value,
                 ),
               ),
               const SizedBox(height: 20),
@@ -43,9 +43,9 @@ class SettingsDialog extends StatelessWidget {
                       children: [
                         Radio<int>(
                           value: 0,
-                          groupValue: _voteController.majority.value,
+                          groupValue: _voteController.majority,
                           onChanged: (value) =>
-                              _voteController.majority.value = value!,
+                              _voteController.majority = value!,
                         ),
                         Text(
                           "Simple Majority (${_voteController.majorityVal(value: 0)})",
@@ -57,9 +57,9 @@ class SettingsDialog extends StatelessWidget {
                       children: [
                         Radio<int>(
                           value: 1,
-                          groupValue: _voteController.majority.value,
+                          groupValue: _voteController.majority,
                           onChanged: (value) =>
-                              _voteController.majority.value = value!,
+                              _voteController.majority = value!,
                         ),
                         Text(
                           "Two Third Majority (${_voteController.majorityVal(value: 1)})",
@@ -71,9 +71,9 @@ class SettingsDialog extends StatelessWidget {
                       children: [
                         Radio<int>(
                           value: 2,
-                          groupValue: _voteController.majority.value,
+                          groupValue: _voteController.majority,
                           onChanged: (value) =>
-                              _voteController.majority.value = value!,
+                              _voteController.majority = value!,
                         ),
                         Text(
                           "Consensus Vote (${_voteController.majorityVal(value: 2)})",
