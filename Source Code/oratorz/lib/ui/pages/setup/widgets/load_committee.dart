@@ -2,6 +2,7 @@ import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/config/constants/data.dart';
 import '/tools/controllers/setup.dart';
@@ -197,15 +198,13 @@ class LoadCommitteeCard extends StatelessWidget {
                                     ? ListTile(
                                         hoverColor: Colors.grey[100],
                                         onTap: () {
-                                          _setupController.setName(
-                                            templates[index ~/ 2],
-                                          );
                                           _setupController.setAs(
+                                            templates[index ~/ 2],
                                             COMMITTEES[templates[index ~/ 2]]!
                                                 .toList(),
                                           );
 
-                                          Navigator.pop(context);
+                                          context.pop();
                                         },
                                         title: Text(
                                           "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",

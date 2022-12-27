@@ -183,8 +183,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 
                         await showDialog(
                           context: context,
-                          builder: (_) =>
-                              SettingsDialog(controller: _speechController),
+                          builder: (_) => SettingsDialog(tag: widget.tag),
                         );
                       },
                       color: Colors.amber.shade400,

@@ -11,19 +11,21 @@ class Committee {
   Committee({
     this.name = "Your Committee",
     this.agenda = "Your Agenda",
-    this.delegates = const [],
-  });
+    List<String>? delegates,
+  }) {
+    this.delegates = delegates ?? [];
+  }
 
-  Committee.fromTemplate(String template) {
-    name = template;
+  Committee.fromTemplate(String id) {
+    name = id;
     agenda = "Your Agenda";
-    delegates = COMMITTEES[template]!;
+    delegates = COMMITTEES[id]!;
   }
 
   Committee.fromJson(Map<String, dynamic> data) {
-    name = data["name"];
-    agenda = data["agenda"];
-    delegates = data["delegates"];
+    name = data["name"] ?? "Your Committee";
+    agenda = data["agenda"] ?? "Your Agenda";
+    delegates = data["delegates"] ?? [];
   }
 
   int get count => delegates.length;

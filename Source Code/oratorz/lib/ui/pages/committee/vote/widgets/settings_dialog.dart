@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -10,6 +11,8 @@ class SettingsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VoteController _voteController = Get.find<VoteController>();
+    final TextEditingController _topicController =
+        TextEditingController(text: _voteController.topic);
 
     return DialogBox(
       heading: "Settings",
@@ -27,8 +30,20 @@ class SettingsDialog extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: TextField(
-                  cursorColor: Colors.black,
-                  onChanged: (value) => _voteController.topic = value,
+                  autofocus: true,
+                  controller: _topicController,
+                  onSubmitted: (value) {
+                    _voteController.topic = _topicController.text.trim();
+
+                    context.pop();
+                  },
+                  keyboardType: TextInputType.name,
+                  cursorColor: Colors.grey[600],
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: _voteController.topic,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -91,7 +106,12 @@ class SettingsDialog extends StatelessWidget {
       actions: [
         TextButton(
           child: const Text("Change"),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            // TODO: Will Pop Scope on Dialogs
+            _voteController.topic = _topicController.text.trim();
+
+            context.pop();
+          },
         ),
       ],
     );

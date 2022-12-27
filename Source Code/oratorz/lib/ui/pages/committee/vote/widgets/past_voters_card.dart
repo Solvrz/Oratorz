@@ -28,33 +28,29 @@ class PastVoterCard extends StatelessWidget {
               Obx(
                 () => _voteController.pastVoters.isNotEmpty
                     ? Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: List.generate(
-                              _voteController.pastVoters.length * 2 - 1,
-                              (index) {
-                                return index % 2 == 0
-                                    ? DelegateTile(
-                                        delegate: _voteController
-                                            .pastVoters[index ~/ 2].keys.first,
-                                        contentPadding: EdgeInsets.zero,
-                                        trailing: CircleAvatar(
-                                          radius: 5,
-                                          backgroundColor: _voteController
-                                                  .pastVoters[index ~/ 2]
-                                                  .values
-                                                  .first
-                                              ? Colors.green
-                                              : Colors.red,
-                                        ),
-                                      )
-                                    : Divider(
-                                        height: 6,
-                                        color: Colors.grey.shade400,
-                                      );
-                              },
-                            ),
-                          ),
+                        child: ListView.builder(
+                          itemCount: _voteController.pastVoters.length * 2 - 1,
+                          itemBuilder: (_, index) {
+                            return index % 2 == 0
+                                ? DelegateTile(
+                                    delegate: _voteController
+                                        .pastVoters[index ~/ 2].keys.first,
+                                    contentPadding: EdgeInsets.zero,
+                                    trailing: CircleAvatar(
+                                      radius: 5,
+                                      backgroundColor: _voteController
+                                              .pastVoters[index ~/ 2]
+                                              .values
+                                              .first
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  )
+                                : Divider(
+                                    height: 6,
+                                    color: Colors.grey.shade400,
+                                  );
+                          },
                         ),
                       )
                     : Text(

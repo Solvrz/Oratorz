@@ -38,35 +38,30 @@ class AddSpeakerCard extends StatelessWidget {
 
                 return speakers.isNotEmpty
                     ? Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: List.generate(
-                              speakers.length * 2 - 1,
-                              (index) {
-                                final bool isAdded = _speechController
-                                    .isAdded(speakers[index ~/ 2]);
+                        child: ListView.builder(
+                          itemCount: speakers.length * 2 - 1,
+                          itemBuilder: (_, index) {
+                            final bool isAdded =
+                                _speechController.isAdded(speakers[index ~/ 2]);
 
-                                return index % 2 == 0
-                                    ? Opacity(
-                                        opacity: isAdded ? 0.6 : 1,
-                                        child: DelegateTile(
-                                          delegate: speakers[index ~/ 2],
-                                          onTap: isAdded
-                                              ? null
-                                              : () =>
-                                                  _speechController.addSpeaker(
-                                                    speakers[index ~/ 2],
-                                                  ),
-                                          contentPadding: EdgeInsets.zero,
-                                        ),
-                                      )
-                                    : Divider(
-                                        height: 6,
-                                        color: Colors.grey.shade400,
-                                      );
-                              },
-                            ),
-                          ),
+                            return index % 2 == 0
+                                ? Opacity(
+                                    opacity: isAdded ? 0.6 : 1,
+                                    child: DelegateTile(
+                                      delegate: speakers[index ~/ 2],
+                                      onTap: isAdded
+                                          ? null
+                                          : () => _speechController.addSpeaker(
+                                                speakers[index ~/ 2],
+                                              ),
+                                      contentPadding: EdgeInsets.zero,
+                                    ),
+                                  )
+                                : Divider(
+                                    height: 6,
+                                    color: Colors.grey.shade400,
+                                  );
+                          },
                         ),
                       )
                     : Text(

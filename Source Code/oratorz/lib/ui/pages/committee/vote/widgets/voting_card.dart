@@ -68,7 +68,7 @@ class VotingCard extends StatelessWidget {
                                               ],
                                             ),
                                             child: flag(
-                                              size: 50,
+                                              size: 100,
                                               _voteController.currentVoter
                                                   .split(" ")[0],
                                             ),

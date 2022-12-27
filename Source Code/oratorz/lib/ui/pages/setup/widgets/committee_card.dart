@@ -46,8 +46,9 @@ class CommitteeCard extends StatelessWidget {
                               autofocus: true,
                               controller: _controller,
                               onSubmitted: (value) {
-                                _setupController.setName(value);
-                                Navigator.pop(context);
+                                _setupController.committee.name = value;
+
+                                context.pop();
                               },
                               keyboardType: TextInputType.name,
                               cursorColor: Colors.grey[600],
@@ -56,15 +57,13 @@ class CommitteeCard extends StatelessWidget {
                                 hintText: "Committee Name",
                               ),
                             ),
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                            actionsPadding: const EdgeInsets.all(16),
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  _setupController
-                                      .setName(_controller.value.text);
-                                  Navigator.pop(context);
+                                  _setupController.committee.name =
+                                      _controller.value.text;
+
+                                  context.pop();
                                 },
                                 child: const Text("Select"),
                               )
@@ -98,6 +97,7 @@ class CommitteeCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
+                    itemCount: _setupController.committee.count,
                     itemBuilder: (_, index) => DelegateTile(
                       delegate: _setupController.committee.delegates[index],
                       onTap: () => _setupController.removeAt(index),
@@ -109,14 +109,16 @@ class CommitteeCard extends StatelessWidget {
                       height: 6,
                       color: Colors.grey[400],
                     ),
-                    itemCount: _setupController.committee.count,
                   ),
                 ),
                 const SizedBox(height: 24),
                 RoundedButton(
                   border: true,
                   onPressed: () => _setupController.clear(),
-                  child: const Text("Reset Selection"),
+                  child: Text(
+                    "Reset Selection",
+                    style: context.textTheme.bodyLarge,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 RoundedButton(
@@ -131,7 +133,11 @@ class CommitteeCard extends StatelessWidget {
 
                     context.pushReplacement("/committee/gsl");
                   },
-                  child: const Text("Start Session"),
+                  child: Text(
+                    "Start Session",
+                    style: context.textTheme.bodyLarge
+                        ?.copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             ),

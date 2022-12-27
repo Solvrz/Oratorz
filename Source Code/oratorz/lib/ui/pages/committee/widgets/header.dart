@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -53,7 +54,7 @@ class Header extends StatelessWidget {
                           onSubmitted: (value) {
                             _committeeController.setAgenda(_controller.text);
 
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           keyboardType: TextInputType.name,
                           cursorColor: Colors.grey[600],
@@ -63,15 +64,12 @@ class Header extends StatelessWidget {
                             hintText: "Agenda",
                           ),
                         ),
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                        actionsPadding: const EdgeInsets.all(16),
                         actions: [
                           TextButton(
                             onPressed: () {
                               _committeeController.setAgenda(_controller.text);
 
-                              Navigator.pop(context);
+                              context.pop();
                             },
                             child: const Text("Select"),
                           )

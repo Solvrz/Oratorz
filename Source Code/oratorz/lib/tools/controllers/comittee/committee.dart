@@ -39,13 +39,18 @@ class CommitteeController extends GetxController {
 
   void _saveRollCall() => LocalStorage.updateCommittee("rollCall", _rollCall);
 
+  void setAllPresentAndVoting() {
+    rollCall.updateAll((_, __) => 2);
+    _saveRollCall();
+  }
+
   void setAllPresent() {
-    _rollCall.updateAll((key, value) => 1);
+    _rollCall.updateAll((_, __) => 1);
     _saveRollCall();
   }
 
   void setAllAbsent() {
-    _rollCall.updateAll((key, value) => 0);
+    _rollCall.updateAll((_, __) => 0);
     _saveRollCall();
   }
 

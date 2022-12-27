@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
@@ -30,46 +31,42 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
       content: SizedBox(
         height: context.height / 2,
         child: widget.delegates.isNotEmpty
-            ? SingleChildScrollView(
-                child: Column(
-                  children: List.generate(
-                    widget.delegates.length,
-                    (index) {
-                      final String _delegate = widget.delegates[index];
+            ? ListView.builder(
+                itemCount: widget.delegates.length,
+                itemBuilder: (_, index) {
+                  final String _delegate = widget.delegates[index];
 
-                      return DelegateTile(
-                        delegate: widget.delegates[index],
-                        contentPadding: const EdgeInsets.all(5),
-                        onTap: () {
-                          setState(() => selected = index);
+                  return DelegateTile(
+                    delegate: widget.delegates[index],
+                    contentPadding: const EdgeInsets.all(5),
+                    onTap: () {
+                      setState(() => selected = index);
+
+                      widget.controller.currentSpeaker = _delegate;
+                      widget.controller.nextSpeakers.remove(_delegate);
+                    },
+                    trailing: Radio(
+                      value: index,
+                      groupValue: selected,
+                      hoverColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      overlayColor: MaterialStateProperty.all<Color>(
+                        Colors.transparent,
+                      ),
+                      fillColor: MaterialStateProperty.all<Color>(
+                        Colors.grey.shade700,
+                      ),
+                      onChanged: (value) => setState(() {
+                        if (value != null) {
+                          selected = value as int;
 
                           widget.controller.currentSpeaker = _delegate;
                           widget.controller.nextSpeakers.remove(_delegate);
-                        },
-                        trailing: Radio(
-                          value: index,
-                          groupValue: selected,
-                          hoverColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          overlayColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent,
-                          ),
-                          fillColor: MaterialStateProperty.all<Color>(
-                            Colors.grey.shade700,
-                          ),
-                          onChanged: (value) => setState(() {
-                            if (value != null) {
-                              selected = value as int;
-
-                              widget.controller.currentSpeaker = _delegate;
-                              widget.controller.nextSpeakers.remove(_delegate);
-                            }
-                          }),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                        }
+                      }),
+                    ),
+                  );
+                },
               )
             : Center(
                 child: Text(
@@ -82,7 +79,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
         SizedBox(
           width: context.width / 3,
           child: RoundedButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
             child: const Text("DONE"),
           ),
         ),

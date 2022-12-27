@@ -34,36 +34,33 @@ class PastSpeakersCard extends StatelessWidget {
                         style: context.textTheme.bodyText1,
                       )
                     : Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: List.generate(
+                        child: ListView.builder(
+                          itemCount:
                               _speechController.pastSpeakers.length * 2 - 1,
-                              (index) {
-                                if (index % 2 == 1) {
-                                  return Divider(
-                                    height: 6,
-                                    color: Colors.grey.shade400,
-                                  );
-                                }
+                          itemBuilder: (_, index) {
+                            if (index % 2 == 1) {
+                              return Divider(
+                                height: 6,
+                                color: Colors.grey.shade400,
+                              );
+                            }
 
-                                final Map<String, Duration> speaker =
-                                    _speechController.pastSpeakers[index ~/ 2];
-                                final int inMinutes =
-                                    speaker.values.first.inMinutes;
-                                final int inSeconds =
-                                    speaker.values.first.inSeconds;
+                            final Map<String, Duration> speaker =
+                                _speechController.pastSpeakers[index ~/ 2];
+                            final int inMinutes =
+                                speaker.values.first.inMinutes;
+                            final int inSeconds =
+                                speaker.values.first.inSeconds;
 
-                                return DelegateTile(
-                                  delegate: speaker.keys.first,
-                                  contentPadding: EdgeInsets.zero,
-                                  trailing: Text(
-                                    "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, '0')}",
-                                    style: context.textTheme.bodyText1,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                            return DelegateTile(
+                              delegate: speaker.keys.first,
+                              contentPadding: EdgeInsets.zero,
+                              trailing: Text(
+                                "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, '0')}",
+                                style: context.textTheme.bodyText1,
+                              ),
+                            );
+                          },
                         ),
                       ),
               )
