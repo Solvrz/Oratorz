@@ -10,7 +10,8 @@ class ResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final VoteController _voteController = Get.find<VoteController>();
+    final VoteController _voteController =
+        Get.find<VoteController>(tag: "vote");
 
     return SizedBox(
       height: context.height / 2.5,
@@ -130,7 +131,10 @@ class ResultCard extends StatelessWidget {
                   ),
                   RoundedButton(
                     color: Colors.blue.shade400,
-                    onPressed: _voteController.reset,
+                    onPressed: () {
+                      _voteController.reset();
+                      _voteController.update();
+                    },
                     padding: const EdgeInsets.symmetric(
                       horizontal: 32,
                       vertical: 8,

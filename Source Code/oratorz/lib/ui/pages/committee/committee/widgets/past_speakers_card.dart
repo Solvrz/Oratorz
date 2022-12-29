@@ -18,7 +18,7 @@ class PastSpeakersCard extends StatelessWidget {
       child: Card(
         child: Container(
           height: context.height / 2.5,
-          padding: const EdgeInsets.all(24),
+          margin: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,17 +34,9 @@ class PastSpeakersCard extends StatelessWidget {
                         style: context.textTheme.bodyText1,
                       )
                     : Expanded(
-                        child: ListView.builder(
-                          itemCount:
-                              _speechController.pastSpeakers.length * 2 - 1,
+                        child: ListView.separated(
+                          itemCount: _speechController.pastSpeakers.length,
                           itemBuilder: (_, index) {
-                            if (index % 2 == 1) {
-                              return Divider(
-                                height: 6,
-                                color: Colors.grey.shade400,
-                              );
-                            }
-
                             final Map<String, Duration> speaker =
                                 _speechController.pastSpeakers[index ~/ 2];
                             final int inMinutes =
@@ -54,13 +46,16 @@ class PastSpeakersCard extends StatelessWidget {
 
                             return DelegateTile(
                               delegate: speaker.keys.first,
-                              contentPadding: EdgeInsets.zero,
                               trailing: Text(
                                 "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, '0')}",
                                 style: context.textTheme.bodyText1,
                               ),
                             );
                           },
+                          separatorBuilder: (_, __) => Divider(
+                            height: 6,
+                            color: Colors.grey.shade400,
+                          ),
                         ),
                       ),
               )

@@ -7,14 +7,14 @@ import 'package:intl/intl.dart';
 
 import '/config/constants/constants.dart';
 import '/config/theme.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
-import 'services/local_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Intl.defaultLocale = LOCALE.code();
+  Intl.defaultLocale = LOCALE.code;
 
   await GetStorage.init();
 

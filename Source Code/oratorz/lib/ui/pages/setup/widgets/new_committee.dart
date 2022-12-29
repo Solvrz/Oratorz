@@ -125,7 +125,7 @@ class _CommitteeType extends StatelessWidget {
 
                     delegates.forEach(
                       (_delegate) {
-                        final String _search = _searchController.toText();
+                        final String _search = _searchController.toText;
 
                         if (_search.isNotEmpty) {
                           if (DELEGATES[_delegate]!

@@ -1090,6 +1090,7 @@ const Map<String, List<String>> COMMITTEES = {
     "BJP 08",
     "BJP 09",
     "BJP 10",
+    "BJP 11",
     "BJP 12",
     "BJP 13",
     "BJP 14",

@@ -5,15 +5,13 @@ import 'package:go_router/go_router.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/widgets/dialog_box.dart';
 
-class SettingsDialog extends StatelessWidget {
-  const SettingsDialog({super.key});
+class VoeSettingsDialog extends StatelessWidget {
+  const VoeSettingsDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     final VoteController _voteController =
-        Get.find<VoteController>(tag: "vote");
-    final TextEditingController _topicController =
-        TextEditingController(text: _voteController.topic);
+        Get.find<VoteController>(tag: "motions");
 
     return DialogBox(
       heading: "Settings",
@@ -23,31 +21,6 @@ class SettingsDialog extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Topic",
-                style: context.textTheme.headline5,
-              ),
-              const SizedBox(height: 10),
-              Container(
-                margin: const EdgeInsets.only(left: 10),
-                child: TextField(
-                  autofocus: true,
-                  controller: _topicController,
-                  onSubmitted: (value) {
-                    _voteController.topic = _topicController.text.trim();
-
-                    context.pop();
-                  },
-                  keyboardType: TextInputType.name,
-                  cursorColor: Colors.grey[600],
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    hintText: _voteController.topic,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
               Text(
                 "Majority",
                 style: context.textTheme.headline5,
@@ -107,12 +80,7 @@ class SettingsDialog extends StatelessWidget {
       actions: [
         TextButton(
           child: const Text("Change"),
-          onPressed: () {
-            // TODO: Will Pop Scope on Dialogs
-            _voteController.topic = _topicController.text.trim();
-
-            context.pop();
-          },
+          onPressed: () => context.pop(),
         ),
       ],
     );

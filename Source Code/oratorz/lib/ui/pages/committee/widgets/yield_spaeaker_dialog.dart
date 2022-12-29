@@ -38,7 +38,6 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
 
                   return DelegateTile(
                     delegate: widget.delegates[index],
-                    contentPadding: const EdgeInsets.all(5),
                     onTap: () {
                       setState(() => selected = index);
 

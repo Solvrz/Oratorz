@@ -167,7 +167,7 @@ class _TimerButton extends StatelessWidget {
     return Column(
       children: [
         Card(
-          margin: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+          margin: const EdgeInsets.all(4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),

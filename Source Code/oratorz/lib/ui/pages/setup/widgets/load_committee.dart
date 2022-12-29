@@ -74,7 +74,7 @@ class LoadCommitteeCard extends StatelessWidget {
                       .toList()
                       .last
                       .split(" ")[1]
-                      .toInt();
+                      .toInt;
 
                   AIPPM["$party $_members"] = name;
                   DELEGATES["$party $_members"] = name;
@@ -192,29 +192,28 @@ class LoadCommitteeCard extends StatelessWidget {
                             content: SizedBox(
                               height: context.height / 2,
                               width: context.width / 2.5,
-                              child: ListView.builder(
-                                itemCount: COMMITTEES.length * 2 - 1,
-                                itemBuilder: (_, index) => index % 2 == 0
-                                    ? ListTile(
-                                        hoverColor: Colors.grey[100],
-                                        onTap: () {
-                                          _setupController.setAs(
-                                            templates[index ~/ 2],
-                                            COMMITTEES[templates[index ~/ 2]]!
-                                                .toList(),
-                                          );
+                              child: ListView.separated(
+                                itemCount: COMMITTEES.length,
+                                itemBuilder: (_, index) => ListTile(
+                                  hoverColor: Colors.grey[100],
+                                  onTap: () {
+                                    _setupController.setAs(
+                                      templates[index ~/ 2],
+                                      COMMITTEES[templates[index ~/ 2]]!
+                                          .toList(),
+                                    );
 
-                                          context.pop();
-                                        },
-                                        title: Text(
-                                          "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",
-                                          style: context.textTheme.bodyText1,
-                                        ),
-                                      )
-                                    : Divider(
-                                        height: 2,
-                                        color: Colors.grey[300],
-                                      ),
+                                    context.pop();
+                                  },
+                                  title: Text(
+                                    "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",
+                                    style: context.textTheme.bodyText1,
+                                  ),
+                                ),
+                                separatorBuilder: (_, __) => Divider(
+                                  height: 2,
+                                  color: Colors.grey[300],
+                                ),
                               ),
                             ),
                           ),

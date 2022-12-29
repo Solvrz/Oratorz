@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../services/local_storage.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});

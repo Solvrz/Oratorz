@@ -6,27 +6,31 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
+import '/tools/extensions.dart';
 import '/ui/widgets/rounded_button.dart';
 import './settings_dialog.dart';
 import './yield_spaeaker_dialog.dart';
 
-class StopwatchWidget extends StatefulWidget {
+class Hourglass extends StatefulWidget {
   final String tag;
-  final Function()? onTimeEnd;
   final bool canYield;
 
-  const StopwatchWidget({
+  final double? height;
+  final double? radius;
+
+  const Hourglass({
     super.key,
     required this.tag,
     this.canYield = false,
-    this.onTimeEnd,
+    this.height,
+    this.radius,
   });
 
   @override
-  State<StopwatchWidget> createState() => _StopwatchWidgetState();
+  State<Hourglass> createState() => _HourglassState();
 }
 
-class _StopwatchWidgetState extends State<StopwatchWidget> {
+class _HourglassState extends State<Hourglass> {
   late Timer timer;
   late final SpeechController _speechController;
 
@@ -42,25 +46,21 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
     timeLeft = _speechController.duration;
   }
 
-  void setupTimer() => timer = Timer.periodic(
-        const Duration(milliseconds: 500),
-        (_) {
-          setState(() {
-            timeLeft = _speechController.duration -
-                _speechController.stopwatch.elapsed;
+  void setupTimer() =>
+      timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
+        setState(() {
+          timeLeft =
+              _speechController.duration - _speechController.stopwatch.elapsed;
 
-            if (timeLeft.inMilliseconds < 0) {
-              (widget.onTimeEnd ?? () {})();
+          if (timeLeft.inMilliseconds < 0) {
+            _speechController.stopwatch.stop();
+            _speechController.overallStopwatch.stop();
 
-              _speechController.stopwatch.stop();
-              _speechController.overallStopwatch.stop();
-
-              timeLeft = Duration.zero;
-              timer.cancel();
-            }
-          });
-        },
-      );
+            timeLeft = Duration.zero;
+            timer.cancel();
+          }
+        });
+      });
 
   @override
   void dispose() {
@@ -81,7 +81,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
     }
 
     return SizedBox(
-      height: context.height / 2,
+      height: widget.height ?? context.height / 2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,14 +105,17 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             child: Row(
               children: [
                 CircularPercentIndicator(
-                  radius: 100,
+                  radius: widget.radius ?? 100,
                   percent: (timeLeft.inSeconds /
                           _speechController.duration.inSeconds) *
                       0.975,
-                  progressColor:
-                      context.theme.colorScheme.secondary.withAlpha(200),
+                  progressColor: context.theme.colorScheme.secondary.withAlpha(
+                    200,
+                  ),
                   backgroundColor:
-                      context.theme.colorScheme.secondary.withAlpha(135),
+                      context.theme.colorScheme.secondary.withAlpha(
+                    135,
+                  ),
                   circularStrokeCap: CircularStrokeCap.round,
                   lineWidth: 16,
                   center: Column(
@@ -120,14 +123,16 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                     children: [
                       if (overallTimeLeft != null)
                         Text(
-                          "${overallTimeLeft.inMinutes}:${(overallTimeLeft.inSeconds - overallTimeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
-                          style: context.textTheme.headline5!
-                              .copyWith(fontSize: 20),
+                          overallTimeLeft.time,
+                          style: context.textTheme.headline5!.copyWith(
+                            fontSize: 20,
+                          ),
                         ),
                       Text(
-                        "${timeLeft.inMinutes}:${(timeLeft.inSeconds - timeLeft.inMinutes * 60).toString().padLeft(2, "0")}",
-                        style:
-                            context.textTheme.headline5!.copyWith(fontSize: 32),
+                        timeLeft.time,
+                        style: context.textTheme.headline5!.copyWith(
+                          fontSize: 32,
+                        ),
                       ),
                     ],
                   ),

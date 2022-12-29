@@ -9,7 +9,8 @@ class PastVoterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final VoteController _voteController = Get.find<VoteController>();
+    final VoteController _voteController =
+        Get.find<VoteController>(tag: "vote");
 
     return SizedBox(
       height: context.height / 2.46,
@@ -28,29 +29,23 @@ class PastVoterCard extends StatelessWidget {
               Obx(
                 () => _voteController.pastVoters.isNotEmpty
                     ? Expanded(
-                        child: ListView.builder(
-                          itemCount: _voteController.pastVoters.length * 2 - 1,
-                          itemBuilder: (_, index) {
-                            return index % 2 == 0
-                                ? DelegateTile(
-                                    delegate: _voteController
-                                        .pastVoters[index ~/ 2].keys.first,
-                                    contentPadding: EdgeInsets.zero,
-                                    trailing: CircleAvatar(
-                                      radius: 5,
-                                      backgroundColor: _voteController
-                                              .pastVoters[index ~/ 2]
-                                              .values
-                                              .first
-                                          ? Colors.green
-                                          : Colors.red,
-                                    ),
-                                  )
-                                : Divider(
-                                    height: 6,
-                                    color: Colors.grey.shade400,
-                                  );
-                          },
+                        child: ListView.separated(
+                          itemCount: _voteController.pastVoters.length,
+                          itemBuilder: (_, index) => DelegateTile(
+                            delegate: _voteController
+                                .pastVoters[index ~/ 2].keys.first,
+                            trailing: CircleAvatar(
+                              radius: 5,
+                              backgroundColor: _voteController
+                                      .pastVoters[index ~/ 2].values.first
+                                  ? Colors.green
+                                  : Colors.red,
+                            ),
+                          ),
+                          separatorBuilder: (_, __) => Divider(
+                            height: 6,
+                            color: Colors.grey.shade400,
+                          ),
                         ),
                       )
                     : Text(

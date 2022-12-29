@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
 
-class SpeakersInfoWidget extends StatelessWidget {
+class SpeakersInfo extends StatelessWidget {
   final String tag;
 
-  const SpeakersInfoWidget({super.key, required this.tag});
+  const SpeakersInfo({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,6 @@ class SpeakersInfoWidget extends StatelessWidget {
             () => _speechController.currentSpeaker.isNotEmpty
                 ? DelegateTile(
                     delegate: _speechController.currentSpeaker,
-                    contentPadding: EdgeInsets.zero,
                   )
                 : Text(
                     "No speaker currently added",
@@ -75,13 +74,12 @@ class SpeakersInfoWidget extends StatelessWidget {
                           _speechController.reorder(oldIndex, newIndex),
                       itemCount: _speechController.nextSpeakers.length,
                       itemBuilder: (_, index) => ReorderableDragStartListener(
-                        key: ValueKey(index),
                         index: index,
+                        key: ValueKey(index),
                         child: Column(
                           children: [
                             DelegateTile(
                               delegate: _speechController.nextSpeakers[index],
-                              contentPadding: EdgeInsets.zero,
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [

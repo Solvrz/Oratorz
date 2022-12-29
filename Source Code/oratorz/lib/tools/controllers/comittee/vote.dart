@@ -6,8 +6,8 @@ class VoteController extends GetxController {
   final RxString _topic = "Your Topic".obs;
   final RxInt _majority = 0.obs;
 
-  RxList<String> voters = <String>[].obs;
-  RxList<Map<String, bool>> pastVoters = <Map<String, bool>>[].obs;
+  final RxList<String> _voters = <String>[].obs;
+  final RxList<Map<String, bool>> _pastVoters = <Map<String, bool>>[].obs;
 
   String get topic => _topic.value;
   set topic(String newTopic) => _topic.value = newTopic;
@@ -15,13 +15,18 @@ class VoteController extends GetxController {
   int get majority => _majority.value;
   set majority(int newMajority) => _majority.value = newMajority;
 
-  String get currentVoter => voters.isNotEmpty ? voters[0] : "";
-  int get totalVoters => voters.length + pastVoters.length;
+  List<String> get voters => _voters;
+  set voters(List<String> newVoters) => _voters.value = newVoters;
+
+  List<Map<String, bool>> get pastVoters => _pastVoters;
+
+  String get currentVoter => _voters.isNotEmpty ? _voters[0] : "";
+  int get totalVoters => _voters.length + _pastVoters.length;
 
   int get inFavor {
     int _inFavor = 0;
 
-    pastVoters.forEach((voter) {
+    _pastVoters.forEach((voter) {
       if (voter.values.first) _inFavor++;
     });
 
@@ -31,15 +36,31 @@ class VoteController extends GetxController {
   int get against {
     int _against = 0;
 
-    pastVoters.forEach((voter) {
+    _pastVoters.forEach((voter) {
       if (!voter.values.first) _against++;
     });
 
     return _against;
   }
 
+  bool voteVal(String delegate, {bool invert = false}) {
+    if (hasVoted(delegate)) {
+      final bool _result = _pastVoters
+          .where(
+            (_voter) => _voter.keys.first == delegate,
+          )
+          .first
+          .values
+          .first;
+
+      return invert ? !_result : _result;
+    } else {
+      return true;
+    }
+  }
+
   int majorityVal({int? value}) {
-    switch (value ?? majority) {
+    switch (value ?? _majority.value) {
       case 0:
         return (totalVoters / 2 + (totalVoters > 0 ? 1 : 0)).floor();
       case 1:
@@ -55,7 +76,7 @@ class VoteController extends GetxController {
   bool hasVoted(String delegate) {
     bool _voted = false;
 
-    pastVoters.forEach((_voter) {
+    _pastVoters.forEach((_voter) {
       _voted = _voter.keys.first == delegate;
     });
 
@@ -63,15 +84,26 @@ class VoteController extends GetxController {
   }
 
   void reset() {
-    voters.value =
+    _voters.value =
         Get.find<CommitteeController>().committee.presentAndVotingDelegates;
-    pastVoters.value = [];
+    _pastVoters.value = [];
   }
 
-  void removeVoter(String delegate) => voters.remove(delegate);
+  void removeVoter(String delegate) => _voters.remove(delegate);
 
-  void nextVoter({required bool vote}) {
-    pastVoters.add({voters[0]: vote});
-    voters.removeAt(0);
+  void vote({
+    required bool vote,
+    bool remove = true,
+    String? voter,
+  }) {
+    final String _voter = voter ?? _voters[0];
+
+    if (!hasVoted(_voter)) {
+      _pastVoters.add({voter ?? _voters[0]: vote});
+      if (remove) _voters.removeAt(0);
+    } else {
+      _pastVoters.removeWhere((_vote) => _vote.keys.first == _voter);
+      _pastVoters.add({voter ?? _voters[0]: vote});
+    }
   }
 }

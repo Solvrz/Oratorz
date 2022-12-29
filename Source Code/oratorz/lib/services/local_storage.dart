@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../models/committee.dart';
-import '../tools/controllers/comittee/committee.dart';
+import '/models/committee.dart';
+import '/tools/controllers/comittee/committee.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {
@@ -43,5 +43,10 @@ class LocalStorage {
     Get.put<CommitteeController>(controller);
 
     return true;
+  }
+
+  static void clearCommittee() {
+    //TODO: Assign a unique ID to each committee
+    box.write("committee", "");
   }
 }

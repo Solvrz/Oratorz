@@ -12,8 +12,9 @@ class SpeechController extends GetxController {
   final RxString _currentSpeaker = "".obs;
   final RxBool _isSpeaking = false.obs;
 
-  RxList<String> nextSpeakers = <String>[].obs;
-  RxList<Map<String, Duration>> pastSpeakers = <Map<String, Duration>>[].obs;
+  final RxList<String> _nextSpeakers = <String>[].obs;
+  final RxList<Map<String, Duration>> _pastSpeakers =
+      <Map<String, Duration>>[].obs;
 
   Map<String, String> get subtopic => _subtopic;
   set subtopic(Map<String, String> newSubtopic) =>
@@ -37,44 +38,47 @@ class SpeechController extends GetxController {
   bool get isSpeaking => _isSpeaking.value;
   set isSpeaking(bool newSpeaker) => _isSpeaking.value = newSpeaker;
 
+  List<String> get nextSpeakers => _nextSpeakers;
+  List<Map<String, Duration>> get pastSpeakers => _pastSpeakers;
+
   bool isAdded(String delegate) =>
-      currentSpeaker == delegate || nextSpeakers.contains(delegate);
+      _currentSpeaker.value == delegate || _nextSpeakers.contains(delegate);
 
   void reorder(int oldIndex, int newIndex) {
-    final String temp = nextSpeakers[oldIndex];
+    final String _old = _nextSpeakers[oldIndex];
 
-    nextSpeakers.removeAt(oldIndex);
-    nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, temp);
+    _nextSpeakers.removeAt(oldIndex);
+    _nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, _old);
   }
 
   void addSpeaker(String delegate) {
-    if (currentSpeaker.isEmpty) {
-      currentSpeaker = delegate;
+    if (_currentSpeaker.value.isEmpty) {
+      _currentSpeaker.value = delegate;
       return;
     }
 
-    nextSpeakers.add(delegate);
+    _nextSpeakers.add(delegate);
   }
 
-  void removeSpeaker(String delegate) => nextSpeakers.remove(delegate);
+  void removeSpeaker(String delegate) => _nextSpeakers.remove(delegate);
 
   void nextSpeaker() {
-    if (currentSpeaker.isEmpty) return;
+    if (_currentSpeaker.value.isEmpty) return;
 
-    pastSpeakers.add({currentSpeaker: stopwatch.elapsed});
+    _pastSpeakers.add({_currentSpeaker.value: _stopwatch.value.elapsed});
 
-    if (nextSpeakers.isEmpty) {
-      currentSpeaker = "";
+    if (_nextSpeakers.isEmpty) {
+      _currentSpeaker.value = "";
     } else {
-      currentSpeaker = nextSpeakers.first;
-      nextSpeakers.removeAt(0);
+      _currentSpeaker.value = _nextSpeakers.first;
+      _nextSpeakers.removeAt(0);
     }
 
-    isSpeaking = false;
+    _isSpeaking.value = false;
 
-    stopwatch.stop();
-    overallStopwatch.stop();
+    _stopwatch.value.stop();
+    _overallStopwatch.value.stop();
 
-    stopwatch.reset();
+    _stopwatch.value.reset();
   }
 }

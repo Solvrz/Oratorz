@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
+import '../../widgets/hourglass.dart';
+import '../../widgets/speakers_info.dart';
 import '../widgets/add_speaker_card.dart';
 import '../widgets/past_speakers_card.dart';
-import '../widgets/speakers_info_card.dart';
-import '../widgets/stopwatch.dart';
 
 class ModTab extends StatelessWidget {
   const ModTab({super.key});
@@ -36,9 +36,9 @@ class ModTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Center(child: StopwatchWidget(tag: "mod")),
+                      Center(child: Hourglass(tag: "mod")),
                       SizedBox(width: 48),
-                      SpeakersInfoWidget(tag: "mod"),
+                      SpeakersInfo(tag: "mod"),
                     ],
                   ),
                 ),

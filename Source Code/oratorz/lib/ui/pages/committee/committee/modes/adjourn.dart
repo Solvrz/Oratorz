@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../widgets/stopwatch.dart';
+import '../../widgets/hourglass.dart';
 
 class AdjournTab extends StatelessWidget {
   const AdjournTab({super.key});
@@ -22,7 +22,7 @@ class AdjournTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const StopwatchWidget(tag: "adjourn"),
+            child: const Hourglass(tag: "adjourn"),
           ),
         ),
         carousel(context),
