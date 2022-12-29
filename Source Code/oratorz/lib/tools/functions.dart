@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 Widget flag(String delegate, {double size = 35}) => Image.asset(
       height: size,
       width: size,
-      "flags/$delegate.png",
+      "flags/${delegate.split(" ")[0]}.png",
       errorBuilder: (
         _,
         exception,

@@ -48,25 +48,23 @@ class VotingCard extends StatelessWidget {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      SizedBox.square(
-                                        dimension: 50,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey.shade400,
-                                                offset: const Offset(1, 1),
-                                                blurRadius: 4,
-                                              ),
-                                            ],
-                                          ),
-                                          child: flag(
-                                            size: 100,
-                                            _voteController.currentVoter
-                                                .split(" ")[0],
-                                          ),
+                                      Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.shade400,
+                                              offset: const Offset(1, 1),
+                                              blurRadius: 4,
+                                            ),
+                                          ],
+                                        ),
+                                        child: flag(
+                                          size: 100,
+                                          _voteController.currentVoter,
                                         ),
                                       ),
                                       const SizedBox(height: 12),

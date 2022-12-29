@@ -21,21 +21,21 @@ class DelegateTile extends StatelessWidget {
     return ListTile(
       hoverColor: Colors.grey[100],
       onTap: onTap,
-      leading: SizedBox.square(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade400,
-                offset: const Offset(1, 1),
-                blurRadius: 4,
-              ),
-            ],
-          ),
-          child: flag(delegate.split(" ")[0]),
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade400,
+              offset: const Offset(1, 1),
+              blurRadius: 4,
+            ),
+          ],
         ),
+        child: flag(delegate),
       ),
       title: Text(
         DELEGATES[delegate]!,
