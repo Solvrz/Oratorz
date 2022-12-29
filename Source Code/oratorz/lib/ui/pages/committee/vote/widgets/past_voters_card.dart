@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/widgets/delegate_tile.dart';
 
-class PastVoterCard extends StatelessWidget {
-  const PastVoterCard({super.key});
+class PastVotersCard extends StatelessWidget {
+  const PastVotersCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +32,14 @@ class PastVoterCard extends StatelessWidget {
                         child: ListView.separated(
                           itemCount: _voteController.pastVoters.length,
                           itemBuilder: (_, index) => DelegateTile(
-                            delegate: _voteController
-                                .pastVoters[index ~/ 2].keys.first,
+                            delegate:
+                                _voteController.pastVoters[index].keys.first,
                             trailing: CircleAvatar(
                               radius: 5,
-                              backgroundColor: _voteController
-                                      .pastVoters[index ~/ 2].values.first
-                                  ? Colors.green
-                                  : Colors.red,
+                              backgroundColor:
+                                  _voteController.pastVoters[index].values.first
+                                      ? Colors.green
+                                      : Colors.red,
                             ),
                           ),
                           separatorBuilder: (_, __) => Divider(

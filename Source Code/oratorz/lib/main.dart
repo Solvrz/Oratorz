@@ -42,7 +42,7 @@ class Oratorz extends StatelessWidget {
           GoRoute(
             path: "/",
             redirect: (_, __) {
-              final exists = LocalStorage.loadCommittee();
+              final bool exists = LocalStorage.loadCommittee();
 
               return exists ? "/committee/gsl" : "/setup";
             },

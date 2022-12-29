@@ -194,22 +194,25 @@ class LoadCommitteeCard extends StatelessWidget {
                               width: context.width / 2.5,
                               child: ListView.separated(
                                 itemCount: COMMITTEES.length,
-                                itemBuilder: (_, index) => ListTile(
-                                  hoverColor: Colors.grey[100],
-                                  onTap: () {
-                                    _setupController.setAs(
-                                      templates[index ~/ 2],
-                                      COMMITTEES[templates[index ~/ 2]]!
-                                          .toList(),
-                                    );
+                                itemBuilder: (_, index) {
+                                  final String _template = templates[index];
 
-                                    context.pop();
-                                  },
-                                  title: Text(
-                                    "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",
-                                    style: context.textTheme.bodyText1,
-                                  ),
-                                ),
+                                  return ListTile(
+                                    hoverColor: Colors.grey[100],
+                                    onTap: () {
+                                      _setupController.setAs(
+                                        _template,
+                                        COMMITTEES[_template]!.toList(),
+                                      );
+
+                                      context.pop();
+                                    },
+                                    title: Text(
+                                      "$_template (${COMMITTEES[_template]!.length})",
+                                      style: context.textTheme.bodyText1,
+                                    ),
+                                  );
+                                },
                                 separatorBuilder: (_, __) => Divider(
                                   height: 2,
                                   color: Colors.grey[300],

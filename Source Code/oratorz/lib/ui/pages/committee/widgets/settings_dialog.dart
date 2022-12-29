@@ -158,7 +158,7 @@ class _TimerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller =
-        TextEditingController(text: value.toString().padLeft(2, '0'));
+        TextEditingController(text: value.toString().padLeft(2, "0"));
 
     controller.selection = TextSelection.fromPosition(
       TextPosition(offset: controller.text.length),
@@ -194,9 +194,9 @@ class _TimerButton extends StatelessWidget {
                     onChanged: (text) {
                       if (0 <= int.parse(text) && int.parse(text) < 60) {
                         change(int.parse(text) - value);
-                        controller.text = text.padLeft(2, '0');
+                        controller.text = text.padLeft(2, "0");
                       } else {
-                        controller.text = value.toString().padLeft(2, '0');
+                        controller.text = value.toString().padLeft(2, "0");
                       }
 
                       controller.selection = TextSelection.fromPosition(

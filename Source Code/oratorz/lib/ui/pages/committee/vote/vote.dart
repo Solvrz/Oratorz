@@ -30,7 +30,7 @@ class VotePage extends StatelessWidget {
               children: const [
                 ResultCard(),
                 SizedBox(height: 12),
-                PastVoterCard(),
+                PastVotersCard(),
               ],
             ),
             const SizedBox(width: 36),

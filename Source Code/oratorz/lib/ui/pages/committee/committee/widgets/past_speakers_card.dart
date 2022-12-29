@@ -38,7 +38,8 @@ class PastSpeakersCard extends StatelessWidget {
                           itemCount: _speechController.pastSpeakers.length,
                           itemBuilder: (_, index) {
                             final Map<String, Duration> speaker =
-                                _speechController.pastSpeakers[index ~/ 2];
+                                _speechController.pastSpeakers[index];
+
                             final int inMinutes =
                                 speaker.values.first.inMinutes;
                             final int inSeconds =
@@ -47,7 +48,7 @@ class PastSpeakersCard extends StatelessWidget {
                             return DelegateTile(
                               delegate: speaker.keys.first,
                               trailing: Text(
-                                "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, '0')}",
+                                "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, "0")}",
                                 style: context.textTheme.bodyText1,
                               ),
                             );
