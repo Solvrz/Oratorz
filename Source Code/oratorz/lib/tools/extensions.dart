@@ -52,7 +52,10 @@ extension ToolsDuration on Duration {
 }
 
 extension ToolsDateTime on DateTime {
-  String get toFmattedDate => DateFormat("dd MMMM").format(this);
+  String get toFormattedDate => DateFormat("dd MMMM").format(this);
+
+  String get to12Hour => DateFormat("jm").format(this).toUpperCase();
+  String get to24Hour => DateFormat("Hm").format(this);
 }
 
 extension ToolsTextEditingController on TextEditingController {

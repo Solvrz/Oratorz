@@ -122,7 +122,7 @@ class VotingCard extends StatelessWidget {
                       )
                     : _voteController.pastVoters.isEmpty
                         ? Text(
-                            "Conduct a roll call before adding speakers",
+                            "Conduct a roll call before voting",
                             style: context.textTheme.bodyText1,
                           )
                         : Center(

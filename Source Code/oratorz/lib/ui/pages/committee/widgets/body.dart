@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/dialog_box.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class Body extends StatelessWidget {
   final Widget child;
@@ -47,8 +48,14 @@ class Body extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      InkWell(
-                        onTap: () async {
+                      RoundedButton(
+                        border: true,
+                        color: Colors.amber.shade400,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 8,
+                        ),
+                        onPressed: () async {
                           final TextEditingController _controller =
                               TextEditingController(
                             text: _committeeController.committee.agenda,
@@ -89,21 +96,10 @@ class Body extends StatelessWidget {
                             ),
                           );
                         },
-                        hoverColor: const Color.fromARGB(255, 250, 250, 250),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.amber.shade400),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 4,
-                          ),
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.amber.shade400,
-                            size: 20,
-                          ),
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.amber.shade400,
+                          size: 20,
                         ),
                       ),
                     ],

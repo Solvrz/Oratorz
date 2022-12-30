@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class SpeakersInfo extends StatelessWidget {
   final String tag;
@@ -83,31 +84,17 @@ class SpeakersInfo extends StatelessWidget {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  InkWell(
-                                    onTap: () =>
+                                  RoundedButton(
+                                    color: Colors.red.shade400,
+                                    padding: const EdgeInsets.all(4),
+                                    onPressed: () =>
                                         _speechController.removeSpeaker(
                                       _speechController.nextSpeakers[index],
                                     ),
-                                    hoverColor: const Color.fromARGB(
-                                      255,
-                                      250,
-                                      250,
-                                      250,
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.red.shade400,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                        horizontal: 8,
-                                      ),
-                                      child: const Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                        size: 16,
-                                      ),
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 16,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   const SizedBox(width: 8),

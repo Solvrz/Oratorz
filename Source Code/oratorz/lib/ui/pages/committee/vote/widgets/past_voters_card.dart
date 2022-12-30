@@ -13,7 +13,7 @@ class PastVotersCard extends StatelessWidget {
         Get.find<VoteController>(tag: "vote");
 
     return SizedBox(
-      height: context.height / 2.46,
+      height: context.height / 2.3,
       width: context.width / 4,
       child: Card(
         child: Container(
@@ -22,7 +22,7 @@ class PastVotersCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Voting",
+                "Past Voters",
                 style: context.textTheme.headline5,
               ),
               const SizedBox(height: 8),

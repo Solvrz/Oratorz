@@ -8,8 +8,8 @@ import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/rounded_button.dart';
-import './settings_dialog.dart';
-import './yield_spaeaker_dialog.dart';
+import './dialogs/committee_settings.dart';
+import './dialogs/yield_spaeaker.dart';
 
 class Hourglass extends StatefulWidget {
   final String tag;
@@ -188,7 +188,8 @@ class _HourglassState extends State<Hourglass> {
 
                         await showDialog(
                           context: context,
-                          builder: (_) => SettingsDialog(tag: widget.tag),
+                          builder: (_) =>
+                              CommitteeSettingsDialog(tag: widget.tag),
                         );
                       },
                       color: Colors.amber.shade400,
@@ -212,7 +213,7 @@ class _HourglassState extends State<Hourglass> {
                             context: context,
                             builder: (_) => YieldSpeakerDialog(
                               delegates: delegates,
-                              controller: _speechController,
+                              tag: widget.tag,
                             ),
                           );
                         },

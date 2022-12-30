@@ -80,30 +80,27 @@ class _ModeSelector extends StatelessWidget {
           ],
         ),
       ),
-      itemBuilder: (_) => List.generate(
-        COMMITTEE_MODES.length,
-        (index) {
-          final Map<String, dynamic> tab = COMMITTEE_MODES[index];
+      itemBuilder: (_) => List.generate(COMMITTEE_MODES.length, (index) {
+        final Map<String, dynamic> tab = COMMITTEE_MODES[index];
 
-          return PopupMenuItem(
-            value: index,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      tab["icon"],
-                      color: context.theme.colorScheme.tertiary,
-                    ),
-                    const VerticalDivider(),
-                    Text(tab["name"]),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+        return PopupMenuItem(
+          value: index,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    tab["icon"],
+                    color: context.theme.colorScheme.tertiary,
+                  ),
+                  const VerticalDivider(),
+                  Text(tab["name"]),
+                ],
+              ),
+            ],
+          ),
+        );
+      }),
       onSelected: (index) {
         _modeController.mode = index;
         html.window.history.pushState(

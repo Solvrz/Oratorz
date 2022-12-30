@@ -31,14 +31,20 @@ class CommitteeCard extends StatelessWidget {
                       style: context.textTheme.headline5,
                     ),
                     const SizedBox(width: 16),
-                    InkWell(
-                      onTap: () {
+                    RoundedButton(
+                      border: true,
+                      color: Colors.amber.shade400,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 8,
+                      ),
+                      onPressed: () async {
                         final TextEditingController _controller =
                             TextEditingController(
                           text: _setupController.committee.name,
                         );
 
-                        showDialog(
+                        await showDialog(
                           context: context,
                           builder: (_) => DialogBox(
                             heading: "Set Committee Name",
@@ -71,21 +77,10 @@ class CommitteeCard extends StatelessWidget {
                           ),
                         );
                       },
-                      hoverColor: const Color.fromARGB(255, 250, 250, 250),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.amber.shade400),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 4,
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.amber.shade400,
-                          size: 20,
-                        ),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.amber.shade400,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -127,8 +122,7 @@ class CommitteeCard extends StatelessWidget {
                       committee: _setupController.committee,
                     );
 
-                    Get.put<CommitteeController>(controller);
-
+                    Get.put(controller);
                     LocalStorage.saveCommittee(controller);
 
                     context.pushReplacement("/committee/gsl");

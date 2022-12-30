@@ -3,6 +3,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '/config/constants/constants.dart';
@@ -15,7 +16,9 @@ import '/ui/pages/export.dart';
 void main() async {
   // TODO: Storage remove past voters from current
   WidgetsFlutterBinding.ensureInitialized();
+
   Intl.defaultLocale = LOCALE.code;
+  await initializeDateFormatting(Intl.defaultLocale);
 
   await GetStorage.init();
 

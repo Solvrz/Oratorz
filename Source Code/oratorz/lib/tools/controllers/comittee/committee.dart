@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '/config/constants/committee.dart';
 import '/models/committee.dart';
 import '/services/local_storage.dart';
-import 'vote.dart';
+import './vote.dart';
 
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
@@ -42,8 +42,8 @@ class CommitteeController extends GetxController {
 
     // TODO: Disscuss This
 
-    if (Get.isRegistered<VoteController>(tag: "vote")) {
-      Get.find<VoteController>(tag: "vote").voters =
+    if (Get.isRegistered<VoteController>()) {
+      Get.find<VoteController>().voters =
           _committee.value.presentAndVotingDelegates;
     }
 

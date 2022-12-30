@@ -8,7 +8,7 @@ import '/config/constants/committee.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
-import './widgets/roll_call_dialog.dart';
+import './widgets/dialogs/roll_call.dart';
 
 class CommitteeMainPage extends StatefulWidget {
   const CommitteeMainPage({super.key});

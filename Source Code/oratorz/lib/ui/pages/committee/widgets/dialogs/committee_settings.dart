@@ -6,10 +6,10 @@ import 'package:go_router/go_router.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/dialog_box.dart';
 
-class SettingsDialog extends StatelessWidget {
+class CommitteeSettingsDialog extends StatelessWidget {
   final String tag;
 
-  const SettingsDialog({super.key, required this.tag});
+  const CommitteeSettingsDialog({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {

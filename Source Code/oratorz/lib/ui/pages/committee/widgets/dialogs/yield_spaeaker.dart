@@ -9,12 +9,12 @@ import '/ui/widgets/rounded_button.dart';
 
 class YieldSpeakerDialog extends StatefulWidget {
   final List<String> delegates;
-  final SpeechController controller;
+  final String tag;
 
   const YieldSpeakerDialog({
     super.key,
     required this.delegates,
-    required this.controller,
+    required this.tag,
   });
 
   @override
@@ -22,7 +22,15 @@ class YieldSpeakerDialog extends StatefulWidget {
 }
 
 class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
+  late final SpeechController _speechController;
   int selected = -1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _speechController = Get.find<SpeechController>(tag: widget.tag);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +49,8 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                     onTap: () {
                       setState(() => selected = index);
 
-                      widget.controller.currentSpeaker = _delegate;
-                      widget.controller.nextSpeakers.remove(_delegate);
+                      _speechController.currentSpeaker = _delegate;
+                      _speechController.nextSpeakers.remove(_delegate);
                     },
                     trailing: Radio(
                       value: index,
@@ -59,8 +67,8 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                         if (value != null) {
                           selected = value as int;
 
-                          widget.controller.currentSpeaker = _delegate;
-                          widget.controller.nextSpeakers.remove(_delegate);
+                          _speechController.currentSpeaker = _delegate;
+                          _speechController.nextSpeakers.remove(_delegate);
                         }
                       }),
                     ),

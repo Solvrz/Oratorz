@@ -46,10 +46,9 @@ class VoteController extends GetxController {
   bool voteVal(String delegate, {bool invert = false}) {
     if (hasVoted(delegate)) {
       final bool _result = _pastVoters
-          .where(
+          .firstWhere(
             (_voter) => _voter.keys.first == delegate,
           )
-          .first
           .values
           .first;
 

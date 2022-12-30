@@ -9,12 +9,10 @@ class FutureMotionsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MotionsController _motionsController = Get.put(MotionsController());
-    final List<Map<String, dynamic>> motions = _motionsController.motions
-      ..removeAt(0);
+    final MotionsController _motionsController = Get.find<MotionsController>();
 
     return SizedBox(
-      height: context.height / 1.965,
+      height: context.height / 2.2,
       width: context.width / 3,
       child: Card(
         child: Container(
@@ -27,18 +25,37 @@ class FutureMotionsCard extends StatelessWidget {
                 style: context.textTheme.headline5,
               ),
               const SizedBox(height: 8),
-              Expanded(
-                child: motions.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: motions.length,
-                        itemBuilder: (_, index) =>
-                            MotionTile(motion: motions[index]),
-                      )
-                    : Text(
-                        "No motions added yet.",
-                        style: context.textTheme.bodyText1,
+              Obx(() {
+                if (_motionsController.nextMotions.isNotEmpty) {
+                  return Expanded(
+                    child: ReorderableListView.builder(
+                      buildDefaultDragHandles: false,
+                      onReorder: (oldIndex, newIndex) =>
+                          _motionsController.reorder(oldIndex, newIndex),
+                      itemCount: _motionsController.nextMotions.length,
+                      itemBuilder: (_, index) => ReorderableDragStartListener(
+                        index: index,
+                        key: ValueKey(index),
+                        child: Column(
+                          children: [
+                            MotionTile(
+                              motion: _motionsController.nextMotions[index],
+                            ),
+                            if (index !=
+                                _motionsController.nextMotions.length - 1)
+                              const SizedBox(height: 20)
+                          ],
+                        ),
                       ),
-              ),
+                    ),
+                  );
+                } else {
+                  return Text(
+                    "No motions added yet.",
+                    style: context.textTheme.bodyText1,
+                  );
+                }
+              }),
             ],
           ),
         ),

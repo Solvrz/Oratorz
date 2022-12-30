@@ -23,48 +23,45 @@ class AddSpeaker extends StatelessWidget {
           style: context.textTheme.headline5,
         ),
         const SizedBox(height: 8),
-        GetBuilder<SpeechController>(
-          tag: tag,
-          builder: (_) {
-            final List<String> speakers =
-                Get.find<CommitteeController>().committee.presentDelegates;
+        Obx(() {
+          final List<String> speakers =
+              Get.find<CommitteeController>().committee.presentDelegates;
 
-            return speakers.isNotEmpty
-                ? Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: speakers.length,
-                      itemBuilder: (_, index) {
-                        final bool isAdded =
-                            _speechController.isAdded(speakers[index]);
+          return speakers.isNotEmpty
+              ? Expanded(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: speakers.length,
+                    itemBuilder: (_, index) {
+                      final bool isAdded =
+                          _speechController.isAdded(speakers[index]);
 
-                        return Opacity(
-                          opacity: isAdded ? 0.6 : 1,
-                          child: DelegateTile(
-                            delegate: speakers[index],
-                            onTap: isAdded
-                                ? null
-                                : () {
-                                    _speechController.addSpeaker(
-                                      speakers[index],
-                                    );
-                                    _speechController.update();
-                                  },
-                          ),
-                        );
-                      },
-                      separatorBuilder: (_, __) => Divider(
-                        height: 6,
-                        color: Colors.grey.shade400,
-                      ),
+                      return Opacity(
+                        opacity: isAdded ? 0.6 : 1,
+                        child: DelegateTile(
+                          delegate: speakers[index],
+                          onTap: () {
+                            if (isAdded) {
+                              _speechController.addSpeaker(
+                                speakers[index],
+                              );
+                              _speechController.update();
+                            }
+                          },
+                        ),
+                      );
+                    },
+                    separatorBuilder: (_, __) => Divider(
+                      height: 6,
+                      color: Colors.grey.shade400,
                     ),
-                  )
-                : Text(
-                    "Conduct a roll call before adding speakers",
-                    style: context.textTheme.bodyText1,
-                  );
-          },
-        ),
+                  ),
+                )
+              : Text(
+                  "Conduct a roll call before adding speakers",
+                  style: context.textTheme.bodyText1,
+                );
+        }),
       ],
     );
   }

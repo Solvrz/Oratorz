@@ -29,11 +29,10 @@ class LoadCommitteeCard extends StatelessWidget {
               .isNotEmpty) {
             _delegates.add(
               COUNTRIES.entries
-                  .where(
+                  .firstWhere(
                     (_entry) =>
                         _entry.value.toLowerCase() == name.toLowerCase().trim(),
                   )
-                  .first
                   .key,
             );
           } else {
@@ -54,12 +53,11 @@ class LoadCommitteeCard extends StatelessWidget {
                 .isNotEmpty) {
               _delegates.add(
                 AIPPM.entries
-                    .where(
+                    .firstWhere(
                       (_entry) =>
                           _entry.value.toLowerCase() ==
                           name.toLowerCase().trim(),
                     )
-                    .first
                     .key,
               );
             } else {
@@ -135,8 +133,9 @@ class LoadCommitteeCard extends StatelessWidget {
                           );
 
                           if (_result != null) {
-                            final Excel excel =
-                                Excel.decodeBytes(_result.files.single.bytes!);
+                            final Excel excel = Excel.decodeBytes(
+                              _result.files.single.bytes!,
+                            );
 
                             for (final String table in excel.tables.keys) {
                               final Sheet? sheet = excel.tables[table];
@@ -147,14 +146,12 @@ class LoadCommitteeCard extends StatelessWidget {
                                     createDelegates(rows..removeAt(0));
 
                                 if (_delegates.isNotEmpty) {
-                                  _delegates.forEach(
-                                    (_delegate) {
-                                      if (!_setupController.committee.delegates
-                                          .contains(_delegate)) {
-                                        _setupController.add(_delegate);
-                                      }
-                                    },
-                                  );
+                                  _delegates.forEach((_delegate) {
+                                    if (!_setupController.committee.delegates
+                                        .contains(_delegate)) {
+                                      _setupController.add(_delegate);
+                                    }
+                                  });
                                   _setupController.update();
 
                                   return;

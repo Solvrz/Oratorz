@@ -34,6 +34,10 @@ class OratorzTheme {
         ),
         bodyText1: textTheme.bodyText1!.copyWith(fontSize: 16),
         bodyText2: textTheme.bodyText2!.copyWith(fontSize: 14),
+        caption: textTheme.caption!.copyWith(
+          fontSize: 12,
+          color: Colors.grey.shade700,
+        ),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: OratorzColors.secondaryColor,

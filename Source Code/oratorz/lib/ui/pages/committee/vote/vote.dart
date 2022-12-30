@@ -14,11 +14,13 @@ class VotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!Get.isRegistered<VoteController>()) {
-      final VoteController _controller = VoteController();
-      _controller.voters =
-          Get.find<CommitteeController>().committee.presentAndVotingDelegates;
-
-      Get.put(_controller, tag: "vote");
+      Get.put(
+        (VoteController()
+          ..voters = Get.find<CommitteeController>()
+              .committee
+              .presentAndVotingDelegates),
+        tag: "vote",
+      );
     }
 
     return Body(
