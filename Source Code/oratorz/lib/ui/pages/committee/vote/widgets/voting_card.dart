@@ -30,6 +30,8 @@ class VotingCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Obx(
+                // TODO: Storage remove past voters from current
+
                 () => _voteController.voters.isNotEmpty
                     ? Column(
                         children: [

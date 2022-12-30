@@ -304,7 +304,6 @@ final Map<String, String> AIPPM = {
 };
 
 // TODO: Others Flags
-// TODO: Strech Paty Icons
 
 final Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
 

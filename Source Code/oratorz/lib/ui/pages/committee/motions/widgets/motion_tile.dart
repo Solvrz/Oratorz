@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oratorz/ui/widgets/rounded_button.dart';
 
 import '/config/constants/data.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/extensions.dart';
 import '/tools/functions.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class MotionTile extends StatelessWidget {
   final Map<String, dynamic> motion;

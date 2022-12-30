@@ -14,7 +14,6 @@ import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
 
 void main() async {
-  // TODO: Storage remove past voters from current
   WidgetsFlutterBinding.ensureInitialized();
 
   Intl.defaultLocale = LOCALE.code;

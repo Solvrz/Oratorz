@@ -46,7 +46,6 @@ class LocalStorage {
   }
 
   static void clearCommittee() {
-    //TODO: Assign a unique ID to each committee
     box.write("committee", "");
   }
 }

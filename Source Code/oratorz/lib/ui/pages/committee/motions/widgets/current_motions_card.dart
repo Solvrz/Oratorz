@@ -68,7 +68,7 @@ class CurrentMotionCard extends StatelessWidget {
                     onPressed: () {
                       _motionsController.nextMotion(passed: true);
 
-                      // TODO: Motion Pass
+                      // TODO: Pass Motion
                     },
                     child: const Icon(Icons.check),
                   ),
