@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../services/local_storage.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -31,14 +31,20 @@ class CommitteeCard extends StatelessWidget {
                       style: context.textTheme.headline5,
                     ),
                     const SizedBox(width: 16),
-                    InkWell(
-                      onTap: () {
+                    RoundedButton(
+                      border: true,
+                      color: Colors.amber.shade400,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 8,
+                      ),
+                      onPressed: () async {
                         final TextEditingController _controller =
                             TextEditingController(
                           text: _setupController.committee.name,
                         );
 
-                        showDialog(
+                        await showDialog(
                           context: context,
                           builder: (_) => DialogBox(
                             heading: "Set Committee Name",
@@ -46,8 +52,9 @@ class CommitteeCard extends StatelessWidget {
                               autofocus: true,
                               controller: _controller,
                               onSubmitted: (value) {
-                                _setupController.setName(value);
-                                Navigator.pop(context);
+                                _setupController.committee.name = value;
+
+                                context.pop();
                               },
                               keyboardType: TextInputType.name,
                               cursorColor: Colors.grey[600],
@@ -56,15 +63,13 @@ class CommitteeCard extends StatelessWidget {
                                 hintText: "Committee Name",
                               ),
                             ),
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                            actionsPadding: const EdgeInsets.all(16),
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  _setupController
-                                      .setName(_controller.value.text);
-                                  Navigator.pop(context);
+                                  _setupController.committee.name =
+                                      _controller.value.text;
+
+                                  context.pop();
                                 },
                                 child: const Text("Select"),
                               )
@@ -72,21 +77,10 @@ class CommitteeCard extends StatelessWidget {
                           ),
                         );
                       },
-                      hoverColor: const Color.fromARGB(255, 250, 250, 250),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.amber.shade400),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 4,
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.amber.shade400,
-                          size: 20,
-                        ),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.amber.shade400,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -98,6 +92,7 @@ class CommitteeCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
+                    itemCount: _setupController.committee.count,
                     itemBuilder: (_, index) => DelegateTile(
                       delegate: _setupController.committee.delegates[index],
                       onTap: () => _setupController.removeAt(index),
@@ -109,14 +104,16 @@ class CommitteeCard extends StatelessWidget {
                       height: 6,
                       color: Colors.grey[400],
                     ),
-                    itemCount: _setupController.committee.count,
                   ),
                 ),
                 const SizedBox(height: 24),
                 RoundedButton(
                   border: true,
                   onPressed: () => _setupController.clear(),
-                  child: const Text("Reset Selection"),
+                  child: Text(
+                    "Reset Selection",
+                    style: context.textTheme.bodyLarge,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 RoundedButton(
@@ -125,13 +122,16 @@ class CommitteeCard extends StatelessWidget {
                       committee: _setupController.committee,
                     );
 
-                    Get.put<CommitteeController>(controller);
-
+                    Get.put(controller);
                     LocalStorage.saveCommittee(controller);
 
                     context.pushReplacement("/committee/gsl");
                   },
-                  child: const Text("Start Session"),
+                  child: Text(
+                    "Start Session",
+                    style: context.textTheme.bodyLarge
+                        ?.copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             ),

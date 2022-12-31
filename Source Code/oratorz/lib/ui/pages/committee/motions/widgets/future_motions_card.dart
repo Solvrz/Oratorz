@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/tools/controllers/comittee/motions.dart';
+import './motion_tile.dart';
+
 class FutureMotionsCard extends StatelessWidget {
   const FutureMotionsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final MotionsController _motionsController = Get.find<MotionsController>();
+
     return SizedBox(
-      height: context.height / 1.8,
+      height: context.height / 2.2,
       width: context.width / 3,
       child: Card(
         child: Container(
@@ -20,10 +25,37 @@ class FutureMotionsCard extends StatelessWidget {
                 style: context.textTheme.headline5,
               ),
               const SizedBox(height: 8),
-              Text(
-                "No motions added yet.",
-                style: context.textTheme.bodyText1,
-              ),
+              Obx(() {
+                if (_motionsController.nextMotions.isNotEmpty) {
+                  return Expanded(
+                    child: ReorderableListView.builder(
+                      buildDefaultDragHandles: false,
+                      onReorder: (oldIndex, newIndex) =>
+                          _motionsController.reorder(oldIndex, newIndex),
+                      itemCount: _motionsController.nextMotions.length,
+                      itemBuilder: (_, index) => ReorderableDragStartListener(
+                        index: index,
+                        key: ValueKey(index),
+                        child: Column(
+                          children: [
+                            MotionTile(
+                              motion: _motionsController.nextMotions[index],
+                            ),
+                            if (index !=
+                                _motionsController.nextMotions.length - 1)
+                              const SizedBox(height: 20)
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Text(
+                    "No motions added yet.",
+                    style: context.textTheme.bodyText1,
+                  );
+                }
+              }),
             ],
           ),
         ),

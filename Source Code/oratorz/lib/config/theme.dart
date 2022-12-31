@@ -29,14 +29,14 @@ class OratorzTheme {
           fontSize: 24,
         ),
         headline6: textTheme.headline6!.copyWith(
+          fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
-        bodyText1: textTheme.bodyText1!.copyWith(
-          fontSize: 16,
-        ),
-        bodyText2: textTheme.bodyText2!.copyWith(
-          fontSize: 14,
-          color: Colors.white,
+        bodyText1: textTheme.bodyText1!.copyWith(fontSize: 16),
+        bodyText2: textTheme.bodyText2!.copyWith(fontSize: 14),
+        caption: textTheme.caption!.copyWith(
+          fontSize: 12,
+          color: Colors.grey.shade700,
         ),
       ),
       appBarTheme: const AppBarTheme(

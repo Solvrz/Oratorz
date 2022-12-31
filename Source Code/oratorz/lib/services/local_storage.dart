@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../models/committee.dart';
-import '../tools/controllers/comittee/committee.dart';
-import '../tools/controllers/comittee/speech.dart';
+import '/models/committee.dart';
+import '/tools/controllers/comittee/committee.dart';
+import '/tools/controllers/comittee/speech.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {

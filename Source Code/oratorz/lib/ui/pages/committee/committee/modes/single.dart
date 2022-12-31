@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
+import '../../widgets/hourglass.dart';
+import '../../widgets/speakers_info.dart';
 import '../widgets/add_speaker_card.dart';
-import '../widgets/speakers_info_card.dart';
-import '../widgets/stopwatch.dart';
 
 class SingleTab extends StatelessWidget {
   const SingleTab({super.key});
@@ -31,9 +31,9 @@ class SingleTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Center(child: StopwatchWidget(tag: "single")),
+                      Center(child: Hourglass(tag: "single")),
                       SizedBox(width: 48),
-                      SpeakersInfoWidget(tag: "single"),
+                      SpeakersInfo(tag: "single"),
                     ],
                   ),
                 ),

@@ -2,13 +2,13 @@ import 'package:get/get.dart';
 
 import '/config/constants/committee.dart';
 import '/models/committee.dart';
-import '../../../services/local_storage.dart';
+import '/services/local_storage.dart';
+import './vote.dart';
 
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
   late final RxMap<String, int> _rollCall;
-
-  late RxInt _tab;
+  late final RxInt _tab;
 
   CommitteeController({required Committee committee, int tab = 0}) {
     _tab = tab.obs;
@@ -19,11 +19,11 @@ class CommitteeController extends GetxController {
   Committee get committee => _committee.value;
 
   void setAgenda(String agenda) {
-    _committee.update((val) {
-      if (val != null) val.agenda = agenda;
+    _committee.update((committee) {
+      if (committee != null) committee.agenda = agenda;
     });
 
-    LocalStorage.updateCommittee("committee", committee.toJson());
+    LocalStorage.updateCommittee("committee", _committee.value.toJson());
   }
 
   Map<String, int> get rollCall => _rollCall;
@@ -37,15 +37,34 @@ class CommitteeController extends GetxController {
         (call) => call == 0,
       );
 
-  void _saveRollCall() => LocalStorage.updateCommittee("rollCall", _rollCall);
+  void _saveRollCall() {
+    LocalStorage.updateCommittee("rollCall", _rollCall);
+
+    // TODO: Disscuss This
+
+    if (Get.isRegistered<VoteController>()) {
+      Get.find<VoteController>().voters =
+          _committee.value.presentAndVotingDelegates;
+    }
+
+    if (Get.isRegistered<VoteController>(tag: "motions")) {
+      Get.find<VoteController>(tag: "motions").voters =
+          _committee.value.presentAndVotingDelegates;
+    }
+  }
+
+  void setAllPresentAndVoting() {
+    rollCall.updateAll((_, __) => 2);
+    _saveRollCall();
+  }
 
   void setAllPresent() {
-    _rollCall.updateAll((key, value) => 1);
+    _rollCall.updateAll((_, __) => 1);
     _saveRollCall();
   }
 
   void setAllAbsent() {
-    _rollCall.updateAll((key, value) => 0);
+    _rollCall.updateAll((_, __) => 0);
     _saveRollCall();
   }
 
@@ -62,7 +81,7 @@ class CommitteeController extends GetxController {
 
   Map<String, dynamic> toJson() {
     return {
-      "committee": committee.toJson(),
+      "committee": _committee.value.toJson(),
       "rollCall": rollCall,
     };
   }

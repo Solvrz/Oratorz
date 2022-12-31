@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/dialog_box.dart';
 
-class SettingsDialog extends StatelessWidget {
-  final SpeechController controller;
+class CommitteeSettingsDialog extends StatelessWidget {
+  final String tag;
 
-  const SettingsDialog({super.key, required this.controller});
+  const CommitteeSettingsDialog({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
+    final SpeechController _speechController =
+        Get.find<SpeechController>(tag: tag);
+    final TextEditingController _subtopicController =
+        TextEditingController(text: _speechController.subtopic.values.first);
+
     return DialogBox(
       heading: "Settings",
       content: Column(
@@ -21,18 +27,30 @@ class SettingsDialog extends StatelessWidget {
             () => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (controller.hasSubtopic) ...[
+                if (_speechController.hasSubtopic) ...[
                   Text(
-                    controller.subtopic.keys.first,
+                    _speechController.subtopic.keys.first,
                     style: context.textTheme.headline5,
                   ),
                   const SizedBox(height: 10),
                   Container(
                     margin: const EdgeInsets.only(left: 10),
                     child: TextField(
-                      cursorColor: Colors.black,
-                      onChanged: (value) => controller
-                          .subtopic[controller.subtopic.keys.first] = value,
+                      autofocus: true,
+                      controller: _subtopicController,
+                      onSubmitted: (value) {
+                        _speechController.subtopic[_speechController.subtopic
+                            .keys.first] = _subtopicController.text.trim();
+
+                        context.pop();
+                      },
+                      keyboardType: TextInputType.name,
+                      cursorColor: Colors.grey[600],
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        hintText: _speechController.subtopic.keys.first,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -48,26 +66,28 @@ class SettingsDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _TimerButton(
-                        value: controller.duration.inMinutes,
+                        value: _speechController.duration.inMinutes,
                         change: (value) {
-                          if (controller.duration.inMinutes + value <= 60) {
-                            controller.duration += Duration(minutes: value);
+                          if (_speechController.duration.inMinutes + value <=
+                              60) {
+                            _speechController.duration +=
+                                Duration(minutes: value);
                           }
                         },
                         subtitle: "minutes",
                       ),
                       const SizedBox(width: 16),
                       _TimerButton(
-                        value: controller.duration.inSeconds -
-                            controller.duration.inMinutes * 60,
-                        change: (value) =>
-                            controller.duration += Duration(seconds: value),
+                        value: _speechController.duration.inSeconds -
+                            _speechController.duration.inMinutes * 60,
+                        change: (value) => _speechController.duration +=
+                            Duration(seconds: value),
                         subtitle: "seconds",
                       ),
                     ],
                   ),
                 ),
-                if (controller.hasOverallDuration) ...[
+                if (_speechController.hasOverallDuration) ...[
                   const SizedBox(height: 20),
                   Text(
                     "Caucus Time",
@@ -80,11 +100,12 @@ class SettingsDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _TimerButton(
-                          value: controller.overallDuration.inMinutes,
+                          value: _speechController.overallDuration.inMinutes,
                           change: (value) {
-                            if (controller.overallDuration.inMinutes + value <=
+                            if (_speechController.overallDuration.inMinutes +
+                                    value <=
                                 60) {
-                              controller.overallDuration +=
+                              _speechController.overallDuration +=
                                   Duration(minutes: value);
                             }
                           },
@@ -92,10 +113,10 @@ class SettingsDialog extends StatelessWidget {
                         ),
                         const SizedBox(width: 16),
                         _TimerButton(
-                          value: controller.overallDuration.inSeconds -
-                              controller.overallDuration.inMinutes * 60,
-                          change: (value) => controller.overallDuration =
-                              controller.overallDuration +
+                          value: _speechController.overallDuration.inSeconds -
+                              _speechController.overallDuration.inMinutes * 60,
+                          change: (value) => _speechController.overallDuration =
+                              _speechController.overallDuration +
                                   Duration(seconds: value),
                           subtitle: "seconds",
                         ),
@@ -111,7 +132,12 @@ class SettingsDialog extends StatelessWidget {
       actions: [
         TextButton(
           child: const Text("Change"),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            _speechController.subtopic[_speechController.subtopic.keys.first] =
+                _subtopicController.text.trim();
+
+            context.pop();
+          },
         ),
       ],
     );
@@ -132,7 +158,7 @@ class _TimerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller =
-        TextEditingController(text: value.toString().padLeft(2, '0'));
+        TextEditingController(text: value.toString().padLeft(2, "0"));
 
     controller.selection = TextSelection.fromPosition(
       TextPosition(offset: controller.text.length),
@@ -141,7 +167,7 @@ class _TimerButton extends StatelessWidget {
     return Column(
       children: [
         Card(
-          margin: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+          margin: const EdgeInsets.all(4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
@@ -168,9 +194,9 @@ class _TimerButton extends StatelessWidget {
                     onChanged: (text) {
                       if (0 <= int.parse(text) && int.parse(text) < 60) {
                         change(int.parse(text) - value);
-                        controller.text = text.padLeft(2, '0');
+                        controller.text = text.padLeft(2, "0");
                       } else {
-                        controller.text = value.toString().padLeft(2, '0');
+                        controller.text = value.toString().padLeft(2, "0");
                       }
 
                       controller.selection = TextSelection.fromPosition(

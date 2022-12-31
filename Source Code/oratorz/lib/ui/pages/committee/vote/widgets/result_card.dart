@@ -3,42 +3,44 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/widgets/rounded_button.dart';
-import './settings_dialog.dart';
+import '../../widgets/dialogs/vote_settings.dart';
 
 class ResultCard extends StatelessWidget {
   const ResultCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final VoteController _voteController = Get.find<VoteController>();
+    final VoteController _voteController =
+        Get.find<VoteController>(tag: "vote");
 
     return SizedBox(
-      height: context.height / 2.5,
+      height: context.height / 2.69,
       width: context.width / 4,
       child: Card(
         child: Container(
           margin: const EdgeInsets.all(16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(
                 () => Column(
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        text: "Topic: ",
-                        style: context.textTheme.headline2,
-                        children: [
-                          TextSpan(
-                            text: _voteController.topic,
-                            style: context.textTheme.headline5!
-                                .copyWith(fontWeight: FontWeight.w500),
-                          )
-                        ],
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Topic: ",
+                          style: context.textTheme.headline2,
+                          children: [
+                            TextSpan(
+                              text: _voteController.topic,
+                              style: context.textTheme.headline5!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 25),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -64,6 +66,10 @@ class ResultCard extends StatelessWidget {
               ),
               Container(
                 height: 30,
+                margin: const EdgeInsets.only(
+                  top: 20,
+                  bottom: 35,
+                ),
                 decoration: BoxDecoration(
                   border: Border.all(width: 3),
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -120,7 +126,7 @@ class ResultCard extends StatelessWidget {
                     color: Colors.amber.shade400,
                     onPressed: () async => showDialog(
                       context: context,
-                      builder: (_) => const SettingsDialog(),
+                      builder: (_) => const VoteSettingsDialog(tag: "vote"),
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 32,
@@ -130,7 +136,10 @@ class ResultCard extends StatelessWidget {
                   ),
                   RoundedButton(
                     color: Colors.blue.shade400,
-                    onPressed: _voteController.reset,
+                    onPressed: () {
+                      _voteController.reset();
+                      _voteController.update();
+                    },
                     padding: const EdgeInsets.symmetric(
                       horizontal: 32,
                       vertical: 8,

@@ -3,11 +3,12 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
+import '/ui/widgets/rounded_button.dart';
 
-class SpeakersInfoWidget extends StatelessWidget {
+class SpeakersInfo extends StatelessWidget {
   final String tag;
 
-  const SpeakersInfoWidget({super.key, required this.tag});
+  const SpeakersInfo({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,6 @@ class SpeakersInfoWidget extends StatelessWidget {
             () => _speechController.currentSpeaker.isNotEmpty
                 ? DelegateTile(
                     delegate: _speechController.currentSpeaker,
-                    contentPadding: EdgeInsets.zero,
                   )
                 : Text(
                     "No speaker currently added",
@@ -75,41 +75,26 @@ class SpeakersInfoWidget extends StatelessWidget {
                           _speechController.reorder(oldIndex, newIndex),
                       itemCount: _speechController.nextSpeakers.length,
                       itemBuilder: (_, index) => ReorderableDragStartListener(
-                        key: ValueKey(index),
                         index: index,
+                        key: ValueKey(index),
                         child: Column(
                           children: [
                             DelegateTile(
                               delegate: _speechController.nextSpeakers[index],
-                              contentPadding: EdgeInsets.zero,
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  InkWell(
-                                    onTap: () =>
+                                  RoundedButton(
+                                    color: Colors.red.shade400,
+                                    padding: const EdgeInsets.all(4),
+                                    onPressed: () =>
                                         _speechController.removeSpeaker(
                                       _speechController.nextSpeakers[index],
                                     ),
-                                    hoverColor: const Color.fromARGB(
-                                      255,
-                                      250,
-                                      250,
-                                      250,
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.red.shade400,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                        horizontal: 8,
-                                      ),
-                                      child: const Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                        size: 16,
-                                      ),
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 16,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   const SizedBox(width: 8),

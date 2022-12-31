@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../widgets/stopwatch.dart';
+import '../../widgets/hourglass.dart';
 
 class CustomTab extends StatelessWidget {
   const CustomTab({super.key});
@@ -25,7 +25,7 @@ class CustomTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const StopwatchWidget(tag: "custom"),
+            child: const Hourglass(tag: "custom"),
           ),
         ),
         carousel(context),

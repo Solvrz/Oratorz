@@ -2,6 +2,7 @@ import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/config/constants/data.dart';
 import '/tools/controllers/setup.dart';
@@ -28,11 +29,10 @@ class LoadCommitteeCard extends StatelessWidget {
               .isNotEmpty) {
             _delegates.add(
               COUNTRIES.entries
-                  .where(
+                  .firstWhere(
                     (_entry) =>
                         _entry.value.toLowerCase() == name.toLowerCase().trim(),
                   )
-                  .first
                   .key,
             );
           } else {
@@ -53,12 +53,11 @@ class LoadCommitteeCard extends StatelessWidget {
                 .isNotEmpty) {
               _delegates.add(
                 AIPPM.entries
-                    .where(
+                    .firstWhere(
                       (_entry) =>
                           _entry.value.toLowerCase() ==
                           name.toLowerCase().trim(),
                     )
-                    .first
                     .key,
               );
             } else {
@@ -73,7 +72,7 @@ class LoadCommitteeCard extends StatelessWidget {
                       .toList()
                       .last
                       .split(" ")[1]
-                      .toInt();
+                      .toInt;
 
                   AIPPM["$party $_members"] = name;
                   DELEGATES["$party $_members"] = name;
@@ -134,8 +133,9 @@ class LoadCommitteeCard extends StatelessWidget {
                           );
 
                           if (_result != null) {
-                            final Excel excel =
-                                Excel.decodeBytes(_result.files.single.bytes!);
+                            final Excel excel = Excel.decodeBytes(
+                              _result.files.single.bytes!,
+                            );
 
                             for (final String table in excel.tables.keys) {
                               final Sheet? sheet = excel.tables[table];
@@ -146,14 +146,12 @@ class LoadCommitteeCard extends StatelessWidget {
                                     createDelegates(rows..removeAt(0));
 
                                 if (_delegates.isNotEmpty) {
-                                  _delegates.forEach(
-                                    (_delegate) {
-                                      if (!_setupController.committee.delegates
-                                          .contains(_delegate)) {
-                                        _setupController.add(_delegate);
-                                      }
-                                    },
-                                  );
+                                  _delegates.forEach((_delegate) {
+                                    if (!_setupController.committee.delegates
+                                        .contains(_delegate)) {
+                                      _setupController.add(_delegate);
+                                    }
+                                  });
                                   _setupController.update();
 
                                   return;
@@ -191,31 +189,31 @@ class LoadCommitteeCard extends StatelessWidget {
                             content: SizedBox(
                               height: context.height / 2,
                               width: context.width / 2.5,
-                              child: ListView.builder(
-                                itemCount: COMMITTEES.length * 2 - 1,
-                                itemBuilder: (_, index) => index % 2 == 0
-                                    ? ListTile(
-                                        hoverColor: Colors.grey[100],
-                                        onTap: () {
-                                          _setupController.setName(
-                                            templates[index ~/ 2],
-                                          );
-                                          _setupController.setAs(
-                                            COMMITTEES[templates[index ~/ 2]]!
-                                                .toList(),
-                                          );
+                              child: ListView.separated(
+                                itemCount: COMMITTEES.length,
+                                itemBuilder: (_, index) {
+                                  final String _template = templates[index];
 
-                                          Navigator.pop(context);
-                                        },
-                                        title: Text(
-                                          "${templates[index ~/ 2]} (${COMMITTEES[templates[index ~/ 2]]!.length})",
-                                          style: context.textTheme.bodyText1,
-                                        ),
-                                      )
-                                    : Divider(
-                                        height: 2,
-                                        color: Colors.grey[300],
-                                      ),
+                                  return ListTile(
+                                    hoverColor: Colors.grey[100],
+                                    onTap: () {
+                                      _setupController.setAs(
+                                        _template,
+                                        COMMITTEES[_template]!.toList(),
+                                      );
+
+                                      context.pop();
+                                    },
+                                    title: Text(
+                                      "$_template (${COMMITTEES[_template]!.length})",
+                                      style: context.textTheme.bodyText1,
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (_, __) => Divider(
+                                  height: 2,
+                                  color: Colors.grey[300],
+                                ),
                               ),
                             ),
                           ),

@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:oratorz/services/local_storage.dart';
 
 import '/tools/controllers/comittee/speech.dart';
+import '../../widgets/hourglass.dart';
+import '../../widgets/speakers_info.dart';
 import '../widgets/add_speaker_card.dart';
 import '../widgets/past_speakers_card.dart';
-import '../widgets/speakers_info_card.dart';
-import '../widgets/stopwatch.dart';
 
 class GSLTab extends StatelessWidget {
   const GSLTab({super.key});
@@ -43,13 +43,13 @@ class GSLTab extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Center(
-                        child: StopwatchWidget(
+                        child: Hourglass(
                           tag: "gsl",
                           canYield: true,
                         ),
                       ),
                       SizedBox(width: 48),
-                      SpeakersInfoWidget(tag: "gsl"),
+                      SpeakersInfo(tag: "gsl"),
                     ],
                   ),
                 ),

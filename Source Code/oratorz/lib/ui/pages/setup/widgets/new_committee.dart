@@ -123,21 +123,19 @@ class _CommitteeType extends StatelessWidget {
                   builder: (_) {
                     final List<String> _delegates = [];
 
-                    delegates.forEach(
-                      (_delegate) {
-                        final String _search = _searchController.toText();
+                    delegates.forEach((_delegate) {
+                      final String _search = _searchController.toText;
 
-                        if (_search.isNotEmpty) {
-                          if (DELEGATES[_delegate]!
-                              .toLowerCase()
-                              .contains(_search.toLowerCase())) {
-                            _delegates.add(_delegate);
-                          }
-                        } else {
+                      if (_search.isNotEmpty) {
+                        if (DELEGATES[_delegate]!
+                            .toLowerCase()
+                            .contains(_search.toLowerCase())) {
                           _delegates.add(_delegate);
                         }
-                      },
-                    );
+                      } else {
+                        _delegates.add(_delegate);
+                      }
+                    });
 
                     return Expanded(
                       child: _delegates.isNotEmpty

@@ -8,20 +8,17 @@ class DelegateTile extends StatelessWidget {
   final String delegate;
   final Function()? onTap;
   final Widget? trailing;
-  final EdgeInsets? contentPadding;
 
   const DelegateTile({
     super.key,
     required this.delegate,
     this.onTap,
     this.trailing,
-    this.contentPadding,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: contentPadding,
       hoverColor: Colors.grey[100],
       onTap: onTap,
       leading: Container(
@@ -38,7 +35,7 @@ class DelegateTile extends StatelessWidget {
             ),
           ],
         ),
-        child: flag(delegate.split(" ")[0]),
+        child: flag(delegate),
       ),
       title: Text(
         DELEGATES[delegate]!,

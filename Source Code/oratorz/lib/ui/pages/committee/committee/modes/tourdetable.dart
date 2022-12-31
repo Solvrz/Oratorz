@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
+import '../../widgets/hourglass.dart';
+import '../../widgets/speakers_info.dart';
 import '../widgets/add_speaker_card.dart';
 import '../widgets/past_speakers_card.dart';
-import '../widgets/speakers_info_card.dart';
-import '../widgets/stopwatch.dart';
 
 class TourDeTableTab extends StatelessWidget {
   const TourDeTableTab({super.key});
@@ -35,9 +35,9 @@ class TourDeTableTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Center(child: StopwatchWidget(tag: "tourdetable")),
+                      Center(child: Hourglass(tag: "tourdetable")),
                       SizedBox(width: 48),
-                      SpeakersInfoWidget(tag: "tourdetable"),
+                      SpeakersInfo(tag: "tourdetable"),
                     ],
                   ),
                 ),

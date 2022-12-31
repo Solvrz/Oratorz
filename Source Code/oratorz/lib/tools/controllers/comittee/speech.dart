@@ -18,9 +18,10 @@ class SpeechController extends GetxController {
   final RxString _currentSpeaker = "".obs;
   final RxBool _isSpeaking = false.obs;
 
-  RxList<String> nextSpeakers = <String>[].obs;
+  final RxList<String> _nextSpeakers = <String>[].obs;
 
-  RxList<Map<String, Duration>> pastSpeakers = <Map<String, Duration>>[].obs;
+  final RxList<Map<String, Duration>> _pastSpeakers =
+      <Map<String, Duration>>[].obs;
   List<Map<String, int>> get pastSpeakersEncode => pastSpeakers
       .map<Map<String, int>>(
         (element) =>
@@ -57,14 +58,17 @@ class SpeechController extends GetxController {
   bool get isSpeaking => _isSpeaking.value;
   set isSpeaking(bool newSpeaker) => _isSpeaking.value = newSpeaker;
 
+  List<String> get nextSpeakers => _nextSpeakers;
+  List<Map<String, Duration>> get pastSpeakers => _pastSpeakers;
+
   bool isAdded(String delegate) =>
-      currentSpeaker == delegate || nextSpeakers.contains(delegate);
+      _currentSpeaker.value == delegate || _nextSpeakers.contains(delegate);
 
   void reorder(int oldIndex, int newIndex) {
-    final String temp = nextSpeakers[oldIndex];
+    final String old = _nextSpeakers[oldIndex];
 
-    nextSpeakers.removeAt(oldIndex);
-    nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, temp);
+    _nextSpeakers.removeAt(oldIndex);
+    _nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, old);
     LocalStorage.updateSpeech("next", nextSpeakers, tag);
   }
 
@@ -85,27 +89,27 @@ class SpeechController extends GetxController {
   }
 
   void nextSpeaker() {
-    if (currentSpeaker.isEmpty) return;
+    if (_currentSpeaker.value.isEmpty) return;
 
-    pastSpeakers.add({currentSpeaker: stopwatch.elapsed});
+    _pastSpeakers.add({_currentSpeaker.value: stopwatch.elapsed});
     LocalStorage.updateSpeech("past", pastSpeakersEncode, tag);
 
-    if (nextSpeakers.isEmpty) {
-      currentSpeaker = "";
+    if (_nextSpeakers.isEmpty) {
+      _currentSpeaker.value = "";
     } else {
-      currentSpeaker = nextSpeakers.first;
-      nextSpeakers.removeAt(0);
+      _currentSpeaker.value = nextSpeakers.first;
+      _nextSpeakers.removeAt(0);
       LocalStorage.updateSpeech("next", nextSpeakers, tag);
     }
 
     LocalStorage.updateSpeech("current", currentSpeaker, tag);
 
-    isSpeaking = false;
+    _isSpeaking.value = false;
 
-    stopwatch.stop();
-    overallStopwatch.stop();
+    _stopwatch.value.stop();
+    _overallStopwatch.value.stop();
 
-    stopwatch.reset();
+    _stopwatch.value.reset();
   }
 
   Map<String, dynamic> toJson() {

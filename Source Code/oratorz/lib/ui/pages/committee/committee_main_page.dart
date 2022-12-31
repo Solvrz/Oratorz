@@ -5,9 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
-import './widgets/roll_call_dialog.dart';
-import '../../../services/local_storage.dart';
+import '/tools/controllers/route.dart';
+import './widgets/dialogs/roll_call.dart';
 
 class CommitteeMainPage extends StatefulWidget {
   const CommitteeMainPage({super.key});
@@ -26,45 +27,19 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
     final bool exists = LocalStorage.loadCommittee();
 
     if (exists) {
-      _committeeController = Get.find<CommitteeController>();
+      _committeeController = Get.find<CommitteeController>()
+        ..tab = COMMITTEE_TABS
+            .indexWhere(
+              (tab) => tab["route"]
+                  .toString()
+                  .contains(Get.find<RouteController>().path),
+            )
+            .clamp(0, double.infinity)
+            .toInt();
     } else {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => context.pushReplacement("/setup"));
     }
-
-    // if (TESTING) {
-    //   _committeeController = Get.put(
-    //     CommitteeController(
-    //       committee: Committee.fromTemplate("UNSC"),
-    //       tab: COMMITTEE_TABS
-    //           .indexWhere(
-    //             (tab) => tab["route"]
-    //                 .toString()
-    //                 .contains(Get.find<RouteController>().path),
-    //           )
-    //           .clamp(0, double.infinity)
-    //           .toInt(),
-    //     ),
-    //   );
-
-    //   return;
-    // }
-
-    // if (Get.isRegistered<CommitteeController>()) {
-    //   _committeeController = Get.find<CommitteeController>()
-    //     ..tab = COMMITTEE_TABS
-    //         .indexWhere(
-    //           (tab) => tab["route"]
-    //               .toString()
-    //               .contains(Get.find<RouteController>().path),
-    //         )
-    //         .clamp(0, double.infinity)
-    //         .toInt();
-    // } else {
-    //   Get.deleteAll();
-
-    // SchedulerBinding.instance
-    //     .addPostFrameCallback((_) => context.pushReplacement("/setup"));
   }
 
   @override
@@ -129,7 +104,9 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                         title: "Setup",
                         icon: Icons.settings_outlined,
                         onTap: () {
-                          Get.delete<CommitteeController>();
+                          Get.deleteAll();
+                          LocalStorage.clearCommittee();
+
                           context.pushReplacement("/setup");
                         },
                       ),
@@ -181,7 +158,10 @@ class _SidebarTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
-        title: Text(title, style: context.textTheme.bodyText2),
+        title: Text(
+          title,
+          style: context.textTheme.bodyText2?.copyWith(color: Colors.white),
+        ),
       ),
     );
   }

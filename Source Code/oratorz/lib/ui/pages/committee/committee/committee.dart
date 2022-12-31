@@ -5,7 +5,7 @@ import 'package:universal_html/html.dart' as html;
 import '/config/constants/committee.dart';
 import '/tools/controllers/comittee/mode.dart';
 import '/tools/controllers/route.dart';
-import '../widgets/header.dart';
+import '../widgets/body.dart';
 
 class CommitteePage extends StatelessWidget {
   const CommitteePage({super.key});
@@ -26,18 +26,12 @@ class CommitteePage extends StatelessWidget {
       ),
     );
 
-    return Container(
-      margin: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Header(trailing: _ModeSelector()),
-          const SizedBox(height: 24),
-          Expanded(
-            child: Obx(
-              () => _modeController.currentMode,
-            ),
-          ),
-        ],
+    return Body(
+      trailing: _ModeSelector(),
+      child: Expanded(
+        child: Obx(
+          () => _modeController.currentMode,
+        ),
       ),
     );
   }
@@ -86,30 +80,27 @@ class _ModeSelector extends StatelessWidget {
           ],
         ),
       ),
-      itemBuilder: (_) => List.generate(
-        COMMITTEE_MODES.length,
-        (index) {
-          final Map<String, dynamic> tab = COMMITTEE_MODES[index];
+      itemBuilder: (_) => List.generate(COMMITTEE_MODES.length, (index) {
+        final Map<String, dynamic> tab = COMMITTEE_MODES[index];
 
-          return PopupMenuItem(
-            value: index,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      tab["icon"],
-                      color: context.theme.colorScheme.tertiary,
-                    ),
-                    const VerticalDivider(),
-                    Text(tab["name"]),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+        return PopupMenuItem(
+          value: index,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    tab["icon"],
+                    color: context.theme.colorScheme.tertiary,
+                  ),
+                  const VerticalDivider(),
+                  Text(tab["name"]),
+                ],
+              ),
+            ],
+          ),
+        );
+      }),
       onSelected: (index) {
         _modeController.mode = index;
         html.window.history.pushState(

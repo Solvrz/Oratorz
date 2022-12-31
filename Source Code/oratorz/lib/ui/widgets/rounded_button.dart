@@ -4,17 +4,17 @@ import 'package:get/get.dart';
 class RoundedButton extends StatelessWidget {
   final Widget child;
   final bool border;
-  final Function() onPressed;
+  final Function()? onPressed;
   final EdgeInsets? padding;
   final Color? color;
 
   const RoundedButton({
     super.key,
     required this.child,
-    required this.onPressed,
     this.border = false,
-    this.color,
+    this.onPressed,
     this.padding,
+    this.color,
   });
 
   @override

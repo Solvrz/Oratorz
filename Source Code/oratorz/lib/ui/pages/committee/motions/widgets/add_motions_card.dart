@@ -97,8 +97,8 @@ class AddMotionsCard extends StatelessWidget {
                   itemBuilder: (_, index) {
                     final Map<String, dynamic> _motion = motions[index];
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8),
+                    return Container(
+                      margin: const EdgeInsets.all(8),
                       child: RoundedButton(
                         border: true,
                         onPressed: _motion["onTap"],

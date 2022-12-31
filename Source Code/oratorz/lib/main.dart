@@ -3,18 +3,21 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '/config/constants/constants.dart';
 import '/config/theme.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
-import 'services/local_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Intl.defaultLocale = LOCALE.code();
+
+  Intl.defaultLocale = LOCALE.code;
+  await initializeDateFormatting(Intl.defaultLocale);
 
   await GetStorage.init();
 
@@ -41,7 +44,7 @@ class Oratorz extends StatelessWidget {
           GoRoute(
             path: "/",
             redirect: (_, __) {
-              final exists = LocalStorage.loadCommittee();
+              final bool exists = LocalStorage.loadCommittee();
 
               return exists ? "/committee/gsl" : "/setup";
             },
