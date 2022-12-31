@@ -13,7 +13,7 @@ class TourDeTableTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SpeechController _speechController =
-        Get.put(SpeechController(), tag: "tourdetable");
+        Get.put(SpeechController("tourdetable"), tag: "tourdetable");
 
     _speechController.subtopic = {"Topic": "Your Topic"};
 

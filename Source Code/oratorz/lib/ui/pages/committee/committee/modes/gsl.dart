@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oratorz/services/local_storage.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/add_speaker_card.dart';
@@ -12,7 +13,16 @@ class GSLTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController(), tag: "gsl");
+    if (!Get.isRegistered<SpeechController>()) {
+      final bool exists = LocalStorage.loadSpeech("gsl");
+
+      if (!exists) {
+        final SpeechController controller = SpeechController("gsl");
+
+        Get.put(controller, tag: "gsl");
+        LocalStorage.saveSpeech(controller);
+      }
+    }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

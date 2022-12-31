@@ -11,7 +11,7 @@ class CustomTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SpeechController _speechController =
-        Get.put(SpeechController(), tag: "custom");
+        Get.put(SpeechController("custom"), tag: "custom");
 
     _speechController.subtopic = {"Title": "Your Title"};
 

@@ -11,7 +11,7 @@ class PrayerTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SpeechController _speechController =
-        Get.put(SpeechController(), tag: "prayer");
+        Get.put(SpeechController("prayer"), tag: "prayer");
 
     _speechController.subtopic = {"Cause": "Your Cause"};
 

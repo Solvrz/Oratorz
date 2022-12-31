@@ -1,6 +1,12 @@
 import 'package:get/get.dart';
 
+import '/services/local_storage.dart';
+
 class SpeechController extends GetxController {
+  final String tag;
+
+  SpeechController(this.tag);
+
   final RxMap<String, String> _subtopic = {"": ""}.obs;
 
   final Rx<Stopwatch> _overallStopwatch = Stopwatch().obs;
@@ -13,7 +19,14 @@ class SpeechController extends GetxController {
   final RxBool _isSpeaking = false.obs;
 
   RxList<String> nextSpeakers = <String>[].obs;
+
   RxList<Map<String, Duration>> pastSpeakers = <Map<String, Duration>>[].obs;
+  List<Map<String, int>> get pastSpeakersEncode => pastSpeakers
+      .map<Map<String, int>>(
+        (element) =>
+            <String, int>{element.keys.first: element.values.first.inSeconds},
+      )
+      .toList();
 
   Map<String, String> get subtopic => _subtopic;
   set subtopic(Map<String, String> newSubtopic) =>
@@ -27,9 +40,16 @@ class SpeechController extends GetxController {
 
   Duration get overallDuration => _overallDuration.value;
   Duration get duration => _duration.value;
-  set overallDuration(Duration newDuration) =>
-      _overallDuration.value = newDuration;
-  set duration(Duration newDuration) => _duration.value = newDuration;
+
+  set overallDuration(Duration newDuration) {
+    _overallDuration.value = newDuration;
+    LocalStorage.updateSpeech("overall", newDuration.inSeconds, tag);
+  }
+
+  set duration(Duration newDuration) {
+    _duration.value = newDuration;
+    LocalStorage.updateSpeech("duration", newDuration.inSeconds, tag);
+  }
 
   String get currentSpeaker => _currentSpeaker.value;
   set currentSpeaker(String newSpeaker) => _currentSpeaker.value = newSpeaker;
@@ -45,30 +65,40 @@ class SpeechController extends GetxController {
 
     nextSpeakers.removeAt(oldIndex);
     nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, temp);
+    LocalStorage.updateSpeech("next", nextSpeakers, tag);
   }
 
   void addSpeaker(String delegate) {
     if (currentSpeaker.isEmpty) {
       currentSpeaker = delegate;
+      LocalStorage.updateSpeech("current", currentSpeaker, tag);
       return;
     }
 
     nextSpeakers.add(delegate);
+    LocalStorage.updateSpeech("next", nextSpeakers, tag);
   }
 
-  void removeSpeaker(String delegate) => nextSpeakers.remove(delegate);
+  void removeSpeaker(String delegate) {
+    nextSpeakers.remove(delegate);
+    LocalStorage.updateSpeech("next", nextSpeakers, tag);
+  }
 
   void nextSpeaker() {
     if (currentSpeaker.isEmpty) return;
 
     pastSpeakers.add({currentSpeaker: stopwatch.elapsed});
+    LocalStorage.updateSpeech("past", pastSpeakersEncode, tag);
 
     if (nextSpeakers.isEmpty) {
       currentSpeaker = "";
     } else {
       currentSpeaker = nextSpeakers.first;
       nextSpeakers.removeAt(0);
+      LocalStorage.updateSpeech("next", nextSpeakers, tag);
     }
+
+    LocalStorage.updateSpeech("current", currentSpeaker, tag);
 
     isSpeaking = false;
 
@@ -76,5 +106,16 @@ class SpeechController extends GetxController {
     overallStopwatch.stop();
 
     stopwatch.reset();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "subtopic": _subtopic,
+      "overall": _overallDuration.value.inSeconds,
+      "duration": _duration.value.inSeconds,
+      "current": _currentSpeaker.value,
+      "past": pastSpeakersEncode,
+      "next": nextSpeakers,
+    };
   }
 }

@@ -10,7 +10,7 @@ class AdjournTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController(), tag: "adjourn");
+    Get.put(SpeechController("adjourn"), tag: "adjourn");
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

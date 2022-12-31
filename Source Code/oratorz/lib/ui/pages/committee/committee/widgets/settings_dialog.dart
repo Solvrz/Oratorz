@@ -84,7 +84,8 @@ class SettingsDialog extends StatelessWidget {
                           change: (value) {
                             if (controller.overallDuration.inMinutes + value <=
                                 60) {
-                              controller.duration += Duration(minutes: value);
+                              controller.overallDuration +=
+                                  Duration(minutes: value);
                             }
                           },
                           subtitle: "minutes",

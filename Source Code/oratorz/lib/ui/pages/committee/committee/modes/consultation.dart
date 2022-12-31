@@ -11,7 +11,7 @@ class ConsultationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SpeechController _speechController =
-        Get.put(SpeechController(), tag: "consultation");
+        Get.put(SpeechController("consultation"), tag: "consultation");
 
     _speechController.subtopic = {"Topic": "Your Topic"};
 

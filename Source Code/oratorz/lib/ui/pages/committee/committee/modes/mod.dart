@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../widgets/add_speaker_card.dart';
 import '../widgets/past_speakers_card.dart';
@@ -12,11 +13,20 @@ class ModTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController =
-        Get.put(SpeechController(), tag: "mod");
+    if (!Get.isRegistered<SpeechController>()) {
+      final bool exists = LocalStorage.loadSpeech("mod");
 
-    _speechController.overallDuration = const Duration(minutes: 15);
-    _speechController.subtopic = {"Topic": "Your Topic"};
+      if (!exists) {
+        final SpeechController controller =
+            Get.put(SpeechController("mod"), tag: "mod");
+
+        controller.overallDuration = const Duration(minutes: 15);
+        controller.subtopic = {"Topic": "Your Topic"};
+
+        Get.put(controller, tag: "mod");
+        LocalStorage.saveSpeech(controller);
+      }
+    }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
