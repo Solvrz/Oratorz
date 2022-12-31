@@ -105,7 +105,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                         icon: Icons.settings_outlined,
                         onTap: () {
                           Get.deleteAll();
-                          LocalStorage.clearCommittee();
+                          LocalStorage.clearData();
 
                           context.pushReplacement("/setup");
                         },

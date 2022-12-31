@@ -18,10 +18,11 @@ class SpeechController extends GetxController {
   final RxString _currentSpeaker = "".obs;
   final RxBool _isSpeaking = false.obs;
 
-  final RxList<String> _nextSpeakers = <String>[].obs;
+  final RxList<String> nextSpeakers = <String>[].obs;
 
-  final RxList<Map<String, Duration>> _pastSpeakers =
+  final RxList<Map<String, Duration>> pastSpeakers =
       <Map<String, Duration>>[].obs;
+
   List<Map<String, int>> get pastSpeakersEncode => pastSpeakers
       .map<Map<String, int>>(
         (element) =>
@@ -58,17 +59,14 @@ class SpeechController extends GetxController {
   bool get isSpeaking => _isSpeaking.value;
   set isSpeaking(bool newSpeaker) => _isSpeaking.value = newSpeaker;
 
-  List<String> get nextSpeakers => _nextSpeakers;
-  List<Map<String, Duration>> get pastSpeakers => _pastSpeakers;
-
   bool isAdded(String delegate) =>
-      _currentSpeaker.value == delegate || _nextSpeakers.contains(delegate);
+      _currentSpeaker.value == delegate || nextSpeakers.contains(delegate);
 
   void reorder(int oldIndex, int newIndex) {
-    final String old = _nextSpeakers[oldIndex];
+    final String old = nextSpeakers[oldIndex];
 
-    _nextSpeakers.removeAt(oldIndex);
-    _nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, old);
+    nextSpeakers.removeAt(oldIndex);
+    nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, old);
     LocalStorage.updateSpeech("next", nextSpeakers, tag);
   }
 
@@ -91,14 +89,14 @@ class SpeechController extends GetxController {
   void nextSpeaker() {
     if (_currentSpeaker.value.isEmpty) return;
 
-    _pastSpeakers.add({_currentSpeaker.value: stopwatch.elapsed});
+    pastSpeakers.add({_currentSpeaker.value: stopwatch.elapsed});
     LocalStorage.updateSpeech("past", pastSpeakersEncode, tag);
 
-    if (_nextSpeakers.isEmpty) {
+    if (nextSpeakers.isEmpty) {
       _currentSpeaker.value = "";
     } else {
       _currentSpeaker.value = nextSpeakers.first;
-      _nextSpeakers.removeAt(0);
+      nextSpeakers.removeAt(0);
       LocalStorage.updateSpeech("next", nextSpeakers, tag);
     }
 
