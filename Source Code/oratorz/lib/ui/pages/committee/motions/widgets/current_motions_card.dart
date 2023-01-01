@@ -51,15 +51,18 @@ class CurrentMotionCard extends StatelessWidget {
                 children: [
                   const _MultipleModeButton(
                     mode: 1,
+                    tooltip: "Debate Motion",
                     color: Colors.amber,
                     icon: Icons.connect_without_contact,
                   ),
                   const _MultipleModeButton(
                     mode: 2,
+                    tooltip: "Vote Motion",
                     color: Colors.lightBlue,
                     icon: Icons.how_to_vote,
                   ),
                   RoundedButton(
+                    tooltip: "Fail Motion",
                     color: Colors.redAccent,
                     onPressed: () {
                       _motionsController.nextMotion(passed: false);
@@ -71,6 +74,7 @@ class CurrentMotionCard extends StatelessWidget {
                   ),
                   RoundedButton(
                     color: Colors.green,
+                    tooltip: "Pass Motion",
                     onPressed: () {
                       _motionsController.nextMotion(passed: true);
                       _motionsController.update();
@@ -93,11 +97,13 @@ class CurrentMotionCard extends StatelessWidget {
 
 class _MultipleModeButton extends StatelessWidget {
   final int mode;
+  final String tooltip;
   final Color color;
   final IconData icon;
 
   const _MultipleModeButton({
     required this.mode,
+    required this.tooltip,
     required this.color,
     required this.icon,
   });
@@ -110,12 +116,14 @@ class _MultipleModeButton extends StatelessWidget {
       if (_motionsController.mode != mode) {
         return RoundedButton(
           color: color,
+          tooltip: tooltip,
           onPressed: () => _motionsController.mode = mode,
           child: Icon(icon),
         );
       } else {
         return RoundedButton(
           color: Colors.grey.shade800,
+          tooltip: "Add Motion",
           onPressed: () => _motionsController.mode = 0,
           child: const Icon(Icons.add),
         );

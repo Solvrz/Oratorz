@@ -43,6 +43,9 @@ class OratorzTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: OratorzColors.secondaryColor,
       ),
+      tooltipTheme: const TooltipThemeData(
+        margin: EdgeInsets.all(5),
+      ),
       cardTheme: CardTheme(
         elevation: 5,
         shadowColor: Colors.white,

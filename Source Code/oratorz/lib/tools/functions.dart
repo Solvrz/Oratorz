@@ -28,6 +28,5 @@ Widget flag(String delegate, {double size = 40}) => Container(
       ),
     );
 
-// TODO: Carousel
 Widget carousel(BuildContext context) =>
     Text("Carousel Placeholder", style: context.textTheme.bodyText1);

@@ -51,13 +51,14 @@ class Body extends StatelessWidget {
                       RoundedButton(
                         border: true,
                         color: Colors.amber.shade400,
+                        tooltip: "Set Agenda",
                         padding: const EdgeInsets.symmetric(
                           vertical: 4,
                           horizontal: 8,
                         ),
                         onPressed: () => showDialog(
                           context: context,
-                          builder: (_) => const _CommitteeNameDialog(),
+                          builder: (_) => const _AgendaDialog(),
                         ),
                         child: Icon(
                           Icons.edit,
@@ -80,8 +81,8 @@ class Body extends StatelessWidget {
   }
 }
 
-class _CommitteeNameDialog extends StatelessWidget {
-  const _CommitteeNameDialog();
+class _AgendaDialog extends StatelessWidget {
+  const _AgendaDialog();
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class _CommitteeNameDialog extends StatelessWidget {
     );
 
     return DialogBox(
-      heading: "Set Committee Name",
+      heading: "Set Agenda",
       content: TextField(
         autofocus: true,
         controller: _controller,

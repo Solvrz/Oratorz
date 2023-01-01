@@ -136,8 +136,6 @@ class LoadCommitteeCard extends StatelessWidget {
                         ),
                       ),
                       onPressed: () async {
-                        // TODO: File Drag & Drop
-
                         try {
                           final FilePickerResult? _result =
                               await FilePicker.platform.pickFiles(

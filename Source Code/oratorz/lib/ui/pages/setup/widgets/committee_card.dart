@@ -47,6 +47,7 @@ class CommitteeCard extends StatelessWidget {
                           context: context,
                           builder: (_) => const _CommitteeNameDialog(),
                         ),
+                        tooltip: "Set Committee Name",
                         child: Icon(
                           Icons.edit,
                           color: Colors.amber.shade400,

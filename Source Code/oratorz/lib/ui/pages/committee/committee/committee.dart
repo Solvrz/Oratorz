@@ -47,6 +47,7 @@ class _ModeSelector extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
+      tooltip: "Select Mode",
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(

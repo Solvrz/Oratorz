@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
@@ -21,6 +23,9 @@ void main() async {
 
   await GetStorage.init();
 
+  analytics = FirebaseAnalytics.instance;
+  await analytics.setAnalyticsCollectionEnabled(!kDebugMode);
+
   setUrlStrategy(PathUrlStrategy());
   runApp(const Oratorz());
 }
@@ -38,7 +43,7 @@ class Oratorz extends StatelessWidget {
         errorBuilder: (_, args) {
           Get.put(RouteController(arguments: args));
 
-          return const Text("Error");
+          return const ErrorPage();
         },
         routes: [
           GoRoute(

@@ -8,7 +8,6 @@ import '/config/constants/committee.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
-import './export.dart';
 import './widgets/dialogs/roll_call.dart';
 
 class CommitteeMainPage extends StatefulWidget {
@@ -46,24 +45,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> tabs = [
-      {
-        "route": "/committee/gsl",
-        "title": "Committee",
-        "icon": Icons.groups_outlined,
-        "tab": const CommitteePage(),
-      },
-      {
-        "route": "/vote",
-        "title": "Vote",
-        "icon": Icons.how_to_vote,
-        "tab": const VotePage(),
-      },
-      {
-        "route": "/motions",
-        "title": "Motions",
-        "icon": Icons.ballot_outlined,
-        "tab": const MotionsPage(),
-      },
+      ...COMMITTEE_TABS,
       {
         "title": "Roll Call",
         "icon": Icons.fact_check_outlined,

@@ -85,6 +85,7 @@ class SpeakersInfo extends StatelessWidget {
                                         _speechController.removeSpeaker(
                                       _speechController.nextSpeakers[index],
                                     ),
+                                    tooltip: "Remove Delegate",
                                     child: const Icon(
                                       Icons.close,
                                       size: 16,

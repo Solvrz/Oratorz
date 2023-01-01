@@ -156,6 +156,7 @@ class _HourglassState extends State<Hourglass> {
                             !_speechController.isSpeaking;
                       },
                       color: Colors.blueGrey.shade600,
+                      tooltip: _speechController.isSpeaking ? "Stop" : "Start",
                       child: Icon(
                         _speechController.isSpeaking
                             ? Icons.stop
@@ -176,6 +177,7 @@ class _HourglassState extends State<Hourglass> {
 
                         setupTimer();
                       },
+                      tooltip: "Reset Timer",
                       color: Colors.blue.shade400,
                       child: const Icon(Icons.restart_alt),
                     ),
@@ -192,6 +194,7 @@ class _HourglassState extends State<Hourglass> {
                         );
                       },
                       color: Colors.amber.shade400,
+                      tooltip: "Settings",
                       child: const Icon(Icons.settings),
                     ),
                     if (widget.canYield)
@@ -217,6 +220,7 @@ class _HourglassState extends State<Hourglass> {
                           );
                         },
                         color: Colors.grey.shade800,
+                        tooltip: "Yield Speaker",
                         child: const Icon(Icons.person),
                       ),
                   ],
