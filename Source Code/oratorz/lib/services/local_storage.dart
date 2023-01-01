@@ -14,6 +14,13 @@ class LocalStorage {
     box.write("committee", committee.toJson());
   }
 
+  static bool committeeExists() {
+    final Map<String, dynamic>? data = box.read("committee");
+
+    if (data == null) return false;
+    return true;
+  }
+
   static bool updateCommittee(String key, dynamic value) {
     final Map<String, dynamic>? data = box.read("committee");
 
@@ -26,10 +33,10 @@ class LocalStorage {
     return true;
   }
 
-  static bool loadCommittee() {
+  static void loadCommittee() {
     final Map<String, dynamic>? data = box.read("committee");
 
-    if (data == null) return false;
+    if (data == null) return;
 
     final Committee committee = Committee(
       name: data["committee"]["name"],
@@ -42,8 +49,6 @@ class LocalStorage {
     controller.rollCall = Map<String, int>.from(data["rollCall"]);
 
     Get.put<CommitteeController>(controller);
-
-    return true;
   }
 
   static void saveSpeech(SpeechController controller) =>

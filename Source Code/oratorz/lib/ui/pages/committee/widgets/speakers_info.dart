@@ -26,19 +26,13 @@ class SpeakersInfo extends StatelessWidget {
                 "Current Speaker",
                 style: context.textTheme.headline5,
               ),
-              TextButton(
-                onPressed: _speechController.nextSpeaker,
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue.shade400),
-                  side: MaterialStateProperty.all<BorderSide>(
-                    BorderSide(color: Colors.blue.shade400),
-                  ),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  overlayColor:
-                      MaterialStateProperty.all<Color>(Colors.white12),
+              RoundedButton(
+                color: Colors.blue.shade400,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 2,
+                  horizontal: 4,
                 ),
+                onPressed: _speechController.nextSpeaker,
                 child: Obx(
                   () => Text(
                     _speechController.isSpeaking ? "Done" : "Next",

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart' hide Tab;
 import 'package:intl/intl.dart';
 
-import './enums.dart';
-
 extension ToolsString on String {
   String get capitalize => substring(0, 1).toUpperCase() + substring(1);
 
@@ -11,16 +9,6 @@ extension ToolsString on String {
   num get toNum => num.parse(this);
   double get toDouble => double.parse(this);
   int get toInt => int.parse(this);
-
-  // TODO: Use These
-  Tab get toTab => Tab.values.firstWhere(
-        (e) =>
-            e.toString() == "Tab.${toString().split("/").last.toUpperCase()}",
-      );
-  Mode get toMode => Mode.values.firstWhere(
-        (e) =>
-            e.toString() == "Mode.${toString().split("/").last.toUpperCase()}",
-      );
 }
 
 extension ToolsDouble on double {
@@ -60,14 +48,4 @@ extension ToolsDateTime on DateTime {
 
 extension ToolsTextEditingController on TextEditingController {
   String get toText => text.trim();
-}
-
-extension ToolsTab on Tab {
-  String get toText =>
-      toString().split(".")[1].split(RegExp("(?=(?!^)[A-Z])")).join(" ");
-}
-
-extension ToolsMode on Mode {
-  String get toText =>
-      toString().split(".")[1].split(RegExp("(?=(?!^)[A-Z])")).join(" ");
 }

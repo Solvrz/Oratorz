@@ -74,8 +74,8 @@ class _ModeSelector extends StatelessWidget {
             const SizedBox(width: 20),
             Icon(
               Icons.arrow_drop_down,
-              color: context.theme.colorScheme.secondary,
               size: 36,
+              color: context.theme.colorScheme.secondary,
             ),
           ],
         ),

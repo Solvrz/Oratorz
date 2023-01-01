@@ -26,22 +26,24 @@ class CurrentMotionCard extends StatelessWidget {
                 style: context.textTheme.headline5,
               ),
               const SizedBox(height: 8),
-              Obx(() {
-                if (_motionsController.currentMotion.isNotEmpty) {
-                  return MotionTile(
-                    motion: _motionsController.currentMotion,
-                    reorderable: false,
-                  );
-                } else {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 52, bottom: 12),
-                    child: Text(
-                      "No motions currently on the floor",
-                      style: context.textTheme.bodyText1,
-                    ),
-                  );
-                }
-              }),
+              GetBuilder<MotionsController>(
+                builder: (_) {
+                  if (_motionsController.currentMotion.isNotEmpty) {
+                    return MotionTile(
+                      motion: _motionsController.currentMotion,
+                      reorderable: false,
+                    );
+                  } else {
+                    return Container(
+                      margin: const EdgeInsets.only(top: 52, bottom: 12),
+                      child: Text(
+                        "No motions currently on the floor",
+                        style: context.textTheme.bodyText1,
+                      ),
+                    );
+                  }
+                },
+              ),
               const Divider(height: 16),
               const SizedBox(height: 20),
               Row(
@@ -59,16 +61,23 @@ class CurrentMotionCard extends StatelessWidget {
                   ),
                   RoundedButton(
                     color: Colors.redAccent,
-                    onPressed: () =>
-                        _motionsController.nextMotion(passed: false),
+                    onPressed: () {
+                      _motionsController.nextMotion(passed: false);
+                      _motionsController.update();
+
+                      // TODO: Warning Dialog
+                    },
                     child: const Icon(Icons.close),
                   ),
                   RoundedButton(
                     color: Colors.green,
                     onPressed: () {
                       _motionsController.nextMotion(passed: true);
+                      _motionsController.update();
 
-                      // TODO: Pass Motion
+                      // TODO: Warning Dialog
+
+                      _motionsController.currentMotion["onPass"]();
                     },
                     child: const Icon(Icons.check),
                   ),

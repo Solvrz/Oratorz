@@ -3,3 +3,5 @@ import 'package:flutter/material.dart';
 
 const bool TESTING = kDebugMode;
 const Locale LOCALE = Locale("en", "IN");
+
+const String INVITE_CODE = "ORAOP0037";

@@ -124,7 +124,7 @@ class ResultCard extends StatelessWidget {
                 children: [
                   RoundedButton(
                     color: Colors.amber.shade400,
-                    onPressed: () async => showDialog(
+                    onPressed: () => showDialog(
                       context: context,
                       builder: (_) => const VoteSettingsDialog(tag: "vote"),
                     ),

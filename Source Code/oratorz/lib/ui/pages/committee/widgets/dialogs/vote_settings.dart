@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/widgets/dialog_box.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class VoteSettingsDialog extends StatelessWidget {
   final String tag;
@@ -40,18 +41,15 @@ class VoteSettingsDialog extends StatelessWidget {
                   child: TextField(
                     autofocus: true,
                     controller: _topicController,
+                    decoration: InputDecoration(
+                      hintText: _voteController.topic,
+                      prefixIcon: const Icon(Icons.edit_note),
+                    ),
                     onSubmitted: (value) {
                       _voteController.topic = _topicController.text.trim();
 
                       context.pop();
                     },
-                    keyboardType: TextInputType.name,
-                    cursorColor: Colors.grey[600],
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      hintText: _voteController.topic,
-                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -71,12 +69,12 @@ class VoteSettingsDialog extends StatelessWidget {
                   _Majority(
                     tag: tag,
                     value: 1,
-                    title: "Two Thirds Majority",
+                    title: "Special Majority",
                   ),
                   _Majority(
                     tag: tag,
                     value: 2,
-                    title: "Consensus Majority",
+                    title: "Unanimous Vote",
                   ),
                 ],
               ),
@@ -85,7 +83,13 @@ class VoteSettingsDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        TextButton(
+        RoundedButton(
+          border: true,
+          color: Colors.amber.shade400,
+          padding: const EdgeInsets.symmetric(
+            vertical: 4,
+            horizontal: 8,
+          ),
           child: const Text("Change"),
           onPressed: () {
             _voteController.topic = _topicController.text.trim();
@@ -122,7 +126,7 @@ class _Majority extends StatelessWidget {
             onChanged: (value) => _voteController.majority = value!,
           ),
           Text(
-            "$title (${_voteController.majorityVal(value: value)})",
+            "$title (${_voteController.majorityVal(value: value)}/${_voteController.totalVoters})",
             style: context.textTheme.bodyText1
                 ?.copyWith(fontWeight: FontWeight.bold),
           )

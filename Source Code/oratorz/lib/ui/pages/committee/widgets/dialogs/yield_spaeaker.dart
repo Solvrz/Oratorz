@@ -22,36 +22,23 @@ class YieldSpeakerDialog extends StatefulWidget {
 }
 
 class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
-  late final SpeechController _speechController;
   int selected = -1;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _speechController = Get.find<SpeechController>(tag: widget.tag);
-  }
 
   @override
   Widget build(BuildContext context) {
     return DialogBox(
       heading: "Yield to Speaker",
       content: SizedBox(
-        height: context.height / 2,
+        height: context.height / 1.5,
+        width: context.width / 3,
         child: widget.delegates.isNotEmpty
             ? ListView.builder(
                 itemCount: widget.delegates.length,
-                itemBuilder: (_, index) {
-                  final String _delegate = widget.delegates[index];
-
-                  return DelegateTile(
+                itemBuilder: (_, index) => Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: DelegateTile(
                     delegate: widget.delegates[index],
-                    onTap: () {
-                      setState(() => selected = index);
-
-                      _speechController.currentSpeaker = _delegate;
-                      _speechController.nextSpeakers.remove(_delegate);
-                    },
+                    onTap: () => setState(() => selected = index),
                     trailing: Radio(
                       value: index,
                       groupValue: selected,
@@ -66,14 +53,11 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                       onChanged: (value) => setState(() {
                         if (value != null) {
                           selected = value as int;
-
-                          _speechController.currentSpeaker = _delegate;
-                          _speechController.nextSpeakers.remove(_delegate);
                         }
                       }),
                     ),
-                  );
-                },
+                  ),
+                ),
               )
             : Center(
                 child: Text(
@@ -86,7 +70,16 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
         SizedBox(
           width: context.width / 3,
           child: RoundedButton(
-            onPressed: () => context.pop(),
+            onPressed: () {
+              final String _delegate = widget.delegates[selected];
+              final SpeechController _speechController =
+                  Get.find<SpeechController>(tag: widget.tag);
+
+              _speechController.currentSpeaker = _delegate;
+              _speechController.nextSpeakers.remove(_delegate);
+
+              context.pop();
+            },
             child: const Text("DONE"),
           ),
         ),

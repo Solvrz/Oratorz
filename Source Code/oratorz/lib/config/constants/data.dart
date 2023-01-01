@@ -303,8 +303,6 @@ final Map<String, String> AIPPM = {
   "YSRCP 00": "YS Jagan Mohan Reddy",
 };
 
-// TODO: Others Flags
-
 final Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
 
 const Map<String, List<String>> COMMITTEES = {

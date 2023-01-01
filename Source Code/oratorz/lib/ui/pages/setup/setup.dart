@@ -24,6 +24,7 @@ class SetupPage extends StatelessWidget {
         body: Container(
           margin: const EdgeInsets.all(16),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Column(
@@ -31,11 +32,10 @@ class SetupPage extends StatelessWidget {
                     LoadCommitteeCard(),
                     SizedBox(height: 12),
                     NewCommitteeCard(),
-                    SizedBox(height: 36),
                   ],
                 ),
               ),
-              const SizedBox(width: 32),
+              const SizedBox(width: 36),
               const CommitteeCard(),
             ],
           ),

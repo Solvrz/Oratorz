@@ -8,6 +8,7 @@ import '/config/constants/data.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class LoadCommitteeCard extends StatelessWidget {
   const LoadCommitteeCard({super.key});
@@ -106,6 +107,7 @@ class LoadCommitteeCard extends StatelessWidget {
 
     return SizedBox(
       height: context.height / 6,
+      width: context.width / 2,
       child: Card(
         child: Container(
           margin: const EdgeInsets.all(16),
@@ -120,8 +122,19 @@ class LoadCommitteeCard extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: TextButton(
-                      child: const Text("From File"),
+                    child: RoundedButton(
+                      border: true,
+                      color: Colors.amber.shade400,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 8,
+                      ),
+                      child: Text(
+                        "From File",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          color: Colors.amber.shade400,
+                        ),
+                      ),
                       onPressed: () async {
                         // TODO: File Drag & Drop
 
@@ -175,55 +188,72 @@ class LoadCommitteeCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 20),
                   Expanded(
-                    child: TextButton(
-                      child: const Text("From Template"),
-                      onPressed: () {
-                        final List<String> templates = COMMITTEES.keys.toList();
-                        final SetupController _setupController =
-                            Get.find<SetupController>();
-
-                        showDialog(
-                          context: context,
-                          builder: (_) => DialogBox(
-                            heading: "Select Template",
-                            content: SizedBox(
-                              height: context.height / 2,
-                              width: context.width / 2.5,
-                              child: ListView.separated(
-                                itemCount: COMMITTEES.length,
-                                itemBuilder: (_, index) {
-                                  final String _template = templates[index];
-
-                                  return ListTile(
-                                    hoverColor: Colors.grey[100],
-                                    onTap: () {
-                                      _setupController.setAs(
-                                        _template,
-                                        COMMITTEES[_template]!.toList(),
-                                      );
-
-                                      context.pop();
-                                    },
-                                    title: Text(
-                                      "$_template (${COMMITTEES[_template]!.length})",
-                                      style: context.textTheme.bodyText1,
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (_, __) => Divider(
-                                  height: 2,
-                                  color: Colors.grey[300],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                    child: RoundedButton(
+                      border: true,
+                      color: Colors.amber.shade400,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 8,
+                      ),
+                      child: Text(
+                        "From Template",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          color: Colors.amber.shade400,
+                        ),
+                      ),
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (_) => const _TemplateDialog(),
+                      ),
                     ),
                   ),
                 ],
-              )
+              ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TemplateDialog extends StatelessWidget {
+  const _TemplateDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> templates = COMMITTEES.keys.toList();
+    final SetupController _setupController = Get.find<SetupController>();
+
+    return DialogBox(
+      heading: "Select Template",
+      content: SizedBox(
+        height: context.height / 2,
+        width: context.width / 2.5,
+        child: ListView.separated(
+          itemCount: COMMITTEES.length,
+          itemBuilder: (_, index) {
+            final String _template = templates[index];
+
+            return ListTile(
+              onTap: () {
+                _setupController.setAs(
+                  _template,
+                  COMMITTEES[_template]!.toList(),
+                );
+                _setupController.update();
+
+                context.pop();
+              },
+              title: Text(
+                "$_template (${COMMITTEES[_template]!.length})",
+                style: context.textTheme.bodyText1,
+              ),
+            );
+          },
+          separatorBuilder: (_, __) => Divider(
+            height: 2,
+            color: Colors.grey.shade300,
           ),
         ),
       ),

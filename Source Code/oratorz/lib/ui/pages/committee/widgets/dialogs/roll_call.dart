@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/config/constants/data.dart';
 import '/tools/controllers/comittee/committee.dart';
-import '/tools/functions.dart';
+import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
 
@@ -92,28 +91,8 @@ class RollCallDialog extends StatelessWidget {
                         return GetBuilder<CommitteeController>(
                           builder: (_) => Container(
                             margin: const EdgeInsets.symmetric(vertical: 5),
-                            child: ListTile(
-                              hoverColor: Colors.grey[100],
-                              leading: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade400,
-                                      offset: const Offset(1, 1),
-                                      blurRadius: 4,
-                                    ),
-                                  ],
-                                ),
-                                child: flag(_delegate),
-                              ),
-                              title: Text(
-                                DELEGATES[_delegate]!,
-                                style: context.textTheme.bodyText1,
-                              ),
+                            child: DelegateTile(
+                              delegate: _delegate,
                               trailing: Builder(
                                 builder: (_) {
                                   final int? rollCall =

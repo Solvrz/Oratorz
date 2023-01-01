@@ -8,7 +8,7 @@ import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/rounded_button.dart';
-import './dialogs/committee_settings.dart';
+import './dialogs/speech_settings.dart';
 import './dialogs/yield_spaeaker.dart';
 
 class Hourglass extends StatefulWidget {
@@ -180,16 +180,15 @@ class _HourglassState extends State<Hourglass> {
                       child: const Icon(Icons.restart_alt),
                     ),
                     RoundedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         _speechController.stopwatch.stop();
                         _speechController.overallStopwatch.stop();
 
                         _speechController.stopwatch.reset();
 
-                        await showDialog(
+                        showDialog(
                           context: context,
-                          builder: (_) =>
-                              CommitteeSettingsDialog(tag: widget.tag),
+                          builder: (_) => SpeechSettingsDialog(tag: widget.tag),
                         );
                       },
                       color: Colors.amber.shade400,

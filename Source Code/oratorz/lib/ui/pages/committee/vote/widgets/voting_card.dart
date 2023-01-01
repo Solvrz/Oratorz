@@ -29,127 +29,116 @@ class VotingCard extends StatelessWidget {
                 style: context.textTheme.headline5,
               ),
               const SizedBox(height: 8),
-              Obx(
-                // TODO: Storage remove past voters from current
-
-                () => _voteController.voters.isNotEmpty
-                    ? Column(
-                        children: [
-                          Container(
-                            height: context.height / 6,
-                            margin: const EdgeInsets.symmetric(vertical: 25),
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.5),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.shade400,
-                                              offset: const Offset(1, 1),
-                                              blurRadius: 4,
-                                            ),
-                                          ],
-                                        ),
-                                        child: flag(
+              Expanded(
+                child: Obx(
+                  () => _voteController.voters.isNotEmpty &&
+                          _voteController.currentVoter != ""
+                      ? Column(
+                          children: [
+                            Container(
+                              height: context.height / 6,
+                              margin: const EdgeInsets.symmetric(vertical: 25),
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0.5),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        flag(
                                           size: 100,
                                           _voteController.currentVoter,
                                         ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        DELEGATES[
-                                            _voteController.currentVoter]!,
-                                        style: context.textTheme.headline2,
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      RoundedButton(
-                                        color: Colors.green,
-                                        onPressed: () =>
-                                            _voteController.vote(vote: true),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 56,
-                                          vertical: 8,
+                                        const SizedBox(height: 12),
+                                        Text(
+                                          DELEGATES[
+                                              _voteController.currentVoter]!,
+                                          style: context.textTheme.headline2,
                                         ),
-                                        child: const Text("In Favor"),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      RoundedButton(
-                                        color: Colors.red,
-                                        onPressed: () =>
-                                            _voteController.vote(vote: false),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 56,
-                                          vertical: 8,
-                                        ),
-                                        child: const Text("Against"),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: context.height / 2.15,
-                            child: ListView.separated(
-                              itemCount: _voteController.voters.length,
-                              itemBuilder: (_, index) => DelegateTile(
-                                delegate: _voteController.voters[index],
-                              ),
-                              separatorBuilder: (_, __) => Divider(
-                                height: 6,
-                                color: Colors.grey.shade400,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : _voteController.pastVoters.isEmpty
-                        ? Text(
-                            "Conduct a roll call before voting",
-                            style: context.textTheme.bodyText1,
-                          )
-                        : Center(
-                            child: RichText(
-                              text: TextSpan(
-                                text: "Vote Completed",
-                                style: context.textTheme.headline2,
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        "\nResult: Vote ${_voteController.inFavor >= _voteController.majorityVal() ? "Passed" : "Failed"}!",
-                                    style:
-                                        context.textTheme.headline5?.copyWith(
-                                      fontSize: 30,
-                                      color: _voteController.inFavor >=
-                                              _voteController.majorityVal()
-                                          ? Colors.green
-                                          : Colors.red,
+                                      ],
                                     ),
-                                  )
-                                ],
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        RoundedButton(
+                                          color: Colors.green,
+                                          onPressed: () => _voteController.vote(
+                                            vote: true,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 56,
+                                            vertical: 8,
+                                          ),
+                                          child: const Text("In Favor"),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        RoundedButton(
+                                          color: Colors.red,
+                                          onPressed: () =>
+                                              _voteController.vote(vote: false),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 56,
+                                            vertical: 8,
+                                          ),
+                                          child: const Text("Against"),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                          ),
+                            SizedBox(
+                              height: context.height / 2.15,
+                              child: ListView.separated(
+                                itemCount: _voteController.voters.length - 1,
+                                itemBuilder: (_, index) => DelegateTile(
+                                  delegate: _voteController.voters[index + 1],
+                                ),
+                                separatorBuilder: (_, __) => Divider(
+                                  height: 6,
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : _voteController.pastVoters.isEmpty
+                          ? Text(
+                              "Conduct a roll call before voting",
+                              style: context.textTheme.bodyText1,
+                            )
+                          : Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Vote Completed",
+                                  style: context.textTheme.headline2,
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          "\nResult: Vote ${_voteController.inFavor >= _voteController.majorityVal() ? "Passed" : "Failed"}!",
+                                      style:
+                                          context.textTheme.headline5?.copyWith(
+                                        fontSize: 30,
+                                        color: _voteController.inFavor >=
+                                                _voteController.majorityVal()
+                                            ? Colors.green
+                                            : Colors.red,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                ),
               ),
             ],
           ),

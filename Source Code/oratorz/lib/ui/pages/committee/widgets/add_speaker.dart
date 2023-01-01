@@ -41,7 +41,7 @@ class AddSpeaker extends StatelessWidget {
                         child: DelegateTile(
                           delegate: speakers[index],
                           onTap: () {
-                            if (isAdded) {
+                            if (!isAdded) {
                               _speechController.addSpeaker(
                                 speakers[index],
                               );

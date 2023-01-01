@@ -43,10 +43,12 @@ class Oratorz extends StatelessWidget {
         routes: [
           GoRoute(
             path: "/",
-            redirect: (_, __) {
-              final bool exists = LocalStorage.loadCommittee();
+            redirect: (_, args) {
+              Get.put(RouteController(arguments: args));
 
-              return exists ? "/committee/gsl" : "/setup";
+              return LocalStorage.committeeExists()
+                  ? "/committee/gsl"
+                  : "/setup";
             },
           ),
           GoRoute(
@@ -65,7 +67,14 @@ class Oratorz extends StatelessWidget {
               return const CommitteeMainPage();
             },
           ),
-          GoRoute(path: "/committee", redirect: (_, __) => "/committee/gsl"),
+          GoRoute(
+            path: "/committee",
+            redirect: (_, args) {
+              Get.put(RouteController(arguments: args));
+
+              return "/committee/gsl";
+            },
+          ),
           GoRoute(
             path: "/committee/:mode",
             builder: (_, args) {
