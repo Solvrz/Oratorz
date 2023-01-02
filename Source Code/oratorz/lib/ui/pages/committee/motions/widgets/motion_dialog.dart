@@ -59,7 +59,6 @@ class MotionDialog extends StatelessWidget {
               delegate: motion["delegate"],
               onChanged: (delegate) => motion["delegate"] = delegate,
             )
-            // TODO: About Motion
           ],
         ),
       ),

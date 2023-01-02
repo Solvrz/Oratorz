@@ -106,43 +106,45 @@ class _PassMotionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final MotionsController _motionsController = Get.find<MotionsController>();
 
-    return DialogBox(
-      heading: "Activate ${_motionsController.currentMotion["type"]}",
-      content: const Text(
-        "Do you want to activate this motion now?",
+    return Obx(
+      () => DialogBox(
+        heading: "Activate ${_motionsController.currentMotion["type"]}",
+        content: const Text(
+          "Do you want to activate this motion now?",
+        ),
+        actions: [
+          RoundedButton(
+            border: true,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 4,
+            ),
+            onPressed: () {
+              _motionsController.nextMotion(passed: true);
+              _motionsController.update();
+
+              context.pop();
+            },
+            child: const Text("No"),
+          ),
+          const SizedBox(width: 5),
+          RoundedButton(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            onPressed: () {
+              _motionsController.currentMotion["onPass"]();
+
+              _motionsController.nextMotion(passed: true);
+              _motionsController.update();
+
+              context.pop();
+            },
+            child: const Text("Yes"),
+          ),
+        ],
       ),
-      actions: [
-        RoundedButton(
-          border: true,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 4,
-          ),
-          onPressed: () {
-            _motionsController.nextMotion(passed: true);
-            _motionsController.update();
-
-            context.pop();
-          },
-          child: const Text("No"),
-        ),
-        const SizedBox(width: 5),
-        RoundedButton(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 4,
-          ),
-          onPressed: () {
-            _motionsController.currentMotion["onPass"]();
-
-            _motionsController.nextMotion(passed: true);
-            _motionsController.update();
-
-            context.pop();
-          },
-          child: const Text("Yes"),
-        ),
-      ],
     );
   }
 }
@@ -164,18 +166,28 @@ class _MultipleModeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final MotionsController _motionsController = Get.find<MotionsController>();
 
-    return _motionsController.mode != mode
-        ? RoundedButton(
-            color: color,
-            tooltip: tooltip,
-            onPressed: () => _motionsController.mode = mode,
-            child: Icon(icon),
-          )
-        : RoundedButton(
-            color: Colors.grey.shade800,
-            tooltip: "Add Motion",
-            onPressed: () => _motionsController.mode = 0,
-            child: const Icon(Icons.add),
-          );
+    return Obx(() {
+      if (_motionsController.mode != mode) {
+        return RoundedButton(
+          color: color,
+          tooltip: tooltip,
+          onPressed: () {
+            _motionsController.mode = mode;
+            _motionsController.update();
+          },
+          child: Icon(icon),
+        );
+      } else {
+        return RoundedButton(
+          color: Colors.grey.shade800,
+          tooltip: "Add Motion",
+          onPressed: () {
+            _motionsController.mode = 0;
+            _motionsController.update();
+          },
+          child: const Icon(Icons.add),
+        );
+      }
+    });
   }
 }

@@ -66,7 +66,10 @@ class CommitteeCard extends StatelessWidget {
                       itemCount: _setupController.committee.count,
                       itemBuilder: (_, index) => DelegateTile(
                         delegate: _setupController.committee.delegates[index],
-                        onTap: () => _setupController.removeAt(index),
+                        onTap: () {
+                          _setupController.removeAt(index);
+                          _setupController.update();
+                        },
                         trailing:
                             Icon(Icons.remove, color: Colors.grey.shade400),
                       ),
@@ -81,7 +84,10 @@ class CommitteeCard extends StatelessWidget {
                   const SizedBox(height: 24),
                   RoundedButton(
                     border: true,
-                    onPressed: () => _setupController.clear(),
+                    onPressed: () {
+                      _setupController.clear();
+                      _setupController.update();
+                    },
                     child: Text(
                       "Reset Selection",
                       style: context.textTheme.bodyLarge,
@@ -124,8 +130,9 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
     final String _code =
         (value ?? _inviteCodeController.text).trim().toUpperCase();
 
+    setState(() => error = false);
+
     if (INVITE_CODES.contains(_code) || TESTING) {
-      setState(() => error = true);
       final CommitteeController controller = CommitteeController(
         committee: Get.find<SetupController>().committee,
       );

@@ -129,6 +129,34 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                           ),
                         );
                       }),
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 15,
+                              right: 5,
+                            ),
+                            child: Image.asset(
+                              height: 35,
+                              width: 35,
+                              "images/Logo.png",
+                            ),
+                          ),
+                          Text(
+                            "Oratorz",
+                            style: context.textTheme.headline5!
+                                .copyWith(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "A Unit of Solvrz Inc.",
+                        style: context.textTheme.bodyText1!
+                            .copyWith(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
                 ),

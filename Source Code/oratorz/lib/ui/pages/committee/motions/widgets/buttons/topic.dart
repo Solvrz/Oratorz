@@ -19,22 +19,9 @@ class _TopicButtonState extends State<TopicButton> {
   late final TextEditingController _topicController;
 
   @override
-  void initState() {
-    super.initState();
-
-    _topicController = TextEditingController(text: widget.topic.values.first);
-  }
-
-  @override
-  void dispose() {
-    // TODO: Not Clearing
-    _topicController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _topicController = TextEditingController(text: widget.topic.values.first);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
