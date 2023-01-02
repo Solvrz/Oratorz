@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/vote.dart';
@@ -132,15 +133,17 @@ class _Voting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ItemScrollController _scrollController = ItemScrollController();
     final VoteController _voteController =
         Get.find<VoteController>(tag: "motions");
+
     final List<String> _voters = _voteController.voters.toList();
-    // TODO: Auto Scroll
 
     return SizedBox(
       height: context.height / 1.95,
-      child: ListView.separated(
+      child: ScrollablePositionedList.separated(
         itemCount: _voters.length,
+        itemScrollController: _scrollController,
         itemBuilder: (_, index) {
           final String _delegate = _voters[index];
 
@@ -156,10 +159,18 @@ class _Voting extends StatelessWidget {
                       invert: true,
                     ),
                     color: Colors.green,
-                    onPressed: () => _voteController.vote(
-                      vote: true,
-                      voter: _delegate,
-                    ),
+                    onPressed: () {
+                      _voteController.vote(
+                        vote: true,
+                        voter: _delegate,
+                      );
+                      if (index < _voters.length - 7) {
+                        _scrollController.scrollTo(
+                          index: index + 1,
+                          duration: const Duration(milliseconds: 250),
+                        );
+                      }
+                    },
                     child: const Icon(Icons.thumb_up),
                   ),
                   const SizedBox(width: 4),
@@ -169,10 +180,19 @@ class _Voting extends StatelessWidget {
                       delegate: _delegate,
                     ),
                     color: Colors.red,
-                    onPressed: () => _voteController.vote(
-                      vote: false,
-                      voter: _delegate,
-                    ),
+                    onPressed: () {
+                      _voteController.vote(
+                        vote: false,
+                        voter: _delegate,
+                      );
+
+                      if (index < _voters.length - 7) {
+                        _scrollController.scrollTo(
+                          index: index + 1,
+                          duration: const Duration(milliseconds: 250),
+                        );
+                      }
+                    },
                     child: const Icon(Icons.thumb_down),
                   ),
                 ],

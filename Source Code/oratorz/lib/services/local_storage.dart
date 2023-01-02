@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '/config/constants/constants.dart';
 import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
@@ -9,32 +10,49 @@ import '/tools/controllers/comittee/speech.dart';
 class LocalStorage {
   static GetStorage box = GetStorage();
 
+  //TODO: Assign a unique ID to each committee
+  static const ID = "committee";
+
   static void saveCommittee(CommitteeController committee) {
-    //TODO: Assign a unique ID to each committee
-    box.write("committee", committee.toJson());
+    analytics.logEvent(
+      name: "committe_created",
+      parameters: {
+        "committee": committee.toJson().toString(),
+        "id": ID,
+      },
+    );
+
+    box.write(ID, committee.toJson());
   }
 
   static bool committeeExists() {
-    final Map<String, dynamic>? data = box.read("committee");
+    final Map<String, dynamic>? data = box.read(ID);
 
     if (data == null) return false;
     return true;
   }
 
   static bool updateCommittee(String key, dynamic value) {
-    final Map<String, dynamic>? data = box.read("committee");
+    final Map<String, dynamic>? data = box.read(ID);
 
     if (data == null) return false;
 
-    data[key] = value;
+    analytics.logEvent(
+      name: "committe_updated",
+      parameters: {
+        "committee": data.toString(),
+        "id": ID,
+      },
+    );
 
-    box.write("committee", data);
+    data[key] = value;
+    box.write(ID, data);
 
     return true;
   }
 
   static void loadCommittee() {
-    final Map<String, dynamic>? data = box.read("committee");
+    final Map<String, dynamic>? data = box.read(ID);
 
     if (data == null) return;
 

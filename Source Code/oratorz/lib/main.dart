@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 
 import '/config/constants/constants.dart';
 import '/config/theme.dart';
+import '/firebase_options.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
@@ -23,8 +25,13 @@ void main() async {
 
   await GetStorage.init();
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   analytics = FirebaseAnalytics.instance;
+
   await analytics.setAnalyticsCollectionEnabled(!kDebugMode);
+  await analytics.logAppOpen();
 
   setUrlStrategy(PathUrlStrategy());
   runApp(const Oratorz());

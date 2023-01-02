@@ -170,16 +170,30 @@ class LoadCommitteeCard extends StatelessWidget {
                               }
                             }
 
-                            throw Exception([
-                              "The file is invalid. Please check the file & Try again..."
-                            ]);
+                            throw const FormatException("Invalid File");
                           } else {
-                            throw Exception([
-                              "An unkown error occured. Please check the file & Try again..."
-                            ]);
+                            throw Exception(["An Unkown Error"]);
                           }
                         } catch (e) {
-                          // TODO: Show Error
+                          // TODO: Give Proper Format File
+
+                          await showDialog(
+                            context: context,
+                            builder: (_) => DialogBox(
+                              heading: e.runtimeType == FormatException
+                                  ? "Invalid File"
+                                  : "An Unkown Error",
+                              content: const Text(
+                                "An Error Occured while loading the file.\nPlease check the file & Try Again...",
+                              ),
+                              actions: [
+                                RoundedButton(
+                                  child: const Text("Ok"),
+                                  onPressed: () => context.pop(),
+                                ),
+                              ],
+                            ),
+                          );
                         }
                       },
                     ),

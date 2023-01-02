@@ -112,7 +112,7 @@ class MotionTile extends StatelessWidget {
                       },
                       child: Icon(
                         Icons.close,
-                        size: 16,
+                        size: 20,
                         color: Colors.red.shade400,
                       ),
                     ),
@@ -121,16 +121,16 @@ class MotionTile extends StatelessWidget {
                       border: true,
                       color: Colors.green.shade400,
                       padding: const EdgeInsets.all(4),
-                      onPressed: () {
-                        // TODO: Update Current motion
-                        showDialog(
-                          context: context,
-                          builder: (context) => MotionDialog(motion: motion),
-                        );
-                      },
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => MotionDialog(
+                          motion: motion,
+                          add: false,
+                        ),
+                      ),
                       child: Icon(
                         Icons.edit,
-                        size: 16,
+                        size: 20,
                         color: Colors.green.shade400,
                       ),
                     ),

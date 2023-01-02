@@ -15,7 +15,7 @@ class AddMotionCard extends StatelessWidget {
         "type": "Moderated Caucus",
         "icon": Icons.forum,
         "widgets": ["topic", "duration", "overallDuration"],
-        "topic": {"Topic": ""},
+        "topic": {"Topic": "Your Topic"},
         "onPass": () {},
       },
       {
@@ -28,7 +28,7 @@ class AddMotionCard extends StatelessWidget {
         "type": "Consultation",
         "icon": Icons.circle_outlined,
         "widgets": ["topic", "duration"],
-        "topic": {"Topic": ""},
+        "topic": {"Topic": "Your Topic"},
         "onPass": () {},
       },
       {
@@ -53,7 +53,7 @@ class AddMotionCard extends StatelessWidget {
         "type": "Prayer",
         "icon": Icons.church,
         "widgets": ["topic", "duration"],
-        "topic": {"Cause": ""},
+        "topic": {"Cause": "Your Cause"},
         "onPass": () {},
       },
       {
@@ -77,21 +77,21 @@ class AddMotionCard extends StatelessWidget {
         "type": "Tour de Table",
         "icon": Icons.autorenew,
         "widgets": ["topic", "duration"],
-        "topic": {"Topic": ""},
+        "topic": {"Topic": "Your Topic"},
         "onPass": () {},
       },
       {
         "type": "Appeal Chair's Decision",
         "icon": Icons.block,
         "widgets": ["topic"],
-        "topic": {"Decision": ""},
+        "topic": {"Decision": "Your Decision"},
         "onPass": () {},
       },
       {
         "type": "Custom",
         "icon": Icons.edit,
         "widgets": ["topic", "duration"],
-        "topic": {"Title": ""},
+        "topic": {"Title": "Your Title"},
         "onPass": () {},
       },
     ];

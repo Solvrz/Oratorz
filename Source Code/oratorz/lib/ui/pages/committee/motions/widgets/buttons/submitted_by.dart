@@ -7,7 +7,7 @@ import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/delegate_tile.dart';
 
 class SubmittedByButton extends StatelessWidget {
-  final void Function(String?) onChanged;
+  final void Function(String) onChanged;
 
   final String? delegate;
 
@@ -28,7 +28,7 @@ class SubmittedByButton extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         DropdownSearch<String>(
-          onChanged: onChanged,
+          onChanged: (val) => onChanged(val ?? ""),
           selectedItem: delegate,
           items: Get.find<CommitteeController>().committee.presentDelegates,
           itemAsString: (delegate) => DELEGATES[delegate] ?? "",
@@ -62,7 +62,9 @@ class SubmittedByButton extends StatelessWidget {
             ),
             emptyBuilder: (_, __) => Center(
               child: Text(
-                "Delegate Not Found",
+                Get.find<CommitteeController>().committee.count > 0
+                    ? "Delegate Not Found"
+                    : "No delegates are there in the commitee.",
                 style: context.textTheme.headline6,
               ),
             ),

@@ -7,4 +7,4 @@ late final FirebaseAnalytics analytics;
 const bool TESTING = kDebugMode;
 const Locale LOCALE = Locale("en", "IN");
 
-const String INVITE_CODE = "ORAOP0037";
+const List<String> INVITE_CODES = ["ORAOP0037"];

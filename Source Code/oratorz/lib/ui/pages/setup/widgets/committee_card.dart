@@ -109,45 +109,74 @@ class CommitteeCard extends StatelessWidget {
   }
 }
 
-class _InviteCodeDialog extends StatelessWidget {
+class _InviteCodeDialog extends StatefulWidget {
   const _InviteCodeDialog();
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController _inviteCodeController = TextEditingController();
+  State<_InviteCodeDialog> createState() => _InviteCodeDialogState();
+}
 
-    void onPressed({String? value}) {
-      final String _code =
-          (value ?? _inviteCodeController.text).trim().toLowerCase();
+class _InviteCodeDialogState extends State<_InviteCodeDialog> {
+  final TextEditingController _inviteCodeController = TextEditingController();
+  bool error = false;
 
-      if (_code == INVITE_CODE.toLowerCase() || TESTING) {
-        final CommitteeController controller = CommitteeController(
-          committee: Get.find<SetupController>().committee,
-        );
+  void submit({String? value}) {
+    final String _code =
+        (value ?? _inviteCodeController.text).trim().toUpperCase();
 
-        Get.put(controller);
-        LocalStorage.saveCommittee(controller);
+    if (INVITE_CODES.contains(_code) || TESTING) {
+      setState(() => error = true);
+      final CommitteeController controller = CommitteeController(
+        committee: Get.find<SetupController>().committee,
+      );
 
-        context.pushReplacement("/committee/gsl");
-      } else {
-        // TODO: Show Error
-      }
+      Get.put(controller);
+      LocalStorage.saveCommittee(controller);
+
+      context.pushReplacement("/committee/gsl");
+    } else {
+      setState(() => error = true);
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return DialogBox(
       heading: "Enter Invite Code",
-      content: TextField(
-        autofocus: true,
-        controller: _inviteCodeController,
-        decoration: const InputDecoration(
-          hintText: "Invite Code",
-          prefixIcon: Icon(Icons.vpn_key),
+      content: SizedBox(
+        height: error ? 85 : 50,
+        child: Column(
+          children: [
+            TextField(
+              autofocus: true,
+              controller: _inviteCodeController,
+              decoration: const InputDecoration(
+                hintText: "Invite Code",
+                prefixIcon: Icon(Icons.vpn_key),
+              ),
+              onSubmitted: (value) => submit(value: value),
+            ),
+            if (error) ...[
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: context.theme.errorColor,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    "Invalid Invite Code",
+                    style: context.textTheme.bodyText2?.copyWith(
+                      color: context.theme.errorColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ]
+          ],
         ),
-        onSubmitted: (value) {
-          onPressed(value: value);
-
-          context.pop();
-        },
       ),
       actions: [
         RoundedButton(
@@ -157,7 +186,7 @@ class _InviteCodeDialog extends StatelessWidget {
             vertical: 4,
             horizontal: 8,
           ),
-          onPressed: onPressed,
+          onPressed: submit,
           child: const Text("Done"),
         )
       ],

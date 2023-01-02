@@ -11,8 +11,13 @@ import './buttons/topic.dart';
 
 class MotionDialog extends StatelessWidget {
   final Map<String, dynamic> motion;
+  final bool add;
 
-  const MotionDialog({super.key, required this.motion});
+  const MotionDialog({
+    super.key,
+    required this.motion,
+    this.add = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,7 @@ class MotionDialog extends StatelessWidget {
             ],
             SubmittedByButton(
               delegate: motion["delegate"],
-              onChanged: (delegate) => motion["delegate"] = delegate ?? "",
+              onChanged: (delegate) => motion["delegate"] = delegate,
             )
             // TODO: About Motion
           ],
@@ -67,21 +72,23 @@ class MotionDialog extends StatelessWidget {
             horizontal: 8,
           ),
           onPressed: () {
-            _motionsController.addMotion(
-              motion
-                ..removeWhere((_, value) {
-                  try {
-                    return value.isEmpty;
-                  } catch (_) {
-                    return false;
-                  }
-                }),
-            );
-            _motionsController.update();
+            if (add) {
+              _motionsController.addMotion(
+                motion
+                  ..removeWhere((key, value) {
+                    try {
+                      return value.isEmpty;
+                    } catch (_) {
+                      return false;
+                    }
+                  }),
+              );
+            }
 
+            _motionsController.update();
             context.pop();
           },
-          child: const Text("Add"),
+          child: Text(add ? "Add" : "Update"),
         )
       ],
     );

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
+import '/config/constants/constants.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
@@ -25,6 +26,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
     super.initState();
 
     if (LocalStorage.committeeExists()) {
+      analytics.logEvent(name: "committe_loaded");
       LocalStorage.loadCommittee();
 
       _committeeController = Get.find<CommitteeController>()
