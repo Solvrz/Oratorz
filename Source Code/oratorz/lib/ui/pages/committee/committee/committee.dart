@@ -43,6 +43,7 @@ class _ModeSelector extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
+      tooltip: "Select Mode",
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -70,8 +71,8 @@ class _ModeSelector extends StatelessWidget {
             const SizedBox(width: 20),
             Icon(
               Icons.arrow_drop_down,
-              color: context.theme.colorScheme.secondary,
               size: 36,
+              color: context.theme.colorScheme.secondary,
             ),
           ],
         ),

@@ -51,51 +51,15 @@ class Body extends StatelessWidget {
                       RoundedButton(
                         border: true,
                         color: Colors.amber.shade400,
+                        tooltip: "Set Agenda",
                         padding: const EdgeInsets.symmetric(
                           vertical: 4,
                           horizontal: 8,
                         ),
-                        onPressed: () async {
-                          final TextEditingController _controller =
-                              TextEditingController(
-                            text: _committeeController.committee.agenda,
-                          );
-
-                          await showDialog(
-                            context: context,
-                            builder: (_) => DialogBox(
-                              heading: "Set Committee Name",
-                              content: TextField(
-                                autofocus: true,
-                                controller: _controller,
-                                onSubmitted: (value) {
-                                  _committeeController
-                                      .setAgenda(_controller.text);
-
-                                  context.pop();
-                                },
-                                keyboardType: TextInputType.name,
-                                cursorColor: Colors.grey[600],
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  hintText: "Agenda",
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    _committeeController
-                                        .setAgenda(_controller.text);
-
-                                    context.pop();
-                                  },
-                                  child: const Text("Select"),
-                                )
-                              ],
-                            ),
-                          );
-                        },
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (_) => const _AgendaDialog(),
+                        ),
                         child: Icon(
                           Icons.edit,
                           color: Colors.amber.shade400,
@@ -113,6 +77,48 @@ class Body extends StatelessWidget {
           Expanded(child: child),
         ],
       ),
+    );
+  }
+}
+
+class _AgendaDialog extends StatelessWidget {
+  const _AgendaDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final CommitteeController _committeeController =
+        Get.find<CommitteeController>();
+    final TextEditingController _controller = TextEditingController(
+      text: _committeeController.committee.agenda,
+    );
+
+    return DialogBox(
+      heading: "Set Agenda",
+      content: TextField(
+        autofocus: true,
+        controller: _controller,
+        decoration: const InputDecoration(
+          hintText: "Agenda",
+          prefixIcon: Icon(Icons.edit_note),
+        ),
+        onSubmitted: (value) {
+          _committeeController.setAgenda(_controller.text);
+
+          context.pop();
+        },
+      ),
+      actions: [
+        RoundedButton(
+          border: true,
+          color: Colors.amber.shade400,
+          onPressed: () {
+            _committeeController.setAgenda(_controller.text);
+
+            context.pop();
+          },
+          child: const Text("Select"),
+        )
+      ],
     );
   }
 }

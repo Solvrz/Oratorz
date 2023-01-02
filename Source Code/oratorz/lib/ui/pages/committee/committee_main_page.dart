@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart' hide TabController;
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
+import '/config/constants/constants.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
@@ -24,9 +25,10 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   void initState() {
     super.initState();
 
-    final bool exists = LocalStorage.loadCommittee();
+    if (LocalStorage.committeeExists()) {
+      analytics.logEvent(name: "committe_loaded");
+      LocalStorage.loadCommittee();
 
-    if (exists) {
       _committeeController = Get.find<CommitteeController>()
         ..tab = COMMITTEE_TABS
             .indexWhere(
@@ -44,9 +46,34 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Row(
+    final List<Map<String, dynamic>> tabs = [
+      ...COMMITTEE_TABS,
+      {
+        "title": "Roll Call",
+        "icon": Icons.fact_check_outlined,
+        "onTap": () => showDialog(
+              context: context,
+              builder: (context) => const RollCallDialog(),
+            ),
+      },
+      {
+        "title": "Spacer",
+      },
+      {
+        "title": "Setup",
+        "icon": Icons.settings_outlined,
+        "onTap": () {
+          Get.deleteAll();
+          LocalStorage.clearData();
+
+          context.pushReplacement("/setup");
+        },
+      },
+    ];
+
+    return SafeArea(
+      child: Scaffold(
+        body: Row(
           children: [
             SizedBox(
               width: context.width / 8,
@@ -60,8 +87,10 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                   ),
                 ),
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 16,
+                  ),
                   child: Column(
                     children: [
                       Text(
@@ -71,44 +100,62 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 32),
-                      ...List.generate(COMMITTEE_TABS.length, (index) {
-                        final Map<String, dynamic> _tab = COMMITTEE_TABS[index];
+                      ...List.generate(tabs.length, (index) {
+                        final Map<String, dynamic> _tab = tabs[index];
+
+                        if (_tab["title"] == "Spacer") {
+                          return const Spacer();
+                        }
 
                         return Obx(
                           () => _SidebarTile(
                             title: _tab["title"],
                             icon: _tab["icon"],
                             onTap: () {
-                              _committeeController.tab = index;
-                              html.window.history.pushState(
-                                null,
-                                "tab",
-                                _committeeController.currentTabDetails["route"],
-                              );
+                              if (_tab.containsKey("route")) {
+                                _committeeController.tab = index;
+                                html.window.history.pushState(
+                                  null,
+                                  "tab",
+                                  _committeeController
+                                      .currentTabDetails["route"],
+                                );
+                              } else {
+                                _tab["onTap"]();
+                              }
                             },
                             selected: _committeeController.tab == index,
                             iconColor: _tab["color"],
                           ),
                         );
                       }),
-                      _SidebarTile(
-                        title: "Roll Call",
-                        icon: Icons.fact_check_outlined,
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (context) => const RollCallDialog(),
-                        ),
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 15,
+                              right: 5,
+                            ),
+                            child: Image.asset(
+                              height: 35,
+                              width: 35,
+                              "images/Logo.png",
+                            ),
+                          ),
+                          Text(
+                            "Oratorz",
+                            style: context.textTheme.headline5!
+                                .copyWith(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      const Spacer(),
-                      _SidebarTile(
-                        title: "Setup",
-                        icon: Icons.settings_outlined,
-                        onTap: () {
-                          Get.deleteAll();
-                          LocalStorage.clearData();
-
-                          context.pushReplacement("/setup");
-                        },
+                      Text(
+                        "A Unit of Solvrz Inc.",
+                        style: context.textTheme.bodyText1!
+                            .copyWith(color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),

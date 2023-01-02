@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oratorz/services/local_storage.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '../../widgets/hourglass.dart';
 import '../../widgets/speakers_info.dart';

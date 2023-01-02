@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/motions.dart';
-import './widgets/add_motions_card.dart';
+import './widgets/add_motion_card.dart';
 import './widgets/current_motions_card.dart';
 import './widgets/debate_card.dart';
 import './widgets/future_motions_card.dart';
@@ -29,27 +29,29 @@ class MotionsPage extends StatelessWidget {
     }
 
     return Body(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: const [
-              CurrentMotionCard(),
-              SizedBox(height: 12),
-              FutureMotionsCard(),
-            ],
-          ),
-          const SizedBox(width: 36),
-          Obx(() {
-            if (_motionsController.mode == 0) {
-              return const AddMotionsCard();
-            } else if (_motionsController.mode == 1) {
-              return const DebateCard();
-            } else {
-              return const VoteCard();
-            }
-          }),
-        ],
+      child: Expanded(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              children: const [
+                CurrentMotionCard(),
+                SizedBox(height: 12),
+                FutureMotionsCard(),
+              ],
+            ),
+            const SizedBox(width: 36),
+            Obx(() {
+              if (_motionsController.mode == 0) {
+                return const AddMotionCard();
+              } else if (_motionsController.mode == 1) {
+                return const DebateCard();
+              } else {
+                return const VoteCard();
+              }
+            }),
+          ],
+        ),
       ),
     );
   }

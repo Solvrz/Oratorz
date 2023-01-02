@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/dialog_box.dart';
+import '/ui/widgets/rounded_button.dart';
+import '../timer_button.dart';
 
 class SpeechSettingsDialog extends StatelessWidget {
   final String tag;
@@ -38,19 +39,16 @@ class SpeechSettingsDialog extends StatelessWidget {
                     child: TextField(
                       autofocus: true,
                       controller: _subtopicController,
+                      decoration: InputDecoration(
+                        hintText: _speechController.subtopic.keys.first,
+                        prefixIcon: const Icon(Icons.edit_note),
+                      ),
                       onSubmitted: (value) {
                         _speechController.subtopic[_speechController.subtopic
                             .keys.first] = _subtopicController.text.trim();
 
                         context.pop();
                       },
-                      keyboardType: TextInputType.name,
-                      cursorColor: Colors.grey[600],
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        hintText: _speechController.subtopic.keys.first,
-                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -65,7 +63,7 @@ class SpeechSettingsDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _TimerButton(
+                      TimerButton(
                         value: _speechController.duration.inMinutes,
                         change: (value) {
                           if (_speechController.duration.inMinutes + value <=
@@ -77,7 +75,7 @@ class SpeechSettingsDialog extends StatelessWidget {
                         subtitle: "minutes",
                       ),
                       const SizedBox(width: 16),
-                      _TimerButton(
+                      TimerButton(
                         value: _speechController.duration.inSeconds -
                             _speechController.duration.inMinutes * 60,
                         change: (value) => _speechController.duration +=
@@ -99,7 +97,7 @@ class SpeechSettingsDialog extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _TimerButton(
+                        TimerButton(
                           value: _speechController.overallDuration.inMinutes,
                           change: (value) {
                             if (_speechController.overallDuration.inMinutes +
@@ -112,7 +110,7 @@ class SpeechSettingsDialog extends StatelessWidget {
                           subtitle: "minutes",
                         ),
                         const SizedBox(width: 16),
-                        _TimerButton(
+                        TimerButton(
                           value: _speechController.overallDuration.inSeconds -
                               _speechController.overallDuration.inMinutes * 60,
                           change: (value) => _speechController.overallDuration =
@@ -130,7 +128,13 @@ class SpeechSettingsDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        TextButton(
+        RoundedButton(
+          border: true,
+          color: Colors.amber.shade400,
+          padding: const EdgeInsets.symmetric(
+            vertical: 4,
+            horizontal: 8,
+          ),
           child: const Text("Change"),
           onPressed: () {
             _speechController.subtopic[_speechController.subtopic.keys.first] =
@@ -138,119 +142,6 @@ class SpeechSettingsDialog extends StatelessWidget {
 
             context.pop();
           },
-        ),
-      ],
-    );
-  }
-}
-
-class _TimerButton extends StatelessWidget {
-  final int value;
-  final String subtitle;
-  final Function(int) change;
-
-  const _TimerButton({
-    required this.value,
-    required this.subtitle,
-    required this.change,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final TextEditingController controller =
-        TextEditingController(text: value.toString().padLeft(2, "0"));
-
-    controller.selection = TextSelection.fromPosition(
-      TextPosition(offset: controller.text.length),
-    );
-
-    return Column(
-      children: [
-        Card(
-          margin: const EdgeInsets.all(4),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Container(
-            width: 140,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    cursorColor: Colors.grey.shade700,
-                    controller: controller,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      fillColor: Colors.transparent,
-                      hintText: "00",
-                      hintStyle: context.textTheme.headline1!.copyWith(
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onChanged: (text) {
-                      if (0 <= int.parse(text) && int.parse(text) < 60) {
-                        change(int.parse(text) - value);
-                        controller.text = text.padLeft(2, "0");
-                      } else {
-                        controller.text = value.toString().padLeft(2, "0");
-                      }
-
-                      controller.selection = TextSelection.fromPosition(
-                        TextPosition(offset: controller.text.length),
-                      );
-                    },
-                    style: context.textTheme.headline1!.copyWith(
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                ),
-                Column(
-                  children: [
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: InkWell(
-                        onTap: () => change(1),
-                        hoverColor: const Color.fromARGB(255, 250, 250, 250),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Icon(Icons.add, size: 18),
-                        ),
-                      ),
-                    ),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: InkWell(
-                        onTap: () => change(-1),
-                        hoverColor: const Color.fromARGB(255, 250, 250, 250),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Icon(Icons.remove, size: 18),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        Text(
-          subtitle.toUpperCase(),
-          style: context.textTheme.bodyText1!.copyWith(
-            fontSize: 12,
-            color: Colors.grey.shade600,
-            letterSpacing: 1.5,
-          ),
         ),
       ],
     );

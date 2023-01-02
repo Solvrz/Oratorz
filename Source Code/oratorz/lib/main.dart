@@ -1,3 +1,6 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
@@ -8,10 +11,13 @@ import 'package:intl/intl.dart';
 
 import '/config/constants/constants.dart';
 import '/config/theme.dart';
+import '/firebase_options.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
+
+// TODO: From File on Close Error
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +26,14 @@ void main() async {
   await initializeDateFormatting(Intl.defaultLocale);
 
   await GetStorage.init();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  analytics = FirebaseAnalytics.instance;
+
+  await analytics.setAnalyticsCollectionEnabled(!kDebugMode);
+  await analytics.logAppOpen();
 
   setUrlStrategy(PathUrlStrategy());
   runApp(const Oratorz());
@@ -38,15 +52,17 @@ class Oratorz extends StatelessWidget {
         errorBuilder: (_, args) {
           Get.put(RouteController(arguments: args));
 
-          return const Text("Error");
+          return const ErrorPage();
         },
         routes: [
           GoRoute(
             path: "/",
-            redirect: (_, __) {
-              final bool exists = LocalStorage.loadCommittee();
+            redirect: (_, args) {
+              Get.put(RouteController(arguments: args));
 
-              return exists ? "/committee/gsl" : "/setup";
+              return LocalStorage.committeeExists()
+                  ? "/committee/gsl"
+                  : "/setup";
             },
           ),
           GoRoute(
@@ -65,7 +81,14 @@ class Oratorz extends StatelessWidget {
               return const CommitteeMainPage();
             },
           ),
-          GoRoute(path: "/committee", redirect: (_, __) => "/committee/gsl"),
+          GoRoute(
+            path: "/committee",
+            redirect: (_, args) {
+              Get.put(RouteController(arguments: args));
+
+              return "/committee/gsl";
+            },
+          ),
           GoRoute(
             path: "/committee/:mode",
             builder: (_, args) {

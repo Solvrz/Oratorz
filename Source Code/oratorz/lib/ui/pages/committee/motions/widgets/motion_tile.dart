@@ -6,6 +6,7 @@ import '/tools/controllers/comittee/motions.dart';
 import '/tools/extensions.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/rounded_button.dart';
+import './motion_dialog.dart';
 
 class MotionTile extends StatelessWidget {
   final Map<String, dynamic> motion;
@@ -34,7 +35,7 @@ class MotionTile extends StatelessWidget {
               SizedBox(
                 width: context.width / (reorderable ? 4.2 : 4),
                 child: ListTile(
-                  leading: flag(motion["delegate"]),
+                  leading: flag(motion["delegate"] ?? ""),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -44,7 +45,8 @@ class MotionTile extends StatelessWidget {
                           style: context.textTheme.caption,
                           children: [
                             TextSpan(
-                              text: "\n${DELEGATES[motion["delegate"]]}",
+                              text:
+                                  "\n${DELEGATES[motion["delegate"]] ?? "Delegate"}",
                               style: context.textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -75,14 +77,15 @@ class MotionTile extends StatelessWidget {
                           if (motion.containsKey("duration")) ...[
                             _Duration(
                               icon: Icons.timelapse,
-                              seconds: motion["duration"],
+                              seconds: (motion["duration"] as String).toInt,
                             ),
                           ],
                           if (motion.containsKey("overallDuration")) ...[
                             const SizedBox(height: 5),
                             _Duration(
                               icon: Icons.person,
-                              seconds: motion["overallDuration"],
+                              seconds:
+                                  (motion["overallDuration"] as String).toInt,
                             ),
                           ],
                         ],
@@ -100,13 +103,16 @@ class MotionTile extends StatelessWidget {
                       border: true,
                       color: Colors.red.shade400,
                       padding: const EdgeInsets.all(4),
-                      onPressed: () => _motionsController.nextMotion(
-                        passed: false,
-                        add: false,
-                      ),
+                      onPressed: () {
+                        _motionsController.nextMotion(
+                          passed: false,
+                          add: false,
+                        );
+                        _motionsController.update();
+                      },
                       child: Icon(
                         Icons.close,
-                        size: 16,
+                        size: 20,
                         color: Colors.red.shade400,
                       ),
                     ),
@@ -115,12 +121,16 @@ class MotionTile extends StatelessWidget {
                       border: true,
                       color: Colors.green.shade400,
                       padding: const EdgeInsets.all(4),
-                      onPressed: () {
-                        // TODO: Edit Motion
-                      },
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => MotionDialog(
+                          motion: motion,
+                          add: false,
+                        ),
+                      ),
                       child: Icon(
                         Icons.edit,
-                        size: 16,
+                        size: 20,
                         color: Colors.green.shade400,
                       ),
                     ),

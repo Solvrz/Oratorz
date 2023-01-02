@@ -34,7 +34,6 @@ class DialogBox extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () => context.pop(),
-                hoverColor: const Color.fromARGB(255, 250, 250, 250),
                 child: Container(
                   margin: const EdgeInsets.all(8),
                   child: Icon(
@@ -45,7 +44,7 @@ class DialogBox extends StatelessWidget {
               ),
             ],
           ),
-          Divider(height: 2, color: Colors.grey[400]),
+          Divider(height: 2, color: Colors.grey.shade400),
         ],
       ),
       content: content,

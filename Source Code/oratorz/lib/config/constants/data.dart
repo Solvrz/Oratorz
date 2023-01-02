@@ -253,6 +253,7 @@ final Map<String, String> AIPPM = {
   "BJP 37": "Manoj Tiwari",
   "BJP 38": "Narendra Singh Tomar",
   "BJP 39": "Som Parkash",
+  "BJP 40": "N Biren Singh",
   "BRS 00": "K Chandrashekhar",
   "BSP 00": "Mayawati",
   "CPI 00": "D Raja",
@@ -302,8 +303,6 @@ final Map<String, String> AIPPM = {
   "SS 01": "Sanjay Raut",
   "YSRCP 00": "YS Jagan Mohan Reddy",
 };
-
-// TODO: Others Flags
 
 final Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
 
@@ -1045,6 +1044,8 @@ const Map<String, List<String>> COMMITTEES = {
     "BJP 16",
     "BJP 17",
     "BJP 18",
+    "BJP 29",
+    "BJP 40",
     "BRS 00",
     "BSP 00",
     "CPI-M 00",
@@ -1058,6 +1059,7 @@ const Map<String, List<String>> COMMITTEES = {
     "INC 07",
     "INC 08",
     "INC 09",
+    "INC 10",
     "JDU 00",
     "NCP 02",
     "NPP 00",

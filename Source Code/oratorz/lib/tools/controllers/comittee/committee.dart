@@ -40,8 +40,6 @@ class CommitteeController extends GetxController {
   void _saveRollCall() {
     LocalStorage.updateCommittee("rollCall", _rollCall);
 
-    // TODO: Disscuss This
-
     if (Get.isRegistered<VoteController>(tag: "vote")) {
       Get.find<VoteController>(tag: "vote").voters =
           _committee.value.presentAndVotingDelegates;

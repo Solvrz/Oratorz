@@ -10,6 +10,7 @@ class OratorzTheme {
 
     return ThemeData(
       scaffoldBackgroundColor: OratorzColors.primaryColor,
+      hoverColor: Colors.grey.shade100,
       colorScheme: const ColorScheme.light().copyWith(
         primary: OratorzColors.primaryColor,
         secondary: OratorzColors.secondaryColor,
@@ -42,6 +43,9 @@ class OratorzTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: OratorzColors.secondaryColor,
       ),
+      tooltipTheme: const TooltipThemeData(
+        margin: EdgeInsets.all(5),
+      ),
       cardTheme: CardTheme(
         elevation: 5,
         shadowColor: Colors.white,
@@ -49,8 +53,15 @@ class OratorzTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          padding:
-              MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(12)),
+          padding: MaterialStateProperty.all<EdgeInsets>(
+            const EdgeInsets.all(12),
+          ),
+          overlayColor: MaterialStateProperty.all<Color>(
+            const Color.fromARGB(255, 255, 250, 230),
+          ),
+          foregroundColor: MaterialStateProperty.all<Color>(
+            Colors.amber.shade400,
+          ),
           shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
               side: BorderSide(
@@ -60,33 +71,32 @@ class OratorzTheme {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          overlayColor: MaterialStateProperty.all<Color>(
-            const Color.fromARGB(255, 255, 250, 230),
-          ),
-          foregroundColor:
-              MaterialStateProperty.all<Color>(Colors.amber.shade400),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor: OratorzColors.primaryColor,
           shape: const StadiumBorder(),
+          backgroundColor: OratorzColors.primaryColor,
           maximumSize: const Size(double.infinity, 56),
           minimumSize: const Size(double.infinity, 56),
         ),
       ),
-      inputDecorationTheme: const InputDecorationTheme(
-        iconColor: OratorzColors.primaryColor,
-        prefixIconColor: OratorzColors.primaryColor,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
-        focusedBorder: OutlineInputBorder(
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: Colors.grey.shade700,
+        selectionColor: Colors.grey.shade500,
+        selectionHandleColor: Colors.grey.shade700,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.grey.shade200,
+        iconColor: Colors.grey.shade600,
+        prefixIconColor: Colors.grey.shade600,
+        contentPadding: const EdgeInsets.all(12),
+        focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
       ),

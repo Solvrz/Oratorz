@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/extensions.dart';
+import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import './dialogs/speech_settings.dart';
 import './dialogs/yield_spaeaker.dart';
-import 'dialogs/speech_settings.dart';
 
 class Hourglass extends StatefulWidget {
   final String tag;
@@ -134,57 +136,74 @@ class _HourglassState extends State<Hourglass> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    RoundedButton(
-                      onPressed: () {
-                        if (_speechController.isSpeaking ||
-                            timeLeft.inSeconds == 0) {
-                          _speechController.stopwatch.stop();
-                          _speechController.overallStopwatch.stop();
-                        } else {
-                          _speechController.stopwatch.start();
-                          _speechController.overallStopwatch.start();
-                        }
+                    Obx(
+                      () => RoundedButton(
+                        onPressed: () {
+                          if (_speechController.isSpeaking ||
+                              timeLeft.inSeconds == 0) {
+                            _speechController.stopwatch.stop();
+                            _speechController.overallStopwatch.stop();
+                          } else {
+                            _speechController.stopwatch.start();
+                            _speechController.overallStopwatch.start();
+                          }
 
-                        _speechController.isSpeaking =
-                            !_speechController.isSpeaking;
-                      },
-                      color: Colors.blueGrey.shade600,
-                      child: Icon(
-                        _speechController.isSpeaking
-                            ? Icons.stop
-                            : Icons.play_arrow,
+                          _speechController.isSpeaking =
+                              !_speechController.isSpeaking;
+                        },
+                        color: Colors.blueGrey.shade600,
+                        tooltip:
+                            _speechController.isSpeaking ? "Stop" : "Start",
+                        child: Icon(
+                          _speechController.isSpeaking
+                              ? Icons.stop
+                              : Icons.play_arrow,
+                        ),
                       ),
                     ),
                     RoundedButton(
                       onPressed: () {
                         if (_speechController.stopwatch.elapsed.inSeconds ==
-                            0) {
-                          //TODO: Confirmation Dialog
-                          _speechController.overallStopwatch.reset();
+                                0 &&
+                            _speechController.overallDuration.inSeconds > 0) {
+                          // TODO: Url not matching with tab on Changing Page
+                          showDialog(
+                            context: context,
+                            builder: (context) =>
+                                _ResetCacusTimeDialog(tag: widget.tag),
+                          );
+
                           return;
                         }
+
+                        _speechController.stopwatch.stop();
+                        _speechController.overallStopwatch.stop();
+
+                        _speechController.isSpeaking = false;
 
                         _speechController.stopwatch.reset();
                         timer.cancel();
 
                         setupTimer();
                       },
+                      tooltip: "Reset Timer",
                       color: Colors.blue.shade400,
                       child: const Icon(Icons.restart_alt),
                     ),
                     RoundedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         _speechController.stopwatch.stop();
                         _speechController.overallStopwatch.stop();
 
                         _speechController.stopwatch.reset();
 
-                        await showDialog(
+                        showDialog(
                           context: context,
                           builder: (_) => SpeechSettingsDialog(tag: widget.tag),
                         );
                       },
                       color: Colors.amber.shade400,
+                      tooltip: "Settings",
                       child: const Icon(Icons.settings),
                     ),
                     if (widget.canYield)
@@ -210,6 +229,7 @@ class _HourglassState extends State<Hourglass> {
                           );
                         },
                         color: Colors.grey.shade800,
+                        tooltip: "Yield Speaker",
                         child: const Icon(Icons.person),
                       ),
                   ],
@@ -219,6 +239,55 @@ class _HourglassState extends State<Hourglass> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ResetCacusTimeDialog extends StatelessWidget {
+  final String tag;
+
+  const _ResetCacusTimeDialog({required this.tag});
+
+  @override
+  Widget build(BuildContext context) {
+    final SpeechController _speechController =
+        Get.find<SpeechController>(tag: tag);
+
+    return DialogBox(
+      heading: "Reset Caucus Time",
+      content: const Text(
+        "Do you want to reset the Caucus Time?",
+      ),
+      actions: [
+        RoundedButton(
+          border: true,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 4,
+          ),
+          onPressed: () => context.pop(),
+          child: const Text("No"),
+        ),
+        const SizedBox(width: 5),
+        RoundedButton(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
+          onPressed: () {
+            _speechController.stopwatch.stop();
+            _speechController.overallStopwatch.stop();
+
+            _speechController.isSpeaking = false;
+
+            _speechController.overallStopwatch.reset();
+            _speechController.stopwatch.reset();
+
+            context.pop();
+          },
+          child: const Text("Yes"),
+        ),
+      ],
     );
   }
 }

@@ -139,7 +139,8 @@ class ResultCard extends StatelessWidget {
                 children: [
                   RoundedButton(
                     color: Colors.amber.shade400,
-                    onPressed: () async => showDialog(
+                    tooltip: "Settings",
+                    onPressed: () => showDialog(
                       context: context,
                       builder: (_) => const VoteSettingsDialog(tag: "vote"),
                     ),
@@ -151,6 +152,7 @@ class ResultCard extends StatelessWidget {
                   ),
                   RoundedButton(
                     color: Colors.blue.shade400,
+                    tooltip: "Reset Vote",
                     onPressed: () {
                       _voteController.reset();
                       _voteController.update();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/vote.dart';
@@ -51,10 +52,13 @@ class VoteCard extends StatelessWidget {
                     children: [
                       RoundedButton(
                         color: Colors.amber.shade400,
-                        onPressed: () async => showDialog(
+                        tooltip: "Settings",
+                        onPressed: () => showDialog(
                           context: context,
-                          builder: (_) =>
-                              const VoteSettingsDialog(tag: "motions"),
+                          builder: (_) => const VoteSettingsDialog(
+                            tag: "motions",
+                            title: false,
+                          ),
                         ),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 32,
@@ -65,6 +69,7 @@ class VoteCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       RoundedButton(
                         color: Colors.blue.shade400,
+                        tooltip: "Reset Vote",
                         onPressed: () {
                           _voteController.reset();
                           _voteController.update();
@@ -81,35 +86,40 @@ class VoteCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Divider(),
-              _voteController.voters.isNotEmpty
-                  ? const _Voting()
-                  : _voteController.pastVoters.isEmpty
-                      ? Text(
-                          "Conduct a roll call before voting",
-                          style: context.textTheme.bodyText1,
-                        )
-                      : Center(
-                          child: RichText(
-                            text: TextSpan(
-                              text: "Vote Completed",
-                              style: context.textTheme.headline2,
-                              children: [
-                                TextSpan(
-                                  text:
-                                      "\nResult: Vote ${_voteController.inFavor >= _voteController.majorityVal() ? "Passed" : "Failed"}!",
-                                  style: context.textTheme.headline5?.copyWith(
-                                    fontSize: 30,
-                                    color: _voteController.inFavor >=
-                                            _voteController.majorityVal()
-                                        ? Colors.green
-                                        : Colors.red,
-                                  ),
-                                )
-                              ],
+              Expanded(
+                child: Obx(
+                  () => _voteController.voters.isNotEmpty
+                      ? const _Voting()
+                      : _voteController.pastVoters.isEmpty
+                          ? Text(
+                              "Conduct a roll call before voting",
+                              style: context.textTheme.bodyText1,
+                            )
+                          : Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Vote Completed",
+                                  style: context.textTheme.headline2,
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          "\nResult: Vote ${_voteController.inFavor >= _voteController.majorityVal() ? "Passed" : "Failed"}!",
+                                      style:
+                                          context.textTheme.headline5?.copyWith(
+                                        fontSize: 30,
+                                        color: _voteController.inFavor >=
+                                                _voteController.majorityVal()
+                                            ? Colors.green
+                                            : Colors.red,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                ),
+              ),
             ],
           ),
         ),
@@ -123,53 +133,76 @@ class _Voting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ItemScrollController _scrollController = ItemScrollController();
     final VoteController _voteController =
         Get.find<VoteController>(tag: "motions");
 
+    final List<String> _voters = _voteController.voters.toList();
+
     return SizedBox(
-      height: context.height / 3,
-      child: Obx(
-        // TODO: Past Voters not Retaining & Voters Increasing
-        () => ListView.separated(
-          itemCount: _voteController.voters.length,
-          itemBuilder: (_, index) => DelegateTile(
-            delegate: _voteController.voters[index],
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RoundedButton(
-                  border: _voteController.voteVal(
-                    _voteController.voters[index],
-                    invert: true,
+      height: context.height / 1.95,
+      child: ScrollablePositionedList.separated(
+        itemCount: _voters.length,
+        itemScrollController: _scrollController,
+        itemBuilder: (_, index) {
+          final String _delegate = _voters[index];
+
+          return DelegateTile(
+            delegate: _delegate,
+            trailing: Obx(
+              () => Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RoundedButton(
+                    border: _voteController.voteVal(
+                      delegate: _delegate,
+                      invert: true,
+                    ),
+                    color: Colors.green,
+                    onPressed: () {
+                      _voteController.vote(
+                        vote: true,
+                        voter: _delegate,
+                      );
+                      if (index < _voters.length - 7) {
+                        _scrollController.scrollTo(
+                          index: index + 1,
+                          duration: const Duration(milliseconds: 250),
+                        );
+                      }
+                    },
+                    child: const Icon(Icons.thumb_up),
                   ),
-                  color: Colors.green,
-                  onPressed: () => _voteController.vote(
-                    vote: true,
-                    remove: false,
-                    voter: _voteController.voters[index],
+                  const SizedBox(width: 4),
+                  RoundedButton(
+                    border: _voteController.voteVal(
+                      invert: false,
+                      delegate: _delegate,
+                    ),
+                    color: Colors.red,
+                    onPressed: () {
+                      _voteController.vote(
+                        vote: false,
+                        voter: _delegate,
+                      );
+
+                      if (index < _voters.length - 7) {
+                        _scrollController.scrollTo(
+                          index: index + 1,
+                          duration: const Duration(milliseconds: 250),
+                        );
+                      }
+                    },
+                    child: const Icon(Icons.thumb_down),
                   ),
-                  child: const Icon(Icons.thumb_up),
-                ),
-                const SizedBox(width: 4),
-                RoundedButton(
-                  border: _voteController.voteVal(
-                    _voteController.voters[index],
-                  ),
-                  color: Colors.red,
-                  onPressed: () => _voteController.vote(
-                    vote: false,
-                    remove: false,
-                    voter: _voteController.voters[index],
-                  ),
-                  child: const Icon(Icons.thumb_down),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          separatorBuilder: (_, __) => Divider(
-            height: 6,
-            color: Colors.grey.shade400,
-          ),
+          );
+        },
+        separatorBuilder: (_, __) => Divider(
+          height: 6,
+          color: Colors.grey.shade400,
         ),
       ),
     );

@@ -14,10 +14,11 @@ class NewCommitteeCard extends StatelessWidget {
     final SetupController _setupController = Get.find<SetupController>();
 
     return SizedBox(
-      height: context.height / 1.55,
+      height: context.height / 1.415,
+      width: context.width / 2,
       child: Card(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+        child: Container(
+          margin: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -72,7 +73,7 @@ class _CommitteeType extends StatelessWidget {
         final bool _open = _setupController.committeeType == index;
 
         return SizedBox(
-          height: _open ? context.height / 2.2 : 65,
+          height: _open ? context.height / 1.9 : 65,
           child: Column(
             children: [
               InkWell(
@@ -80,12 +81,13 @@ class _CommitteeType extends StatelessWidget {
                   _setupController.committeeType = index;
                   _setupController.update();
                 },
-                hoverColor: const Color.fromARGB(255, 250, 250, 250),
                 child: Container(
                   margin: const EdgeInsets.all(12),
                   child: Row(
                     children: [
-                      Icon(_open ? Icons.arrow_right : Icons.arrow_drop_down),
+                      Icon(
+                        _open ? Icons.arrow_right : Icons.arrow_drop_down,
+                      ),
                       Text(
                         title,
                         style: context.textTheme.headline6,
@@ -96,30 +98,18 @@ class _CommitteeType extends StatelessWidget {
               ),
               if (_open) ...[
                 Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  margin: const EdgeInsets.all(12),
                   child: TextField(
+                    autofocus: true,
                     controller: _searchController,
                     onChanged: (_) => _setupController.update(),
-                    cursorColor: Colors.grey[600],
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "Search",
-                      prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                      hintStyle: context.textTheme.bodyText1,
-                      hoverColor: Colors.transparent,
-                      fillColor: Colors.transparent,
-                      focusedBorder: InputBorder.none,
-                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.search),
                     ),
                   ),
                 ),
-                GetBuilder<SetupController>(
+                Builder(
                   builder: (_) {
                     final List<String> _delegates = [];
 
@@ -160,7 +150,7 @@ class _CommitteeType extends StatelessWidget {
                                     },
                                     trailing: Icon(
                                       Icons.add,
-                                      color: Colors.grey[400],
+                                      color: Colors.grey.shade400,
                                     ),
                                   ),
                                 );
@@ -169,7 +159,7 @@ class _CommitteeType extends StatelessWidget {
                                 indent: 65,
                                 height: 5,
                                 thickness: 0.5,
-                                color: Colors.grey[400],
+                                color: Colors.grey.shade400,
                               ),
                             )
                           : Center(

@@ -1,78 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/rounded_button.dart';
+import 'motion_dialog.dart';
 
-class AddMotionsCard extends StatelessWidget {
-  const AddMotionsCard({super.key});
+class AddMotionCard extends StatelessWidget {
+  const AddMotionCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> motions = [
       {
-        "name": "Moderated Caucus",
+        "type": "Moderated Caucus",
         "icon": Icons.forum,
-        "onTap": () {},
+        "widgets": ["topic", "duration", "overallDuration"],
+        "topic": {"Topic": "Your Topic"},
+        "onPass": () {},
       },
       {
-        "name": "Unmoderated Caucus",
+        "type": "Unmoderated Caucus",
         "icon": Icons.workspaces,
-        "onTap": () {},
+        "widgets": ["duration"],
+        "onPass": () {},
       },
       {
-        "name": "Consultation",
+        "type": "Consultation",
         "icon": Icons.circle_outlined,
-        "onTap": () {},
+        "widgets": ["topic", "duration"],
+        "topic": {"Topic": "Your Topic"},
+        "onPass": () {},
       },
       {
-        "name": "Adjourn Meeting",
+        "type": "Adjourn Meeting",
         "icon": Icons.pause,
-        "onTap": () {},
+        "widgets": ["duration"],
+        "onPass": () {},
       },
       {
-        "name": "Change GSL Time",
+        "type": "Change GSL Time",
         "icon": Icons.timelapse,
-        "onTap": () {},
+        "widgets": ["duration"],
+        "onPass": () {},
       },
       {
-        "name": "Extend Caucus",
+        "type": "Extend Caucus",
         "icon": Icons.more_time,
-        "onTap": () {},
+        "widgets": ["caucus", "duration"],
+        "onPass": () {},
       },
       {
-        "name": "Prayer",
+        "type": "Prayer",
         "icon": Icons.church,
-        "onTap": () {},
+        "widgets": ["topic", "duration"],
+        "topic": {"Cause": "Your Cause"},
+        "onPass": () {},
       },
       {
-        "name": "Close Agenda",
+        "type": "Close Agenda",
         "icon": Icons.cancel_presentation,
-        "onTap": () {}
+        "onPass": () {},
       },
       {
-        "name": "End Meeting",
+        "type": "End Meeting",
         "icon": Icons.stop,
-        "onTap": () {},
+        "onPass": () {},
       },
       {
-        "name": "Set Agenda",
+        "type": "Set Agenda",
         "icon": Icons.tune,
-        "onTap": () {},
+        "widgets": ["topic"],
+        "topic": {"Agenda": Get.find<CommitteeController>().committee.agenda},
+        "onPass": () {},
       },
       {
-        "name": "Tour de Table",
+        "type": "Tour de Table",
         "icon": Icons.autorenew,
-        "onTap": () {},
+        "widgets": ["topic", "duration"],
+        "topic": {"Topic": "Your Topic"},
+        "onPass": () {},
       },
       {
-        "name": "Appeal Chair's Decision",
+        "type": "Appeal Chair's Decision",
         "icon": Icons.block,
-        "onTap": () {},
+        "widgets": ["topic"],
+        "topic": {"Decision": "Your Decision"},
+        "onPass": () {},
       },
       {
-        "name": "Custom",
+        "type": "Custom",
         "icon": Icons.edit,
-        "onTap": () {},
+        "widgets": ["topic", "duration"],
+        "topic": {"Title": "Your Title"},
+        "onPass": () {},
       },
     ];
 
@@ -87,7 +107,7 @@ class AddMotionsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Add Motions",
+                "Add Motion",
                 style: context.textTheme.headline5,
               ),
               const SizedBox(height: 10),
@@ -101,7 +121,18 @@ class AddMotionsCard extends StatelessWidget {
                       margin: const EdgeInsets.all(8),
                       child: RoundedButton(
                         border: true,
-                        onPressed: _motion["onTap"],
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => MotionDialog(
+                            motion: {
+                              "type": _motion["type"],
+                              "topic": _motion["topic"] ?? <String, String>{},
+                              "widgets": _motion["widgets"] ?? <String>[],
+                              "onPass": _motion["onPass"],
+                              "time": DateTime.now(),
+                            },
+                          ),
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
@@ -112,7 +143,7 @@ class AddMotionsCard extends StatelessWidget {
                               color: Colors.black,
                             ),
                             Text(
-                              _motion["name"],
+                              _motion["type"],
                               style: context.textTheme.bodyLarge,
                             ),
                           ],

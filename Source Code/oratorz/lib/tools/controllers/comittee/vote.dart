@@ -46,7 +46,7 @@ class VoteController extends GetxController {
     return _against;
   }
 
-  bool voteVal(String delegate, {bool invert = false}) {
+  bool voteVal({required String delegate, required bool invert}) {
     if (hasVoted(delegate)) {
       final bool _result = _pastVoters
           .firstWhere(
@@ -66,7 +66,7 @@ class VoteController extends GetxController {
       case 0:
         return (totalVoters / 2 + (totalVoters > 0 ? 1 : 0)).floor();
       case 1:
-        return (((2 / 3) * totalVoters) + (totalVoters > 0 ? 1 : 0)).floor();
+        return ((2 / 3) * totalVoters).ceil();
       case 2:
         return totalVoters;
 
@@ -76,13 +76,13 @@ class VoteController extends GetxController {
   }
 
   bool hasVoted(String delegate) {
-    bool _voted = false;
+    for (final Map<String, bool> voter in _pastVoters) {
+      if (voter.keys.first == delegate) {
+        return true;
+      }
+    }
 
-    _pastVoters.forEach((_voter) {
-      _voted = _voter.keys.first == delegate;
-    });
-
-    return _voted;
+    return false;
   }
 
   void _saveVoters() {
@@ -106,17 +106,16 @@ class VoteController extends GetxController {
 
   void vote({
     required bool vote,
-    bool remove = true,
     String? voter,
   }) {
     final String _voter = voter ?? _voters[0];
 
     if (!hasVoted(_voter)) {
-      _pastVoters.add({voter ?? _voters[0]: vote});
-      if (remove) _voters.removeAt(0);
+      _pastVoters.add({_voter: vote});
+      _voters.remove(_voter);
     } else {
       _pastVoters.removeWhere((_vote) => _vote.keys.first == _voter);
-      _pastVoters.add({voter ?? _voters[0]: vote});
+      _pastVoters.add({_voter: vote});
     }
 
     _saveVoters();
