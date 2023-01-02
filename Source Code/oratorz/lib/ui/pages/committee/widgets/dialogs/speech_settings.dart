@@ -6,10 +6,10 @@ import 'package:go_router/go_router.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/dialog_box.dart';
 
-class CommitteeSettingsDialog extends StatelessWidget {
+class SpeechSettingsDialog extends StatelessWidget {
   final String tag;
 
-  const CommitteeSettingsDialog({super.key, required this.tag});
+  const SpeechSettingsDialog({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
@@ -183,6 +183,8 @@ class _TimerButton extends StatelessWidget {
                     controller: controller,
                     decoration: InputDecoration(
                       border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                       fillColor: Colors.transparent,
                       hintText: "00",
                       hintStyle: context.textTheme.headline1!.copyWith(

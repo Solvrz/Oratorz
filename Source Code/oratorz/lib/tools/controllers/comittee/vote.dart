@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '/services/local_storage.dart';
 import './committee.dart';
 
 class VoteController extends GetxController {
@@ -19,6 +20,8 @@ class VoteController extends GetxController {
   set voters(List<String> newVoters) => _voters.value = newVoters;
 
   List<Map<String, bool>> get pastVoters => _pastVoters;
+  set pastVoters(List<Map<String, bool>> newVoters) =>
+      _pastVoters.value = newVoters;
 
   String get currentVoter => _voters.isNotEmpty ? _voters[0] : "";
   int get totalVoters => _voters.length + _pastVoters.length;
@@ -82,13 +85,24 @@ class VoteController extends GetxController {
     return _voted;
   }
 
+  void _saveVoters() {
+    LocalStorage.updateVote("voters", voters);
+    LocalStorage.updateVote("past", pastVoters);
+  }
+
   void reset() {
     _voters.value =
         Get.find<CommitteeController>().committee.presentAndVotingDelegates;
     _pastVoters.value = [];
+
+    _saveVoters();
   }
 
-  void removeVoter(String delegate) => _voters.remove(delegate);
+  void removeVoter(String delegate) {
+    _voters.remove(delegate);
+
+    _saveVoters();
+  }
 
   void vote({
     required bool vote,
@@ -104,5 +118,16 @@ class VoteController extends GetxController {
       _pastVoters.removeWhere((_vote) => _vote.keys.first == _voter);
       _pastVoters.add({voter ?? _voters[0]: vote});
     }
+
+    _saveVoters();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "topic": _topic.value,
+      "majority": _majority.value,
+      "voters": _voters,
+      "past": _pastVoters,
+    };
   }
 }

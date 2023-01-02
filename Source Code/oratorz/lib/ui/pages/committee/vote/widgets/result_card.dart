@@ -14,7 +14,7 @@ class ResultCard extends StatelessWidget {
         Get.find<VoteController>(tag: "vote");
 
     return SizedBox(
-      height: context.height / 2.69,
+      height: context.height / 2.6,
       width: context.width / 4,
       child: Card(
         child: Container(
@@ -75,48 +75,63 @@ class ResultCard extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                 ),
                 child: Obx(
-                  () => Stack(
-                    children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            flex: _voteController.inFavor + 1,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12),
+                  () {
+                    final int inFavorFlex = _voteController.pastVoters.isEmpty
+                        ? 1
+                        : _voteController.inFavor;
+
+                    final int inAgainstFlex = _voteController.pastVoters.isEmpty
+                        ? 1
+                        : _voteController.against;
+
+                    return Stack(
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              flex: inFavorFlex,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: inAgainstFlex == 0
+                                      ? BorderRadius.circular(12)
+                                      : const BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          bottomLeft: Radius.circular(12),
+                                        ),
                                 ),
                               ),
                             ),
-                          ),
-                          Flexible(
-                            flex: _voteController.against + 1,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(12),
-                                  bottomRight: Radius.circular(12),
+                            Flexible(
+                              flex: inAgainstFlex,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: inFavorFlex == 0
+                                      ? BorderRadius.circular(12)
+                                      : const BorderRadius.only(
+                                          topRight: Radius.circular(12),
+                                          bottomRight: Radius.circular(12),
+                                        ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Align(
-                        alignment: _voteController.majority == 0
-                            ? Alignment.center
-                            : Alignment.centerRight,
-                        widthFactor: _voteController.majority == 1 ? 15 : null,
-                        child: const VerticalDivider(
-                          thickness: 1.5,
-                          color: Colors.black,
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
+                        Align(
+                          alignment: _voteController.majority == 0
+                              ? Alignment.center
+                              : Alignment.centerRight,
+                          widthFactor:
+                              _voteController.majority == 1 ? 15 : null,
+                          child: const VerticalDivider(
+                            thickness: 1.5,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
               Row(

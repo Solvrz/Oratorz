@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/ui/widgets/rounded_button.dart';
 import './motion_tile.dart';
@@ -13,7 +14,7 @@ class CurrentMotionCard extends StatelessWidget {
     final MotionsController _motionsController = Get.find<MotionsController>();
 
     return SizedBox(
-      height: context.height / 2.95,
+      height: context.height / 2.9,
       width: context.width / 3,
       child: Card(
         child: Container(
@@ -101,7 +102,10 @@ class _MultipleModeButton extends StatelessWidget {
       if (_motionsController.mode != mode) {
         return RoundedButton(
           color: color,
-          onPressed: () => _motionsController.mode = mode,
+          onPressed: () {
+            _motionsController.mode = mode;
+            LocalStorage.updateMotions("mode", mode);
+          },
           child: Icon(icon),
         );
       } else {

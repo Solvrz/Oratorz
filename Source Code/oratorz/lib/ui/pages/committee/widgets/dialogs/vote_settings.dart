@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/widgets/dialog_box.dart';
 
@@ -42,6 +43,8 @@ class VoteSettingsDialog extends StatelessWidget {
                     controller: _topicController,
                     onSubmitted: (value) {
                       _voteController.topic = _topicController.text.trim();
+
+                      LocalStorage.updateVote("topic", _voteController.topic);
 
                       context.pop();
                     },
@@ -89,6 +92,7 @@ class VoteSettingsDialog extends StatelessWidget {
           child: const Text("Change"),
           onPressed: () {
             _voteController.topic = _topicController.text.trim();
+            LocalStorage.updateVote("topic", _voteController.topic);
 
             context.pop();
           },
@@ -119,7 +123,11 @@ class _Majority extends StatelessWidget {
           Radio<int>(
             value: value,
             groupValue: _voteController.majority,
-            onChanged: (value) => _voteController.majority = value!,
+            onChanged: (value) {
+              _voteController.majority = value!;
+
+              LocalStorage.updateVote("majority", value);
+            },
           ),
           Text(
             "$title (${_voteController.majorityVal(value: value)})",

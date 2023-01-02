@@ -8,8 +8,8 @@ import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/rounded_button.dart';
-import './dialogs/committee_settings.dart';
 import './dialogs/yield_spaeaker.dart';
+import 'dialogs/speech_settings.dart';
 
 class Hourglass extends StatefulWidget {
   final String tag;
@@ -48,28 +48,21 @@ class _HourglassState extends State<Hourglass> {
 
   void setupTimer() =>
       timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
-        setState(() {
-          timeLeft =
-              _speechController.duration - _speechController.stopwatch.elapsed;
+        if (mounted) {
+          setState(() {
+            timeLeft = _speechController.duration -
+                _speechController.stopwatch.elapsed;
 
-          if (timeLeft.inMilliseconds < 0) {
-            _speechController.stopwatch.stop();
-            _speechController.overallStopwatch.stop();
+            if (timeLeft.inMilliseconds < 0) {
+              _speechController.stopwatch.stop();
+              _speechController.overallStopwatch.stop();
 
-            timeLeft = Duration.zero;
-            timer.cancel();
-          }
-        });
+              timeLeft = Duration.zero;
+              timer.cancel();
+            }
+          });
+        }
       });
-
-  @override
-  void dispose() {
-    timer.cancel();
-    _speechController.stopwatch.stop();
-    _speechController.overallStopwatch.stop();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,8 +181,7 @@ class _HourglassState extends State<Hourglass> {
 
                         await showDialog(
                           context: context,
-                          builder: (_) =>
-                              CommitteeSettingsDialog(tag: widget.tag),
+                          builder: (_) => SpeechSettingsDialog(tag: widget.tag),
                         );
                       },
                       color: Colors.amber.shade400,

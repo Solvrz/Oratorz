@@ -28,11 +28,7 @@ class CommitteePage extends StatelessWidget {
 
     return Body(
       trailing: _ModeSelector(),
-      child: Expanded(
-        child: Obx(
-          () => _modeController.currentMode,
-        ),
-      ),
+      child: Obx(() => _modeController.currentMode),
     );
   }
 }

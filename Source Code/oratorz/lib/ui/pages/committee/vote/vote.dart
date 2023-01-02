@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/vote.dart';
 import './widgets/past_voters_card.dart';
@@ -14,31 +15,32 @@ class VotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!Get.isRegistered<VoteController>()) {
-      Get.put(
-        (VoteController()
-          ..voters = Get.find<CommitteeController>()
-              .committee
-              .presentAndVotingDelegates),
-        tag: "vote",
-      );
+      final bool exists = LocalStorage.loadVote();
+
+      if (!exists) {
+        final VoteController controller = VoteController();
+        controller.voters =
+            Get.find<CommitteeController>().committee.presentAndVotingDelegates;
+
+        Get.put(controller, tag: "vote");
+        LocalStorage.saveVote(controller);
+      }
     }
 
     return Body(
-      child: Expanded(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: const [
-                ResultCard(),
-                SizedBox(height: 12),
-                PastVotersCard(),
-              ],
-            ),
-            const SizedBox(width: 36),
-            const VotingCard(),
-          ],
-        ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: const [
+              ResultCard(),
+              SizedBox(height: 12),
+              PastVotersCard(),
+            ],
+          ),
+          const SizedBox(width: 36),
+          const VotingCard(),
+        ],
       ),
     );
   }

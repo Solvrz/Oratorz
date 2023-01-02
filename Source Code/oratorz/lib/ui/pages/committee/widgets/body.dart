@@ -110,7 +110,7 @@ class Body extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          child,
+          Expanded(child: child),
         ],
       ),
     );

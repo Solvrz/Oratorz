@@ -116,11 +116,9 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
               ),
             ),
             Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(16),
-                child: Obx(
-                  () => _committeeController.currentTab,
-                ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Obx(() => _committeeController.currentTab),
               ),
             ),
           ],

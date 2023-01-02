@@ -30,8 +30,6 @@ class VotingCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Obx(
-                // TODO: Storage remove past voters from current
-
                 () => _voteController.voters.isNotEmpty
                     ? Column(
                         children: [
@@ -108,7 +106,7 @@ class VotingCard extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: context.height / 2.15,
+                            height: context.height / 2.3,
                             child: ListView.separated(
                               itemCount: _voteController.voters.length,
                               itemBuilder: (_, index) => DelegateTile(

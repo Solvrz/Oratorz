@@ -22,6 +22,12 @@ const List<Map<String, dynamic>> COMMITTEE_TABS = [
     "icon": Icons.ballot_outlined,
     "tab": MotionsPage(),
   },
+  {
+    "route": "/score",
+    "title": "Scorecard",
+    "icon": Icons.scoreboard_outlined,
+    "tab": ScorecardPage(),
+  },
 ];
 
 const List<Map<String, dynamic>> COMMITTEE_MODES = [

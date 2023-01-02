@@ -42,8 +42,8 @@ class CommitteeController extends GetxController {
 
     // TODO: Disscuss This
 
-    if (Get.isRegistered<VoteController>()) {
-      Get.find<VoteController>().voters =
+    if (Get.isRegistered<VoteController>(tag: "vote")) {
+      Get.find<VoteController>(tag: "vote").voters =
           _committee.value.presentAndVotingDelegates;
     }
 
@@ -54,7 +54,7 @@ class CommitteeController extends GetxController {
   }
 
   void setAllPresentAndVoting() {
-    rollCall.updateAll((_, __) => 2);
+    _rollCall.updateAll((_, __) => 2);
     _saveRollCall();
   }
 
