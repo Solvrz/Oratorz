@@ -44,7 +44,6 @@ linter:
     - cast_nullable_to_non_nullable
     - control_flow_in_finally
     - curly_braces_in_flow_control_structures
-    - depend_on_referenced_packages
     - deprecated_consistency
     - empty_catches
     - empty_constructor_bodies

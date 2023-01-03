@@ -10,7 +10,9 @@ class UnmodTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController("unmod"), tag: "unmod");
+    if (!Get.isRegistered<SpeechController>(tag: "unmod")) {
+      Get.put<SpeechController>(SpeechController("unmod"), tag: "unmod");
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

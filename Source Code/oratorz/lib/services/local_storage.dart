@@ -128,7 +128,6 @@ class LocalStorage {
     if (data == null) return false;
 
     data[key] = value;
-
     box.write("vote", data);
 
     return true;
@@ -163,7 +162,6 @@ class LocalStorage {
     if (data == null) return false;
 
     data[key] = value;
-
     box.write("motions", data);
 
     return true;
@@ -206,7 +204,6 @@ class LocalStorage {
     if (data == null) return false;
 
     data[key] = value;
-
     box.write("score", data);
 
     return true;

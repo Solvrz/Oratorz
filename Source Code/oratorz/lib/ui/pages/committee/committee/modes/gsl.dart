@@ -19,7 +19,7 @@ class GSLTab extends StatelessWidget {
       if (!exists) {
         final SpeechController controller = SpeechController("gsl");
 
-        Get.put(controller, tag: "gsl");
+        Get.put<SpeechController>(controller, tag: "gsl");
         LocalStorage.saveSpeech(controller);
       }
     }

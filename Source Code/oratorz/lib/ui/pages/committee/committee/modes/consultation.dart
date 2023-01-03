@@ -10,10 +10,14 @@ class ConsultationTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController =
-        Get.put(SpeechController("consultation"), tag: "consultation");
+    if (!Get.isRegistered<SpeechController>(tag: "consultation")) {
+      final SpeechController _speechController = Get.put<SpeechController>(
+        SpeechController("consultation"),
+        tag: "consultation",
+      );
 
-    _speechController.subtopic = {"Topic": "Your Topic"};
+      _speechController.subtopic = {"Topic": "Your Topic"};
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

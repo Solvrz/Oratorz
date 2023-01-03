@@ -30,7 +30,6 @@ class MotionDialog extends StatelessWidget {
         width: context.width / 3.5,
         child: ListView(
           children: [
-            // TODO: Caucus Button
             if (motion["widgets"].contains("topic")) ...[
               TopicButton(
                 topic: motion["topic"],

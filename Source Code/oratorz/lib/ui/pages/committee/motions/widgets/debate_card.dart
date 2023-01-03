@@ -11,7 +11,7 @@ class DebateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController("motions"), tag: "motions");
+    Get.put<SpeechController>(SpeechController("motions"), tag: "motions");
 
     return Expanded(
       child: Card(

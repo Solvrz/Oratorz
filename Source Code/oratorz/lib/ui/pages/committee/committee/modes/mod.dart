@@ -18,12 +18,12 @@ class ModTab extends StatelessWidget {
 
       if (!exists) {
         final SpeechController controller =
-            Get.put(SpeechController("mod"), tag: "mod");
+            Get.put<SpeechController>(SpeechController("mod"), tag: "mod");
 
         controller.overallDuration = const Duration(minutes: 15);
         controller.subtopic = {"Topic": "Your Topic"};
 
-        Get.put(controller, tag: "mod");
+        Get.put<SpeechController>(controller, tag: "mod");
         LocalStorage.saveSpeech(controller);
       }
     }

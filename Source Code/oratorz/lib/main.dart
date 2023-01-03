@@ -48,7 +48,7 @@ class Oratorz extends StatelessWidget {
       routerConfig: GoRouter(
         initialLocation: "/",
         errorBuilder: (_, args) {
-          Get.put(RouteController(arguments: args));
+          Get.put<RouteController>(RouteController(arguments: args));
 
           return const ErrorPage();
         },
@@ -56,7 +56,7 @@ class Oratorz extends StatelessWidget {
           GoRoute(
             path: "/",
             redirect: (_, args) {
-              Get.put(RouteController(arguments: args));
+              Get.put<RouteController>(RouteController(arguments: args));
 
               return LocalStorage.committeeExists()
                   ? "/committee/gsl"
@@ -66,7 +66,7 @@ class Oratorz extends StatelessWidget {
           GoRoute(
             path: "/setup",
             builder: (_, args) {
-              Get.put(RouteController(arguments: args));
+              Get.put<RouteController>(RouteController(arguments: args));
 
               return const SetupPage();
             },
@@ -74,7 +74,7 @@ class Oratorz extends StatelessWidget {
           GoRoute(
             path: "/:tab",
             builder: (_, args) {
-              Get.put(RouteController(arguments: args));
+              Get.put<RouteController>(RouteController(arguments: args));
 
               return const CommitteeMainPage();
             },
@@ -82,7 +82,7 @@ class Oratorz extends StatelessWidget {
           GoRoute(
             path: "/committee",
             redirect: (_, args) {
-              Get.put(RouteController(arguments: args));
+              Get.put<RouteController>(RouteController(arguments: args));
 
               return "/committee/gsl";
             },
@@ -90,7 +90,7 @@ class Oratorz extends StatelessWidget {
           GoRoute(
             path: "/committee/:mode",
             builder: (_, args) {
-              Get.put(RouteController(arguments: args));
+              Get.put<RouteController>(RouteController(arguments: args));
 
               return const CommitteeMainPage();
             },

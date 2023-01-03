@@ -137,7 +137,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
         committee: Get.find<SetupController>().committee,
       );
 
-      Get.put(controller);
+      Get.put<CommitteeController>(controller);
       LocalStorage.saveCommittee(controller);
 
       context.pushReplacement("/committee/gsl");

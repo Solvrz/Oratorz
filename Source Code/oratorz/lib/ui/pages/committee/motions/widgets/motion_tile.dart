@@ -90,7 +90,7 @@ class MotionTile extends StatelessWidget {
                           ],
                         ],
                       ),
-                      Text((motion["time"] as DateTime).to12Hour)
+                      Text(motion["time"])
                     ],
                   ),
                 ),

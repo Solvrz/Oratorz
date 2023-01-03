@@ -11,7 +11,9 @@ class SingleTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SpeechController("single"), tag: "single");
+    if (!Get.isRegistered<SpeechController>(tag: "single")) {
+      Get.put<SpeechController>(SpeechController("single"), tag: "single");
+    }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

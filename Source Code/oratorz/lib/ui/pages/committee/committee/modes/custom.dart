@@ -10,10 +10,12 @@ class CustomTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController =
-        Get.put(SpeechController("custom"), tag: "custom");
+    if (!Get.isRegistered<SpeechController>(tag: "custom")) {
+      final SpeechController _speechController =
+          Get.put<SpeechController>(SpeechController("custom"), tag: "custom");
 
-    _speechController.subtopic = {"Title": "Your Title"};
+      _speechController.subtopic = {"Title": "Your Title"};
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

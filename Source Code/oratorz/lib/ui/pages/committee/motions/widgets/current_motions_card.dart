@@ -111,7 +111,7 @@ class _PassMotionDialog extends StatelessWidget {
       () => DialogBox(
         heading: "Activate ${_motionsController.currentMotion["type"]}",
         content: const Text(
-          "Do you want to activate this motion now?",
+          "Do you want to activate this motion now?\nAfter Activation go to the respective page!",
         ),
         actions: [
           RoundedButton(
@@ -135,7 +135,8 @@ class _PassMotionDialog extends StatelessWidget {
               vertical: 4,
             ),
             onPressed: () {
-              _motionsController.currentMotion["onPass"]();
+              _motionsController
+                  .currentMotion["onPass"](_motionsController.currentMotion);
 
               _motionsController.nextMotion(passed: true);
               _motionsController.update();
@@ -175,6 +176,7 @@ class _MultipleModeButton extends StatelessWidget {
           onPressed: () {
             _motionsController.mode = mode;
             _motionsController.update();
+
             LocalStorage.updateMotions("mode", mode);
           },
           child: Icon(icon),

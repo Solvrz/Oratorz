@@ -14,7 +14,7 @@ class CommitteePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final RouteController _routeController = Get.find<RouteController>();
 
-    final ModeController _modeController = Get.put(
+    final ModeController _modeController = Get.put<ModeController>(
       ModeController(
         mode: COMMITTEE_MODES
             .indexWhere(

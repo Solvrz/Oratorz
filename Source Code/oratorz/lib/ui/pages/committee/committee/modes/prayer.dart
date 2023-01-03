@@ -10,10 +10,12 @@ class PrayerTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController =
-        Get.put(SpeechController("prayer"), tag: "prayer");
+    if (!Get.isRegistered<SpeechController>(tag: "prayer")) {
+      final SpeechController _speechController =
+          Get.put<SpeechController>(SpeechController("prayer"), tag: "prayer");
 
-    _speechController.subtopic = {"Cause": "Your Cause"};
+      _speechController.subtopic = {"Cause": "Your Cause"};
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

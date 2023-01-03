@@ -11,7 +11,7 @@ class SetupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SetupController());
+    Get.put<SetupController>(SetupController());
 
     return SafeArea(
       child: Scaffold(

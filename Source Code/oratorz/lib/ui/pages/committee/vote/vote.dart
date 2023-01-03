@@ -22,7 +22,7 @@ class VotePage extends StatelessWidget {
         controller.voters =
             Get.find<CommitteeController>().committee.presentAndVotingDelegates;
 
-        Get.put(controller, tag: "vote");
+        Get.put<VoteController>(controller, tag: "vote");
         LocalStorage.saveVote(controller);
       }
     }

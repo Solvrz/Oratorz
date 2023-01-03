@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '/tools/extensions.dart';
+
 class TimerButton extends StatelessWidget {
   final int value;
   final String subtitle;
@@ -52,8 +54,10 @@ class TimerButton extends StatelessWidget {
                       color: Colors.grey.shade700,
                     ),
                     onChanged: (text) {
-                      if (0 <= int.parse(text) && int.parse(text) < 60) {
-                        change(int.parse(text) - value);
+                      final int _val = text.toInt;
+
+                      if (0 <= _val && _val < 60) {
+                        change(_val - value);
                         controller.text = text.padLeft(2, "0");
                       } else {
                         controller.text = value.toString().padLeft(2, "0");

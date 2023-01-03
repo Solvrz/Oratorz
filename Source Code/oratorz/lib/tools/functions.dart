@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Widget flag(String delegate, {double size = 40}) => Container(
+Widget flag(String delegate, {double size = 30}) => Container(
       width: 50,
       height: 50,
       decoration: BoxDecoration(
@@ -24,6 +24,7 @@ Widget flag(String delegate, {double size = 40}) => Container(
           height: size,
           width: size,
           "images/Logo.png",
+          filterQuality: FilterQuality.high,
         ),
       ),
     );

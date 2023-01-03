@@ -12,10 +12,14 @@ class TourDeTableTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController =
-        Get.put(SpeechController("tourdetable"), tag: "tourdetable");
+    if (!Get.isRegistered<SpeechController>(tag: "tourdetable")) {
+      final SpeechController _speechController = Get.put<SpeechController>(
+        SpeechController("tourdetable"),
+        tag: "tourdetable",
+      );
 
-    _speechController.subtopic = {"Topic": "Your Topic"};
+      _speechController.subtopic = {"Topic": "Your Topic"};
+    }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

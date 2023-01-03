@@ -16,7 +16,7 @@ class VoteCard extends StatelessWidget {
     late final VoteController _voteController;
 
     if (!Get.isRegistered<VoteController>(tag: "motions")) {
-      _voteController = Get.put(
+      _voteController = Get.put<VoteController>(
         (VoteController()
           ..voters = Get.find<CommitteeController>()
               .committee

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../services/local_storage.dart';
+import '/services/local_storage.dart';
 
 class MotionsController extends GetxController {
   final RxMap<String, dynamic> _currentMotion = <String, dynamic>{}.obs;
@@ -28,7 +28,8 @@ class MotionsController extends GetxController {
   set mode(int newMode) => _mode.value = newMode;
 
   void _saveMotions() {
-    LocalStorage.updateMotions("current", _currentMotion);
+    // TODO: Fails To Encode
+    // LocalStorage.updateMotions("current", _currentMotion);
     LocalStorage.updateMotions("next", _nextMotions);
     LocalStorage.updateMotions("past", _pastMotions);
   }
@@ -39,23 +40,24 @@ class MotionsController extends GetxController {
     _nextMotions.removeAt(oldIndex);
     _nextMotions.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, _old);
 
-    LocalStorage.updateMotions("next", _nextMotions);
+    _saveMotions();
   }
 
   void addMotion(Map<String, dynamic> motion) {
     if (_currentMotion.isEmpty) {
       _currentMotion.value = motion;
+      _saveMotions();
+
       return;
     }
 
     _nextMotions.add(motion);
-
     _saveMotions();
   }
 
   void removeMotion(Map<String, dynamic> motion) {
     _nextMotions.remove(motion);
-    LocalStorage.updateMotions("next", _nextMotions);
+    _saveMotions();
   }
 
   void nextMotion({required bool passed, bool add = true}) {
