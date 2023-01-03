@@ -26,6 +26,12 @@ class CommitteePage extends StatelessWidget {
       ),
     );
 
+    html.window.history.pushState(
+      null,
+      "tab",
+      COMMITTEE_MODES[_modeController.mode]["route"],
+    );
+
     return Body(
       trailing: _ModeSelector(),
       child: Obx(() => _modeController.currentMode),

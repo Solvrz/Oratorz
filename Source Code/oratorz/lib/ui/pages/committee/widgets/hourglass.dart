@@ -166,7 +166,6 @@ class _HourglassState extends State<Hourglass> {
                         if (_speechController.stopwatch.elapsed.inSeconds ==
                                 0 &&
                             _speechController.overallDuration.inSeconds > 0) {
-                          // TODO: Url not matching with tab on Changing Page
                           showDialog(
                             context: context,
                             builder: (context) =>

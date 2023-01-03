@@ -114,6 +114,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                             onTap: () {
                               if (_tab.containsKey("route")) {
                                 _committeeController.tab = index;
+
                                 html.window.history.pushState(
                                   null,
                                   "tab",

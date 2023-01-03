@@ -9,6 +9,8 @@ extension ToolsString on String {
   num get toNum => num.parse(this);
   double get toDouble => double.parse(this);
   int get toInt => int.parse(this);
+
+  String get extension => ".${split("/")[1].split(".").last}";
 }
 
 extension ToolsDouble on double {
