@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import './widgets/header.dart';
-import './widgets/table.dart';
 import '../widgets/body.dart';
+import 'widgets/scoretable.dart';
 
 class ScorecardPage extends StatelessWidget {
   const ScorecardPage({super.key});
@@ -29,7 +29,7 @@ class ScorecardPage extends StatelessWidget {
         children: const [
           Header(),
           SizedBox(height: 24),
-          Table(),
+          ScoreTable(),
         ],
       ),
     );

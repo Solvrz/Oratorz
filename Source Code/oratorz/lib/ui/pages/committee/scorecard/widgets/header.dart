@@ -24,7 +24,7 @@ class Header extends StatelessWidget {
             RoundedButton(
               border: true,
               onPressed: () => _scorecardController.addParameter(
-                "New Parameter",
+                "New",
                 10,
               ),
               child: const Text("Add Parameter"),

@@ -29,18 +29,29 @@ class ParameterState extends State<Parameter> {
   @override
   Widget build(BuildContext context) {
     if (widget.mode == 0) {
-      return Text(_scorecardController.parameterVal(widget.index));
+      return Text(
+        _scorecardController.parameterVal(widget.index),
+        style: context.textTheme.bodyText1?.copyWith(
+          color: Colors.white,
+        ),
+      );
     }
 
     return InkWell(
-      hoverColor: Colors.transparent,
       onTap: () {},
+      hoverColor: Colors.transparent,
       onHover: (val) {
         setState(() => hovering = val);
       },
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(_scorecardController.parameterVal(widget.index)),
+          Text(
+            _scorecardController.parameterVal(widget.index),
+            style: context.textTheme.bodyText1?.copyWith(
+              color: Colors.white,
+            ),
+          ),
           if (hovering) ...[
             GestureDetector(
               onTap: () => showDialog(
