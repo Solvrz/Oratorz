@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '/config/constants/data.dart';
 import '/tools/functions.dart';
 
-class DelegateTile extends StatelessWidget {
+class DelegateTile extends StatefulWidget {
   final String delegate;
   final Function()? onTap;
   final Widget? trailing;
@@ -17,15 +17,29 @@ class DelegateTile extends StatelessWidget {
   });
 
   @override
+  State<DelegateTile> createState() => _DelegateTileState();
+}
+
+class _DelegateTileState extends State<DelegateTile> {
+  bool hovering = false;
+
+  @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      leading: flag(delegate),
-      title: Text(
-        DELEGATES[delegate]!,
-        style: context.textTheme.bodyText1,
+    return InkWell(
+      onTap: () {},
+      hoverColor: Colors.transparent,
+      onHover: (val) {
+        setState(() => hovering = val);
+      },
+      child: ListTile(
+        onTap: widget.onTap,
+        leading: flag(widget.delegate),
+        title: Text(
+          DELEGATES[widget.delegate]!,
+          style: context.textTheme.bodyText1,
+        ),
+        trailing: hovering ? widget.trailing : null,
       ),
-      trailing: trailing,
     );
   }
 }
