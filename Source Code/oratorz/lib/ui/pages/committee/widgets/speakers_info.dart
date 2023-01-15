@@ -15,6 +15,8 @@ class SpeakersInfo extends StatelessWidget {
     final SpeechController _speechController =
         Get.find<SpeechController>(tag: tag);
 
+    //TODO: Cofirmation on clicking Next/Done
+
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,6 +48,17 @@ class SpeakersInfo extends StatelessWidget {
             () => _speechController.currentSpeaker.isNotEmpty
                 ? DelegateTile(
                     delegate: _speechController.currentSpeaker,
+                    trailing: RoundedButton(
+                      color: Colors.red.shade400,
+                      padding: const EdgeInsets.all(4),
+                      onPressed: () => _speechController.removeCurrentSpeaker(),
+                      tooltip: "Remove Delegate",
+                      child: const Icon(
+                        Icons.close,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                    ),
                   )
                 : Text(
                     "No speaker currently added",
@@ -78,6 +91,19 @@ class SpeakersInfo extends StatelessWidget {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  RoundedButton(
+                                    color: Colors.blue.shade400,
+                                    padding: const EdgeInsets.all(4),
+                                    onPressed: () => _speechController
+                                        .swapWithCurrentSpeaker(index),
+                                    tooltip: "Swap with Current Speaker",
+                                    child: const Icon(
+                                      Icons.swap_calls,
+                                      size: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
                                   RoundedButton(
                                     color: Colors.red.shade400,
                                     padding: const EdgeInsets.all(4),

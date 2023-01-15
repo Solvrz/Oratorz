@@ -8,12 +8,14 @@ class DelegateTile extends StatefulWidget {
   final String delegate;
   final Function()? onTap;
   final Widget? trailing;
+  final bool showTrailing;
 
   const DelegateTile({
     super.key,
     required this.delegate,
     this.onTap,
     this.trailing,
+    this.showTrailing = false,
   });
 
   @override
@@ -38,7 +40,7 @@ class _DelegateTileState extends State<DelegateTile> {
           DELEGATES[widget.delegate]!,
           style: context.textTheme.bodyText1,
         ),
-        trailing: hovering ? widget.trailing : null,
+        trailing: hovering || widget.showTrailing ? widget.trailing : null,
       ),
     );
   }

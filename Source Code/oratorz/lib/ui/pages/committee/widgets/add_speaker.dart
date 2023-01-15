@@ -12,8 +12,7 @@ class AddSpeaker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController =
-        Get.find<SpeechController>(tag: tag);
+    final SpeechController controller = Get.find<SpeechController>(tag: tag);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,8 +32,7 @@ class AddSpeaker extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: speakers.length,
                     itemBuilder: (_, index) {
-                      final bool isAdded =
-                          _speechController.isAdded(speakers[index]);
+                      final bool isAdded = controller.isAdded(speakers[index]);
 
                       return Opacity(
                         opacity: isAdded ? 0.6 : 1,
@@ -42,10 +40,10 @@ class AddSpeaker extends StatelessWidget {
                           delegate: speakers[index],
                           onTap: () {
                             if (!isAdded) {
-                              _speechController.addSpeaker(
+                              controller.addSpeaker(
                                 speakers[index],
                               );
-                              _speechController.update();
+                              controller.update();
                             }
                           },
                         ),

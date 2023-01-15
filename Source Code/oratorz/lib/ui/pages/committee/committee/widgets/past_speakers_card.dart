@@ -45,6 +45,8 @@ class PastSpeakersCard extends StatelessWidget {
                             final int inSeconds =
                                 speaker.values.first.inSeconds;
 
+                            //TODO: Option to remove from past
+
                             return DelegateTile(
                               delegate: speaker.keys.first,
                               trailing: Text(

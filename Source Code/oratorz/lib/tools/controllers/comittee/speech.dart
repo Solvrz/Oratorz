@@ -70,10 +70,21 @@ class SpeechController extends GetxController {
     LocalStorage.updateSpeech("next", nextSpeakers, tag);
   }
 
+  void swapWithCurrentSpeaker(int index) {
+    final String temp = _currentSpeaker.value;
+
+    _currentSpeaker.value = nextSpeakers[index];
+    nextSpeakers[index] = temp;
+  }
+
   void addSpeaker(String delegate) {
     if (currentSpeaker.isEmpty) {
       currentSpeaker = delegate;
       LocalStorage.updateSpeech("current", currentSpeaker, tag);
+      return;
+    }
+
+    if (currentSpeaker == delegate || nextSpeakers.contains(delegate)) {
       return;
     }
 
@@ -84,14 +95,11 @@ class SpeechController extends GetxController {
   void removeSpeaker(String delegate) {
     nextSpeakers.remove(delegate);
     LocalStorage.updateSpeech("next", nextSpeakers, tag);
+
+    update();
   }
 
-  void nextSpeaker() {
-    if (_currentSpeaker.value.isEmpty) return;
-
-    pastSpeakers.add({_currentSpeaker.value: stopwatch.elapsed});
-    LocalStorage.updateSpeech("past", pastSpeakersEncode, tag);
-
+  void removeCurrentSpeaker() {
     if (nextSpeakers.isEmpty) {
       _currentSpeaker.value = "";
     } else {
@@ -102,6 +110,17 @@ class SpeechController extends GetxController {
 
     LocalStorage.updateSpeech("current", currentSpeaker, tag);
 
+    update();
+  }
+
+  void nextSpeaker() {
+    if (_currentSpeaker.value.isEmpty) return;
+
+    pastSpeakers.add({_currentSpeaker.value: stopwatch.elapsed});
+    LocalStorage.updateSpeech("past", pastSpeakersEncode, tag);
+
+    removeCurrentSpeaker();
+
     _isSpeaking.value = false;
 
     _stopwatch.value.stop();
@@ -110,14 +129,12 @@ class SpeechController extends GetxController {
     _stopwatch.value.reset();
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "subtopic": _subtopic,
-      "overall": _overallDuration.value.inSeconds,
-      "duration": _duration.value.inSeconds,
-      "current": _currentSpeaker.value,
-      "past": pastSpeakersEncode,
-      "next": nextSpeakers,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        "subtopic": _subtopic,
+        "overall": _overallDuration.value.inSeconds,
+        "duration": _duration.value.inSeconds,
+        "current": _currentSpeaker.value,
+        "past": pastSpeakersEncode,
+        "next": nextSpeakers,
+      };
 }
