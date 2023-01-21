@@ -31,7 +31,7 @@ class SetupPage extends StatelessWidget {
                   children: const [
                     LoadCommitteeCard(),
                     SizedBox(height: 12),
-                    NewCommitteeCard(),
+                    Expanded(child: NewCommitteeCard()),
                   ],
                 ),
               ),

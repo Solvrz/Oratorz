@@ -13,67 +13,63 @@ class LoadCommitteeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.height / 6,
-      width: context.width / 2,
-      child: Card(
-        child: Container(
-          margin: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Load Committee",
-                style: context.textTheme.headline5,
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  Expanded(
-                    child: RoundedButton(
-                      border: true,
-                      color: Colors.amber.shade400,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 8,
-                      ),
-                      child: Text(
-                        "From File",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: Colors.amber.shade400,
-                        ),
-                      ),
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (_) => const UploadFileDialog(),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Load Committee",
+              style: context.textTheme.headline5,
+            ),
+            const SizedBox(height: 18),
+            Row(
+              children: [
+                Expanded(
+                  child: RoundedButton(
+                    border: true,
+                    color: Colors.amber.shade400,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 2,
+                      horizontal: 8,
+                    ),
+                    child: Text(
+                      "From File",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: Colors.amber.shade400,
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: RoundedButton(
-                      border: true,
-                      color: Colors.amber.shade400,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 8,
-                      ),
-                      child: Text(
-                        "From Template",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: Colors.amber.shade400,
-                        ),
-                      ),
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (_) => const _TemplateDialog(),
-                      ),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => const UploadFileDialog(),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: RoundedButton(
+                    border: true,
+                    color: Colors.amber.shade400,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 2,
+                      horizontal: 8,
+                    ),
+                    child: Text(
+                      "From Template",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: Colors.amber.shade400,
+                      ),
+                    ),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => const _TemplateDialog(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

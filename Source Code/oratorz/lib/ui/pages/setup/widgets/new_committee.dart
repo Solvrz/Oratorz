@@ -14,11 +14,11 @@ class NewCommitteeCard extends StatelessWidget {
     final SetupController _setupController = Get.find<SetupController>();
 
     return SizedBox(
-      height: context.height / 1.415,
+      height: context.height / 1.5,
       width: context.width / 2,
       child: Card(
-        child: Container(
-          margin: const EdgeInsets.all(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -65,116 +65,118 @@ class _CommitteeType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SetupController _setupController = Get.find<SetupController>();
-    final TextEditingController _searchController = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
 
     return GetBuilder<SetupController>(
-      builder: (_) {
-        final bool _open = _setupController.committeeType == index;
+      builder: (setupController) {
+        final bool isOpen = setupController.committeeType == index;
 
-        return SizedBox(
-          height: _open ? context.height / 1.9 : 65,
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  _setupController.committeeType = index;
-                  _setupController.update();
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(12),
-                  child: Row(
-                    children: [
-                      Icon(
-                        _open ? Icons.arrow_right : Icons.arrow_drop_down,
-                      ),
-                      Text(
-                        title,
-                        style: context.textTheme.headline6,
-                      ),
-                    ],
+        final Widget widget = Column(
+          children: [
+            InkWell(
+              onTap: () {
+                setupController.committeeType = index;
+                setupController.update();
+              },
+              child: Container(
+                margin: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Icon(
+                      isOpen ? Icons.arrow_drop_down : Icons.arrow_right,
+                    ),
+                    Text(
+                      title,
+                      style: context.textTheme.headline6,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (isOpen) ...[
+              Container(
+                margin: const EdgeInsets.all(12),
+                child: TextField(
+                  autofocus: true,
+                  controller: searchController,
+                  onChanged: (_) => setupController.update(),
+                  decoration: const InputDecoration(
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
                   ),
                 ),
               ),
-              if (_open) ...[
-                Container(
-                  margin: const EdgeInsets.all(12),
-                  child: TextField(
-                    autofocus: true,
-                    controller: _searchController,
-                    onChanged: (_) => _setupController.update(),
-                    decoration: const InputDecoration(
-                      hintText: "Search",
-                      prefixIcon: Icon(Icons.search),
-                    ),
-                  ),
-                ),
-                Builder(
-                  builder: (_) {
-                    final List<String> _delegates = [];
+              Builder(
+                builder: (context) {
+                  final List<String> searchResults = [];
 
-                    delegates.forEach((_delegate) {
-                      final String _search = _searchController.toText;
+                  delegates.forEach((delegate) {
+                    final String query = searchController.toText;
 
-                      if (_search.isNotEmpty) {
-                        if (DELEGATES[_delegate]!
-                            .toLowerCase()
-                            .contains(_search.toLowerCase())) {
-                          _delegates.add(_delegate);
-                        }
-                      } else {
-                        _delegates.add(_delegate);
+                    if (query.isNotEmpty) {
+                      if (DELEGATES[delegate]!
+                          .toLowerCase()
+                          .contains(query.toLowerCase())) {
+                        searchResults.add(delegate);
                       }
-                    });
+                    } else {
+                      searchResults.add(delegate);
+                    }
+                  });
 
-                    return Expanded(
-                      child: _delegates.isNotEmpty
-                          ? ListView.separated(
-                              itemCount: _delegates.length,
-                              itemBuilder: (_, index) {
-                                final String _delegate = _delegates[index];
+                  return Expanded(
+                    child: searchResults.isNotEmpty
+                        ? ListView.separated(
+                            itemCount: searchResults.length,
+                            itemBuilder: (context, index) {
+                              final String delegate = searchResults[index];
 
-                                return Opacity(
-                                  opacity: _setupController.committee.delegates
-                                          .contains(_delegate)
-                                      ? 0.6
-                                      : 1,
-                                  child: DelegateTile(
-                                    delegate: _delegates[index],
-                                    onTap: () {
-                                      if (!_setupController.committee.delegates
-                                          .contains(_delegate)) {
-                                        _setupController.add(_delegate);
-                                        _setupController.update();
-                                      }
-                                    },
-                                    trailing: Icon(
-                                      Icons.add,
-                                      color: Colors.grey.shade400,
-                                    ),
+                              return Opacity(
+                                opacity: setupController.committee.delegates
+                                        .contains(delegate)
+                                    ? 0.6
+                                    : 1,
+                                child: DelegateTile(
+                                  delegate: searchResults[index],
+                                  onTap: () {
+                                    if (!setupController.committee.delegates
+                                        .contains(delegate)) {
+                                      setupController.add(delegate);
+                                      setupController.update();
+                                    }
+                                  },
+                                  trailing: Icon(
+                                    Icons.add,
+                                    color: Colors.grey.shade400,
                                   ),
-                                );
-                              },
-                              separatorBuilder: (_, index) => Divider(
-                                indent: 65,
-                                height: 5,
-                                thickness: 0.5,
-                                color: Colors.grey.shade400,
-                              ),
-                            )
-                          : Center(
-                              child: Text(
-                                "Member matching your search not found.",
-                                style: context.textTheme.bodyText1,
-                              ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (cpntext, index) => Divider(
+                              indent: 65,
+                              height: 5,
+                              thickness: 0.5,
+                              color: Colors.grey.shade400,
                             ),
-                    );
-                  },
-                ),
-              ],
+                          )
+                        : Center(
+                            child: Text(
+                              "No results matching your search was found.",
+                              style: context.textTheme.bodyText1,
+                            ),
+                          ),
+                  );
+                },
+              ),
             ],
-          ),
+          ],
         );
+
+        if (isOpen) {
+          return Expanded(child: widget);
+        }
+
+        return widget;
       },
     );
   }

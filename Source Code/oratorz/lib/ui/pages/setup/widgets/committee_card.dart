@@ -133,12 +133,13 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
     setState(() => error = false);
 
     if (INVITE_CODES.contains(_code) || TESTING) {
-      final CommitteeController controller = CommitteeController(
-        committee: Get.find<SetupController>().committee,
+      Get.put<CommitteeController>(
+        CommitteeController(
+          committee: Get.find<SetupController>().committee,
+        ),
       );
 
-      Get.put<CommitteeController>(controller);
-      LocalStorage.saveCommittee(controller);
+      LocalStorage.saveCommittee();
 
       context.pushReplacement("/committee/gsl");
     } else {
