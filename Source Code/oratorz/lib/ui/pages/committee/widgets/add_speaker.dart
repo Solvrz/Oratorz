@@ -32,22 +32,25 @@ class AddSpeaker extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: speakers.length,
                     itemBuilder: (_, index) {
-                      final bool isAdded = controller.isAdded(speakers[index]);
+                      return Obx(() {
+                        final bool isAdded =
+                            controller.isAdded(speakers[index]);
 
-                      return Opacity(
-                        opacity: isAdded ? 0.6 : 1,
-                        child: DelegateTile(
-                          delegate: speakers[index],
-                          onTap: () {
-                            if (!isAdded) {
-                              controller.addSpeaker(
-                                speakers[index],
-                              );
-                              controller.update();
-                            }
-                          },
-                        ),
-                      );
+                        return Opacity(
+                          opacity: isAdded ? 0.6 : 1,
+                          child: DelegateTile(
+                            delegate: speakers[index],
+                            onTap: () {
+                              if (!isAdded) {
+                                controller.addSpeaker(
+                                  speakers[index],
+                                );
+                                controller.update();
+                              }
+                            },
+                          ),
+                        );
+                      });
                     },
                     separatorBuilder: (_, __) => Divider(
                       height: 6,

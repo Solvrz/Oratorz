@@ -34,13 +34,15 @@ class PastVotersCard extends StatelessWidget {
                           itemBuilder: (_, index) => DelegateTile(
                             delegate:
                                 _voteController.pastVoters[index].keys.first,
-                            trailing: CircleAvatar(
-                              radius: 5,
-                              backgroundColor:
-                                  _voteController.pastVoters[index].values.first
-                                      ? Colors.green
-                                      : Colors.red,
-                            ),
+                            trailing: [
+                              CircleAvatar(
+                                radius: 5,
+                                backgroundColor: _voteController
+                                        .pastVoters[index].values.first
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                            ],
                           ),
                           separatorBuilder: (_, __) => Divider(
                             height: 6,

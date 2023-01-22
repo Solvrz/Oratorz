@@ -90,62 +90,59 @@ class RollCallDialog extends StatelessWidget {
                         return GetBuilder<CommitteeController>(
                           builder: (_) => Container(
                             margin: const EdgeInsets.symmetric(vertical: 5),
-                            child: DelegateTile(
-                              delegate: _delegate,
-                              showTrailing: true,
-                              trailing: Builder(
-                                builder: (_) {
-                                  final int? rollCall =
-                                      _committeeController.rollCall[_delegate];
+                            child: Builder(
+                              builder: (_) {
+                                final int? rollCall =
+                                    _committeeController.rollCall[_delegate];
 
-                                  return Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      RoundedButton(
-                                        border: rollCall != 2,
-                                        color: Colors.blue.shade400,
-                                        onPressed: () {
-                                          _committeeController.setRollCall(
-                                            _delegate,
-                                            2,
-                                          );
+                                return DelegateTile(
+                                  delegate: _delegate,
+                                  hover: false,
+                                  trailing: [
+                                    RoundedButton(
+                                      border: rollCall != 2,
+                                      color: Colors.blue.shade400,
+                                      onPressed: () {
+                                        _committeeController.setRollCall(
+                                          _delegate,
+                                          2,
+                                        );
 
-                                          _committeeController.update();
-                                        },
-                                        child: const Text("PV"),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      RoundedButton(
-                                        border: rollCall != 1,
-                                        color: Colors.amber.shade400,
-                                        onPressed: () {
-                                          _committeeController.setRollCall(
-                                            _delegate,
-                                            1,
-                                          );
+                                        _committeeController.update();
+                                      },
+                                      child: const Text("PV"),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    RoundedButton(
+                                      border: rollCall != 1,
+                                      color: Colors.amber.shade400,
+                                      onPressed: () {
+                                        _committeeController.setRollCall(
+                                          _delegate,
+                                          1,
+                                        );
 
-                                          _committeeController.update();
-                                        },
-                                        child: const Text("P"),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      RoundedButton(
-                                        border: rollCall != 0,
-                                        color: Colors.red.shade400,
-                                        onPressed: () {
-                                          _committeeController.setRollCall(
-                                            _delegate,
-                                            0,
-                                          );
+                                        _committeeController.update();
+                                      },
+                                      child: const Text("P"),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    RoundedButton(
+                                      border: rollCall != 0,
+                                      color: Colors.red.shade400,
+                                      onPressed: () {
+                                        _committeeController.setRollCall(
+                                          _delegate,
+                                          0,
+                                        );
 
-                                          _committeeController.update();
-                                        },
-                                        child: const Text("A"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
+                                        _committeeController.update();
+                                      },
+                                      child: const Text("A"),
+                                    ),
+                                  ],
+                                );
+                              },
                             ),
                           ),
                         );

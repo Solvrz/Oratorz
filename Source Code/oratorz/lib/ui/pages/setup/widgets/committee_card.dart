@@ -70,8 +70,12 @@ class CommitteeCard extends StatelessWidget {
                           _setupController.removeAt(index);
                           _setupController.update();
                         },
-                        trailing:
-                            Icon(Icons.remove, color: Colors.grey.shade400),
+                        trailing: [
+                          Icon(
+                            Icons.remove,
+                            color: Colors.grey.shade400,
+                          ),
+                        ],
                       ),
                       separatorBuilder: (_, index) => Divider(
                         indent: 66,

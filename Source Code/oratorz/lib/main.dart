@@ -17,6 +17,8 @@ import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
 
+// TODO: Do Testing of Remove Delegates of Past Speakers
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

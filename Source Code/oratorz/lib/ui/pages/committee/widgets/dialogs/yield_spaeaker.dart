@@ -39,23 +39,25 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                   child: DelegateTile(
                     delegate: widget.delegates[index],
                     onTap: () => setState(() => selected = index),
-                    trailing: Radio(
-                      value: index,
-                      groupValue: selected,
-                      hoverColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      overlayColor: MaterialStateProperty.all<Color>(
-                        Colors.transparent,
+                    trailing: [
+                      Radio(
+                        value: index,
+                        groupValue: selected,
+                        hoverColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent,
+                        ),
+                        fillColor: MaterialStateProperty.all<Color>(
+                          Colors.grey.shade700,
+                        ),
+                        onChanged: (value) => setState(() {
+                          if (value != null) {
+                            selected = value as int;
+                          }
+                        }),
                       ),
-                      fillColor: MaterialStateProperty.all<Color>(
-                        Colors.grey.shade700,
-                      ),
-                      onChanged: (value) => setState(() {
-                        if (value != null) {
-                          selected = value as int;
-                        }
-                      }),
-                    ),
+                    ],
                   ),
                 ),
               )

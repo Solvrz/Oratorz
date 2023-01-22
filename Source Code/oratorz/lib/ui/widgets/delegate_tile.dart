@@ -7,15 +7,15 @@ import '/tools/functions.dart';
 class DelegateTile extends StatefulWidget {
   final String delegate;
   final Function()? onTap;
-  final Widget? trailing;
-  final bool showTrailing;
+  final List<Widget> trailing;
+  final bool hover;
 
   const DelegateTile({
     super.key,
     required this.delegate,
     this.onTap,
-    this.trailing,
-    this.showTrailing = false,
+    this.trailing = const [],
+    this.hover = true,
   });
 
   @override
@@ -40,7 +40,12 @@ class _DelegateTileState extends State<DelegateTile> {
           DELEGATES[widget.delegate]!,
           style: context.textTheme.bodyText1,
         ),
-        trailing: hovering || widget.showTrailing ? widget.trailing : null,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (hovering || !widget.hover) ...widget.trailing,
+          ],
+        ),
       ),
     );
   }

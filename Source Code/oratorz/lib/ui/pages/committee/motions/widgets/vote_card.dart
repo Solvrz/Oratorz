@@ -149,55 +149,54 @@ class _Voting extends StatelessWidget {
 
           return DelegateTile(
             delegate: _delegate,
-            trailing: Obx(
-              () => Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RoundedButton(
-                    border: _voteController.voteVal(
-                      delegate: _delegate,
-                      invert: true,
-                    ),
-                    color: Colors.green,
-                    onPressed: () {
-                      _voteController.vote(
-                        vote: true,
-                        voter: _delegate,
-                      );
-                      if (index < _voters.length - 7) {
-                        _scrollController.scrollTo(
-                          index: index + 1,
-                          duration: const Duration(milliseconds: 250),
-                        );
-                      }
-                    },
-                    child: const Icon(Icons.thumb_up),
+            trailing: [
+              Obx(
+                () => RoundedButton(
+                  border: _voteController.voteVal(
+                    delegate: _delegate,
+                    invert: true,
                   ),
-                  const SizedBox(width: 4),
-                  RoundedButton(
-                    border: _voteController.voteVal(
-                      invert: false,
-                      delegate: _delegate,
-                    ),
-                    color: Colors.red,
-                    onPressed: () {
-                      _voteController.vote(
-                        vote: false,
-                        voter: _delegate,
+                  color: Colors.green,
+                  onPressed: () {
+                    _voteController.vote(
+                      vote: true,
+                      voter: _delegate,
+                    );
+                    if (index < _voters.length - 7) {
+                      _scrollController.scrollTo(
+                        index: index + 1,
+                        duration: const Duration(milliseconds: 250),
                       );
-
-                      if (index < _voters.length - 7) {
-                        _scrollController.scrollTo(
-                          index: index + 1,
-                          duration: const Duration(milliseconds: 250),
-                        );
-                      }
-                    },
-                    child: const Icon(Icons.thumb_down),
-                  ),
-                ],
+                    }
+                  },
+                  child: const Icon(Icons.thumb_up),
+                ),
               ),
-            ),
+              const SizedBox(width: 4),
+              Obx(
+                () => RoundedButton(
+                  border: _voteController.voteVal(
+                    invert: false,
+                    delegate: _delegate,
+                  ),
+                  color: Colors.red,
+                  onPressed: () {
+                    _voteController.vote(
+                      vote: false,
+                      voter: _delegate,
+                    );
+
+                    if (index < _voters.length - 7) {
+                      _scrollController.scrollTo(
+                        index: index + 1,
+                        duration: const Duration(milliseconds: 250),
+                      );
+                    }
+                  },
+                  child: const Icon(Icons.thumb_down),
+                ),
+              ),
+            ],
           );
         },
         separatorBuilder: (_, __) => Divider(
