@@ -130,17 +130,16 @@ class _CommitteeType extends StatelessWidget {
                             itemCount: searchResults.length,
                             itemBuilder: (context, index) {
                               final String delegate = searchResults[index];
+                              final bool hasDelegate = setupController
+                                  .committee.delegates
+                                  .contains(delegate);
 
                               return Opacity(
-                                opacity: setupController.committee.delegates
-                                        .contains(delegate)
-                                    ? 0.6
-                                    : 1,
+                                opacity: hasDelegate ? 0.6 : 1,
                                 child: DelegateTile(
                                   delegate: searchResults[index],
                                   onTap: () {
-                                    if (!setupController.committee.delegates
-                                        .contains(delegate)) {
+                                    if (!hasDelegate) {
                                       setupController.add(delegate);
                                       setupController.update();
                                     }

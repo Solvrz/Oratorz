@@ -127,13 +127,13 @@ class SpeakersInfo extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Icon(
-                                    Icons.drag_handle,
-                                    color: Colors.grey.shade600,
-                                  ),
                                 ],
                               ),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.drag_handle,
+                              color: Colors.grey.shade600,
                             ),
                             if (index != controller.nextSpeakers.length - 1)
                               Divider(

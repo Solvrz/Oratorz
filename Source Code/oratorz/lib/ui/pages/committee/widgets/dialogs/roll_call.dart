@@ -12,15 +12,14 @@ class RollCallDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CommitteeController _committeeController =
-        Get.find<CommitteeController>();
+    final CommitteeController controller = Get.find<CommitteeController>();
 
     return DialogBox(
       heading: "Roll Call",
       content: SizedBox(
         height: context.height / 1.5,
         width: context.width / 3,
-        child: _committeeController.committee.count > 0
+        child: controller.committee.count > 0
             ? Column(
                 children: [
                   Expanded(
@@ -32,8 +31,8 @@ class RollCallDialog extends StatelessWidget {
                               child: RoundedButton(
                                 border: true,
                                 onPressed: () {
-                                  _committeeController.setAllPresent();
-                                  _committeeController.update();
+                                  controller.setAllPresent();
+                                  controller.update();
                                 },
                                 child: Text(
                                   "SET ALL PRESENT",
@@ -46,8 +45,8 @@ class RollCallDialog extends StatelessWidget {
                               child: RoundedButton(
                                 border: true,
                                 onPressed: () {
-                                  _committeeController.setAllAbsent();
-                                  _committeeController.update();
+                                  controller.setAllAbsent();
+                                  controller.update();
                                 },
                                 child: Text(
                                   "SET ALL ABSENT",
@@ -64,8 +63,8 @@ class RollCallDialog extends StatelessWidget {
                               child: RoundedButton(
                                 border: true,
                                 onPressed: () {
-                                  _committeeController.setAllPresentAndVoting();
-                                  _committeeController.update();
+                                  controller.setAllPresentAndVoting();
+                                  controller.update();
                                 },
                                 child: Text(
                                   "SET ALL PRESENT & VOTING",
@@ -82,71 +81,65 @@ class RollCallDialog extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: ListView.builder(
-                      itemCount: _committeeController.committee.count,
+                      itemCount: controller.committee.count,
                       itemBuilder: (_, index) {
-                        final String _delegate =
-                            _committeeController.committee.delegates[index];
+                        final String delegate =
+                            controller.committee.delegates[index];
 
                         return GetBuilder<CommitteeController>(
-                          builder: (_) => Container(
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            child: DelegateTile(
-                              delegate: _delegate,
-                              trailing: Builder(
-                                builder: (_) {
-                                  final int? rollCall =
-                                      _committeeController.rollCall[_delegate];
+                          builder: (_) {
+                            final int? rollCall = controller.rollCall[delegate];
 
-                                  return Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      RoundedButton(
-                                        border: rollCall != 2,
-                                        color: Colors.blue.shade400,
-                                        onPressed: () {
-                                          _committeeController.setRollCall(
-                                            _delegate,
-                                            2,
-                                          );
+                            return DelegateTile(
+                              delegate: delegate,
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RoundedButton(
+                                    border: rollCall != 2,
+                                    color: Colors.blue.shade400,
+                                    onPressed: () {
+                                      controller.setRollCall(
+                                        delegate,
+                                        2,
+                                      );
 
-                                          _committeeController.update();
-                                        },
-                                        child: const Text("PV"),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      RoundedButton(
-                                        border: rollCall != 1,
-                                        color: Colors.amber.shade400,
-                                        onPressed: () {
-                                          _committeeController.setRollCall(
-                                            _delegate,
-                                            1,
-                                          );
+                                      controller.update();
+                                    },
+                                    child: const Text("PV"),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  RoundedButton(
+                                    border: rollCall != 1,
+                                    color: Colors.amber.shade400,
+                                    onPressed: () {
+                                      controller.setRollCall(
+                                        delegate,
+                                        1,
+                                      );
 
-                                          _committeeController.update();
-                                        },
-                                        child: const Text("P"),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      RoundedButton(
-                                        border: rollCall != 0,
-                                        color: Colors.red.shade400,
-                                        onPressed: () {
-                                          _committeeController.setRollCall(
-                                            _delegate,
-                                            0,
-                                          );
+                                      controller.update();
+                                    },
+                                    child: const Text("P"),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  RoundedButton(
+                                    border: rollCall != 0,
+                                    color: Colors.red.shade400,
+                                    onPressed: () {
+                                      controller.setRollCall(
+                                        delegate,
+                                        0,
+                                      );
 
-                                          _committeeController.update();
-                                        },
-                                        child: const Text("A"),
-                                      ),
-                                    ],
-                                  );
-                                },
+                                      controller.update();
+                                    },
+                                    child: const Text("A"),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         );
                       },
                     ),

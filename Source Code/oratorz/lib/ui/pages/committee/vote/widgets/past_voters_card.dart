@@ -9,8 +9,7 @@ class PastVotersCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final VoteController _voteController =
-        Get.find<VoteController>(tag: "vote");
+    final VoteController controller = Get.find<VoteController>(tag: "vote");
 
     return SizedBox(
       height: context.height / 2.5,
@@ -27,17 +26,16 @@ class PastVotersCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Obx(
-                () => _voteController.pastVoters.isNotEmpty
+                () => controller.pastVoters.isNotEmpty
                     ? Expanded(
                         child: ListView.separated(
-                          itemCount: _voteController.pastVoters.length,
+                          itemCount: controller.pastVoters.length,
                           itemBuilder: (_, index) => DelegateTile(
-                            delegate:
-                                _voteController.pastVoters[index].keys.first,
+                            delegate: controller.pastVoters[index].keys.first,
                             trailing: CircleAvatar(
                               radius: 5,
                               backgroundColor:
-                                  _voteController.pastVoters[index].values.first
+                                  controller.pastVoters[index].values.first
                                       ? Colors.green
                                       : Colors.red,
                             ),

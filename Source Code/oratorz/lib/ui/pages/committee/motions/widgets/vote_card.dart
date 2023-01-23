@@ -149,11 +149,11 @@ class _Voting extends StatelessWidget {
 
           return DelegateTile(
             delegate: _delegate,
-            trailing: Obx(
-              () => Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RoundedButton(
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Obx(
+                  () => RoundedButton(
                     border: _voteController.voteVal(
                       delegate: _delegate,
                       invert: true,
@@ -173,8 +173,10 @@ class _Voting extends StatelessWidget {
                     },
                     child: const Icon(Icons.thumb_up),
                   ),
-                  const SizedBox(width: 4),
-                  RoundedButton(
+                ),
+                const SizedBox(width: 4),
+                Obx(
+                  () => RoundedButton(
                     border: _voteController.voteVal(
                       invert: false,
                       delegate: _delegate,
@@ -195,8 +197,8 @@ class _Voting extends StatelessWidget {
                     },
                     child: const Icon(Icons.thumb_down),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
