@@ -46,11 +46,35 @@ class TableHeader extends StatelessWidget {
           Container(
             width: 100,
             padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(
-                "Total",
-                style: Theme.of(context).textTheme.headline6,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Total",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(width: 8),
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () => controller.sort.value = !controller.sort.value,
+                  child: Container(
+                    padding: const EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      color: controller.sort.value
+                          ? Colors.grey[700]
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Icon(
+                      Icons.arrow_downward,
+                      color: controller.sort.value
+                          ? Colors.grey[300]
+                          : Colors.grey[400],
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

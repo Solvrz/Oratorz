@@ -10,6 +10,7 @@ class ScorecardController extends GetxController {
   final RxMap<String, List<double>> scores = <String, List<double>>{}.obs;
 
   final RxInt mode = 0.obs;
+  final RxBool sort = false.obs;
   void toggleMode() => mode.value = mode.value == 0 ? 1 : 0;
 
   ScorecardController() {

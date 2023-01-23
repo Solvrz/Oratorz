@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,32 +14,43 @@ class ScoreTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScorecardController controller = Get.find<ScorecardController>();
 
-    final List<String> delegates =
-        Get.find<CommitteeController>().committee.delegates;
-
     return Obx(
-      () => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(
-          width: 320.0 + (200 * controller.parameters.length),
-          child: Column(
-            children: [
-              const TableHeader(),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: delegates.length,
-                  itemBuilder: (context, index) =>
-                      DelegateData(delegate: delegates[index]),
-                  separatorBuilder: (_, __) => Divider(
-                    color: Colors.grey.shade300,
-                    height: 16,
+      () {
+        final List<String> delegates = List.from(
+          Get.find<CommitteeController>().committee.delegates,
+        );
+
+        if (controller.sort.value) {
+          delegates.sort(
+            (a, b) =>
+                controller.scores[a]!.sum.compareTo(controller.scores[b]!.sum) *
+                -1, //In order to sort descending
+          );
+        }
+
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: 320.0 + (200 * controller.parameters.length),
+            child: Column(
+              children: [
+                const TableHeader(),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: delegates.length,
+                    itemBuilder: (context, index) =>
+                        DelegateData(delegate: delegates[index]),
+                    separatorBuilder: (_, __) => Divider(
+                      color: Colors.grey.shade300,
+                      height: 16,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
