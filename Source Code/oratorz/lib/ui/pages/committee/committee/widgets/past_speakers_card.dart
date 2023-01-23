@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/ui/widgets/delegate_tile.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class PastSpeakersCard extends StatelessWidget {
   final String tag;
@@ -45,13 +46,23 @@ class PastSpeakersCard extends StatelessWidget {
                             final int inSeconds =
                                 speaker.values.first.inSeconds;
 
-                            //TODO: Option to remove from past
-
                             return DelegateTile(
                               delegate: speaker.keys.first,
                               trailing: Text(
                                 "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, "0")}",
                                 style: context.textTheme.bodyText1,
+                              ),
+                              onHover: RoundedButton(
+                                color: Colors.red.shade400,
+                                padding: const EdgeInsets.all(4),
+                                onPressed: () =>
+                                    _speechController.removePastSpeaker(index),
+                                tooltip: "Remove Delegate",
+                                child: const Icon(
+                                  Icons.close,
+                                  size: 16,
+                                  color: Colors.white,
+                                ),
                               ),
                             );
                           },

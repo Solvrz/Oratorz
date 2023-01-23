@@ -113,6 +113,13 @@ class SpeechController extends GetxController {
     update();
   }
 
+  void removePastSpeaker(int index) {
+    pastSpeakers.removeAt(index);
+    LocalStorage.updateSpeech("past", pastSpeakers, tag);
+
+    update();
+  }
+
   void nextSpeaker() {
     if (_currentSpeaker.value.isEmpty) return;
 
