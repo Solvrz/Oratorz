@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
@@ -45,6 +46,9 @@ class Oratorz extends StatelessWidget {
     return MaterialApp.router(
       title: "Oratorz",
       theme: OratorzTheme.of(context),
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: {PointerDeviceKind.mouse},
+      ),
       routerConfig: GoRouter(
         initialLocation: "/",
         errorBuilder: (_, args) {

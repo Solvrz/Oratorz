@@ -15,22 +15,16 @@ class MotionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final MotionsController _motionsController;
-
     if (!Get.isRegistered<MotionsController>()) {
       final bool exists = LocalStorage.loadMotions();
 
       if (!exists) {
-        _motionsController = MotionsController();
-
-        Get.put<MotionsController>(_motionsController);
-        LocalStorage.saveMotions(_motionsController);
-      } else {
-        _motionsController = Get.find<MotionsController>();
+        Get.put<MotionsController>(MotionsController());
+        LocalStorage.saveMotions();
       }
-    } else {
-      _motionsController = Get.find<MotionsController>();
     }
+
+    final MotionsController controller = Get.find<MotionsController>();
 
     return Body(
       child: Row(
@@ -45,9 +39,9 @@ class MotionsPage extends StatelessWidget {
           ),
           const SizedBox(width: 36),
           Obx(() {
-            if (_motionsController.mode == 0) {
+            if (controller.mode == 0) {
               return const AddMotionCard();
-            } else if (_motionsController.mode == 1) {
+            } else if (controller.mode == 1) {
               return const DebateCard();
             } else {
               return const VoteCard();

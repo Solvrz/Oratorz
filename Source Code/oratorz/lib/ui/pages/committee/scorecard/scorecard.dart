@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/scorecard.dart';
-import './widgets/header.dart';
+import '/ui/widgets/rounded_button.dart';
 import '../widgets/body.dart';
 import 'widgets/scoretable.dart';
 
@@ -12,24 +12,53 @@ class ScorecardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScorecardController controller;
+
     if (!Get.isRegistered<ScorecardController>()) {
       final bool exists = LocalStorage.loadScore();
 
       if (!exists) {
-        final ScorecardController _scorecardController = ScorecardController();
-
-        Get.put<ScorecardController>(_scorecardController);
-        LocalStorage.saveScore(_scorecardController);
+        Get.put<ScorecardController>(ScorecardController());
+        LocalStorage.saveScore();
       }
     }
+
+    controller = Get.find<ScorecardController>();
 
     return Body(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [
-          Header(),
-          SizedBox(height: 24),
-          ScoreTable(),
+        children: [
+          Obx(
+            () => Row(
+              children: [
+                Text(
+                  "Scorecard",
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                const Spacer(),
+                if (controller.mode.value == 1) ...[
+                  RoundedButton(
+                    border: true,
+                    onPressed: () => controller.addParameter(
+                      "New",
+                      10,
+                    ),
+                    child: const Text("Add Parameter"),
+                  ),
+                  const SizedBox(width: 10),
+                ],
+                RoundedButton(
+                  onPressed: controller.toggleMode,
+                  child: Text(
+                    controller.mode.value == 0 ? "Edit Parameters" : "Done",
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Expanded(child: ScoreTable()),
         ],
       ),
     );

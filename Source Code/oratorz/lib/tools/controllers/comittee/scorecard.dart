@@ -12,9 +12,6 @@ class ScorecardController extends GetxController {
   final RxInt mode = 0.obs;
   void toggleMode() => mode.value = mode.value == 0 ? 1 : 0;
 
-  String parameterVal(int index) =>
-      "${parameters[index]} (${maxScores[index]})";
-
   ScorecardController() {
     for (final String delegate
         in Get.find<CommitteeController>().committee.delegates) {

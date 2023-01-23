@@ -22,17 +22,17 @@ class Parameter extends StatefulWidget {
 }
 
 class ParameterState extends State<Parameter> {
-  final ScorecardController _scorecardController =
-      Get.find<ScorecardController>();
+  final ScorecardController controller = Get.find<ScorecardController>();
   bool hovering = false;
 
   @override
   Widget build(BuildContext context) {
     if (widget.mode == 0) {
-      return Text(
-        _scorecardController.parameterVal(widget.index),
-        style: context.textTheme.bodyText1?.copyWith(
-          color: Colors.white,
+      return Center(
+        child: Text(
+          "${controller.parameters[widget.index]} (${controller.maxScores[widget.index]})",
+          style: context.textTheme.headline6,
+          textAlign: TextAlign.center,
         ),
       );
     }
@@ -46,10 +46,11 @@ class ParameterState extends State<Parameter> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            _scorecardController.parameterVal(widget.index),
-            style: context.textTheme.bodyText1?.copyWith(
-              color: Colors.white,
+          Expanded(
+            child: Text(
+              "${controller.parameters[widget.index]} (${controller.maxScores[widget.index]})",
+              style: context.textTheme.headline6,
+              textAlign: TextAlign.center,
             ),
           ),
           if (hovering) ...[
@@ -60,17 +61,16 @@ class ParameterState extends State<Parameter> {
               ),
               child: Icon(Icons.edit, color: Colors.grey[600]),
             ),
-            if (widget.index != _scorecardController.parameters.length - 1)
+            if (widget.index != controller.parameters.length - 1)
               GestureDetector(
-                onTap: () =>
-                    _scorecardController.reorderParameter(widget.index),
+                onTap: () => controller.reorderParameter(widget.index),
                 child: Icon(Icons.arrow_forward, color: Colors.grey[600]),
               ),
             GestureDetector(
-              onTap: () => _scorecardController.deleteParameter(widget.index),
+              onTap: () => controller.deleteParameter(widget.index),
               child: Icon(
                 Icons.delete_forever_outlined,
-                color: Colors.redAccent.shade100,
+                color: Colors.red[300],
               ),
             ),
           ],

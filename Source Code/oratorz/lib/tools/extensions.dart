@@ -51,3 +51,10 @@ extension ToolsDateTime on DateTime {
 extension ToolsTextEditingController on TextEditingController {
   String get toText => text.trim();
 }
+
+extension ToolsWidget on Widget {
+  Widget get withBorders => Container(
+        decoration: BoxDecoration(border: Border.all()),
+        child: this,
+      );
+}

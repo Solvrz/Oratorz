@@ -19,7 +19,7 @@ class CommitteeMainPage extends StatefulWidget {
 }
 
 class _CommitteeMainPageState extends State<CommitteeMainPage> {
-  late final CommitteeController _committeeController;
+  late final CommitteeController controller;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
       analytics.logEvent(name: "committe_loaded");
       LocalStorage.loadCommittee();
 
-      _committeeController = Get.find<CommitteeController>()
+      controller = Get.find<CommitteeController>()
         ..tab = COMMITTEE_TABS
             .indexWhere(
               (tab) => tab["route"]
@@ -94,39 +94,38 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                   child: Column(
                     children: [
                       Text(
-                        _committeeController.committee.name,
+                        controller.committee.name,
                         style: context.textTheme.headline2!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 32),
                       ...List.generate(tabs.length, (index) {
-                        final Map<String, dynamic> _tab = tabs[index];
+                        final Map<String, dynamic> tab = tabs[index];
 
-                        if (_tab["title"] == "Spacer") {
+                        if (tab["title"] == "Spacer") {
                           return const Spacer();
                         }
 
                         return Obx(
                           () => _SidebarTile(
-                            title: _tab["title"],
-                            icon: _tab["icon"],
+                            title: tab["title"],
+                            icon: tab["icon"],
                             onTap: () {
-                              if (_tab.containsKey("route")) {
-                                _committeeController.tab = index;
+                              if (tab.containsKey("route")) {
+                                controller.tab = index;
 
                                 html.window.history.pushState(
                                   null,
                                   "tab",
-                                  _committeeController
-                                      .currentTabDetails["route"],
+                                  controller.currentTabDetails["route"],
                                 );
                               } else {
-                                _tab["onTap"]();
+                                tab["onTap"]();
                               }
                             },
-                            selected: _committeeController.tab == index,
-                            iconColor: _tab["color"],
+                            selected: controller.tab == index,
+                            iconColor: tab["color"],
                           ),
                         );
                       }),
@@ -166,7 +165,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Obx(() => _committeeController.currentTab),
+                child: Obx(() => controller.currentTab),
               ),
             ),
           ],
@@ -193,8 +192,8 @@ class _SidebarTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 4),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
       child: ListTile(
         onTap: onTap,
         horizontalTitleGap: 8,
