@@ -27,43 +27,7 @@ class _ScoreCellState extends State<ScoreCell> {
 
   @override
   void initState() {
-    focusNode = FocusNode()
-      ..attach(
-        context,
-        onKey: (node, event) {
-          final int delegateIndex =
-              controller.scores.keys.toList().indexOf(widget.delegate);
-
-          if (event.isKeyPressed(LogicalKeyboardKey.tab) && !event.repeat) {
-            FocusScope.of(context).unfocus();
-
-            if (event.isShiftPressed) {
-              if (widget.index == 0 && delegateIndex != 0) {
-                controller.selected[0] =
-                    controller.scores.keys.toList()[delegateIndex - 1];
-
-                controller.selected[1] = controller.parameters.length - 1;
-              } else {
-                controller.selected[1] = widget.index - 1;
-              }
-            } else {
-              if (widget.index == controller.parameters.length - 1 &&
-                  delegateIndex != controller.scores.length - 1) {
-                controller.selected[0] =
-                    controller.scores.keys.toList()[delegateIndex + 1];
-                controller.selected[1] = 0;
-              } else {
-                controller.selected[1] = widget.index + 1;
-              }
-            }
-
-            return KeyEventResult.handled;
-          }
-
-          return KeyEventResult.ignored;
-        },
-      );
-
+    focusNode = FocusNode();
     super.initState();
   }
 
@@ -148,55 +112,91 @@ class _ScoreCellEditing extends StatelessWidget {
       );
     }
 
-    return TextField(
-      focusNode: focusNode,
-      controller: textController,
-      textAlign: TextAlign.center,
-      decoration: const InputDecoration(
-        hintText: "0",
-        fillColor: Colors.white,
-        focusColor: Colors.white,
-        hoverColor: Colors.white,
-      ),
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(
-          RegExp(r'(^-?\d*\.?\d*)'),
-        )
-      ],
-      onChanged: (text) {
-        if (text.trim() == "") {
-          controller.updateScore(delegate, index, 0);
-        }
+    final int delegateIndex = controller.scores.keys.toList().indexOf(delegate);
 
-        if (double.tryParse(text) == null) return;
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.enter, shift: true): () {
+          FocusScope.of(context).unfocus();
 
-        if (text.toDouble <= controller.maxScores[index]) {
-          controller.updateScore(delegate, index, text.toDouble);
-        } else {
-          final String score = controller.scores[delegate]![index].toString();
+          if (delegateIndex != 0) {
+            controller.selected[0] =
+                controller.scores.keys.toList()[delegateIndex - 1];
+          }
+        },
+        const SingleActivator(LogicalKeyboardKey.enter): () {
+          FocusScope.of(context).unfocus();
 
-          if (score != "0") {
-            textController.text = score;
+          if (delegateIndex != controller.scores.length - 1) {
+            controller.selected[0] =
+                controller.scores.keys.toList()[delegateIndex + 1];
+          }
+        },
+        const SingleActivator(LogicalKeyboardKey.tab, shift: true): () {
+          FocusScope.of(context).unfocus();
 
-            textController.selection = TextSelection.fromPosition(
-              TextPosition(offset: score.length),
-            );
+          if (index == 0 && delegateIndex != 0) {
+            controller.selected[0] =
+                controller.scores.keys.toList()[delegateIndex - 1];
+
+            controller.selected[1] = controller.parameters.length - 1;
           } else {
-            textController.text = "";
+            controller.selected[1] = index - 1;
+          }
+        },
+        const SingleActivator(LogicalKeyboardKey.tab): () {
+          FocusScope.of(context).unfocus();
+
+          if (index == controller.parameters.length - 1 &&
+              delegateIndex != controller.scores.length - 1) {
+            controller.selected[0] =
+                controller.scores.keys.toList()[delegateIndex + 1];
+            controller.selected[1] = 0;
+          } else {
+            controller.selected[1] = index + 1;
           }
         }
       },
-      onSubmitted: (_) {
-        FocusScope.of(context).unfocus();
+      child: TextField(
+        focusNode: focusNode,
+        maxLines: null,
+        controller: textController,
+        textAlign: TextAlign.center,
+        decoration: const InputDecoration(
+          hintText: "0",
+          fillColor: Colors.white,
+          focusColor: Colors.white,
+          hoverColor: Colors.white,
+        ),
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(
+            RegExp(r'(^-?\d*\.?\d*)'),
+          )
+        ],
+        onChanged: (text) {
+          if (text.trim() == "") {
+            controller.updateScore(delegate, index, 0);
+          }
 
-        final int delegateIndex =
-            controller.scores.keys.toList().indexOf(delegate);
+          if (double.tryParse(text) == null) return;
 
-        if (delegateIndex != controller.scores.length - 1) {
-          controller.selected[0] =
-              controller.scores.keys.toList()[delegateIndex + 1];
-        }
-      },
+          if (text.toDouble <= controller.maxScores[index]) {
+            controller.updateScore(delegate, index, text.toDouble);
+          } else {
+            final String score = controller.scores[delegate]![index].toString();
+
+            if (score != "0") {
+              textController.text = score;
+
+              textController.selection = TextSelection.fromPosition(
+                TextPosition(offset: score.length),
+              );
+            } else {
+              textController.text = "";
+            }
+          }
+        },
+      ),
     );
   }
 }

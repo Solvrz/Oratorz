@@ -10,6 +10,8 @@ import 'header.dart';
 class ScoreTable extends StatelessWidget {
   const ScoreTable({super.key});
 
+  //TODO (YUG): Add search and auto scroll to matching delegate
+
   @override
   Widget build(BuildContext context) {
     final ScorecardController controller = Get.find<ScorecardController>();

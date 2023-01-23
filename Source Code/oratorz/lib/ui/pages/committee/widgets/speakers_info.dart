@@ -99,7 +99,7 @@ class SpeakersInfo extends StatelessWidget {
                           children: [
                             DelegateTile(
                               delegate: controller.nextSpeakers[index],
-                              onHover: Row(
+                              trailing: Row(
                                 children: [
                                   RoundedButton(
                                     color: Colors.blue.shade400,
@@ -130,7 +130,6 @@ class SpeakersInfo extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 8),
                             Icon(
                               Icons.drag_handle,
                               color: Colors.grey.shade600,

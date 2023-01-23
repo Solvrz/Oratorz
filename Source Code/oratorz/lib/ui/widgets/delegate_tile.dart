@@ -28,7 +28,7 @@ class _DelegateTileState extends State<DelegateTile> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.onTap != null ? () {} : null,
+      onTap: () {},
       hoverColor: Colors.transparent,
       onHover: (val) {
         setState(() => hovering = val);
