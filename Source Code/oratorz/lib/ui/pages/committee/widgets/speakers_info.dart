@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
+import '/tools/functions.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/rounded_button.dart';
 
@@ -12,10 +13,7 @@ class SpeakersInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SpeechController _speechController =
-        Get.find<SpeechController>(tag: tag);
-
-    //TODO: Cofirmation on clicking Next/Done
+    final SpeechController controller = Get.find<SpeechController>(tag: tag);
 
     return Expanded(
       child: Column(
@@ -34,10 +32,23 @@ class SpeakersInfo extends StatelessWidget {
                   vertical: 2,
                   horizontal: 4,
                 ),
-                onPressed: _speechController.nextSpeaker,
+                onPressed: () {
+                  if (controller.stopwatch.elapsedTicks == 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      getSnackbar(
+                        context,
+                        const Center(
+                          child: Text("The delegate has not yet spoken"),
+                        ),
+                      ),
+                    );
+                  } else {
+                    controller.nextSpeaker();
+                  }
+                },
                 child: Obx(
                   () => Text(
-                    _speechController.isSpeaking ? "Done" : "Next",
+                    controller.isSpeaking ? "Done" : "Next",
                   ),
                 ),
               ),
@@ -45,13 +56,13 @@ class SpeakersInfo extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Obx(
-            () => _speechController.currentSpeaker.isNotEmpty
+            () => controller.currentSpeaker.isNotEmpty
                 ? DelegateTile(
-                    delegate: _speechController.currentSpeaker,
-                    trailing: RoundedButton(
+                    delegate: controller.currentSpeaker,
+                    onHover: RoundedButton(
                       color: Colors.red.shade400,
                       padding: const EdgeInsets.all(4),
-                      onPressed: () => _speechController.removeCurrentSpeaker(),
+                      onPressed: () => controller.removeCurrentSpeaker(),
                       tooltip: "Remove Delegate",
                       child: const Icon(
                         Icons.close,
@@ -74,27 +85,26 @@ class SpeakersInfo extends StatelessWidget {
             ),
           ),
           Obx(
-            () => _speechController.nextSpeakers.isNotEmpty
+            () => controller.nextSpeakers.isNotEmpty
                 ? Expanded(
                     child: ReorderableListView.builder(
                       buildDefaultDragHandles: false,
                       onReorder: (oldIndex, newIndex) =>
-                          _speechController.reorder(oldIndex, newIndex),
-                      itemCount: _speechController.nextSpeakers.length,
+                          controller.reorder(oldIndex, newIndex),
+                      itemCount: controller.nextSpeakers.length,
                       itemBuilder: (_, index) => ReorderableDragStartListener(
                         index: index,
                         key: ValueKey(index),
                         child: Column(
                           children: [
                             DelegateTile(
-                              delegate: _speechController.nextSpeakers[index],
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
+                              delegate: controller.nextSpeakers[index],
+                              onHover: Row(
                                 children: [
                                   RoundedButton(
                                     color: Colors.blue.shade400,
                                     padding: const EdgeInsets.all(4),
-                                    onPressed: () => _speechController
+                                    onPressed: () => controller
                                         .swapWithCurrentSpeaker(index),
                                     tooltip: "Swap with Current Speaker",
                                     child: const Icon(
@@ -107,9 +117,8 @@ class SpeakersInfo extends StatelessWidget {
                                   RoundedButton(
                                     color: Colors.red.shade400,
                                     padding: const EdgeInsets.all(4),
-                                    onPressed: () =>
-                                        _speechController.removeSpeaker(
-                                      _speechController.nextSpeakers[index],
+                                    onPressed: () => controller.removeSpeaker(
+                                      controller.nextSpeakers[index],
                                     ),
                                     tooltip: "Remove Delegate",
                                     child: const Icon(
@@ -126,8 +135,7 @@ class SpeakersInfo extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            if (index !=
-                                _speechController.nextSpeakers.length - 1)
+                            if (index != controller.nextSpeakers.length - 1)
                               Divider(
                                 indent: 65,
                                 height: 6,

@@ -31,3 +31,16 @@ Widget flag(String delegate, {double size = 30}) => Container(
 
 Widget carousel(BuildContext context) =>
     Text("Carousel Placeholder", style: context.textTheme.bodyText1);
+
+SnackBar getSnackbar(BuildContext context, Widget content) {
+  return SnackBar(
+    margin: EdgeInsets.only(
+      top: context.mediaQuerySize.height / 1.1,
+      bottom: 16,
+      right: context.mediaQuerySize.width / 3,
+      left: context.mediaQuerySize.width / 3,
+    ),
+    behavior: SnackBarBehavior.floating,
+    content: content,
+  );
+}
