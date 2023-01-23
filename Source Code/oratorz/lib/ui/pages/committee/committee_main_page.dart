@@ -194,18 +194,23 @@ class _SidebarTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
-      child: ListTile(
-        onTap: onTap,
-        horizontalTitleGap: 8,
-        hoverColor: selected ? Colors.transparent : Colors.white12,
-        tileColor: selected ? const Color(0xff2a313b) : const Color(0xff0d1520),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
-        title: Text(
-          title,
-          style: context.textTheme.bodyText2?.copyWith(color: Colors.white),
+      child: Focus(
+        canRequestFocus: false,
+        descendantsAreFocusable: false,
+        child: ListTile(
+          onTap: onTap,
+          horizontalTitleGap: 8,
+          hoverColor: selected ? Colors.transparent : Colors.white12,
+          tileColor:
+              selected ? const Color(0xff2a313b) : const Color(0xff0d1520),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
+          title: Text(
+            title,
+            style: context.textTheme.bodyText2?.copyWith(color: Colors.white),
+          ),
         ),
       ),
     );

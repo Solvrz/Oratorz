@@ -13,6 +13,8 @@ class ScorecardController extends GetxController {
   final RxBool sort = false.obs;
   void toggleMode() => mode.value = mode.value == 0 ? 1 : 0;
 
+  final RxList<dynamic> selected = ["", 0].obs;
+
   ScorecardController() {
     for (final String delegate
         in Get.find<CommitteeController>().committee.delegates) {

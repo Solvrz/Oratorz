@@ -21,23 +21,94 @@ class ScoreCell extends StatefulWidget {
 
 class _ScoreCellState extends State<ScoreCell> {
   final ScorecardController controller = Get.find<ScorecardController>();
+  late final FocusNode focusNode;
 
   bool hovering = false;
+
+  @override
+  void initState() {
+    focusNode = FocusNode()
+      ..attach(
+        context,
+        onKey: (node, event) {
+          final int delegateIndex =
+              controller.scores.keys.toList().indexOf(widget.delegate);
+
+          if (event.isKeyPressed(LogicalKeyboardKey.tab) && !event.repeat) {
+            FocusScope.of(context).unfocus();
+
+            if (event.isShiftPressed) {
+              if (widget.index == 0 && delegateIndex != 0) {
+                controller.selected[0] =
+                    controller.scores.keys.toList()[delegateIndex - 1];
+
+                controller.selected[1] = controller.parameters.length - 1;
+              } else {
+                controller.selected[1] = widget.index - 1;
+              }
+            } else {
+              if (widget.index == controller.parameters.length - 1 &&
+                  delegateIndex != controller.scores.length - 1) {
+                controller.selected[0] =
+                    controller.scores.keys.toList()[delegateIndex + 1];
+                controller.selected[1] = 0;
+              } else {
+                controller.selected[1] = widget.index + 1;
+              }
+            }
+
+            return KeyEventResult.handled;
+          }
+
+          return KeyEventResult.ignored;
+        },
+      );
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () {
+        final bool selected = controller.selected[0] == widget.delegate &&
+            controller.selected[1] == widget.index;
+
         return InkWell(
           onTap: () {},
           hoverColor: Colors.transparent,
           focusColor: Colors.transparent,
           highlightColor: Colors.transparent,
           onHover: (val) => setState(() => hovering = val),
-          child: hovering
-              ? _ScoreCellEditing(
-                  delegate: widget.delegate,
-                  index: widget.index,
+          onFocusChange: (val) {
+            if (val) {
+              controller.selected[0] = widget.delegate;
+              controller.selected[1] = widget.index;
+            } else if (controller.selected[0] == widget.delegate &&
+                controller.selected[1] == widget.index) {
+              controller.selected[0] = "";
+              controller.selected[1] = widget.index;
+            }
+          },
+          child: hovering || selected
+              ? Builder(
+                  builder: (context) {
+                    if (selected) {
+                      focusNode.requestFocus();
+                    }
+
+                    return _ScoreCellEditing(
+                      delegate: widget.delegate,
+                      index: widget.index,
+                      focusNode: focusNode,
+                    );
+                  },
                 )
               : Center(
                   child: Text(
@@ -55,10 +126,12 @@ class _ScoreCellState extends State<ScoreCell> {
 class _ScoreCellEditing extends StatelessWidget {
   final String delegate;
   final int index;
+  final FocusNode focusNode;
 
   const _ScoreCellEditing({
     required this.delegate,
     required this.index,
+    required this.focusNode,
   });
 
   @override
@@ -76,6 +149,7 @@ class _ScoreCellEditing extends StatelessWidget {
     }
 
     return TextField(
+      focusNode: focusNode,
       controller: textController,
       textAlign: TextAlign.center,
       decoration: const InputDecoration(
@@ -110,6 +184,17 @@ class _ScoreCellEditing extends StatelessWidget {
           } else {
             textController.text = "";
           }
+        }
+      },
+      onSubmitted: (_) {
+        FocusScope.of(context).unfocus();
+
+        final int delegateIndex =
+            controller.scores.keys.toList().indexOf(delegate);
+
+        if (delegateIndex != controller.scores.length - 1) {
+          controller.selected[0] =
+              controller.scores.keys.toList()[delegateIndex + 1];
         }
       },
     );
