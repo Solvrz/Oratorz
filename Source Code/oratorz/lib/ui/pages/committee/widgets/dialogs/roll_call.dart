@@ -92,7 +92,6 @@ class RollCallDialog extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(vertical: 5),
                             child: DelegateTile(
                               delegate: _delegate,
-                              showTrailing: true,
                               trailing: Builder(
                                 builder: (_) {
                                   final int? rollCall =
