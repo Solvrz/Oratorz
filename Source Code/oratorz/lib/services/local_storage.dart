@@ -16,7 +16,9 @@ class LocalStorage {
   //TODO: Assign a unique ID to each committee
   static const ID = "committee";
 
-  static void saveCommittee(CommitteeController committee) {
+  static void saveCommittee() {
+    final CommitteeController committee = Get.find<CommitteeController>();
+
     analytics.logEvent(
       name: "committe_created",
       parameters: {
@@ -152,8 +154,8 @@ class LocalStorage {
     return true;
   }
 
-  static void saveMotions(MotionsController motions) {
-    box.write("motions", motions.toJson());
+  static void saveMotions() {
+    box.write("motions", Get.find<MotionsController>().toJson());
   }
 
   static bool updateMotions(String key, dynamic value) {
@@ -194,7 +196,9 @@ class LocalStorage {
     return true;
   }
 
-  static void saveScore(ScorecardController score) {
+  static void saveScore() {
+    final ScorecardController score = Get.find<ScorecardController>();
+
     box.write("score", score.toJson());
   }
 
