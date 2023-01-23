@@ -129,6 +129,7 @@ class SpeakersInfo extends StatelessWidget {
                             if (index !=
                                 _speechController.nextSpeakers.length - 1)
                               Divider(
+                                indent: 65,
                                 height: 6,
                                 color: Colors.grey.shade400,
                               ),

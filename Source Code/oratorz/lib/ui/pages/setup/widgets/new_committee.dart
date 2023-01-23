@@ -152,7 +152,7 @@ class _CommitteeType extends StatelessWidget {
                                 ),
                               );
                             },
-                            separatorBuilder: (cpntext, index) => Divider(
+                            separatorBuilder: (context, index) => Divider(
                               indent: 65,
                               height: 5,
                               thickness: 0.5,

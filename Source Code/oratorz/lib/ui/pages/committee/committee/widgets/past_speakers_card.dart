@@ -56,6 +56,7 @@ class PastSpeakersCard extends StatelessWidget {
                             );
                           },
                           separatorBuilder: (_, __) => Divider(
+                            indent: 65,
                             height: 6,
                             color: Colors.grey.shade400,
                           ),
