@@ -13,7 +13,6 @@ import 'package:intl/intl.dart';
 import '/config/constants/constants.dart';
 import '/config/theme.dart';
 import '/firebase_options.dart';
-import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
@@ -48,6 +47,7 @@ class Oratorz extends StatelessWidget {
     return MaterialApp.router(
       title: "Oratorz",
       theme: OratorzTheme.of(context),
+      debugShowCheckedModeBanner: false,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {PointerDeviceKind.mouse},
       ),
@@ -64,9 +64,7 @@ class Oratorz extends StatelessWidget {
             redirect: (_, args) {
               Get.put<RouteController>(RouteController(arguments: args));
 
-              return LocalStorage.committeeExists()
-                  ? "/committee/gsl"
-                  : "/setup";
+              return "/home";
             },
           ),
           GoRoute(
@@ -75,6 +73,14 @@ class Oratorz extends StatelessWidget {
               Get.put<RouteController>(RouteController(arguments: args));
 
               return const SetupPage();
+            },
+          ),
+          GoRoute(
+            path: "/home",
+            builder: (_, args) {
+              Get.put<RouteController>(RouteController(arguments: args));
+
+              return const HomePage();
             },
           ),
           GoRoute(

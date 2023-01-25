@@ -16,6 +16,12 @@ class SetupPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+            tooltip: "Back",
+            hoverColor: Colors.white12,
+          ),
           title: Text(
             "Setup Committee",
             style: context.textTheme.headline5?.copyWith(color: Colors.white),
