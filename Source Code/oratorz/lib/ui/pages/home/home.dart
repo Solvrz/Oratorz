@@ -26,39 +26,8 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                filter: ImageFilter.blur(sigmaX: 3),
                 child: const Text(""),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      height: 35,
-                      width: 35,
-                      "images/Logo.png",
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      "Oratorz",
-                      style: context.textTheme.headline5,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
               ),
             ),
             Padding(
@@ -72,23 +41,6 @@ class HomePage extends StatelessWidget {
                       width: context.mediaQuerySize.width / 6,
                       child: Column(
                         children: [
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     Image.asset(
-                          //       height: 35,
-                          //       width: 35,
-                          //       "images/Logo.png",
-                          //     ),
-                          //     const SizedBox(width: 8),
-                          //     Text(
-                          //       "Oratorz",
-                          //       style: context.textTheme.headline5,
-                          //       textAlign: TextAlign.center,
-                          //     ),
-                          //   ],
-                          // ),
-                          // const SizedBox(height: 18),
                           CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.grey.shade800,
@@ -101,16 +53,35 @@ class HomePage extends StatelessWidget {
                           const SizedBox(height: 16),
                           Text(
                             "Welcome Back,",
-                            style: context.textTheme.caption,
+                            style: context.textTheme.bodyText1!
+                                .copyWith(fontSize: 14),
                           ),
                           Text(
                             "Taylor Simora",
-                            style: context.textTheme.headline6,
+                            style: context.textTheme.headline6!
+                                .copyWith(fontSize: 21),
                           ),
                           const Spacer(),
                           ListTile(
                             onTap: () {},
                             horizontalTitleGap: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            leading: const Icon(
+                              Icons.settings,
+                              color: Color(0xff2a313b),
+                            ),
+                            title: Text(
+                              "Settings",
+                              style: context.textTheme.bodyText1,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ListTile(
+                            onTap: () {},
+                            horizontalTitleGap: 8,
+                            hoverColor: Colors.white12,
                             tileColor: const Color(0xff2a313b),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -134,9 +105,32 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: context.mediaQuerySize.height / 9,
+                        Card(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  height: 35,
+                                  width: 35,
+                                  "images/Logo.png",
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "Oratorz",
+                                  style: context.textTheme.headline5,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
+                        const SizedBox(height: 30),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: Text(
