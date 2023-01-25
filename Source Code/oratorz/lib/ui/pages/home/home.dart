@@ -31,7 +31,10 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -173,6 +176,7 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(width: 44),
                 ],
               ),
             )
