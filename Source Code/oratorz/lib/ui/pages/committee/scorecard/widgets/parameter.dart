@@ -72,7 +72,7 @@ class ParameterState extends State<Parameter> {
               onTap: () => controller.deleteParameter(widget.index),
               child: Icon(
                 Icons.delete_forever_outlined,
-                color: Colors.red[300],
+                color: Colors.red[400],
               ),
             ),
           ],

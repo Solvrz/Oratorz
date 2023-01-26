@@ -60,13 +60,13 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
         "title": "Spacer",
       },
       {
-        "title": "Setup",
-        "icon": Icons.settings_outlined,
+        "title": "Home",
+        "icon": Icons.home,
         "onTap": () {
           Get.deleteAll();
           LocalStorage.clearData();
 
-          context.pushReplacement("/setup");
+          context.pushReplacement("/home");
         },
       },
     ];
