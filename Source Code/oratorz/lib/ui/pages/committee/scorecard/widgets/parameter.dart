@@ -37,14 +37,9 @@ class ParameterState extends State<Parameter> {
       );
     }
 
-    return InkWell(
-      onTap: () {},
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onHover: (val) {
-        setState(() => hovering = val);
-      },
+    return MouseRegion(
+      onEnter: (_) => setState(() => hovering = true),
+      onExit: (_) => setState(() => hovering = false),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -13,7 +13,8 @@ class CommitteeCard extends StatefulWidget {
   State<CommitteeCard> createState() => _CommitteeCardState();
 }
 
-class _CommitteeCardState extends State<CommitteeCard> {
+class _CommitteeCardState extends State<CommitteeCard>
+    with SingleTickerProviderStateMixin {
   final Map<String, Color> colors = {
     "AIPPM": const Color.fromRGBO(233, 55, 10, 0.7),
     "ASEAN": const Color.fromRGBO(237, 41, 57, 0.7),
@@ -31,95 +32,111 @@ class _CommitteeCardState extends State<CommitteeCard> {
     "Custom": const Color(0xff0d1520),
   };
 
-  final double scaleFactor = 1.05;
+  late final AnimationController controller;
 
-  bool hovering = false;
+  @override
+  void initState() {
+    controller = AnimationController(
+      lowerBound: 1,
+      upperBound: 1.05,
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+      reverseDuration: const Duration(milliseconds: 100),
+    )..addListener(() => setState(() {}));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      onHover: (val) => setState(() => hovering = val),
-      hoverColor: Colors.transparent,
-      child: SizedBox(
-        height: 180 * (hovering ? 1.05 : 1),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.easeInOut,
-              width: 260 * (hovering ? scaleFactor : 1),
-              decoration: BoxDecoration(
-                color: colors[widget.code],
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  if (hovering)
-                    BoxShadow(
-                      color: Colors.grey.shade300,
-                      offset: const Offset(2, 2),
-                      blurRadius: 3,
-                      spreadRadius: 2,
-                    ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    Positioned(
-                      right: -100,
-                      child: Image.asset(
-                        "logos/${widget.code}.png",
-                        height: 185,
-                        opacity: const AlwaysStoppedAnimation(0.4),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.code,
-                              style: context.textTheme.headline5!
-                                  .copyWith(color: Colors.white),
-                            ),
-                            Text(
-                              "18 Delegates",
-                              style: context.textTheme.bodyText1!
-                                  .copyWith(color: Colors.white),
-                            ),
-                            const Spacer(),
-                            Text(
-                              "CCS MUN",
-                              style: context.textTheme.headline6!
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ],
+    final double animationStatus = (controller.value - controller.lowerBound) /
+        (controller.upperBound - controller.lowerBound);
+
+    return MouseRegion(
+      onEnter: (_) => controller.forward(),
+      onExit: (_) => controller.reverse(),
+      child: Transform.scale(
+        scale: controller.value,
+        child: SizedBox(
+          height: 180,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  width: 260,
+                  decoration: BoxDecoration(
+                    color: colors[widget.code],
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      if (controller.value > 1)
+                        BoxShadow(
+                          color:
+                              Colors.grey.shade300.withOpacity(animationStatus),
+                          offset: const Offset(2, 2),
+                          blurRadius: 3,
+                          spreadRadius: 2,
                         ),
-                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Positioned(
+                          right: 100 * (controller.value) - 200,
+                          child: Image.asset(
+                            "logos/${widget.code}.png",
+                            height: 185,
+                            opacity: const AlwaysStoppedAnimation(0.4),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.code,
+                                  style: context.textTheme.headline5!
+                                      .copyWith(color: Colors.white),
+                                ),
+                                Text(
+                                  "18 Delegates",
+                                  style: context.textTheme.bodyText1!
+                                      .copyWith(color: Colors.white),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  "CCS MUN",
+                                  style: context.textTheme.headline6!
+                                      .copyWith(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-            AnimatedContainer(
-              margin: const EdgeInsets.only(left: 12),
-              width: hovering ? 50 : 0,
-              height: 180 * (hovering ? scaleFactor : 0),
-              duration: const Duration(milliseconds: 100),
-              child: AnimatedOpacity(
-                opacity: hovering ? 1 : 0,
-                duration: const Duration(milliseconds: 100),
-                child: const _EditOptions(),
+              Container(
+                margin: const EdgeInsets.only(left: 12),
+                width: 50 * animationStatus,
+                height: 189 * animationStatus,
+                child: Opacity(
+                  opacity: animationStatus,
+                  child: const _EditOptions(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

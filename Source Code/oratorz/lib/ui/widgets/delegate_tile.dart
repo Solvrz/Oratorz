@@ -27,12 +27,9 @@ class _DelegateTileState extends State<DelegateTile> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      hoverColor: Colors.transparent,
-      onHover: (val) {
-        setState(() => hovering = val);
-      },
+    return MouseRegion(
+      onEnter: (_) => setState(() => hovering = true),
+      onExit: (_) => setState(() => hovering = false),
       child: ListTile(
         onTap: widget.onTap,
         leading: flag(widget.delegate),
