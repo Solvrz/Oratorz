@@ -14,8 +14,6 @@ class AddSpeaker extends StatelessWidget {
   Widget build(BuildContext context) {
     final SpeechController controller = Get.find<SpeechController>(tag: tag);
 
-    //FIXME: Opacity change on adding delegate
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

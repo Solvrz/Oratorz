@@ -13,12 +13,14 @@ class SetupController extends GetxController {
   set committeeType(int newCommitteeType) =>
       _committeeType.value = newCommitteeType;
 
-  void setAs(String name, List<String> delegates) =>
-      _committee.update((committee) {
-        committee?.name = name;
-        committee?.delegates = delegates;
+  void fromTemplate(String template) => _committee.update((committee) {
+        if (committee != null) {
+          committee.name = template;
+          committee.type = template;
+          committee.delegates = COMMITTEES[template]!.toList();
 
-        sort();
+          sort();
+        }
       });
 
   void add(String delegate) => _committee.update((committee) {
@@ -41,6 +43,6 @@ class SetupController extends GetxController {
         committee?.name = "Your Committee";
       });
 
-  void sort() => _committee.value.delegates
+  void sort() => committee.delegates
       .sort((a, b) => DELEGATES[a]!.compareTo(DELEGATES[b]!));
 }

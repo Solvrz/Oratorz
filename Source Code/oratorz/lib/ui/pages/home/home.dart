@@ -12,12 +12,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> committees = [
-      "AU",
-      "UNGA",
-      "Custom",
-    ];
-
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -51,10 +45,10 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const OratorzCard(),
-                        const SizedBox(height: 30),
-                        CommitteesSection(committees: committees),
+                      children: const [
+                        OratorzCard(),
+                        SizedBox(height: 30),
+                        CommitteesSection(),
                       ],
                     ),
                   ),

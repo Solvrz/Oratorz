@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/utils.dart';
+import 'package:go_router/go_router.dart';
+
+import '/models/committee.dart';
+import '/services/local_storage.dart';
 
 class CommitteeCard extends StatefulWidget {
   const CommitteeCard({
     Key? key,
-    required this.code,
+    required this.committee,
   }) : super(key: key);
 
-  final String code;
+  final Committee committee;
 
   @override
   State<CommitteeCard> createState() => _CommitteeCardState();
@@ -48,6 +53,12 @@ class _CommitteeCardState extends State<CommitteeCard>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double animationStatus = (controller.value - controller.lowerBound) /
         (controller.upperBound - controller.lowerBound);
@@ -64,11 +75,15 @@ class _CommitteeCardState extends State<CommitteeCard>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  LocalStorage.loadCommittee(widget.committee.id);
+
+                  context.pushReplacement("/committee/gsl");
+                },
                 child: Container(
                   width: 260,
                   decoration: BoxDecoration(
-                    color: colors[widget.code],
+                    color: colors[widget.committee.type],
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       if (controller.value > 1)
@@ -89,7 +104,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                         Positioned(
                           right: 100 * (controller.value) - 200,
                           child: Image.asset(
-                            "logos/${widget.code}.png",
+                            "logos/${widget.committee.type}.png",
                             height: 185,
                             opacity: const AlwaysStoppedAnimation(0.4),
                           ),
@@ -102,12 +117,12 @@ class _CommitteeCardState extends State<CommitteeCard>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.code,
+                                  widget.committee.type,
                                   style: context.textTheme.headline5!
                                       .copyWith(color: Colors.white),
                                 ),
                                 Text(
-                                  "18 Delegates",
+                                  "${widget.committee.delegates.length} Delegates",
                                   style: context.textTheme.bodyText1!
                                       .copyWith(color: Colors.white),
                                 ),
@@ -132,7 +147,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                 height: 189 * animationStatus,
                 child: Opacity(
                   opacity: animationStatus,
-                  child: const _EditOptions(),
+                  child: _EditOptions(id: widget.committee.id),
                 ),
               ),
             ],
@@ -144,7 +159,9 @@ class _CommitteeCardState extends State<CommitteeCard>
 }
 
 class _EditOptions extends StatelessWidget {
-  const _EditOptions({Key? key}) : super(key: key);
+  const _EditOptions({Key? key, required this.id}) : super(key: key);
+
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +189,7 @@ class _EditOptions extends StatelessWidget {
             ),
             InkWell(
               hoverColor: Colors.transparent,
-              onTap: () {},
+              onTap: () => LocalStorage.deleteCommittee(id),
               child: Icon(Icons.delete, color: Colors.red.shade400, size: 26),
             ),
           ],

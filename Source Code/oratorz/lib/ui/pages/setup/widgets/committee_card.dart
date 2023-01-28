@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '/config/constants/constants.dart';
 import '/services/local_storage.dart';
-import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -125,23 +124,18 @@ class _InviteCodeDialog extends StatefulWidget {
 }
 
 class _InviteCodeDialogState extends State<_InviteCodeDialog> {
-  final TextEditingController _inviteCodeController = TextEditingController();
+  final TextEditingController inviteCodeController = TextEditingController();
   bool error = false;
 
   void submit({String? value}) {
-    final String _code =
-        (value ?? _inviteCodeController.text).trim().toUpperCase();
+    final String code =
+        (value ?? inviteCodeController.text).trim().toUpperCase();
 
     setState(() => error = false);
 
-    if (INVITE_CODES.contains(_code) || TESTING) {
-      Get.put<CommitteeController>(
-        CommitteeController(
-          committee: Get.find<SetupController>().committee,
-        ),
-      );
-
-      LocalStorage.saveCommittee();
+    if (INVITE_CODES.contains(code) || TESTING) {
+      LocalStorage.createCommittee(Get.find<SetupController>().committee);
+      Get.delete<SetupController>();
 
       context.pushReplacement("/committee/gsl");
     } else {
@@ -159,7 +153,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
           children: [
             TextField(
               autofocus: true,
-              controller: _inviteCodeController,
+              controller: inviteCodeController,
               decoration: const InputDecoration(
                 hintText: "Invite Code",
                 prefixIcon: Icon(Icons.vpn_key),

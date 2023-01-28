@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/tools/controllers/setup.dart';
 import './widgets/committee_card.dart';
@@ -18,7 +19,7 @@ class SetupPage extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => context.pushReplacement("/home"),
             tooltip: "Back",
             hoverColor: Colors.white12,
           ),

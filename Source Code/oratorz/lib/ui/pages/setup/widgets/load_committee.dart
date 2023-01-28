@@ -82,7 +82,7 @@ class _TemplateDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> templates = COMMITTEES.keys.toList();
-    final SetupController _setupController = Get.find<SetupController>();
+    final SetupController controller = Get.find<SetupController>();
 
     return DialogBox(
       heading: "Select Template",
@@ -92,20 +92,17 @@ class _TemplateDialog extends StatelessWidget {
         child: ListView.separated(
           itemCount: COMMITTEES.length,
           itemBuilder: (_, index) {
-            final String _template = templates[index];
+            final String template = templates[index];
 
             return ListTile(
               onTap: () {
-                _setupController.setAs(
-                  _template,
-                  COMMITTEES[_template]!.toList(),
-                );
-                _setupController.update();
+                controller.fromTemplate(template);
+                controller.update();
 
                 context.pop();
               },
               title: Text(
-                "$_template (${COMMITTEES[_template]!.length})",
+                "$template (${COMMITTEES[template]!.length})",
                 style: context.textTheme.bodyText1,
               ),
             );

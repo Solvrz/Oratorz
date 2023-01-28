@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 import 'package:go_router/go_router.dart';
 
+import '/services/local_storage.dart';
 import 'committee_card.dart';
 
 class CommitteesSection extends StatelessWidget {
-  const CommitteesSection({super.key, required this.committees});
-
-  final List<String> committees;
+  const CommitteesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<String> committees = LocalStorage.committees;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -29,7 +30,9 @@ class CommitteesSection extends StatelessWidget {
           children: [
             ...List.generate(
               committees.length,
-              (index) => CommitteeCard(code: committees[index]),
+              (index) => CommitteeCard(
+                committee: LocalStorage.getCommittee(committees[index]),
+              ),
             ),
             InkWell(
               onTap: () => context.push("/setup"),

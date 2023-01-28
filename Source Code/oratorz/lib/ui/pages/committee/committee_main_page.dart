@@ -25,9 +25,9 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
   void initState() {
     super.initState();
 
-    if (LocalStorage.committeeExists()) {
+    if (LocalStorage.selectedCommittee != "") {
       analytics.logEvent(name: "committe_loaded");
-      LocalStorage.loadCommittee();
+      LocalStorage.loadCommittee(LocalStorage.selectedCommittee);
 
       controller = Get.find<CommitteeController>()
         ..tab = COMMITTEE_TABS
@@ -40,7 +40,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
             .toInt();
     } else {
       SchedulerBinding.instance
-          .addPostFrameCallback((_) => context.pushReplacement("/setup"));
+          .addPostFrameCallback((_) => context.pushReplacement("/home"));
     }
   }
 
@@ -63,8 +63,8 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
         "title": "Home",
         "icon": Icons.home,
         "onTap": () {
+          LocalStorage.deselect();
           Get.deleteAll();
-          LocalStorage.clearData();
 
           context.pushReplacement("/home");
         },
