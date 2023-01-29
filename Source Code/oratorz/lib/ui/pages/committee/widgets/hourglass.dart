@@ -43,9 +43,8 @@ class _HourglassState extends State<Hourglass> {
     super.initState();
 
     _speechController = Get.find<SpeechController>(tag: widget.tag);
-    setupTimer();
-
     timeLeft = _speechController.duration;
+    setupTimer();
   }
 
   void setupTimer() =>

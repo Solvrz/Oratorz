@@ -7,6 +7,12 @@ import '/tools/controllers/comittee/mode.dart';
 import '/tools/controllers/route.dart';
 import '../widgets/body.dart';
 
+void updateUrl(int mode, String id) => html.window.history.pushState(
+      null,
+      "tab",
+      "${COMMITTEE_MODES[mode]["route"]}?id=$id",
+    );
+
 class CommitteePage extends StatelessWidget {
   const CommitteePage({super.key});
 
@@ -14,23 +20,20 @@ class CommitteePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final RouteController _routeController = Get.find<RouteController>();
 
+    final int mode = COMMITTEE_MODES
+        .indexWhere(
+          (mode) =>
+              mode["route"].toString() ==
+              _routeController.path.split("?").first,
+        )
+        .clamp(0, double.infinity)
+        .toInt();
+
     final ModeController _modeController = Get.put<ModeController>(
-      ModeController(
-        mode: COMMITTEE_MODES
-            .indexWhere(
-              (mode) =>
-                  mode["route"].toString().contains(_routeController.path),
-            )
-            .clamp(0, double.infinity)
-            .toInt(),
-      ),
+      ModeController(mode: mode),
     );
 
-    html.window.history.pushState(
-      null,
-      "tab",
-      COMMITTEE_MODES[_modeController.mode]["route"],
-    );
+    updateUrl(mode, _routeController.args["id"]!);
 
     return Body(
       trailing: _ModeSelector(),
@@ -42,7 +45,7 @@ class CommitteePage extends StatelessWidget {
 class _ModeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ModeController _modeController = Get.find<ModeController>();
+    final ModeController controller = Get.find<ModeController>();
 
     return PopupMenuButton<int>(
       elevation: 10,
@@ -63,12 +66,12 @@ class _ModeSelector extends StatelessWidget {
               () => Row(
                 children: [
                   Icon(
-                    _modeController.currentModeDetails["icon"],
+                    controller.currentModeDetails["icon"],
                     color: context.theme.colorScheme.tertiary,
                   ),
                   const VerticalDivider(),
                   Text(
-                    _modeController.currentModeDetails["name"],
+                    controller.currentModeDetails["name"],
                     style: context.textTheme.bodyText1,
                   ),
                 ],
@@ -105,12 +108,8 @@ class _ModeSelector extends StatelessWidget {
         );
       }),
       onSelected: (index) {
-        _modeController.mode = index;
-        html.window.history.pushState(
-          null,
-          "mode",
-          _modeController.currentModeDetails["route"],
-        );
+        controller.mode = index;
+        updateUrl(controller.mode, Get.find<RouteController>().args["id"]!);
       },
     );
   }

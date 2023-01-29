@@ -1,8 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
+import 'package:get/get.dart';
 
+import '../../../tools/controllers/home.dart';
 import 'widgets/committees_section.dart';
 import 'widgets/oratorz_card.dart';
 import 'widgets/profile_card.dart';
@@ -12,6 +13,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put<HomeController>(HomeController());
+
     return SafeArea(
       child: Scaffold(
         body: Stack(

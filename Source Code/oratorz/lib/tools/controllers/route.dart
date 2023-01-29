@@ -1,12 +1,8 @@
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
 class RouteController extends GetxController {
-  late RxString path;
-  late Rx<Object?> args;
+  String path;
+  Map<String, String> args;
 
-  RouteController({required GoRouterState arguments}) {
-    path = arguments.location.obs;
-    args = arguments.extra.obs;
-  }
+  RouteController({required this.path, required this.args});
 }

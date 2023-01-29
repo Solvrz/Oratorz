@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '/config/constants/constants.dart';
+import '/models/committee.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
@@ -134,10 +135,12 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
     setState(() => error = false);
 
     if (INVITE_CODES.contains(code) || TESTING) {
-      LocalStorage.createCommittee(Get.find<SetupController>().committee);
+      final Committee committee = Get.find<SetupController>().committee;
+
+      LocalStorage.createCommittee(committee);
       Get.delete<SetupController>();
 
-      context.pushReplacement("/committee/gsl");
+      context.pushReplacement("/committee/gsl?id=${committee.id}");
     } else {
       setState(() => error = true);
     }

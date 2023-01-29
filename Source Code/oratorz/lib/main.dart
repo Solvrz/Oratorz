@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +18,7 @@ import '/firebase_options.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
+import 'config/constants/committee.dart';
 
 // TODO: Do Testing of Remove Delegates of Past Speakers
 
@@ -42,6 +45,13 @@ void main() async {
 class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 
+  void putRouteController(GoRouterState state) {
+    Get.delete<RouteController>();
+    Get.put<RouteController>(
+      RouteController(path: state.location, args: state.queryParams),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -53,59 +63,67 @@ class Oratorz extends StatelessWidget {
       ),
       routerConfig: GoRouter(
         initialLocation: "/",
-        errorBuilder: (_, args) {
-          Get.put<RouteController>(RouteController(arguments: args));
+        errorBuilder: (_, state) {
+          log("[GoRouter]: ${state.error}");
+
+          putRouteController(state);
 
           return const ErrorPage();
         },
         routes: [
           GoRoute(
             path: "/",
-            redirect: (_, args) {
-              Get.put<RouteController>(RouteController(arguments: args));
+            redirect: (_, state) {
+              putRouteController(state);
 
               return "/home";
             },
           ),
           GoRoute(
             path: "/setup",
-            builder: (_, args) {
-              Get.put<RouteController>(RouteController(arguments: args));
+            builder: (_, state) {
+              putRouteController(state);
 
               return const SetupPage();
             },
           ),
           GoRoute(
             path: "/home",
-            builder: (_, args) {
-              Get.put<RouteController>(RouteController(arguments: args));
+            builder: (_, state) {
+              putRouteController(state);
 
               return const HomePage();
             },
           ),
           GoRoute(
-            path: "/:tab",
-            builder: (_, args) {
-              Get.put<RouteController>(RouteController(arguments: args));
-
-              return const CommitteeMainPage();
-            },
-          ),
-          GoRoute(
             path: "/committee",
-            redirect: (_, args) {
-              Get.put<RouteController>(RouteController(arguments: args));
+            redirect: (_, state) {
+              putRouteController(state);
 
-              return "/committee/gsl";
+              return "/committee/gsl?id=${state.queryParams["id"]}";
             },
           ),
-          GoRoute(
-            path: "/committee/:mode",
-            builder: (_, args) {
-              Get.put<RouteController>(RouteController(arguments: args));
+          ...List.generate(
+            COMMITTEE_TABS.length - 1,
+            (index) => GoRoute(
+              path: COMMITTEE_TABS[index + 1]["route"],
+              builder: (_, state) {
+                putRouteController(state);
 
-              return const CommitteeMainPage();
-            },
+                return CommitteeMainPage(tab: index + 1);
+              },
+            ),
+          ),
+          ...List.generate(
+            COMMITTEE_MODES.length,
+            (index) => GoRoute(
+              path: COMMITTEE_MODES[index]["route"],
+              builder: (_, state) {
+                putRouteController(state);
+
+                return CommitteeMainPage(mode: index);
+              },
+            ),
           ),
         ],
       ),

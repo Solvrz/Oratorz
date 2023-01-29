@@ -8,14 +8,11 @@ import '/tools/controllers/comittee/speech.dart';
 import '../tools/controllers/comittee/motions.dart';
 import '../tools/controllers/comittee/scorecard.dart';
 import '../tools/controllers/comittee/vote.dart';
+import '../tools/controllers/home.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {
   static GetStorage box = GetStorage();
-
-  static String get selectedCommittee => box.read("selected") ?? "";
-
-  static void deselect() => box.write("selected", "");
 
   static List<String> get committees {
     final List<dynamic>? data = box.read("committees");
@@ -29,7 +26,44 @@ class LocalStorage {
     return data.cast<String>();
   }
 
+  static List<String> get pinned {
+    final List<dynamic>? data = box.read("pinned");
+
+    if (data == null) {
+      box.write("pinned", []);
+
+      return [];
+    }
+
+    return data.cast<String>();
+  }
+
+  static void addPin(String id) {
+    final List<String> data = box.read("pinned")?.cast<String>() ?? [];
+
+    data.add(id);
+
+    box.write("pinned", data);
+
+    Get.find<HomeController>().addPin(id);
+  }
+
+  static bool removePin(String id) {
+    final List<dynamic>? data = box.read("pinned");
+
+    if (data == null) return false;
+    if (data.remove(id) == false) return false;
+
+    box.write("pinned", data);
+
+    Get.find<HomeController>().removePin(id);
+
+    return true;
+  }
+
   static void createCommittee(Committee committee) {
+    if (committees.contains(committee.id)) return;
+
     final CommitteeController controller =
         CommitteeController(committee: committee);
 
@@ -44,10 +78,10 @@ class LocalStorage {
     committees.add(controller.committee.id);
 
     box.write(controller.committee.id, controller.toJson());
-    box.write("selected", controller.committee.id);
     box.write("committees", committees);
 
     Get.put<CommitteeController>(controller);
+    Get.find<HomeController>().addCommittee(committee.id);
   }
 
   static void deleteCommittee(String id) {
@@ -57,14 +91,18 @@ class LocalStorage {
     data.remove(id);
 
     box.write("committees", data);
+
+    Get.find<HomeController>().deleteCommittee(id);
   }
 
   static bool committeeExists(String id) => box.hasData(id);
 
   static bool updateCommittee(String key, dynamic value) {
-    if (selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic>? data = box.read(selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic>? data = box.read(committee.id);
 
     if (data == null) return false;
 
@@ -72,12 +110,12 @@ class LocalStorage {
       name: "committe_updated",
       parameters: {
         "committee": data.toString(),
-        "id": selectedCommittee,
+        "id": committee.id,
       },
     );
 
     data[key] = value;
-    box.write(selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
@@ -90,7 +128,6 @@ class LocalStorage {
       name: data["committee"]["name"],
       agenda: data["committee"]["agenda"],
       delegates: data["committee"]["delegates"].cast<String>(),
-      type: data["committee"]["type"],
     );
 
     return committee;
@@ -107,30 +144,33 @@ class LocalStorage {
     controller.rollCall = Map<String, int>.from(data["rollCall"]);
 
     Get.put<CommitteeController>(controller);
-    box.write("selected", id);
   }
 
   static void saveSpeech(SpeechController controller) =>
       box.write(controller.tag, controller.toJson());
 
   static bool updateSpeech(String key, dynamic value, String tag) {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data[tag] == null) return false;
 
     data[tag][key] = value;
 
-    box.write(LocalStorage.selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
 
   static bool loadSpeech(String tag) {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data[tag] == null) return false;
 
@@ -161,34 +201,40 @@ class LocalStorage {
   }
 
   static bool saveVote(VoteController vote) {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     data["vote"] = vote.toJson();
 
-    box.write(LocalStorage.selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
 
   static bool updateVote(String key, dynamic value) {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data["vote"] == null) return false;
 
     data["vote"][key] = value;
-    box.write(LocalStorage.selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
 
   static bool loadVote() {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data["vote"] == null) return false;
 
@@ -207,34 +253,40 @@ class LocalStorage {
   }
 
   static bool saveMotions() {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     data["motions"] = Get.find<MotionsController>().toJson();
 
-    box.write(LocalStorage.selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
 
   static bool updateMotions(String key, dynamic value) {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data["motions"] == null) return false;
 
     data["motions"][key] = value;
-    box.write(LocalStorage.selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
 
   static bool loadMotions() {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data["motions"] == null) return false;
 
@@ -262,34 +314,40 @@ class LocalStorage {
   }
 
   static bool saveScore() {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     data["score"] = Get.find<ScorecardController>().toJson();
 
-    box.write(LocalStorage.selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
 
   static bool updateScore(String key, dynamic value) {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data["score"] == null) return false;
 
     data["score"][key] = value;
-    box.write(LocalStorage.selectedCommittee, data);
+    box.write(committee.id, data);
 
     return true;
   }
 
   static bool loadScore() {
-    if (LocalStorage.selectedCommittee == "") return false;
+    if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Map<String, dynamic> data = box.read(LocalStorage.selectedCommittee);
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
 
     if (data["score"] == null) return false;
 

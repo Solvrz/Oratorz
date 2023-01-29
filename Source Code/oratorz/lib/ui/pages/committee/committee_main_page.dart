@@ -6,38 +6,44 @@ import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
 import '/config/constants/constants.dart';
+import '/models/committee.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import './widgets/dialogs/roll_call.dart';
 
 class CommitteeMainPage extends StatefulWidget {
-  const CommitteeMainPage({super.key});
+  final int mode;
+  final int tab;
+
+  const CommitteeMainPage({super.key, this.mode = 0, this.tab = 0});
 
   @override
   State<CommitteeMainPage> createState() => _CommitteeMainPageState();
 }
 
 class _CommitteeMainPageState extends State<CommitteeMainPage> {
+  late final String id;
   late final CommitteeController controller;
 
   @override
   void initState() {
     super.initState();
 
-    if (LocalStorage.selectedCommittee != "") {
-      analytics.logEvent(name: "committe_loaded");
-      LocalStorage.loadCommittee(LocalStorage.selectedCommittee);
+    final RouteController routeController = Get.find<RouteController>();
 
-      controller = Get.find<CommitteeController>()
-        ..tab = COMMITTEE_TABS
-            .indexWhere(
-              (tab) => tab["route"]
-                  .toString()
-                  .contains(Get.find<RouteController>().path),
-            )
-            .clamp(0, double.infinity)
-            .toInt();
+    if (routeController.args['id'] != null) {
+      id = routeController.args['id']!;
+
+      if (!Get.isRegistered<CommitteeController>()) {
+        final Committee committee = LocalStorage.getCommittee(id);
+
+        Get.put<CommitteeController>(CommitteeController(committee: committee));
+      }
+
+      analytics.logEvent(name: "committe_loaded");
+
+      controller = Get.find<CommitteeController>()..tab = widget.tab;
     } else {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => context.pushReplacement("/home"));
@@ -63,7 +69,6 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
         "title": "Home",
         "icon": Icons.home,
         "onTap": () {
-          LocalStorage.deselect();
           Get.deleteAll();
 
           context.pushReplacement("/home");
@@ -118,7 +123,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                                 html.window.history.pushState(
                                   null,
                                   "tab",
-                                  controller.currentTabDetails["route"],
+                                  "${controller.currentTabDetails["route"]}?id=$id",
                                 );
                               } else {
                                 tab["onTap"]();

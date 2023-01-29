@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '/models/committee.dart';
 import '/services/local_storage.dart';
+import '../../../../tools/controllers/route.dart';
 
 class CommitteeCard extends StatefulWidget {
   const CommitteeCard({
@@ -78,7 +79,17 @@ class _CommitteeCardState extends State<CommitteeCard>
                 onTap: () {
                   LocalStorage.loadCommittee(widget.committee.id);
 
-                  context.pushReplacement("/committee/gsl");
+                  const String path = "/committee/gsl";
+
+                  Get.delete<RouteController>();
+                  Get.put<RouteController>(
+                    RouteController(
+                      path: path,
+                      args: {"id": widget.committee.id},
+                    ),
+                  );
+
+                  context.pushReplacement("$path?id=${widget.committee.id}");
                 },
                 child: Container(
                   width: 260,
@@ -117,7 +128,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.committee.type,
+                                  widget.committee.name,
                                   style: context.textTheme.headline5!
                                       .copyWith(color: Colors.white),
                                 ),
@@ -128,9 +139,10 @@ class _CommitteeCardState extends State<CommitteeCard>
                                 ),
                                 const Spacer(),
                                 Text(
-                                  "CCS MUN",
-                                  style: context.textTheme.headline6!
-                                      .copyWith(color: Colors.white),
+                                  widget.committee.type,
+                                  style: context.textTheme.headline6!.copyWith(
+                                    color: Colors.white.withOpacity(0.7),
+                                  ),
                                 ),
                               ],
                             ),
