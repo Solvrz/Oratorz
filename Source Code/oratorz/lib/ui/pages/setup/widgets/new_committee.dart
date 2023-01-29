@@ -24,7 +24,7 @@ class NewCommitteeCard extends StatelessWidget {
             children: [
               Text(
                 "Set Up New Committee",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               _CommitteeType(
                 index: 0,
@@ -87,7 +87,7 @@ class _CommitteeType extends StatelessWidget {
                     ),
                     Text(
                       title,
-                      style: context.textTheme.headline6,
+                      style: context.textTheme.titleLarge,
                     ),
                   ],
                 ),
@@ -161,7 +161,7 @@ class _CommitteeType extends StatelessWidget {
                         : Center(
                             child: Text(
                               "No results matching your search was found.",
-                              style: context.textTheme.bodyText1,
+                              style: context.textTheme.bodyLarge,
                             ),
                           ),
                   );

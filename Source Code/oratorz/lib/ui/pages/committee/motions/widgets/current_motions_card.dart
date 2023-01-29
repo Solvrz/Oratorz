@@ -27,7 +27,7 @@ class CurrentMotionCard extends StatelessWidget {
               children: [
                 Text(
                   "Motion on Floor",
-                  style: context.textTheme.headline5,
+                  style: context.textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 8),
                 Builder(
@@ -42,7 +42,7 @@ class CurrentMotionCard extends StatelessWidget {
                         margin: const EdgeInsets.only(top: 52, bottom: 12),
                         child: Text(
                           "No motions currently on the floor",
-                          style: context.textTheme.bodyText1,
+                          style: context.textTheme.bodyLarge,
                         ),
                       );
                     }

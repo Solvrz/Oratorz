@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({
-    Key? key,
-  }) : super(key: key);
+  const ProfileCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +24,11 @@ class ProfileCard extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               "Welcome Back,",
-              style: context.textTheme.bodyText1!.copyWith(fontSize: 14),
+              style: context.textTheme.bodyLarge!.copyWith(fontSize: 14),
             ),
             Text(
               "Taylor Simora",
-              style: context.textTheme.headline6!.copyWith(fontSize: 21),
+              style: context.textTheme.titleLarge!.copyWith(fontSize: 21),
             ),
             const Spacer(),
             ListTile(
@@ -45,7 +43,7 @@ class ProfileCard extends StatelessWidget {
               ),
               title: Text(
                 "Settings",
-                style: context.textTheme.bodyText1,
+                style: context.textTheme.bodyLarge,
               ),
             ),
             const SizedBox(height: 8),
@@ -64,7 +62,7 @@ class ProfileCard extends StatelessWidget {
               title: Text(
                 "Log Out",
                 style:
-                    context.textTheme.bodyText2?.copyWith(color: Colors.white),
+                    context.textTheme.bodyMedium?.copyWith(color: Colors.white),
               ),
             )
           ],

@@ -149,7 +149,7 @@ class RollCallDialog extends StatelessWidget {
             : Center(
                 child: Text(
                   "No delegates are there in the commitee.",
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 ),
               ),
       ),

@@ -42,12 +42,12 @@ class MotionTile extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                           text: motion["type"],
-                          style: context.textTheme.caption,
+                          style: context.textTheme.bodySmall,
                           children: [
                             TextSpan(
                               text:
                                   "\n${DELEGATES[motion["delegate"]] ?? "Delegate"}",
-                              style: context.textTheme.bodyText1?.copyWith(
+                              style: context.textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [
@@ -55,7 +55,7 @@ class MotionTile extends StatelessWidget {
                                   TextSpan(
                                     text:
                                         "\n${(motion["topic"] as Map<String, String>).keys.first}: ",
-                                    style: context.textTheme.bodyText1
+                                    style: context.textTheme.bodyLarge
                                         ?.copyWith(fontWeight: FontWeight.bold),
                                     children: [
                                       TextSpan(
@@ -63,7 +63,7 @@ class MotionTile extends StatelessWidget {
                                                 as Map<String, String>)
                                             .values
                                             .first,
-                                        style: context.textTheme.bodyText2,
+                                        style: context.textTheme.bodyMedium,
                                       )
                                     ],
                                   ),
@@ -173,7 +173,7 @@ class _Duration extends StatelessWidget {
         const SizedBox(width: 5),
         Text(
           Duration(seconds: seconds).time,
-          style: context.textTheme.bodyText1,
+          style: context.textTheme.bodyLarge,
         ),
       ],
     );

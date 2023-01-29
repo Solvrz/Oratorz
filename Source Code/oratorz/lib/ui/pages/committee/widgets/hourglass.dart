@@ -84,11 +84,11 @@ class _HourglassState extends State<Hourglass> {
             RichText(
               text: TextSpan(
                 text: "${_speechController.subtopic.keys.first}: ",
-                style: context.textTheme.headline2,
+                style: context.textTheme.displayMedium,
                 children: [
                   TextSpan(
                     text: _speechController.subtopic.values.first,
-                    style: context.textTheme.headline5!
+                    style: context.textTheme.headlineSmall!
                         .copyWith(fontWeight: FontWeight.w500),
                   )
                 ],
@@ -119,13 +119,13 @@ class _HourglassState extends State<Hourglass> {
                       if (overallTimeLeft != null)
                         Text(
                           overallTimeLeft.time,
-                          style: context.textTheme.headline5!.copyWith(
+                          style: context.textTheme.headlineSmall!.copyWith(
                             fontSize: 20,
                           ),
                         ),
                       Text(
                         timeLeft.time,
-                        style: context.textTheme.headline5!.copyWith(
+                        style: context.textTheme.headlineSmall!.copyWith(
                           fontSize: 32,
                         ),
                       ),

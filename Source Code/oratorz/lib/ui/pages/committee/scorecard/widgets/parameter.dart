@@ -31,7 +31,7 @@ class ParameterState extends State<Parameter> {
       return Center(
         child: Text(
           "${controller.parameters[widget.index]} (${controller.maxScores[widget.index]})",
-          style: context.textTheme.headline6,
+          style: context.textTheme.titleLarge,
           textAlign: TextAlign.center,
         ),
       );
@@ -46,7 +46,7 @@ class ParameterState extends State<Parameter> {
           Expanded(
             child: Text(
               "${controller.parameters[widget.index]} (${controller.maxScores[widget.index]})",
-              style: context.textTheme.headline6,
+              style: context.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
           ),
@@ -109,7 +109,7 @@ class _EditParameterDialog extends StatelessWidget {
         children: [
           Text(
             "Name",
-            style: context.textTheme.headline6,
+            style: context.textTheme.titleLarge,
           ),
           const SizedBox(height: 10),
           Container(
@@ -124,7 +124,7 @@ class _EditParameterDialog extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             "Max Score",
-            style: context.textTheme.headline6,
+            style: context.textTheme.titleLarge,
           ),
           const SizedBox(height: 10),
           Container(

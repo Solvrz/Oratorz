@@ -25,14 +25,14 @@ class PastSpeakersCard extends StatelessWidget {
             children: [
               Text(
                 "Past Speakers",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               Obx(
                 () => _speechController.pastSpeakers.isEmpty
                     ? Text(
                         "No past speakers have been recorded",
-                        style: context.textTheme.bodyText1,
+                        style: context.textTheme.bodyLarge,
                       )
                     : Expanded(
                         child: ListView.separated(
@@ -50,7 +50,7 @@ class PastSpeakersCard extends StatelessWidget {
                               delegate: speaker.keys.first,
                               trailing: Text(
                                 "$inMinutes:${(inSeconds - inMinutes * 60).toString().padLeft(2, "0")}",
-                                style: context.textTheme.bodyText1,
+                                style: context.textTheme.bodyLarge,
                               ),
                               onHover: RoundedButton(
                                 color: Colors.red.shade400,

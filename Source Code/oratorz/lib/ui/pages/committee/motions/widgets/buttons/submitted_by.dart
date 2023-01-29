@@ -24,7 +24,7 @@ class SubmittedByButton extends StatelessWidget {
       children: [
         Text(
           "Submitted By",
-          style: context.textTheme.headline5,
+          style: context.textTheme.headlineSmall,
         ),
         const SizedBox(height: 10),
         DropdownSearch<String>(
@@ -65,7 +65,7 @@ class SubmittedByButton extends StatelessWidget {
                 Get.find<CommitteeController>().committee.count > 0
                     ? "Delegate Not Found"
                     : "No delegates are there in the commitee.",
-                style: context.textTheme.headline6,
+                style: context.textTheme.titleLarge,
               ),
             ),
           ),

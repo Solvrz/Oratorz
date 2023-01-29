@@ -7,12 +7,12 @@ import '/models/committee.dart';
 import '/services/local_storage.dart';
 
 class CommitteeCard extends StatefulWidget {
-  const CommitteeCard({
-    Key? key,
-    required this.committee,
-  }) : super(key: key);
-
   final Committee committee;
+
+  const CommitteeCard({
+    super.key,
+    required this.committee,
+  });
 
   @override
   State<CommitteeCard> createState() => _CommitteeCardState();
@@ -20,21 +20,21 @@ class CommitteeCard extends StatefulWidget {
 
 class _CommitteeCardState extends State<CommitteeCard>
     with SingleTickerProviderStateMixin {
-  final Map<String, Color> colors = {
-    "AIPPM": const Color.fromRGBO(233, 55, 10, 0.7),
-    "ASEAN": const Color.fromRGBO(237, 41, 57, 0.7),
-    "AU": const Color.fromRGBO(192, 162, 101, 0.7),
-    "ECOSOC": const Color.fromRGBO(214, 157, 54, 0.7),
-    "EU": const Color.fromRGBO(0, 58, 148, 1),
-    "G20": const Color.fromRGBO(83, 106, 125, 0.7),
-    "NATO": const Color.fromRGBO(0, 36, 125, 0.7),
-    "UNGA": const Color.fromRGBO(36, 134, 205, 0.7),
-    "UNHCR": const Color.fromRGBO(115, 110, 176, 0.7),
-    "UNHRC": const Color.fromRGBO(25, 113, 177, 0.85),
-    "UNICEF": const Color.fromRGBO(71, 136, 200, 0.7),
-    "UNSC": const Color.fromRGBO(115, 197, 255, 0.7),
-    "WHO": const Color.fromRGBO(7, 152, 255, 0.7),
-    "Custom": const Color(0xff0d1520),
+  final Map<String, Color> colors = const {
+    "AIPPM": Color(0xB1E9370A),
+    "ASEAN": Color(0xB1ED2939),
+    "AU": Color(0xB1C0A265),
+    "Custom": Color(0xff0d1520),
+    "ECOSOC": Color(0xB1D69D36),
+    "EU": Color(0xFF003A94),
+    "G20": Color(0xB1536A7D),
+    "NATO": Color(0xB100247D),
+    "UNGA": Color(0xB12486CD),
+    "UNHCR": Color(0xB1736EB0),
+    "UNHRC": Color(0xD71971B1),
+    "UNICEF": Color(0xB14788C8),
+    "UNSC": Color(0xB173C5FF),
+    "WHO": Color(0xB10798FF),
   };
 
   late final AnimationController controller;
@@ -118,18 +118,18 @@ class _CommitteeCardState extends State<CommitteeCard>
                               children: [
                                 Text(
                                   widget.committee.type,
-                                  style: context.textTheme.headline5!
+                                  style: context.textTheme.headlineSmall!
                                       .copyWith(color: Colors.white),
                                 ),
                                 Text(
                                   "${widget.committee.delegates.length} Delegates",
-                                  style: context.textTheme.bodyText1!
+                                  style: context.textTheme.bodyLarge!
                                       .copyWith(color: Colors.white),
                                 ),
                                 const Spacer(),
                                 Text(
                                   "CCS MUN",
-                                  style: context.textTheme.headline6!
+                                  style: context.textTheme.titleLarge!
                                       .copyWith(color: Colors.white),
                                 ),
                               ],
@@ -159,9 +159,9 @@ class _CommitteeCardState extends State<CommitteeCard>
 }
 
 class _EditOptions extends StatelessWidget {
-  const _EditOptions({Key? key, required this.id}) : super(key: key);
-
   final String id;
+
+  const _EditOptions({required this.id});
 
   @override
   Widget build(BuildContext context) {

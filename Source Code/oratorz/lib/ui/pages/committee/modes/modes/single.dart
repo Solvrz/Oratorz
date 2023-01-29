@@ -44,7 +44,7 @@ class SingleTab extends StatelessWidget {
               Center(
                 child: Text(
                   "Carousel Placeholder",
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 ),
               ),
             ],

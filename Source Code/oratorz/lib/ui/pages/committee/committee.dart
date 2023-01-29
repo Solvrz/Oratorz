@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
@@ -11,41 +12,53 @@ import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import './widgets/dialogs/roll_call.dart';
 
-class CommitteeMainPage extends StatefulWidget {
-  const CommitteeMainPage({super.key});
+class CommitteePage extends StatefulWidget {
+  const CommitteePage({super.key});
 
   @override
-  State<CommitteeMainPage> createState() => _CommitteeMainPageState();
+  State<CommitteePage> createState() => _CommitteePageState();
 }
 
-class _CommitteeMainPageState extends State<CommitteeMainPage> {
-  late final CommitteeController controller;
+class _CommitteePageState extends State<CommitteePage> {
+  late final CommitteeController _committeeController;
+  late final int _tabVal;
 
   @override
   void initState() {
     super.initState();
 
-    if (LocalStorage.selectedCommittee != "") {
-      analytics.logEvent(name: "committe_loaded");
-      LocalStorage.loadCommittee(LocalStorage.selectedCommittee);
+    // TODO: implement Exists method Everywhere & for Everything
+    final String id = LocalStorage.selectedCommittee;
 
-      controller = Get.find<CommitteeController>()
-        ..tab = COMMITTEE_TABS
-            .indexWhere(
-              (tab) => tab["route"]
-                  .toString()
-                  .contains(Get.find<RouteController>().path),
-            )
-            .clamp(0, double.infinity)
-            .toInt();
-    } else {
+    if (!LocalStorage.committeeExists(id)) {
       SchedulerBinding.instance
-          .addPostFrameCallback((_) => context.pushReplacement("/home"));
+          .addPostFrameCallback((_) => context.pushReplacement("/setup"));
+
+      return;
+    }
+
+    analytics.logEvent(name: "committe_loaded");
+    LocalStorage.loadCommittee(id);
+
+    _tabVal = COMMITTEE_TABS.indexWhere(
+      (tab) => tab["route"].toString().contains(
+            Get.find<RouteController>().path,
+          ),
+    );
+
+    if (_tabVal == -1) {
+      SchedulerBinding.instance
+          .addPostFrameCallback((_) => context.pushReplacement("/error"));
+
+      return;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final CommitteeController controller = Get.find<CommitteeController>()
+      ..tab = _tabVal.clamp(0, double.infinity).toInt();
+
     final List<Map<String, dynamic>> tabs = [
       ...COMMITTEE_TABS,
       {
@@ -94,8 +107,8 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                   child: Column(
                     children: [
                       Text(
-                        controller.committee.name,
-                        style: context.textTheme.headline2!
+                        _committeeController.committee.name,
+                        style: context.textTheme.displayMedium!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -112,19 +125,19 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                             title: tab["title"],
                             icon: tab["icon"],
                             onTap: () {
-                              if (tab.containsKey("route")) {
-                                controller.tab = index;
-
-                                html.window.history.pushState(
-                                  null,
-                                  "tab",
-                                  controller.currentTabDetails["route"],
-                                );
-                              } else {
+                              if (!tab.containsKey("route")) {
                                 tab["onTap"]();
+                                return;
                               }
+
+                              _committeeController.tab = index;
+                              html.window.history.pushState(
+                                null,
+                                "tab",
+                                _committeeController.currentTabDetails["route"],
+                              );
                             },
-                            selected: controller.tab == index,
+                            selected: _committeeController.tab == index,
                             iconColor: tab["color"],
                           ),
                         );
@@ -137,15 +150,15 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                               left: 15,
                               right: 5,
                             ),
-                            child: Image.asset(
+                            child: SvgPicture.asset(
                               height: 35,
                               width: 35,
-                              "images/Logo.png",
+                              "images/Logo.svg",
                             ),
                           ),
                           Text(
                             "Oratorz",
-                            style: context.textTheme.headline5!
+                            style: context.textTheme.headlineSmall!
                                 .copyWith(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
@@ -153,7 +166,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                       ),
                       Text(
                         "A Unit of Solvrz Inc.",
-                        style: context.textTheme.bodyText1!
+                        style: context.textTheme.bodyLarge!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -165,7 +178,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Obx(() => controller.currentTab),
+                child: Obx(() => _committeeController.currentTab),
               ),
             ),
           ],
@@ -209,7 +222,7 @@ class _SidebarTile extends StatelessWidget {
           leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
           title: Text(
             title,
-            style: context.textTheme.bodyText2?.copyWith(color: Colors.white),
+            style: context.textTheme.bodyMedium?.copyWith(color: Colors.white),
           ),
         ),
       ),

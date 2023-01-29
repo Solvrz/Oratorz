@@ -20,7 +20,7 @@ class CommitteesSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Text(
             "Your Committees",
-            style: context.textTheme.headline5,
+            style: context.textTheme.headlineSmall,
           ),
         ),
         Wrap(
@@ -48,7 +48,7 @@ class CommitteesSection extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "Start a New Committee",
-                      style: context.textTheme.headline6!.copyWith(
+                      style: context.textTheme.titleLarge!.copyWith(
                         color: Colors.grey.shade500,
                       ),
                       textAlign: TextAlign.center,

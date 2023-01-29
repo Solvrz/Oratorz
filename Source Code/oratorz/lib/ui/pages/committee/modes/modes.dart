@@ -7,8 +7,8 @@ import '/tools/controllers/comittee/mode.dart';
 import '/tools/controllers/route.dart';
 import '../widgets/body.dart';
 
-class CommitteePage extends StatelessWidget {
-  const CommitteePage({super.key});
+class ModesPage extends StatelessWidget {
+  const ModesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _ModeSelector extends StatelessWidget {
                   const VerticalDivider(),
                   Text(
                     _modeController.currentModeDetails["name"],
-                    style: context.textTheme.bodyText1,
+                    style: context.textTheme.bodyLarge,
                   ),
                 ],
               ),

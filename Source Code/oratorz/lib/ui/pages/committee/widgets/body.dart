@@ -37,11 +37,11 @@ class Body extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                           text: "Agenda: ",
-                          style: context.textTheme.headline2,
+                          style: context.textTheme.displayMedium,
                           children: [
                             TextSpan(
                               text: _committeeController.committee.agenda,
-                              style: context.textTheme.headline5!
+                              style: context.textTheme.headlineSmall!
                                   .copyWith(fontWeight: FontWeight.w500),
                             ),
                           ],

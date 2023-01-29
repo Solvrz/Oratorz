@@ -28,7 +28,7 @@ class _TopicButtonState extends State<TopicButton> {
       children: [
         Text(
           widget.topic.keys.first,
-          style: context.textTheme.headline5,
+          style: context.textTheme.headlineSmall,
         ),
         const SizedBox(height: 10),
         Container(

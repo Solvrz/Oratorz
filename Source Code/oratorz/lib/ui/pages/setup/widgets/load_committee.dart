@@ -21,7 +21,7 @@ class LoadCommitteeCard extends StatelessWidget {
           children: [
             Text(
               "Load Committee",
-              style: context.textTheme.headline5,
+              style: context.textTheme.headlineSmall,
             ),
             const SizedBox(height: 18),
             Row(
@@ -103,7 +103,7 @@ class _TemplateDialog extends StatelessWidget {
               },
               title: Text(
                 "$template (${COMMITTEES[template]!.length})",
-                style: context.textTheme.bodyText1,
+                style: context.textTheme.bodyLarge,
               ),
             );
           },

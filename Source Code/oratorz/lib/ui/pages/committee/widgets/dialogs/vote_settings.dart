@@ -34,7 +34,7 @@ class VoteSettingsDialog extends StatelessWidget {
               if (title) ...[
                 Text(
                   "Topic",
-                  style: context.textTheme.headline5,
+                  style: context.textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 10),
                 Container(
@@ -59,7 +59,7 @@ class VoteSettingsDialog extends StatelessWidget {
               ],
               Text(
                 "Majority",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(height: 10),
               Column(
@@ -135,7 +135,7 @@ class _Majority extends StatelessWidget {
           ),
           Text(
             "$title (${_voteController.majorityVal(value: value)}/${_voteController.totalVoters})",
-            style: context.textTheme.bodyText1
+            style: context.textTheme.bodyLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
           )
         ],

@@ -52,11 +52,6 @@ class LocalStorage {
 
   static void deleteCommittee(String id) {
     box.remove(id);
-
-    final List<String> data = committees;
-    data.remove(id);
-
-    box.write("committees", data);
   }
 
   static bool committeeExists(String id) => box.hasData(id);

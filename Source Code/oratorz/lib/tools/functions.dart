@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 Widget flag(String delegate, {double size = 30}) => Container(
@@ -20,17 +21,18 @@ Widget flag(String delegate, {double size = 30}) => Container(
         width: size,
         "flags/${delegate.split(" ")[0]}.png",
         filterQuality: FilterQuality.high,
-        errorBuilder: (_, __, ___) => Image.asset(
+        errorBuilder: (_, __, ___) => SvgPicture.asset(
           height: size,
           width: size,
-          "images/Logo.png",
-          filterQuality: FilterQuality.high,
+          "images/Logo.svg",
         ),
       ),
     );
 
-Widget carousel(BuildContext context) =>
-    Text("Carousel Placeholder", style: context.textTheme.bodyText1);
+Widget carousel(BuildContext context) => Text(
+      "Carousel Placeholder",
+      style: context.textTheme.bodyLarge,
+    );
 
 SnackBar getSnackbar(BuildContext context, Widget content) {
   return SnackBar(

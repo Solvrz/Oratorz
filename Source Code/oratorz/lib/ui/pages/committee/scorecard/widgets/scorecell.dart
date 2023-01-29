@@ -78,7 +78,7 @@ class _ScoreCellState extends State<ScoreCell> {
                   child: Text(
                     controller.scores[widget.delegate]![widget.index]
                         .toString(),
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
         );

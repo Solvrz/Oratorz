@@ -36,7 +36,7 @@ class _DelegateTileState extends State<DelegateTile> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
         title: Text(
           DELEGATES[widget.delegate]!,
-          style: context.textTheme.bodyText1,
+          style: context.textTheme.bodyLarge,
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oratorz/config/constants/committee.dart';
 
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
@@ -37,6 +38,11 @@ class AddMotionCard extends StatelessWidget {
           );
 
           LocalStorage.saveSpeech(_speechController);
+
+          final int tab = COMMITTEE_TABS.indexWhere(
+            (tab) => tab["route"].toString().contains("/id/modes/mod"),
+          );
+          Get.find<CommitteeController>().tab = tab;
 
           // TODO: Push
           // context.pushReplacement("/committee/mod");
@@ -109,13 +115,14 @@ class AddMotionCard extends StatelessWidget {
         "icon": Icons.timelapse,
         "widgets": ["duration"],
         "onPass": (motion) {
-          final SpeechController _speechController =
-              Get.isRegistered<SpeechController>(tag: "gsl")
-                  ? Get.find<SpeechController>(tag: "gsl")
-                  : Get.put<SpeechController>(
-                      SpeechController("gsl"),
-                      tag: "gsl",
-                    );
+          late final SpeechController _speechController;
+
+          if (Get.isRegistered<SpeechController>(tag: "gsl")) {
+            _speechController = Get.find<SpeechController>(tag: "gsl");
+          } else {
+            _speechController =
+                Get.put<SpeechController>(SpeechController("gsl"), tag: "gsl");
+          }
 
           _speechController.duration = Duration(
             seconds: (motion["duration"] as String).toInt,
@@ -161,6 +168,8 @@ class AddMotionCard extends StatelessWidget {
         "type": "End Meeting",
         "icon": Icons.stop,
         "onPass": (motion) {
+          // TODO: Sure Dialog
+
           LocalStorage.clearData();
           context.pushReplacement("/setup");
         },
@@ -177,6 +186,8 @@ class AddMotionCard extends StatelessWidget {
           _committeeController.setAgenda(
             (motion["topic"] as Map<String, String>).values.first,
           );
+
+          // TODO: Snackbar
         },
       },
       {
@@ -208,6 +219,7 @@ class AddMotionCard extends StatelessWidget {
         "topic": {"Decision": "Your Decision"},
         "onPass": (motion) {
           // TODO: Disscuss Here
+          // TODO: Snackbar
         },
       },
       {
@@ -246,7 +258,7 @@ class AddMotionCard extends StatelessWidget {
             children: [
               Text(
                 "Add Motion",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(height: 10),
               Expanded(

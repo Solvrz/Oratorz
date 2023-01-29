@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    "images/home-banner.png",
+                    "images/Banner.png",
                   ),
                   repeat: ImageRepeat.repeatX,
                 ),

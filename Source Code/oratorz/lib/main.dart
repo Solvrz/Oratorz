@@ -68,14 +68,6 @@ class Oratorz extends StatelessWidget {
             },
           ),
           GoRoute(
-            path: "/setup",
-            builder: (_, args) {
-              Get.put<RouteController>(RouteController(arguments: args));
-
-              return const SetupPage();
-            },
-          ),
-          GoRoute(
             path: "/home",
             builder: (_, args) {
               Get.put<RouteController>(RouteController(arguments: args));
@@ -84,27 +76,35 @@ class Oratorz extends StatelessWidget {
             },
           ),
           GoRoute(
-            path: "/:tab",
+            path: "/setup",
             builder: (_, args) {
               Get.put<RouteController>(RouteController(arguments: args));
 
-              return const CommitteeMainPage();
+              return const SetupPage();
             },
           ),
           GoRoute(
-            path: "/committee",
+            path: "/:id/:tab",
+            builder: (_, args) {
+              Get.put<RouteController>(RouteController(arguments: args));
+
+              return const CommitteePage();
+            },
+          ),
+          GoRoute(
+            path: "/:id/mode",
             redirect: (_, args) {
               Get.put<RouteController>(RouteController(arguments: args));
 
-              return "/committee/gsl";
+              return ":id/mode/gsl";
             },
           ),
           GoRoute(
-            path: "/committee/:mode",
+            path: "/:id/mode/:mode",
             builder: (_, args) {
               Get.put<RouteController>(RouteController(arguments: args));
 
-              return const CommitteeMainPage();
+              return const CommitteePage();
             },
           ),
         ],

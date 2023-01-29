@@ -39,7 +39,7 @@ class _DurationButtonState extends State<DurationButton> {
       children: [
         Text(
           widget.title,
-          style: context.textTheme.headline5,
+          style: context.textTheme.headlineSmall,
         ),
         const SizedBox(height: 10),
         Container(

@@ -62,7 +62,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
             : Center(
                 child: Text(
                   "Conduct a roll call before yielding speakers",
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 ),
               ),
       ),

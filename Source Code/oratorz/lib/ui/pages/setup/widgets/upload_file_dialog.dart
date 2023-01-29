@@ -92,13 +92,13 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                   RichText(
                     text: TextSpan(
                       text: "Drag & Drop Files Here",
-                      style: context.textTheme.bodyText1?.copyWith(
+                      style: context.textTheme.bodyLarge?.copyWith(
                         color: context.theme.colorScheme.secondary,
                       ),
                       children: [
                         TextSpan(
                           text: "\n(Suported: .xlsx, .xls or .json)",
-                          style: context.textTheme.caption,
+                          style: context.textTheme.bodySmall,
                         )
                       ],
                     ),

@@ -26,7 +26,7 @@ class VotingCard extends StatelessWidget {
             children: [
               Text(
                 "Voting",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               Expanded(
@@ -59,7 +59,8 @@ class VotingCard extends StatelessWidget {
                                         Text(
                                           DELEGATES[
                                               _voteController.currentVoter]!,
-                                          style: context.textTheme.headline2,
+                                          style:
+                                              context.textTheme.displayMedium,
                                         ),
                                       ],
                                     ),
@@ -113,19 +114,19 @@ class VotingCard extends StatelessWidget {
                       : _voteController.pastVoters.isEmpty
                           ? Text(
                               "Conduct a roll call before voting",
-                              style: context.textTheme.bodyText1,
+                              style: context.textTheme.bodyLarge,
                             )
                           : Center(
                               child: RichText(
                                 text: TextSpan(
                                   text: "Vote Completed",
-                                  style: context.textTheme.headline2,
+                                  style: context.textTheme.displayMedium,
                                   children: [
                                     TextSpan(
                                       text:
                                           "\nResult: Vote ${_voteController.inFavor >= _voteController.majorityVal() ? "Passed" : "Failed"}!",
-                                      style:
-                                          context.textTheme.headline5?.copyWith(
+                                      style: context.textTheme.headlineSmall
+                                          ?.copyWith(
                                         fontSize: 30,
                                         color: _voteController.inFavor >=
                                                 _voteController.majorityVal()

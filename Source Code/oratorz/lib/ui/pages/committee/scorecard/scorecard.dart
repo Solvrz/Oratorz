@@ -34,7 +34,7 @@ class ScorecardPage extends StatelessWidget {
               children: [
                 Text(
                   "Scorecard",
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const Spacer(),
                 if (controller.mode.value == 1) ...[

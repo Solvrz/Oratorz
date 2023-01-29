@@ -32,7 +32,7 @@ class CommitteeCard extends StatelessWidget {
                     children: [
                       Text(
                         _setupController.committee.name,
-                        style: context.textTheme.headline5,
+                        style: context.textTheme.headlineSmall,
                       ),
                       const SizedBox(width: 16),
                       RoundedButton(
@@ -57,7 +57,7 @@ class CommitteeCard extends StatelessWidget {
                   ),
                   Text(
                     "${_setupController.committee.count} Delegates",
-                    style: context.textTheme.headline6,
+                    style: context.textTheme.titleLarge,
                   ),
                   const SizedBox(height: 12),
                   Expanded(
@@ -137,7 +137,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
       LocalStorage.createCommittee(Get.find<SetupController>().committee);
       Get.delete<SetupController>();
 
-      context.pushReplacement("/committee/gsl");
+      context.pushReplacement("/id/mode/gsl");
     } else {
       setState(() => error = true);
     }
@@ -166,13 +166,13 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
                 children: [
                   Icon(
                     Icons.error_outline,
-                    color: context.theme.errorColor,
+                    color: context.theme.colorScheme.error,
                   ),
                   const SizedBox(width: 5),
                   Text(
                     "Invalid Invite Code",
-                    style: context.textTheme.bodyText2?.copyWith(
-                      color: context.theme.errorColor,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: context.theme.colorScheme.error,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -24,7 +24,7 @@ class TableHeader extends StatelessWidget {
             width: 200,
             child: Text(
               "Delegate",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           ...List.generate(
@@ -51,7 +51,7 @@ class TableHeader extends StatelessWidget {
               children: [
                 Text(
                   "Total",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(width: 8),
                 InkWell(

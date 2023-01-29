@@ -25,7 +25,7 @@ class DebateCard extends StatelessWidget {
             children: [
               Text(
                 "Debate on Motion",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(height: 10),
               Expanded(

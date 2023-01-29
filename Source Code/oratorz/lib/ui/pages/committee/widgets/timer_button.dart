@@ -45,12 +45,12 @@ class TimerButton extends StatelessWidget {
                       hintText: "00",
                       border: InputBorder.none,
                       fillColor: Colors.transparent,
-                      hintStyle: context.textTheme.headline1!.copyWith(
+                      hintStyle: context.textTheme.displayLarge!.copyWith(
                         color: Colors.grey.shade400,
                       ),
                     ),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    style: context.textTheme.headline1!.copyWith(
+                    style: context.textTheme.displayLarge!.copyWith(
                       color: Colors.grey.shade700,
                     ),
                     onChanged: (text) {
@@ -97,7 +97,7 @@ class TimerButton extends StatelessWidget {
         ),
         Text(
           subtitle.toUpperCase(),
-          style: context.textTheme.bodyText1!.copyWith(
+          style: context.textTheme.bodyLarge!.copyWith(
             fontSize: 12,
             color: Colors.grey.shade600,
             letterSpacing: 1.5,
