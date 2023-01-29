@@ -39,7 +39,7 @@ class VoteCard extends StatelessWidget {
             children: [
               Text(
                 "Vote on Motion",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(
                 height: 12,
@@ -93,19 +93,19 @@ class VoteCard extends StatelessWidget {
                       : _voteController.pastVoters.isEmpty
                           ? Text(
                               "Conduct a roll call before voting",
-                              style: context.textTheme.bodyText1,
+                              style: context.textTheme.bodyLarge,
                             )
                           : Center(
                               child: RichText(
                                 text: TextSpan(
                                   text: "Vote Completed",
-                                  style: context.textTheme.headline2,
+                                  style: context.textTheme.displayMedium,
                                   children: [
                                     TextSpan(
                                       text:
                                           "\nResult: Vote ${_voteController.inFavor >= _voteController.majorityVal() ? "Passed" : "Failed"}!",
-                                      style:
-                                          context.textTheme.headline5?.copyWith(
+                                      style: context.textTheme.headlineSmall
+                                          ?.copyWith(
                                         fontSize: 30,
                                         color: _voteController.inFavor >=
                                                 _voteController.majorityVal()
@@ -230,17 +230,17 @@ class _Result extends StatelessWidget {
                 Text(
                   "${_voteController.inFavor}\nIn Favor",
                   textAlign: TextAlign.center,
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 ),
                 Text(
                   "${_voteController.against}\nAgainst",
                   textAlign: TextAlign.center,
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 ),
                 Text(
                   "${_voteController.majorityVal()}\nMajority",
                   textAlign: TextAlign.center,
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 ),
               ],
             ),

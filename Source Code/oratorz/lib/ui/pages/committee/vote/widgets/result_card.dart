@@ -29,11 +29,11 @@ class ResultCard extends StatelessWidget {
                       child: RichText(
                         text: TextSpan(
                           text: "Topic: ",
-                          style: context.textTheme.headline2,
+                          style: context.textTheme.displayMedium,
                           children: [
                             TextSpan(
                               text: _voteController.topic,
-                              style: context.textTheme.headline5!
+                              style: context.textTheme.headlineSmall!
                                   .copyWith(fontWeight: FontWeight.w500),
                             )
                           ],
@@ -47,17 +47,17 @@ class ResultCard extends StatelessWidget {
                         Text(
                           "${_voteController.inFavor}\nIn Favor",
                           textAlign: TextAlign.center,
-                          style: context.textTheme.bodyText1,
+                          style: context.textTheme.bodyLarge,
                         ),
                         Text(
                           "${_voteController.against}\nAgainst",
                           textAlign: TextAlign.center,
-                          style: context.textTheme.bodyText1,
+                          style: context.textTheme.bodyLarge,
                         ),
                         Text(
                           "${_voteController.majorityVal()}\nMajority",
                           textAlign: TextAlign.center,
-                          style: context.textTheme.bodyText1,
+                          style: context.textTheme.bodyLarge,
                         ),
                       ],
                     ),

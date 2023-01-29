@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
@@ -47,6 +48,8 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
     } else {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => context.pushReplacement("/home"));
+
+      return;
     }
   }
 
@@ -100,7 +103,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                     children: [
                       Text(
                         controller.committee.name,
-                        style: context.textTheme.headline2!
+                        style: context.textTheme.displayMedium!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -127,7 +130,15 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                                 );
                               } else {
                                 tab["onTap"]();
+                                return;
                               }
+
+                              controller.tab = index;
+                              html.window.history.pushState(
+                                null,
+                                "tab",
+                                controller.currentTabDetails["route"],
+                              );
                             },
                             selected: controller.tab == index,
                             iconColor: tab["color"],
@@ -142,15 +153,15 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                               left: 15,
                               right: 5,
                             ),
-                            child: Image.asset(
+                            child: SvgPicture.asset(
                               height: 35,
                               width: 35,
-                              "images/Logo.png",
+                              "images/Logo.svg",
                             ),
                           ),
                           Text(
                             "Oratorz",
-                            style: context.textTheme.headline5!
+                            style: context.textTheme.headlineSmall!
                                 .copyWith(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
@@ -158,7 +169,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                       ),
                       Text(
                         "A Unit of Solvrz Inc.",
-                        style: context.textTheme.bodyText1!
+                        style: context.textTheme.bodyLarge!
                             .copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -214,7 +225,7 @@ class _SidebarTile extends StatelessWidget {
           leading: Icon(icon, color: iconColor ?? Colors.white, size: 24),
           title: Text(
             title,
-            style: context.textTheme.bodyText2?.copyWith(color: Colors.white),
+            style: context.textTheme.bodyMedium?.copyWith(color: Colors.white),
           ),
         ),
       ),

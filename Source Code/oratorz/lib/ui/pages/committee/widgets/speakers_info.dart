@@ -24,7 +24,7 @@ class SpeakersInfo extends StatelessWidget {
             children: [
               Text(
                 "Current Speaker",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               RoundedButton(
                 color: Colors.blue.shade400,
@@ -73,7 +73,7 @@ class SpeakersInfo extends StatelessWidget {
                   )
                 : Text(
                     "No speaker currently added",
-                    style: context.textTheme.bodyText1,
+                    style: context.textTheme.bodyLarge,
                   ),
           ),
           const Divider(height: 16),
@@ -81,7 +81,7 @@ class SpeakersInfo extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
               "Upcoming Speakers",
-              style: context.textTheme.headline5,
+              style: context.textTheme.headlineSmall,
             ),
           ),
           Obx(
@@ -147,7 +147,7 @@ class SpeakersInfo extends StatelessWidget {
                   )
                 : Text(
                     "No upcoming speakers",
-                    style: context.textTheme.bodyText1,
+                    style: context.textTheme.bodyLarge,
                   ),
           ),
           const SizedBox(height: 8),

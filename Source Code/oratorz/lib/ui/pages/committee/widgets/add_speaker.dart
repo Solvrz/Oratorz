@@ -19,7 +19,7 @@ class AddSpeaker extends StatelessWidget {
       children: [
         Text(
           "Add Speaker",
-          style: context.textTheme.headline5,
+          style: context.textTheme.headlineSmall,
         ),
         const SizedBox(height: 8),
         Obx(() {
@@ -61,7 +61,7 @@ class AddSpeaker extends StatelessWidget {
                 )
               : Text(
                   "Conduct a roll call before adding speakers",
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 );
         }),
       ],

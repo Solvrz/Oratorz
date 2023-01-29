@@ -22,7 +22,7 @@ class FutureMotionsCard extends StatelessWidget {
             children: [
               Text(
                 "Future Motions",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               Obx(() {
@@ -52,7 +52,7 @@ class FutureMotionsCard extends StatelessWidget {
                 } else {
                   return Text(
                     "No motions added yet.",
-                    style: context.textTheme.bodyText1,
+                    style: context.textTheme.bodyLarge,
                   );
                 }
               }),

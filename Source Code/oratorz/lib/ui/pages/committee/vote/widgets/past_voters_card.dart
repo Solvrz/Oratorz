@@ -22,7 +22,7 @@ class PastVotersCard extends StatelessWidget {
             children: [
               Text(
                 "Past Voters",
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               Obx(
@@ -48,7 +48,7 @@ class PastVotersCard extends StatelessWidget {
                       )
                     : Text(
                         "No one has voted yet.",
-                        style: context.textTheme.bodyText1,
+                        style: context.textTheme.bodyLarge,
                       ),
               ),
             ],

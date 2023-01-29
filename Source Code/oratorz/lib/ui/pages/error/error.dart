@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,19 +15,21 @@ class ErrorPage extends StatelessWidget {
         appBar: AppBar(
           leading: Container(
             margin: const EdgeInsets.all(5),
-            child: Image.asset("images/Logo.png"),
+            child: SvgPicture.asset("images/Logo.svg"),
           ),
-          title: RichText(
-            text: TextSpan(
-              text: "Oratorz",
-              style: context.textTheme.headline5?.copyWith(color: Colors.white),
-              children: [
-                TextSpan(
-                  text: "\nA Unit of Solvrz Inc.",
-                  style: context.textTheme.caption,
-                ),
-              ],
-            ),
+          title: Column(
+            children: [
+              // TODO: Improve Me
+              Text(
+                "Oratorz",
+                style: context.textTheme.headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+              Text(
+                "\nA Unit of Solvrz Inc.",
+                style: context.textTheme.bodySmall,
+              ),
+            ],
           ),
         ),
         body: Column(
@@ -44,12 +47,12 @@ class ErrorPage extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                           text: "Error 404",
-                          style: context.textTheme.headline1,
+                          style: context.textTheme.displayLarge,
                           children: [
                             TextSpan(
                               text:
                                   "\n\nPage Not Found!\nThe page you are looking for\ncould not be found.\nPlease go back!",
-                              style: context.textTheme.headline5
+                              style: context.textTheme.headlineSmall
                                   ?.copyWith(fontSize: 36),
                             ),
                           ],
@@ -73,7 +76,7 @@ class ErrorPage extends StatelessWidget {
                 child: RoundedButton(
                   child: Text(
                     "Go Back",
-                    style: context.textTheme.headline5
+                    style: context.textTheme.headlineSmall
                         ?.copyWith(color: Colors.white),
                   ),
                   onPressed: () => context.pushReplacement("/"),

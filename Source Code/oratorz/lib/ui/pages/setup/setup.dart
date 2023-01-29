@@ -25,7 +25,8 @@ class SetupPage extends StatelessWidget {
           ),
           title: Text(
             "Setup Committee",
-            style: context.textTheme.headline5?.copyWith(color: Colors.white),
+            style:
+                context.textTheme.headlineSmall?.copyWith(color: Colors.white),
           ),
         ),
         body: Container(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '/ui/pages/committee/committee/modes/export.dart';
 import '/ui/pages/committee/export.dart';
+import '/ui/pages/committee/modes/modes/export.dart';
 
 const List<Map<String, dynamic>> COMMITTEE_TABS = [
   {
-    "route": "/committee/gsl",
+    "route": "/mode/gsl",
     "title": "Committee",
     "icon": Icons.groups_outlined,
     "tab": CommitteePage(),
@@ -32,55 +32,55 @@ const List<Map<String, dynamic>> COMMITTEE_TABS = [
 
 const List<Map<String, dynamic>> COMMITTEE_MODES = [
   {
-    "route": "/committee/gsl",
+    "route": "/mode/gsl",
     "name": "GSL",
     "icon": Icons.groups,
     "tab": GSLTab(),
   },
   {
-    "route": "/committee/mod",
+    "route": "/mode/mod",
     "name": "Moderated Caucus",
     "icon": Icons.forum,
     "tab": ModTab(),
   },
   {
-    "route": "/committee/unmod",
+    "route": "/mode/unmod",
     "name": "Unmoderated Caucus",
     "icon": Icons.workspaces,
     "tab": UnmodTab(),
   },
   {
-    "route": "/committee/consultation",
+    "route": "/mode/consultation",
     "name": "Consultation",
     "icon": Icons.circle_outlined,
     "tab": ConsultationTab(),
   },
   {
-    "route": "/committee/prayer",
+    "route": "/mode/prayer",
     "name": "Prayer",
     "icon": Icons.church,
     "tab": PrayerTab(),
   },
   {
-    "route": "/committee/adjournment",
+    "route": "/mode/adjournment",
     "name": "Adjourn Meeting",
     "icon": Icons.pause,
     "tab": AdjournTab(),
   },
   {
-    "route": "/committee/tourdetable",
+    "route": "/mode/tourdetable",
     "name": "Tour de Table",
     "icon": Icons.autorenew,
     "tab": TourDeTableTab(),
   },
   {
-    "route": "/committee/single",
+    "route": "/mode/single",
     "name": "Single Speaker",
     "icon": Icons.mic,
     "tab": SingleTab(),
   },
   {
-    "route": "/committee/custom",
+    "route": "/mode/custom",
     "name": "Custom",
     "icon": Icons.edit,
     "tab": CustomTab(),

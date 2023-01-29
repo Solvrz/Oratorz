@@ -28,7 +28,7 @@ class DialogBox extends StatelessWidget {
             children: [
               Text(
                 heading,
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
               const SizedBox(width: 24),
               const Spacer(),

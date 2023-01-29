@@ -38,7 +38,7 @@ class DelegateData extends StatelessWidget {
               child: Obx(
                 () => Text(
                   controller.scores[delegate]!.sum.toString(),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
             ),

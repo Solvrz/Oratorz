@@ -17,25 +17,25 @@ class OratorzTheme {
         tertiary: OratorzColors.tertiaryColor,
       ),
       textTheme: textTheme.copyWith(
-        headline1: textTheme.headline5!.copyWith(
+        displayLarge: textTheme.headlineSmall!.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 54,
         ),
-        headline2: textTheme.headline5!.copyWith(
+        displayMedium: textTheme.headlineSmall!.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 26,
         ),
-        headline5: textTheme.headline5!.copyWith(
+        headlineSmall: textTheme.headlineSmall!.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 24,
         ),
-        headline6: textTheme.headline6!.copyWith(
+        titleLarge: textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
-        bodyText1: textTheme.bodyText1!.copyWith(fontSize: 16),
-        bodyText2: textTheme.bodyText2!.copyWith(fontSize: 14),
-        caption: textTheme.caption!.copyWith(
+        bodyLarge: textTheme.bodyLarge!.copyWith(fontSize: 16),
+        bodyMedium: textTheme.bodyMedium!.copyWith(fontSize: 14),
+        bodySmall: textTheme.bodySmall!.copyWith(
           fontSize: 12,
           color: Colors.grey.shade700,
         ),

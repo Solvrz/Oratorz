@@ -31,7 +31,7 @@ class SpeechSettingsDialog extends StatelessWidget {
                 if (_speechController.hasSubtopic) ...[
                   Text(
                     _speechController.subtopic.keys.first,
-                    style: context.textTheme.headline5,
+                    style: context.textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 10),
                   Container(
@@ -55,7 +55,7 @@ class SpeechSettingsDialog extends StatelessWidget {
                 ],
                 Text(
                   "Speaker Time",
-                  style: context.textTheme.headline5,
+                  style: context.textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 10),
                 Container(
@@ -89,7 +89,7 @@ class SpeechSettingsDialog extends StatelessWidget {
                   const SizedBox(height: 20),
                   Text(
                     "Caucus Time",
-                    style: context.textTheme.headline5,
+                    style: context.textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 10),
                   Container(

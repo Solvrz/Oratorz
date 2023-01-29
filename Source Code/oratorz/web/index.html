@@ -3,11 +3,14 @@
 
 <head>
   <base href="$FLUTTER_BASE_HREF">
+  <title>Oratorz: An All-In-One MUN Aid</title>
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="An All-In-One MUN Aid">
 
+
+  <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Oratorz">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -15,12 +18,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.ico">
 
-  <title>Oratorz: An All-In-One MUN Aid</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ffffff">
 
   <script>
     var serviceWorkerVersion = null;
@@ -29,11 +30,11 @@
 
   <style>
     .loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       height: 100vh;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .loader {
@@ -41,29 +42,28 @@
     }
 
     .spinner {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       border-top: 8px solid #0d1520;
       border-right: 8px solid white;
       border-bottom: 8px solid #0d1520;
       border-left: 8px solid white;
-      width: 120px;
-      height: 120px;
-      -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
+      -webkit-animation: spin 2s linear infinite;
     }
 
     .center {
-      position: absolute;
       top: 50%;
       left: 50%;
+      height: 75px;
+      width: 75px;
+      position: absolute;
       transform: translate(-50%, -50%);
     }
 
-    .info {
+    .name {
       margin-top: 25px;
-      font-family: "Poppins";
-      line-height: 5px;
-      text-align: center;
     }
 
     @-webkit-keyframes spin {
@@ -92,13 +92,11 @@
   <div class="loading">
     <div class="loader">
       <div class="spinner"></div>
-      <img src="icons/favicon-100x100.png" class="center" />
+      <img src="icons/android-chrome-512x512.png" class="center" />
     </div>
-    <div class="info">
-      <h2>Oratorz</h3>
-        <p>A Unit of Solvrz Inc.</p>
-    </div>
+    <img src="name.png" class="name" />
   </div>
+
   <script>
     window.addEventListener("load", function (ev) {
       _flutter.loader.loadEntrypoint({

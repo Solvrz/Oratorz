@@ -72,7 +72,7 @@ class _ModeSelector extends StatelessWidget {
                   const VerticalDivider(),
                   Text(
                     controller.currentModeDetails["name"],
-                    style: context.textTheme.bodyText1,
+                    style: context.textTheme.bodyLarge,
                   ),
                 ],
               ),
