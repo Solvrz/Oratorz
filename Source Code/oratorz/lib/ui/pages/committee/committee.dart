@@ -7,7 +7,6 @@ import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/committee.dart';
 import '/config/constants/constants.dart';
-import '/models/committee.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
@@ -37,9 +36,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
       id = routeController.args['id']!;
 
       if (!Get.isRegistered<CommitteeController>()) {
-        final Committee committee = LocalStorage.getCommittee(id);
-
-        Get.put<CommitteeController>(CommitteeController(committee: committee));
+        LocalStorage.loadCommittee(routeController.args['id']!);
       }
 
       analytics.logEvent(name: "committe_loaded");
@@ -132,13 +129,6 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                                 tab["onTap"]();
                                 return;
                               }
-
-                              controller.tab = index;
-                              html.window.history.pushState(
-                                null,
-                                "tab",
-                                controller.currentTabDetails["route"],
-                              );
                             },
                             selected: controller.tab == index,
                             iconColor: tab["color"],
@@ -157,6 +147,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                               height: 35,
                               width: 35,
                               "images/Logo.svg",
+                              color: Colors.white,
                             ),
                           ),
                           Text(

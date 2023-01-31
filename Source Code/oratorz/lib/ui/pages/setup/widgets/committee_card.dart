@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '/config/constants/constants.dart';
 import '/models/committee.dart';
 import '/services/local_storage.dart';
+import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -140,7 +141,12 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
       LocalStorage.createCommittee(committee);
       Get.delete<SetupController>();
 
-      context.pushReplacement("/committee/gsl?id=${committee.id}");
+      final controller = Get.find<RouteController>();
+
+      controller.path = "/mode/gsl";
+      controller.args = {"id": committee.id};
+
+      context.pushReplacement("/mode/gsl?id=${committee.id}");
     } else {
       setState(() => error = true);
     }

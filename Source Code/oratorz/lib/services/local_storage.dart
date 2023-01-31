@@ -15,7 +15,7 @@ class LocalStorage {
   static GetStorage box = GetStorage();
 
   static List<String> get committees {
-    final List<dynamic>? data = box.read("committees");
+    final List<String>? data = box.read("committees")?.cast<String>();
 
     if (data == null) {
       box.write("committees", []);
@@ -23,11 +23,11 @@ class LocalStorage {
       return [];
     }
 
-    return data.cast<String>();
+    return data;
   }
 
   static List<String> get pinned {
-    final List<dynamic>? data = box.read("pinned");
+    final List<String>? data = box.read("pinned")?.cast<String>();
 
     if (data == null) {
       box.write("pinned", []);
@@ -35,7 +35,7 @@ class LocalStorage {
       return [];
     }
 
-    return data.cast<String>();
+    return data;
   }
 
   static void addPin(String id) {
@@ -75,24 +75,20 @@ class LocalStorage {
       },
     );
 
-    committees.add(controller.committee.id);
+    Get.find<HomeController>().addCommittee(committee.id);
 
     box.write(controller.committee.id, controller.toJson());
     box.write("committees", committees);
 
     Get.put<CommitteeController>(controller);
-    Get.find<HomeController>().addCommittee(committee.id);
   }
 
   static void deleteCommittee(String id) {
     box.remove(id);
 
-    final List<String> data = committees;
-    data.remove(id);
-
-    box.write("committees", data);
-
     Get.find<HomeController>().deleteCommittee(id);
+
+    box.write("committees", committees);
   }
 
   static bool committeeExists(String id) => box.hasData(id);
@@ -146,8 +142,19 @@ class LocalStorage {
     Get.put<CommitteeController>(controller);
   }
 
-  static void saveSpeech(SpeechController controller) =>
-      box.write(controller.tag, controller.toJson());
+  static bool saveSpeech(SpeechController controller) {
+    if (!Get.isRegistered<CommitteeController>()) return false;
+
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    final Map<String, dynamic> data = box.read(committee.id);
+
+    data[controller.tag] = controller.toJson();
+
+    box.write(committee.id, data);
+
+    return true;
+  }
 
   static bool updateSpeech(String key, dynamic value, String tag) {
     if (!Get.isRegistered<CommitteeController>()) return false;

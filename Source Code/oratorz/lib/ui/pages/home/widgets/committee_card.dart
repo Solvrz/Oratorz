@@ -78,15 +78,12 @@ class _CommitteeCardState extends State<CommitteeCard>
                 onTap: () {
                   LocalStorage.loadCommittee(widget.committee.id);
 
-                  const String path = "/committee/gsl";
+                  const String path = "/mode/gsl";
 
-                  Get.delete<RouteController>();
-                  Get.put<RouteController>(
-                    RouteController(
-                      path: path,
-                      args: {"id": widget.committee.id},
-                    ),
-                  );
+                  final controller = Get.find<RouteController>();
+
+                  controller.path = path;
+                  controller.args = {"id": widget.committee.id};
 
                   context.pushReplacement("$path?id=${widget.committee.id}");
                 },

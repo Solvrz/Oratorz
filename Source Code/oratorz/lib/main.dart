@@ -44,10 +44,16 @@ class Oratorz extends StatelessWidget {
   const Oratorz({super.key});
 
   void putRouteController(GoRouterState state) {
-    Get.delete<RouteController>();
-    Get.put<RouteController>(
-      RouteController(path: state.location, args: state.queryParams),
-    );
+    if (!Get.isRegistered<RouteController>()) {
+      Get.put<RouteController>(
+        RouteController(path: state.location, args: state.queryParams),
+      );
+    } else {
+      final RouteController controller = Get.find<RouteController>();
+
+      controller.args = state.queryParams;
+      controller.path = state.location;
+    }
   }
 
   @override
