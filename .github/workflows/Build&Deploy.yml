@@ -19,7 +19,7 @@ jobs:
         cd "Source Code/oratorz"
         flutter pub get
         flutter build web
-        cp assets/* build/web/assets/
+        cp -r assets/* build/web/assets/
 
     - name: Deploy
       uses: FirebaseExtended/action-hosting-deploy@v0
