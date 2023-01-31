@@ -1,0 +1,31 @@
+
+name: Build & Deploy to Firebase Hosting
+'on':
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Config & Build
+      uses: subosito/flutter-action@v1
+      with:
+        channel: beta
+    - run: |
+        flutter config --enable-web
+        cd "Source Code/oratorz"
+        flutter pub get
+        flutter build web
+        cp -r assets/* build/web/assets/
+
+    - name: Deploy
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        entryPoint: "Source Code/oratorz"
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ORATORZ37 }}'
+        projectId: oratorz37
+        channelId: live
