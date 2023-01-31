@@ -53,8 +53,13 @@ extension ToolsTextEditingController on TextEditingController {
 }
 
 extension ToolsWidget on Widget {
-  Widget get withBorders => Container(
+  Widget get withBordersDark => Container(
         decoration: BoxDecoration(border: Border.all()),
+        child: this,
+      );
+
+  Widget get withBordersLight => Container(
+        decoration: BoxDecoration(border: Border.all(color: Colors.white)),
         child: this,
       );
 }

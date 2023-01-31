@@ -20,8 +20,6 @@ import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
 import 'config/constants/committee.dart';
 
-// TODO: Do Testing of Remove Delegates of Past Speakers
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

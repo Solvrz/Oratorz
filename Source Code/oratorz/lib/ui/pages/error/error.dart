@@ -13,74 +13,88 @@ class ErrorPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: Container(
-            margin: const EdgeInsets.all(5),
-            child: SvgPicture.asset("images/Logo.svg"),
-          ),
+          leading: SvgPicture.asset("images/Logo.svg", color: Colors.white),
           title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TODO: Improve Me
               Text(
                 "Oratorz",
                 style: context.textTheme.headlineSmall
-                    ?.copyWith(color: Colors.white),
+                    ?.copyWith(color: Colors.white, height: 0.95),
               ),
               Text(
-                "\nA Unit of Solvrz Inc.",
-                style: context.textTheme.bodySmall,
+                "A Unit of Solvrz Inc.",
+                style: context.textTheme.bodySmall
+                    ?.copyWith(color: Colors.white, height: 0.95),
               ),
             ],
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              margin: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "Error 404",
-                          style: context.textTheme.displayLarge,
-                          children: [
-                            TextSpan(
-                              text:
-                                  "\n\nPage Not Found!\nThe page you are looking for\ncould not be found.\nPlease go back!",
-                              style: context.textTheme.headlineSmall
-                                  ?.copyWith(fontSize: 36),
-                            ),
-                          ],
-                        ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Chip(
+                      padding: const EdgeInsets.all(8),
+                      backgroundColor: const Color(0xffafbfdc),
+                      label: Text(
+                        "Page not found",
+                        style: context.textTheme.bodyLarge
+                            ?.copyWith(color: Colors.white),
                       ),
-                    ],
-                  ),
-                  Image.asset(
-                    height: context.height / 2,
-                    width: context.width / 1.75,
-                    "images/Error.png",
-                  ),
-                ],
+                    ),
+                    Text(
+                      "Oops! Error 404",
+                      style: context.textTheme.displayLarge,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "The page you are looking for could not be found. Please go back!",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        fontSize: 26,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RoundedButton(
+                            child: Text(
+                              "Back to Homepage",
+                              style: context.textTheme.bodyLarge
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                            onPressed: () => context.pushReplacement("/home"),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: RoundedButton(
+                            onPressed: () => context.pushReplacement("/help"),
+                            border: true,
+                            child: Text(
+                              "Visit our Help Center",
+                              style: context.textTheme.bodyLarge,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 50),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: context.width / 2,
-                child: RoundedButton(
-                  child: Text(
-                    "Go Back",
-                    style: context.textTheme.headlineSmall
-                        ?.copyWith(color: Colors.white),
-                  ),
-                  onPressed: () => context.pushReplacement("/"),
-                ),
+            Expanded(
+              child: Image.asset(
+                "images/Error.png",
+                fit: BoxFit.fitHeight,
               ),
             ),
           ],
