@@ -17,10 +17,9 @@ jobs:
     - run: |
         flutter config --enable-web
         cd "Source Code/oratorz"
-        mkdir build/web/assets/
-        cp assets/* build/web/assets/
         flutter pub get
         flutter build web
+        cp assets/* build/web/assets/
 
     - name: Deploy
       uses: FirebaseExtended/action-hosting-deploy@v0
