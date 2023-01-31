@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../tools/controllers/home.dart';
+import '/tools/controllers/home.dart';
+import '/ui/widgets/oratorz_card.dart';
 import 'widgets/committees_section.dart';
-import 'widgets/oratorz_card.dart';
 import 'widgets/profile_card.dart';
 
 class HomePage extends StatelessWidget {
@@ -24,9 +24,7 @@ class HomePage extends StatelessWidget {
               height: context.mediaQuerySize.height / 9,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                    "images/Banner.png",
-                  ),
+                  image: AssetImage("images/Banner.png"),
                   repeat: ImageRepeat.repeatX,
                 ),
               ),

@@ -3,9 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/utils.dart';
 
 class OratorzCard extends StatelessWidget {
-  const OratorzCard({
-    super.key,
-  });
+  const OratorzCard({super.key});
 
   @override
   Widget build(BuildContext context) {

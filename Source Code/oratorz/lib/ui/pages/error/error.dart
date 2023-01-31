@@ -1,8 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/ui/widgets/oratorz_card.dart';
 import '/ui/widgets/rounded_button.dart';
 
 class ErrorPage extends StatelessWidget {
@@ -13,21 +15,14 @@ class ErrorPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: SvgPicture.asset("images/Logo.svg", color: Colors.white),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Oratorz",
-                style: context.textTheme.headlineSmall
-                    ?.copyWith(color: Colors.white, height: 0.95),
-              ),
-              Text(
-                "A Unit of Solvrz Inc.",
-                style: context.textTheme.bodySmall
-                    ?.copyWith(color: Colors.white, height: 0.95),
-              ),
-            ],
+          toolbarHeight: context.mediaQuerySize.height / 9,
+          flexibleSpace: Image.asset(
+            'images/Banner.png',
+            repeat: ImageRepeat.repeatX,
+          ),
+          title: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3),
+            child: const OratorzCard(),
           ),
         ),
         body: Row(
