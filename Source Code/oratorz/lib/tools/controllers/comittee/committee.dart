@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 
-import '/config/constants/committee.dart';
 import '/models/committee.dart';
 import '/services/local_storage.dart';
 import './vote.dart';
@@ -73,9 +72,6 @@ class CommitteeController extends GetxController {
 
   int get tab => _tab.value;
   set tab(int newTab) => _tab.value = newTab;
-
-  dynamic get currentTab => COMMITTEE_TABS[tab]["tab"];
-  Map<String, dynamic> get currentTabDetails => COMMITTEE_TABS[tab];
 
   Map<String, dynamic> toJson() {
     return {

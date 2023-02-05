@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '/models/committee.dart';
 import '/services/local_storage.dart';
+import '../../../../models/router.dart';
 import '../../../../tools/controllers/route.dart';
 
 class CommitteeCard extends StatefulWidget {
@@ -78,14 +79,14 @@ class _CommitteeCardState extends State<CommitteeCard>
                 onTap: () {
                   LocalStorage.loadCommittee(widget.committee.id);
 
-                  const String path = "/mode/gsl";
+                  final AppRoute route = AppRouter.modes.first;
 
                   final controller = Get.find<RouteController>();
 
-                  controller.path = path;
+                  controller.path = route.path;
                   controller.args = {"id": widget.committee.id};
 
-                  context.go("$path?id=${widget.committee.id}");
+                  context.go("${route.path}?id=${widget.committee.id}");
                 },
                 child: Container(
                   width: 260,

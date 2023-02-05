@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/config/constants/committee.dart';
+import '/models/router.dart';
 import '/tools/controllers/comittee/committee.dart';
 import './widgets/dialogs/roll_call.dart';
 
@@ -51,21 +51,21 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                       ),
                       const SizedBox(height: 32),
                       ...List.generate(
-                        COMMITTEE_TABS.length,
+                        AppRouter.tabs.length,
                         (index) {
-                          final Map<String, dynamic> tab =
-                              COMMITTEE_TABS[index];
+                          final AppRoute route = AppRouter.tabs[index];
 
                           return Obx(
                             () => _SidebarTile(
-                              title: tab["title"],
-                              icon: tab["icon"],
+                              title: route.title ?? "",
+                              icon: route.icon,
                               onTap: () {
                                 if (controller.tab == index) return;
 
                                 context.go(
-                                  "${tab["route"]}?id=${controller.committee.id}",
+                                  "${route.path}?id=${controller.committee.id}",
                                 );
+
                                 controller.tab = index;
                               },
                               selected: controller.tab == index,
@@ -87,7 +87,7 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                         icon: Icons.home,
                         onTap: () {
                           Get.deleteAll();
-                          context.pushReplacement("/home");
+                          context.pushReplacement(AppRouter.home.path);
                         },
                       ),
                       const OratorzSection(),
@@ -146,14 +146,14 @@ class OratorzSection extends StatelessWidget {
 
 class _SidebarTile extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final IconData? icon;
   final Function() onTap;
   final bool selected;
 
   const _SidebarTile({
     required this.title,
-    required this.icon,
     required this.onTap,
+    this.icon,
     this.selected = false,
   });
 

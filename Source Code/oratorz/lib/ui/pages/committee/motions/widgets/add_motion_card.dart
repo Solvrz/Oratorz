@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:oratorz/config/constants/committee.dart';
 
+import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
@@ -39,8 +39,8 @@ class AddMotionCard extends StatelessWidget {
 
           LocalStorage.saveSpeech(_speechController);
 
-          final int tab = COMMITTEE_TABS.indexWhere(
-            (tab) => tab["route"].toString().contains("/id/modes/mod"),
+          final int tab = AppRouter.tabs.indexWhere(
+            (route) => route.path.contains("/id/modes/mod"),
           );
           Get.find<CommitteeController>().tab = tab;
 

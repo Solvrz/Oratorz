@@ -3,18 +3,20 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../../widgets/hourglass.dart';
+import '../widgets/hourglass.dart';
 
-class PrayerTab extends StatelessWidget {
-  const PrayerTab({super.key});
+class ConsultationTab extends StatelessWidget {
+  const ConsultationTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<SpeechController>(tag: "prayer")) {
-      final SpeechController _speechController =
-          Get.put<SpeechController>(SpeechController("prayer"), tag: "prayer");
+    if (!Get.isRegistered<SpeechController>(tag: "consultation")) {
+      final SpeechController _speechController = Get.put<SpeechController>(
+        SpeechController("consultation"),
+        tag: "consultation",
+      );
 
-      _speechController.subtopic = {"Cause": "Your Cause"};
+      _speechController.subtopic = {"Topic": "Your Topic"};
     }
 
     return Column(
@@ -27,7 +29,7 @@ class PrayerTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const Hourglass(tag: "prayer"),
+            child: const Hourglass(tag: "consultation"),
           ),
         ),
         carousel(context),

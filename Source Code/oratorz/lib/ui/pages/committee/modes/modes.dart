@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import '/models/router.dart';
 
-import '/config/constants/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import '../widgets/body.dart';
@@ -20,12 +20,12 @@ class _CommitteePageState extends State<CommitteePage> {
   final CommitteeController committeeController =
       Get.find<CommitteeController>();
 
-  int mode = 0;
+  int selected = 0;
 
   @override
   void initState() {
-    mode = COMMITTEE_MODES.indexWhere(
-      (mode) => mode["route"] == Get.find<RouteController>().path,
+    selected = AppRouter.modes.indexWhere(
+      (route) => route.path == Get.find<RouteController>().path,
     );
 
     super.initState();
@@ -52,12 +52,12 @@ class _CommitteePageState extends State<CommitteePage> {
               Row(
                 children: [
                   Icon(
-                    COMMITTEE_MODES[mode]["icon"],
+                    AppRouter.modes[selected].icon,
                     color: context.theme.colorScheme.tertiary,
                   ),
                   const VerticalDivider(),
                   Text(
-                    COMMITTEE_MODES[mode]["name"],
+                    AppRouter.modes[selected].title ?? "",
                     style: context.textTheme.bodyLarge,
                   ),
                 ],
@@ -71,8 +71,8 @@ class _CommitteePageState extends State<CommitteePage> {
             ],
           ),
         ),
-        itemBuilder: (_) => List.generate(COMMITTEE_MODES.length, (index) {
-          final Map<String, dynamic> tab = COMMITTEE_MODES[index];
+        itemBuilder: (_) => List.generate(AppRouter.modes.length, (index) {
+          final AppRoute route = AppRouter.modes[index];
 
           return PopupMenuItem(
             value: index,
@@ -81,11 +81,11 @@ class _CommitteePageState extends State<CommitteePage> {
                 Row(
                   children: [
                     Icon(
-                      tab["icon"],
+                      route.icon,
                       color: context.theme.colorScheme.tertiary,
                     ),
                     const VerticalDivider(),
-                    Text(tab["name"]),
+                    Text(route.title ?? ""),
                   ],
                 ),
               ],
@@ -93,10 +93,10 @@ class _CommitteePageState extends State<CommitteePage> {
           );
         }),
         onSelected: (index) {
-          setState(() => mode = index);
+          setState(() => selected = index);
 
           context.go(
-            "${COMMITTEE_MODES[index]["route"]}?id=${committeeController.committee.id}",
+            "${AppRouter.modes[index].path}?id=${committeeController.committee.id}",
           );
         },
       ),

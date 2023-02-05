@@ -3,18 +3,18 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../../widgets/hourglass.dart';
+import '../widgets/hourglass.dart';
 
-class AdjournTab extends StatelessWidget {
-  const AdjournTab({super.key});
+class CustomTab extends StatelessWidget {
+  const CustomTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<SpeechController>(tag: "adjourn")) {
-      Get.put<SpeechController>(
-        SpeechController("adjourn"),
-        tag: "adjourn",
-      );
+    if (!Get.isRegistered<SpeechController>(tag: "custom")) {
+      final SpeechController _speechController =
+          Get.put<SpeechController>(SpeechController("custom"), tag: "custom");
+
+      _speechController.subtopic = {"Title": "Your Title"};
     }
 
     return Column(
@@ -27,7 +27,7 @@ class AdjournTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const Hourglass(tag: "adjourn"),
+            child: const Hourglass(tag: "custom"),
           ),
         ),
         carousel(context),

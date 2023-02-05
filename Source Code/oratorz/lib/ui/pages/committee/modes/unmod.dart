@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../../widgets/hourglass.dart';
+import '../widgets/hourglass.dart';
 
 class UnmodTab extends StatelessWidget {
   const UnmodTab({super.key});

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/home.dart';
 import 'committee_card.dart';
@@ -39,7 +40,7 @@ class CommitteesSection extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () => context.push("/setup"),
+                  onTap: () => context.push(AppRouter.setup.path),
                   child: DottedBorder(
                     strokeWidth: 3,
                     dashPattern: const [10, 4],

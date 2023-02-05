@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/models/router.dart';
 import '/ui/widgets/oratorz_card.dart';
 import '/ui/widgets/rounded_button.dart';
 
@@ -66,13 +67,15 @@ class ErrorPage extends StatelessWidget {
                               style: context.textTheme.bodyLarge
                                   ?.copyWith(color: Colors.white),
                             ),
-                            onPressed: () => context.pushReplacement("/home"),
+                            onPressed: () =>
+                                context.pushReplacement(AppRouter.home.path),
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: RoundedButton(
-                            onPressed: () => context.pushReplacement("/help"),
+                            onPressed: () =>
+                                context.pushReplacement(AppRouter.home.path),
                             border: true,
                             child: Text(
                               "Visit our Help Center",

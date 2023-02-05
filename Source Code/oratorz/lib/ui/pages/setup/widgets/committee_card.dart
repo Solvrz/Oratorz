@@ -10,6 +10,7 @@ import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import '../../../../models/router.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -142,11 +143,12 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
       Get.delete<SetupController>();
 
       final controller = Get.find<RouteController>();
+      final AppRoute route = AppRouter.modes.first;
 
-      controller.path = "/mode/gsl";
+      controller.path = route.path;
       controller.args = {"id": committee.id};
 
-      context.go("/mode/gsl?id=${committee.id}");
+      context.go("${route.path}?id=${committee.id}");
     } else {
       setState(() => error = true);
     }

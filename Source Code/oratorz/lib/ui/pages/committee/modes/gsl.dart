@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '../../widgets/hourglass.dart';
-import '../../widgets/speakers_info.dart';
-import '../widgets/add_speaker_card.dart';
+import '../widgets/hourglass.dart';
+import '../widgets/speakers_info.dart';
+import 'widgets/add_speaker_card.dart';
+import 'widgets/past_speakers_card.dart';
 
-class SingleTab extends StatelessWidget {
-  const SingleTab({super.key});
+class GSLTab extends StatelessWidget {
+  const GSLTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<SpeechController>(tag: "single")) {
-      Get.put<SpeechController>(SpeechController("single"), tag: "single");
+    if (!Get.isRegistered<SpeechController>()) {
+      final bool exists = LocalStorage.loadSpeech("gsl");
+
+      if (!exists) {
+        final SpeechController controller = SpeechController("gsl");
+
+        Get.put<SpeechController>(controller, tag: "gsl");
+        LocalStorage.saveSpeech(controller);
+      }
     }
 
     return Row(
@@ -33,25 +42,25 @@ class SingleTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Center(child: Hourglass(tag: "single")),
+                      Center(
+                        child: Hourglass(
+                          tag: "gsl",
+                          canYield: true,
+                        ),
+                      ),
                       SizedBox(width: 48),
-                      SpeakersInfo(tag: "single"),
+                      SpeakersInfo(tag: "gsl"),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 50),
-              Center(
-                child: Text(
-                  "Carousel Placeholder",
-                  style: context.textTheme.bodyLarge,
-                ),
-              ),
+              const SizedBox(height: 12),
+              const PastSpeakersCard(tag: "gsl"),
             ],
           ),
         ),
         const SizedBox(width: 36),
-        const AddSpeakerCard(tag: "single"),
+        const AddSpeakerCard(tag: "gsl"),
       ],
     );
   }
