@@ -1,116 +1,106 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:go_router/go_router.dart';
 
 import '/config/constants/committee.dart';
-import '/tools/controllers/comittee/mode.dart';
+import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import '../widgets/body.dart';
 
-void updateUrl(int mode, String id) => html.window.history.pushState(
-      null,
-      "tab",
-      "${COMMITTEE_MODES[mode]["route"]}?id=$id",
-    );
+class CommitteePage extends StatefulWidget {
+  final Widget child;
 
-class CommitteePage extends StatelessWidget {
-  const CommitteePage({super.key});
+  const CommitteePage({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    final RouteController _routeController = Get.find<RouteController>();
-
-    final int mode = COMMITTEE_MODES
-        .indexWhere(
-          (mode) =>
-              mode["route"].toString() ==
-              _routeController.path.split("?").first,
-        )
-        .clamp(0, double.infinity)
-        .toInt();
-
-    final ModeController _modeController = Get.put<ModeController>(
-      ModeController(mode: mode),
-    );
-
-    updateUrl(mode, _routeController.args["id"]!);
-
-    return Body(
-      trailing: _ModeSelector(),
-      child: Obx(() => _modeController.currentMode),
-    );
-  }
+  State<CommitteePage> createState() => _CommitteePageState();
 }
 
-class _ModeSelector extends StatelessWidget {
+class _CommitteePageState extends State<CommitteePage> {
+  final CommitteeController committeeController =
+      Get.find<CommitteeController>();
+
+  int mode = 0;
+
+  @override
+  void initState() {
+    mode = COMMITTEE_MODES.indexWhere(
+      (mode) => mode["route"] == Get.find<RouteController>().path,
+    );
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ModeController controller = Get.find<ModeController>();
-
-    return PopupMenuButton<int>(
-      elevation: 10,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      tooltip: "Select Mode",
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: context.theme.colorScheme.secondary),
+    return Body(
+      trailing: PopupMenuButton<int>(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
         ),
-        child: Row(
-          children: [
-            Obx(
-              () => Row(
-                children: [
-                  Icon(
-                    controller.currentModeDetails["icon"],
-                    color: context.theme.colorScheme.tertiary,
-                  ),
-                  const VerticalDivider(),
-                  Text(
-                    controller.currentModeDetails["name"],
-                    style: context.textTheme.bodyLarge,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 20),
-            Icon(
-              Icons.arrow_drop_down,
-              size: 36,
-              color: context.theme.colorScheme.secondary,
-            ),
-          ],
-        ),
-      ),
-      itemBuilder: (_) => List.generate(COMMITTEE_MODES.length, (index) {
-        final Map<String, dynamic> tab = COMMITTEE_MODES[index];
-
-        return PopupMenuItem(
-          value: index,
-          child: Column(
+        tooltip: "Select Mode",
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: context.theme.colorScheme.secondary),
+          ),
+          child: Row(
             children: [
               Row(
                 children: [
                   Icon(
-                    tab["icon"],
+                    COMMITTEE_MODES[mode]["icon"],
                     color: context.theme.colorScheme.tertiary,
                   ),
                   const VerticalDivider(),
-                  Text(tab["name"]),
+                  Text(
+                    COMMITTEE_MODES[mode]["name"],
+                    style: context.textTheme.bodyLarge,
+                  ),
                 ],
+              ),
+              const SizedBox(width: 20),
+              Icon(
+                Icons.arrow_drop_down,
+                size: 36,
+                color: context.theme.colorScheme.secondary,
               ),
             ],
           ),
-        );
-      }),
-      onSelected: (index) {
-        controller.mode = index;
-        updateUrl(controller.mode, Get.find<RouteController>().args["id"]!);
-      },
+        ),
+        itemBuilder: (_) => List.generate(COMMITTEE_MODES.length, (index) {
+          final Map<String, dynamic> tab = COMMITTEE_MODES[index];
+
+          return PopupMenuItem(
+            value: index,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      tab["icon"],
+                      color: context.theme.colorScheme.tertiary,
+                    ),
+                    const VerticalDivider(),
+                    Text(tab["name"]),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }),
+        onSelected: (index) {
+          setState(() => mode = index);
+
+          context.go(
+            "${COMMITTEE_MODES[index]["route"]}?id=${committeeController.committee.id}",
+          );
+        },
+      ),
+      child: widget.child,
     );
   }
 }

@@ -19,6 +19,9 @@ import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
 import '/ui/pages/export.dart';
 import 'config/constants/committee.dart';
+import 'services/local_storage.dart';
+import 'tools/controllers/comittee/committee.dart';
+import 'tools/controllers/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,18 +49,25 @@ class Oratorz extends StatelessWidget {
   void putRouteController(GoRouterState state) {
     if (!Get.isRegistered<RouteController>()) {
       Get.put<RouteController>(
-        RouteController(path: state.location, args: state.queryParams),
+        RouteController(
+          path: state.subloc,
+          args: state.queryParams,
+        ),
       );
     } else {
       final RouteController controller = Get.find<RouteController>();
 
       controller.args = state.queryParams;
-      controller.path = state.location;
+      controller.path = state.subloc;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!Get.isRegistered<HomeController>()) {
+      Get.put<HomeController>(HomeController());
+    }
+
     return MaterialApp.router(
       title: "Oratorz",
       theme: OratorzTheme.of(context),
@@ -77,11 +87,7 @@ class Oratorz extends StatelessWidget {
         routes: [
           GoRoute(
             path: "/",
-            redirect: (_, state) {
-              putRouteController(state);
-
-              return "/home";
-            },
+            redirect: (_, __) => "/home",
           ),
           GoRoute(
             path: "/setup",
@@ -100,34 +106,63 @@ class Oratorz extends StatelessWidget {
             },
           ),
           GoRoute(
-            path: "/committee",
-            redirect: (_, state) {
-              putRouteController(state);
-
-              return "/committee/gsl?id=${state.queryParams["id"]}";
-            },
+            path: "/mode",
+            redirect: (_, state) => "/mode/gsl?id=${state.queryParams["id"]}",
           ),
-          ...List.generate(
-            COMMITTEE_TABS.length - 1,
-            (index) => GoRoute(
-              path: COMMITTEE_TABS[index + 1]["route"],
-              builder: (_, state) {
-                putRouteController(state);
+          ShellRoute(
+            builder: (_, __, child) => CommitteeMainPage(child: child),
+            routes: [
+              ShellRoute(
+                builder: (_, __, child) => CommitteePage(child: child),
+                routes: COMMITTEE_MODES
+                    .map<GoRoute>(
+                      (data) => GoRoute(
+                        path: data["route"],
+                        pageBuilder: (_, state) {
+                          putRouteController(state);
 
-                return CommitteeMainPage(tab: index + 1);
-              },
-            ),
-          ),
-          ...List.generate(
-            COMMITTEE_MODES.length,
-            (index) => GoRoute(
-              path: COMMITTEE_MODES[index]["route"],
-              builder: (_, state) {
-                putRouteController(state);
+                          if (!Get.isRegistered<CommitteeController>()) {
+                            LocalStorage.loadCommittee(
+                              state.queryParams["id"]!,
+                            );
+                          }
 
-                return CommitteeMainPage(mode: index);
-              },
-            ),
+                          return NoTransitionPage(child: data["tab"]());
+                        },
+                        redirect: (_, state) => LocalStorage.committeeExists(
+                          state.queryParams["id"] ?? "null",
+                        )
+                            ? null
+                            : "/home",
+                      ),
+                    )
+                    .toList(),
+              ),
+              ...List.generate(COMMITTEE_TABS.length - 1, (index) {
+                final Map<String, dynamic> data = COMMITTEE_TABS[index + 1];
+
+                return GoRoute(
+                  path: data["route"],
+                  pageBuilder: (_, state) {
+                    putRouteController(state);
+
+                    if (!Get.isRegistered<CommitteeController>()) {
+                      LocalStorage.loadCommittee(state.queryParams["id"]!);
+                    }
+
+                    Get.find<CommitteeController>().tab = COMMITTEE_TABS
+                        .indexWhere((tab) => tab["route"] == state.subloc);
+
+                    return NoTransitionPage(child: data["tab"]());
+                  },
+                  redirect: (context, state) => LocalStorage.committeeExists(
+                    state.queryParams["id"] ?? "null",
+                  )
+                      ? null
+                      : "/home",
+                );
+              }),
+            ],
           ),
         ],
       ),

@@ -140,6 +140,8 @@ class LocalStorage {
     controller.rollCall = Map<String, int>.from(data["rollCall"]);
 
     Get.put<CommitteeController>(controller);
+
+    analytics.logEvent(name: "committe_loaded");
   }
 
   static bool saveSpeech(SpeechController controller) {

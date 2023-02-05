@@ -146,7 +146,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
       controller.path = "/mode/gsl";
       controller.args = {"id": committee.id};
 
-      context.pushReplacement("/mode/gsl?id=${committee.id}");
+      context.go("/mode/gsl?id=${committee.id}");
     } else {
       setState(() => error = true);
     }

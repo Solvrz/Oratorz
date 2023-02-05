@@ -85,7 +85,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                   controller.path = path;
                   controller.args = {"id": widget.committee.id};
 
-                  context.pushReplacement("$path?id=${widget.committee.id}");
+                  context.go("$path?id=${widget.committee.id}");
                 },
                 child: Container(
                   width: 260,
