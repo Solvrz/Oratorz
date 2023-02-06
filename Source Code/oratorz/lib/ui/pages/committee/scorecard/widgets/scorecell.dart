@@ -87,7 +87,7 @@ class _ScoreCellState extends State<ScoreCell> {
   }
 }
 
-class _ScoreCellEditing extends StatelessWidget {
+class _ScoreCellEditing extends StatefulWidget {
   final String delegate;
   final int index;
   final FocusNode focusNode;
@@ -99,12 +99,19 @@ class _ScoreCellEditing extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final ScorecardController controller = Get.find<ScorecardController>();
-    final double score = controller.scores[delegate]![index];
-    final TextEditingController textController = TextEditingController(
-      text: score != 0 ? score.toString() : null,
-    );
+  State<_ScoreCellEditing> createState() => _ScoreCellEditingState();
+}
+
+class _ScoreCellEditingState extends State<_ScoreCellEditing> {
+  final ScorecardController controller = Get.find<ScorecardController>();
+  late final TextEditingController textController;
+
+  @override
+  void initState() {
+    final double score = controller.scores[widget.delegate]![widget.index];
+
+    textController =
+        TextEditingController(text: score != 0 ? score.toString() : null);
 
     if (score != 0) {
       textController.selection = TextSelection.fromPosition(
@@ -112,7 +119,13 @@ class _ScoreCellEditing extends StatelessWidget {
       );
     }
 
-    final int delegateIndex = controller.scores.keys.toList().indexOf(delegate);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final int delegateIndex =
+        controller.scores.keys.toList().indexOf(widget.delegate);
 
     return CallbackShortcuts(
       bindings: {
@@ -135,30 +148,30 @@ class _ScoreCellEditing extends StatelessWidget {
         const SingleActivator(LogicalKeyboardKey.tab, shift: true): () {
           FocusScope.of(context).unfocus();
 
-          if (index == 0 && delegateIndex != 0) {
+          if (widget.index == 0 && delegateIndex != 0) {
             controller.selected[0] =
                 controller.scores.keys.toList()[delegateIndex - 1];
 
             controller.selected[1] = controller.parameters.length - 1;
           } else {
-            controller.selected[1] = index - 1;
+            controller.selected[1] = widget.index - 1;
           }
         },
         const SingleActivator(LogicalKeyboardKey.tab): () {
           FocusScope.of(context).unfocus();
 
-          if (index == controller.parameters.length - 1 &&
+          if (widget.index == controller.parameters.length - 1 &&
               delegateIndex != controller.scores.length - 1) {
             controller.selected[0] =
                 controller.scores.keys.toList()[delegateIndex + 1];
             controller.selected[1] = 0;
           } else {
-            controller.selected[1] = index + 1;
+            controller.selected[1] = widget.index + 1;
           }
         }
       },
       child: TextField(
-        focusNode: focusNode,
+        focusNode: widget.focusNode,
         maxLines: null,
         controller: textController,
         textAlign: TextAlign.center,
@@ -175,15 +188,17 @@ class _ScoreCellEditing extends StatelessWidget {
         ],
         onChanged: (text) {
           if (text.trim() == "") {
-            controller.updateScore(delegate, index, 0);
+            controller.updateScore(widget.delegate, widget.index, 0);
           }
 
           if (double.tryParse(text) == null) return;
 
-          if (text.toDouble <= controller.maxScores[index]) {
-            controller.updateScore(delegate, index, text.toDouble);
+          if (text.toDouble <= controller.maxScores[widget.index]) {
+            controller.updateScore(
+                widget.delegate, widget.index, text.toDouble);
           } else {
-            final String score = controller.scores[delegate]![index].toString();
+            final String score =
+                controller.scores[widget.delegate]![widget.index].toString();
 
             if (score != "0") {
               textController.text = score;

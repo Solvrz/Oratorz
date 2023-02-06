@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/scorecard.dart';
 import 'parameter.dart';
+import 'scoretable.dart' show DIMENSIONS;
 
 class TableHeader extends StatelessWidget {
   const TableHeader({super.key});
@@ -21,7 +22,7 @@ class TableHeader extends StatelessWidget {
                 right: BorderSide(color: Colors.grey.shade300, width: 2),
               ),
             ),
-            width: 200,
+            width: DIMENSIONS[0],
             child: Text(
               "Delegate",
               style: Theme.of(context).textTheme.titleLarge,
@@ -36,7 +37,7 @@ class TableHeader extends StatelessWidget {
                   right: BorderSide(color: Colors.grey.shade300, width: 2),
                 ),
               ),
-              width: 200,
+              width: DIMENSIONS[1],
               child: Parameter(
                 index: index,
                 mode: controller.mode.value,
@@ -44,7 +45,7 @@ class TableHeader extends StatelessWidget {
             ),
           ),
           Container(
-            width: 100,
+            width: DIMENSIONS[2],
             padding: const EdgeInsets.all(12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
