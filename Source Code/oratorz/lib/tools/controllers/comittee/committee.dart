@@ -4,6 +4,12 @@ import '/models/committee.dart';
 import '/services/local_storage.dart';
 import './vote.dart';
 
+abstract class RollCall {
+  static const int presentAndVoting = 2;
+  static const int present = 1;
+  static const int absent = 0;
+}
+
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
   late final RxMap<String, int> _rollCall;
@@ -29,11 +35,12 @@ class CommitteeController extends GetxController {
 
   set rollCall(Map<String, int> newRollCall) => _rollCall.value = newRollCall;
 
-  bool? get areAllPresent => rollCall.values.toList().every(
-        (call) => call >= 1,
+  bool get areAllPresent => rollCall.values.toList().every(
+        (call) => call == RollCall.present || call == RollCall.presentAndVoting,
       );
-  bool? get areAllAbsent => rollCall.values.toList().every(
-        (call) => call == 0,
+
+  bool get areAllAbsent => rollCall.values.toList().every(
+        (call) => call == RollCall.absent,
       );
 
   void _saveRollCall() {
@@ -51,17 +58,17 @@ class CommitteeController extends GetxController {
   }
 
   void setAllPresentAndVoting() {
-    _rollCall.updateAll((_, __) => 2);
+    _rollCall.updateAll((_, __) => RollCall.presentAndVoting);
     _saveRollCall();
   }
 
   void setAllPresent() {
-    _rollCall.updateAll((_, __) => 1);
+    _rollCall.updateAll((_, __) => RollCall.present);
     _saveRollCall();
   }
 
   void setAllAbsent() {
-    _rollCall.updateAll((_, __) => 0);
+    _rollCall.updateAll((_, __) => RollCall.absent);
     _saveRollCall();
   }
 

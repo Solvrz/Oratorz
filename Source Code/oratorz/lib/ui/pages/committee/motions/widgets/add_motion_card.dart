@@ -270,7 +270,7 @@ class AddMotionCard extends StatelessWidget {
                     return Container(
                       margin: const EdgeInsets.all(8),
                       child: RoundedButton(
-                        border: true,
+                        style: RoundedButtonStyle.border,
                         onPressed: () => showDialog(
                           context: context,
                           builder: (context) => MotionDialog(

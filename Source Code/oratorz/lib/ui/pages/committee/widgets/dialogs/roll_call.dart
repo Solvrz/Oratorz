@@ -29,7 +29,7 @@ class RollCallDialog extends StatelessWidget {
                           children: [
                             Expanded(
                               child: RoundedButton(
-                                border: true,
+                                style: RoundedButtonStyle.border,
                                 onPressed: () {
                                   controller.setAllPresent();
                                   controller.update();
@@ -43,7 +43,7 @@ class RollCallDialog extends StatelessWidget {
                             const SizedBox(width: 32),
                             Expanded(
                               child: RoundedButton(
-                                border: true,
+                                style: RoundedButtonStyle.border,
                                 onPressed: () {
                                   controller.setAllAbsent();
                                   controller.update();
@@ -61,7 +61,7 @@ class RollCallDialog extends StatelessWidget {
                           children: [
                             Expanded(
                               child: RoundedButton(
-                                border: true,
+                                style: RoundedButtonStyle.border,
                                 onPressed: () {
                                   controller.setAllPresentAndVoting();
                                   controller.update();
@@ -96,12 +96,14 @@ class RollCallDialog extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   RoundedButton(
-                                    border: rollCall != 2,
+                                    style: rollCall == RollCall.presentAndVoting
+                                        ? RoundedButtonStyle.fill
+                                        : RoundedButtonStyle.border,
                                     color: Colors.blue.shade400,
                                     onPressed: () {
                                       controller.setRollCall(
                                         delegate,
-                                        2,
+                                        RollCall.presentAndVoting,
                                       );
 
                                       controller.update();
@@ -110,12 +112,14 @@ class RollCallDialog extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 4),
                                   RoundedButton(
-                                    border: rollCall != 1,
+                                    style: rollCall == RollCall.present
+                                        ? RoundedButtonStyle.fill
+                                        : RoundedButtonStyle.border,
                                     color: Colors.amber.shade400,
                                     onPressed: () {
                                       controller.setRollCall(
                                         delegate,
-                                        1,
+                                        RollCall.present,
                                       );
 
                                       controller.update();
@@ -124,12 +128,14 @@ class RollCallDialog extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 4),
                                   RoundedButton(
-                                    border: rollCall != 0,
+                                    style: rollCall == RollCall.absent
+                                        ? RoundedButtonStyle.fill
+                                        : RoundedButtonStyle.border,
                                     color: Colors.red.shade400,
                                     onPressed: () {
                                       controller.setRollCall(
                                         delegate,
-                                        0,
+                                        RollCall.absent,
                                       );
 
                                       controller.update();

@@ -154,10 +154,12 @@ class _Voting extends StatelessWidget {
               children: [
                 Obx(
                   () => RoundedButton(
-                    border: _voteController.voteVal(
+                    style: _voteController.voteVal(
                       delegate: _delegate,
                       invert: true,
-                    ),
+                    )
+                        ? RoundedButtonStyle.border
+                        : RoundedButtonStyle.empty,
                     color: Colors.green,
                     onPressed: () {
                       _voteController.vote(
@@ -177,10 +179,12 @@ class _Voting extends StatelessWidget {
                 const SizedBox(width: 4),
                 Obx(
                   () => RoundedButton(
-                    border: _voteController.voteVal(
+                    style: _voteController.voteVal(
                       invert: false,
                       delegate: _delegate,
-                    ),
+                    )
+                        ? RoundedButtonStyle.border
+                        : RoundedButtonStyle.empty,
                     color: Colors.red,
                     onPressed: () {
                       _voteController.vote(

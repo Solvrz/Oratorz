@@ -76,7 +76,7 @@ class ErrorPage extends StatelessWidget {
                           child: RoundedButton(
                             onPressed: () =>
                                 context.pushReplacement(AppRouter.home.path),
-                            border: true,
+                            style: RoundedButtonStyle.border,
                             child: Text(
                               "Visit our Help Center",
                               style: context.textTheme.bodyLarge,

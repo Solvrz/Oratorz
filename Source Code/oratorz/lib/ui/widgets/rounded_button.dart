@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+enum RoundedButtonStyle { fill, border, empty }
+
 class RoundedButton extends StatelessWidget {
   final Widget child;
-  final bool border;
+  final RoundedButtonStyle style;
   final Function()? onPressed;
   final EdgeInsets? padding;
   final String? tooltip;
@@ -12,7 +14,7 @@ class RoundedButton extends StatelessWidget {
   const RoundedButton({
     super.key,
     required this.child,
-    this.border = false,
+    this.style = RoundedButtonStyle.fill,
     this.onPressed,
     this.padding,
     this.tooltip,
@@ -30,22 +32,26 @@ class RoundedButton extends StatelessWidget {
           shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-              side: BorderSide(color: _color),
+              side: style == RoundedButtonStyle.empty
+                  ? BorderSide.none
+                  : BorderSide(color: _color),
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
-            border ? Colors.white : _color,
+            style == RoundedButtonStyle.border ? Colors.white : _color,
           ),
           foregroundColor: MaterialStateProperty.all<Color>(
-            border ? _color : Colors.white,
+            style == RoundedButtonStyle.border ? _color : Colors.white,
           ),
           overlayColor: MaterialStateProperty.all<Color>(
-            border ? _color.withAlpha(30) : Colors.white12,
+            style == RoundedButtonStyle.border
+                ? _color.withAlpha(30)
+                : Colors.white12,
           ),
         ),
         onPressed: onPressed,
-        child: Container(
-          margin: padding ?? const EdgeInsets.all(8),
+        child: Padding(
+          padding: padding ?? const EdgeInsets.all(8),
           child: child,
         ),
       ),

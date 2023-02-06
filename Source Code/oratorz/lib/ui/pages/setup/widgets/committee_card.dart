@@ -39,7 +39,7 @@ class CommitteeCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       RoundedButton(
-                        border: true,
+                        style: RoundedButtonStyle.border,
                         color: Colors.amber.shade400,
                         padding: const EdgeInsets.symmetric(
                           vertical: 4,
@@ -87,7 +87,7 @@ class CommitteeCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   RoundedButton(
-                    border: true,
+                    style: RoundedButtonStyle.border,
                     onPressed: () {
                       _setupController.clear();
                       _setupController.update();
@@ -195,7 +195,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
       ),
       actions: [
         RoundedButton(
-          border: true,
+          style: RoundedButtonStyle.border,
           color: Colors.amber.shade400,
           padding: const EdgeInsets.symmetric(
             vertical: 4,
@@ -237,7 +237,7 @@ class _CommitteeNameDialog extends StatelessWidget {
       ),
       actions: [
         RoundedButton(
-          border: true,
+          style: RoundedButtonStyle.border,
           color: Colors.amber.shade400,
           onPressed: () {
             _setupController.committee.name = _controller.value.text;

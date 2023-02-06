@@ -20,7 +20,6 @@ class OratorzCard extends StatelessWidget {
             SvgPicture.asset(
               height: 35,
               width: 35,
-              // TODO: Dark Logo
               "images/Logo.svg",
             ),
             const SizedBox(width: 8),

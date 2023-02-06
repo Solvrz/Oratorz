@@ -49,7 +49,7 @@ class Body extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       RoundedButton(
-                        border: true,
+                        style: RoundedButtonStyle.border,
                         color: Colors.amber.shade400,
                         tooltip: "Set Agenda",
                         padding: const EdgeInsets.symmetric(
@@ -109,7 +109,7 @@ class _AgendaDialog extends StatelessWidget {
       ),
       actions: [
         RoundedButton(
-          border: true,
+          style: RoundedButtonStyle.border,
           color: Colors.amber.shade400,
           onPressed: () {
             _committeeController.setAgenda(_controller.text);

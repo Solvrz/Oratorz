@@ -100,7 +100,7 @@ class MotionTile extends StatelessWidget {
                 child: Column(
                   children: [
                     RoundedButton(
-                      border: true,
+                      style: RoundedButtonStyle.border,
                       color: Colors.red.shade400,
                       padding: const EdgeInsets.all(4),
                       onPressed: () {
@@ -118,7 +118,7 @@ class MotionTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     RoundedButton(
-                      border: true,
+                      style: RoundedButtonStyle.border,
                       color: Colors.green.shade400,
                       padding: const EdgeInsets.all(4),
                       onPressed: () => showDialog(

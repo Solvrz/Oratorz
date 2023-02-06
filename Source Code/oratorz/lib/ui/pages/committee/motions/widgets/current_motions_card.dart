@@ -115,7 +115,7 @@ class _PassMotionDialog extends StatelessWidget {
         ),
         actions: [
           RoundedButton(
-            border: true,
+            style: RoundedButtonStyle.border,
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
               vertical: 4,

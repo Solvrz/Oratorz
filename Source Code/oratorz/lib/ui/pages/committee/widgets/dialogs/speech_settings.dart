@@ -129,7 +129,7 @@ class SpeechSettingsDialog extends StatelessWidget {
       ),
       actions: [
         RoundedButton(
-          border: true,
+          style: RoundedButtonStyle.border,
           color: Colors.amber.shade400,
           padding: const EdgeInsets.symmetric(
             vertical: 4,

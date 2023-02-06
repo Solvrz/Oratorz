@@ -39,7 +39,7 @@ class ScorecardPage extends StatelessWidget {
                 const Spacer(),
                 if (controller.mode.value == 1) ...[
                   RoundedButton(
-                    border: true,
+                    style: RoundedButtonStyle.border,
                     onPressed: () => controller.addParameter(
                       "New",
                       10,

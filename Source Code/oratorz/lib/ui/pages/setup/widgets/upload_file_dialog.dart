@@ -111,7 +111,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
       ),
       actions: [
         RoundedButton(
-          border: true,
+          style: RoundedButtonStyle.border,
           child: const Text("Download Template"),
           onPressed: () {
             final html.AnchorElement anchorElement = html.AnchorElement(

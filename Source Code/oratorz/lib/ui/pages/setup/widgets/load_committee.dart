@@ -28,7 +28,7 @@ class LoadCommitteeCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: RoundedButton(
-                    border: true,
+                    style: RoundedButtonStyle.border,
                     color: Colors.amber.shade400,
                     padding: const EdgeInsets.symmetric(
                       vertical: 2,
@@ -49,7 +49,7 @@ class LoadCommitteeCard extends StatelessWidget {
                 const SizedBox(width: 20),
                 Expanded(
                   child: RoundedButton(
-                    border: true,
+                    style: RoundedButtonStyle.border,
                     color: Colors.amber.shade400,
                     padding: const EdgeInsets.symmetric(
                       vertical: 2,
