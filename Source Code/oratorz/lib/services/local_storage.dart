@@ -362,9 +362,14 @@ class LocalStorage {
 
     final ScorecardController controller = ScorecardController();
 
-    controller.parameters.value =
-        List<String>.from(data["score"]["parameters"]);
-    controller.maxScores.value = List<int>.from(data["score"]["maxScores"]);
+    controller.parameters.value = List.generate(
+      data["score"]["parameters"].length,
+      (index) => Parameter(
+        data["score"]["parameters"][index],
+        data["score"]["maxScores"][index],
+      ),
+    );
+
     controller.scores.value = Map<String, List<double>>.from(
       data["score"]["scores"].map<String, List<double>>(
         (key, value) =>

@@ -7,30 +7,109 @@ import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
 
-class Parameter extends StatefulWidget {
+class ParameterWidget extends StatefulWidget {
   final int index;
   final int mode;
+  final bool isTotal;
 
-  const Parameter({
+  const ParameterWidget({
     super.key,
     required this.index,
     required this.mode,
+    this.isTotal = false,
   });
 
   @override
-  State<Parameter> createState() => ParameterState();
+  State<ParameterWidget> createState() => ParameterWidgetState();
 }
 
-class ParameterState extends State<Parameter> {
+class ParameterWidgetState extends State<ParameterWidget> {
   final ScorecardController controller = Get.find<ScorecardController>();
   bool hovering = false;
 
   @override
   Widget build(BuildContext context) {
+    double total = 0;
+    controller.parameters.forEach((e) => total += e.maxScore);
+
+    final String title = widget.isTotal
+        ? "Total ($total)"
+        : controller.parameters[widget.index].toString();
+
     if (widget.mode == 0) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: context.textTheme.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(width: 8),
+          Obx(
+            () {
+              final bool isSortParameter =
+                  widget.index == (controller.sort.value.abs() - 1);
+
+              return InkWell(
+                borderRadius: BorderRadius.circular(50),
+                onTap: () {
+                  if (!isSortParameter) {
+                    controller.sort.value = -(widget.index + 1);
+                  } else if (controller.sort.value < 0) {
+                    controller.sort.value *= -1;
+                  } else {
+                    controller.sort.value = 0;
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    color:
+                        isSortParameter ? Colors.grey[700] : Colors.transparent,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      RotatedBox(
+                        quarterTurns: 3,
+                        child: Icon(
+                          Icons.play_arrow,
+                          color: isSortParameter
+                              ? controller.sort.value > 0
+                                  ? Colors.grey[200]
+                                  : Colors.grey[500]
+                              : Colors.grey[400],
+                          size: 16,
+                        ),
+                      ),
+                      RotatedBox(
+                        quarterTurns: 1,
+                        child: Icon(
+                          Icons.play_arrow,
+                          color: isSortParameter
+                              ? controller.sort.value < 0
+                                  ? Colors.white
+                                  : Colors.grey[500]
+                              : Colors.grey[400],
+                          size: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    }
+
+    if (widget.isTotal) {
       return Center(
         child: Text(
-          "${controller.parameters[widget.index]} (${controller.maxScores[widget.index]})",
+          title,
           style: context.textTheme.titleLarge,
           textAlign: TextAlign.center,
         ),
@@ -45,7 +124,7 @@ class ParameterState extends State<Parameter> {
         children: [
           Expanded(
             child: Text(
-              "${controller.parameters[widget.index]} (${controller.maxScores[widget.index]})",
+              title,
               style: context.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -87,16 +166,20 @@ class _EditParameterDialog extends StatelessWidget {
     final ScorecardController _scorecardController =
         Get.find<ScorecardController>();
 
-    final TextEditingController parameterController = TextEditingController(
-      text: _scorecardController.parameters[index],
+    final TextEditingController titleController = TextEditingController(
+      text: _scorecardController.parameters[index].title,
     );
+
     final TextEditingController scoreController = TextEditingController(
-      text: _scorecardController.maxScores[index].toString(),
+      text: _scorecardController.parameters[index].maxScore.toString(),
     );
 
     void submit() {
-      _scorecardController.parameters[index] = parameterController.text.trim();
-      _scorecardController.maxScores[index] = scoreController.text.toInt;
+      _scorecardController.updateParameter(
+        index,
+        titleController.text.trim(),
+        scoreController.text.toInt,
+      );
 
       context.pop();
     }
@@ -116,7 +199,7 @@ class _EditParameterDialog extends StatelessWidget {
             margin: const EdgeInsets.only(left: 10),
             child: TextField(
               autofocus: true,
-              controller: parameterController,
+              controller: titleController,
               onSubmitted: (_) => submit(),
               decoration: const InputDecoration(hintText: "Name"),
             ),

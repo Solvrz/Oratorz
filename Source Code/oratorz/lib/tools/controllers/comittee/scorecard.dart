@@ -3,14 +3,31 @@ import 'package:get/get.dart';
 import '/services/local_storage.dart';
 import './committee.dart';
 
+class Parameter {
+  String title;
+  int maxScore;
+
+  Parameter(this.title, this.maxScore);
+
+  @override
+  String toString() => "$title ($maxScore)";
+}
+
 class ScorecardController extends GetxController {
-  final RxList<String> parameters = <String>["GSL", "Mod", "POI", "Chits"].obs;
-  final RxList<int> maxScores = <int>[10, 10, 10, 5].obs;
+  final RxList<Parameter> parameters = [
+    Parameter("GSL", 10),
+    Parameter("Mod", 10),
+    Parameter("POI", 10),
+    Parameter("Chits", 5),
+  ].obs;
 
   final RxMap<String, List<double>> scores = <String, List<double>>{}.obs;
 
   final RxInt mode = 0.obs;
-  final RxBool sort = false.obs;
+  final RxInt sort = 0.obs;
+
+  int get sortIndex => sort.value.abs() - 1;
+
   void toggleMode() => mode.value = mode.value == 0 ? 1 : 0;
 
   final RxList<dynamic> selected = ["", 0].obs;
@@ -22,25 +39,36 @@ class ScorecardController extends GetxController {
     }
   }
 
-  void addParameter(String parameter, int maxScore) {
-    parameters.add(parameter);
-    maxScores.add(maxScore);
+  void addParameter(String title, int maxScore) {
+    if (sortIndex == parameters.length) {
+      sort.value += sort.value > 0 ? 1 : -1;
+    }
+
+    parameters.add(Parameter(title, maxScore));
 
     scores.keys.forEach((delegate) => scores[delegate]!.add(0));
     _saveScores();
   }
 
   void deleteParameter(int index) {
+    if (sortIndex == parameters.length) {
+      sort.value += sort.value > 0 ? -1 : 1;
+    }
+
     parameters.removeAt(index);
-    maxScores.removeAt(index);
 
     scores.keys.forEach((delegate) => scores[delegate]!.removeAt(index));
     _saveScores();
   }
 
   void reorderParameter(int index) {
+    if (index == sortIndex) {
+      sort.value += sort.value > 0 ? 1 : -1;
+    } else if (index == sortIndex - 1) {
+      sort.value += sort.value > 0 ? -1 : 1;
+    }
+
     parameters.insert(index + 1, parameters.removeAt(index));
-    maxScores.insert(index + 1, maxScores.removeAt(index));
 
     scores.keys.forEach(
       (delegate) => scores[delegate]!
@@ -49,9 +77,24 @@ class ScorecardController extends GetxController {
     _saveScores();
   }
 
+  void updateParameter(int index, String title, int maxScore) {
+    parameters[index].title = title;
+    parameters[index].maxScore = maxScore;
+
+    update();
+  }
+
   void _saveScores() {
-    LocalStorage.updateScore("parameters", parameters);
-    LocalStorage.updateScore("maxScores", maxScores);
+    LocalStorage.updateScore(
+      "parameters",
+      parameters.map<String>((e) => e.title).toList(),
+    );
+
+    LocalStorage.updateScore(
+      "maxScores",
+      parameters.map<int>((e) => e.maxScore).toList(),
+    );
+
     LocalStorage.updateScore("scores", scores);
   }
 
@@ -68,8 +111,8 @@ class ScorecardController extends GetxController {
 
   Map<String, dynamic> toJson() {
     return {
-      "parameters": parameters,
-      "maxScores": maxScores,
+      "parameters": parameters.map<String>((e) => e.title).toList(),
+      "maxScores": parameters.map<int>((e) => e.maxScore).toList(),
       "scores": scores,
     };
   }

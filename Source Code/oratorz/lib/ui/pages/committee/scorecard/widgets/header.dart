@@ -16,13 +16,14 @@ class TableHeader extends StatelessWidget {
       () => Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               border: Border(
                 right: BorderSide(color: Colors.grey.shade300, width: 2),
               ),
             ),
             width: DIMENSIONS[0],
+            height: DIMENSIONS[2],
             child: Text(
               "Delegate",
               style: Theme.of(context).textTheme.titleLarge,
@@ -31,51 +32,28 @@ class TableHeader extends StatelessWidget {
           ...List.generate(
             controller.parameters.length,
             (index) => Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 border: Border(
                   right: BorderSide(color: Colors.grey.shade300, width: 2),
                 ),
               ),
               width: DIMENSIONS[1],
-              child: Parameter(
+              height: DIMENSIONS[2],
+              child: ParameterWidget(
                 index: index,
                 mode: controller.mode.value,
               ),
             ),
           ),
           Container(
-            width: DIMENSIONS[2],
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Total",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(width: 8),
-                InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () => controller.sort.value = !controller.sort.value,
-                  child: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      color: controller.sort.value
-                          ? Colors.grey[700]
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Icon(
-                      Icons.arrow_downward,
-                      color: controller.sort.value
-                          ? Colors.grey[300]
-                          : Colors.grey[400],
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ],
+            width: DIMENSIONS[1],
+            height: DIMENSIONS[2],
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: ParameterWidget(
+              index: controller.parameters.length,
+              mode: controller.mode.value,
+              isTotal: true,
             ),
           ),
         ],

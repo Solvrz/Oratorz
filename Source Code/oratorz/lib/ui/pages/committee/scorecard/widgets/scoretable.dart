@@ -8,12 +8,40 @@ import '/ui/widgets/delegate_tile.dart';
 import 'header.dart';
 import 'scorecell.dart';
 
-const List<double> DIMENSIONS = [240, 200, 100];
+const List<double> DIMENSIONS = [240, 200, 50];
 
 class ScoreTable extends StatelessWidget {
   const ScoreTable({super.key});
 
   //TODO (YUG): Add search and auto scroll to matching delegate
+
+  List<String> getDelegates() {
+    final ScorecardController controller = Get.find<ScorecardController>();
+
+    final Map<String, List<double>> scores = controller.scores;
+
+    final List<String> delegates =
+        List.from(Get.find<CommitteeController>().committee.delegates);
+
+    if (controller.sort.value != 0) {
+      delegates.sort((a, b) {
+        final double valA;
+        final double valB;
+
+        if (controller.sortIndex == controller.parameters.length) {
+          valA = scores[a]!.sum;
+          valB = scores[b]!.sum;
+        } else {
+          valA = scores[a]![controller.sortIndex];
+          valB = scores[b]![controller.sortIndex];
+        }
+
+        return valA.compareTo(valB) * (controller.sort.value.clamp(-1, 1));
+      });
+    }
+
+    return delegates;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,25 +49,14 @@ class ScoreTable extends StatelessWidget {
 
     return Obx(
       () {
-        final List<String> delegates = List.from(
-          Get.find<CommitteeController>().committee.delegates,
-        );
-
-        if (controller.sort.value) {
-          delegates.sort(
-            (a, b) =>
-                controller.scores[a]!.sum.compareTo(controller.scores[b]!.sum) *
-                -1, //In order to sort descending
-          );
-        }
+        final List<String> delegates = getDelegates();
 
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: SizedBox(
             width: 20 +
                 DIMENSIONS[0] +
-                (DIMENSIONS[1] * controller.parameters.length) +
-                DIMENSIONS[2],
+                DIMENSIONS[1] * (controller.parameters.length + 1),
             child: Column(
               children: [
                 const TableHeader(),
@@ -65,7 +82,7 @@ class ScoreTable extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              width: DIMENSIONS[2],
+                              width: DIMENSIONS[1],
                               child: Center(
                                 child: Obx(
                                   () => Text(

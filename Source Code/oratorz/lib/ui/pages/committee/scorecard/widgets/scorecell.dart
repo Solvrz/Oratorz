@@ -44,6 +44,8 @@ class _ScoreCellState extends State<ScoreCell> {
         final bool selected = controller.selected[0] == widget.delegate &&
             controller.selected[1] == widget.index;
 
+        //FIXME (adityataggar05): Change InkWell to MouseRegion
+
         return InkWell(
           onTap: () {},
           hoverColor: Colors.transparent,
@@ -193,9 +195,12 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
 
           if (double.tryParse(text) == null) return;
 
-          if (text.toDouble <= controller.maxScores[widget.index]) {
+          if (text.toDouble <= controller.parameters[widget.index].maxScore) {
             controller.updateScore(
-                widget.delegate, widget.index, text.toDouble);
+              widget.delegate,
+              widget.index,
+              text.toDouble,
+            );
           } else {
             final String score =
                 controller.scores[widget.delegate]![widget.index].toString();
