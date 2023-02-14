@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '/models/router.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import './widgets/dialogs/roll_call.dart';
 
@@ -82,6 +83,12 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                         ),
                       ),
                       const Spacer(),
+                      _SidebarTile(
+                        title: "Export Session",
+                        icon: Icons.save_alt,
+                        onTap: () =>
+                            LocalStorage.exportToFile(controller.committee),
+                      ),
                       _SidebarTile(
                         title: "Home",
                         icon: Icons.home,

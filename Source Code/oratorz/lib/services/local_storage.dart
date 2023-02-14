@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:js' as js;
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/constants.dart';
 import '/models/committee.dart';
@@ -383,4 +387,42 @@ class LocalStorage {
   }
 
   static void clearData() => box.erase();
+
+  static bool exportToFile(Committee committee) {
+    js.context.callMethod("saveAs", [
+      html.Blob([jsonEncode(box.read(committee.id))], "application/json"),
+      "session-${committee.id}.json"
+    ]);
+
+    return true;
+  }
+
+  static bool loadFromJson(Map<String, dynamic> data) {
+    if (committees.contains(data["committee"]["id"])) return false;
+
+    final Committee committee = Committee(
+      id: data["committee"]["id"],
+      name: data["committee"]["name"],
+      agenda: data["committee"]["agenda"],
+      delegates: data["committee"]["delegates"].cast<String>(),
+    );
+
+    final CommitteeController controller =
+        CommitteeController(committee: committee);
+
+    controller.rollCall = Map<String, int>.from(data["rollCall"]);
+
+    Get.put<CommitteeController>(controller);
+
+    analytics.logEvent(name: "committe_loaded");
+
+    Get.find<HomeController>().addCommittee(committee.id);
+
+    box.write(committee.id, controller.toJson());
+    box.write("committees", committees);
+
+    Get.put<CommitteeController>(controller);
+
+    return true;
+  }
 }

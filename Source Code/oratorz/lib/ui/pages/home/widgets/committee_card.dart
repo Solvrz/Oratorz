@@ -156,7 +156,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                 height: 189 * animationStatus,
                 child: Opacity(
                   opacity: animationStatus,
-                  child: _EditOptions(id: widget.committee.id),
+                  child: _EditOptions(committee: widget.committee),
                 ),
               ),
             ],
@@ -168,9 +168,9 @@ class _CommitteeCardState extends State<CommitteeCard>
 }
 
 class _EditOptions extends StatelessWidget {
-  final String id;
+  final Committee committee;
 
-  const _EditOptions({required this.id});
+  const _EditOptions({required this.committee});
 
   @override
   Widget build(BuildContext context) {
@@ -190,15 +190,15 @@ class _EditOptions extends StatelessWidget {
             ),
             InkWell(
               hoverColor: Colors.transparent,
-              onTap: () {},
-              child: const Icon(Icons.star_border, size: 26),
+              onTap: () => LocalStorage.exportToFile(committee),
+              child: const Icon(Icons.save_alt, size: 26),
             ),
             Divider(
               color: Colors.grey.shade400,
             ),
             InkWell(
               hoverColor: Colors.transparent,
-              onTap: () => LocalStorage.deleteCommittee(id),
+              onTap: () => LocalStorage.deleteCommittee(committee.id),
               child: Icon(Icons.delete, color: Colors.red.shade400, size: 26),
             ),
           ],

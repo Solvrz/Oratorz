@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -13,6 +16,7 @@ import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import '../../../../services/local_storage.dart';
 
 class UploadFileDialog extends StatefulWidget {
   const UploadFileDialog({super.key});
@@ -135,8 +139,12 @@ class UploadFileDialogState extends State<UploadFileDialog> {
             final FilePickerResult? _result =
                 await FilePicker.platform.pickFiles(
               type: FileType.custom,
-              allowedExtensions: ["xlsx", "xls"],
+              allowedExtensions: ["xlsx", "xls", "json"],
             );
+
+            if (mounted && context.canPop()) {
+              context.pop();
+            }
 
             if (_result != null) {
               final PlatformFile _file = _result.files.first;
@@ -146,10 +154,6 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                 data: _file.bytes,
                 extension: ".${_file.extension}",
               );
-            }
-
-            if (mounted && context.canPop()) {
-              context.pop();
             }
           },
         ),
@@ -163,7 +167,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
     required String? extension,
   }) {
     try {
-      if ([".sheet", ".xlsx", ".xls", ".json"].contains(extension)) {
+      if ([".sheet", ".xlsx", ".xls"].contains(extension)) {
         final Excel excel = Excel.decodeBytes(data ?? []);
 
         for (final String table in excel.tables.keys) {
@@ -185,11 +189,22 @@ class UploadFileDialogState extends State<UploadFileDialog> {
             }
           }
         }
+      } else if (extension == ".json") {
+        final Map<String, dynamic> committeeData =
+            jsonDecode(String.fromCharCodes(data!));
+
+        if (LocalStorage.loadFromJson(committeeData)) {
+          context.go("/gsl?id=${committeeData["committee"]["id"]}");
+        } else {
+          throw UnsupportedError("Invalid File");
+        }
       } else {
         // TODO: Error Not Showing on Upload File
         throw UnsupportedError("Invalid File");
       }
     } catch (e) {
+      log(e.toString());
+
       if (mounted) {
         showDialog(
           context: context,
