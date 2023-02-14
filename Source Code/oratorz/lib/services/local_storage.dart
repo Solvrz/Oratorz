@@ -418,7 +418,7 @@ class LocalStorage {
 
     Get.find<HomeController>().addCommittee(committee.id);
 
-    box.write(committee.id, controller.toJson());
+    box.write(committee.id, data);
     box.write("committees", committees);
 
     Get.put<CommitteeController>(controller);
