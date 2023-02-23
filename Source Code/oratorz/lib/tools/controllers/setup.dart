@@ -5,13 +5,13 @@ import '/models/committee.dart';
 
 class SetupController extends GetxController {
   final Rx<Committee> _committee = Committee().obs;
-  final RxInt _committeeType = 0.obs;
+  final RxInt _selectedType = 0.obs;
 
   Committee get committee => _committee.value;
 
-  int get committeeType => _committeeType.value;
-  set committeeType(int newCommitteeType) =>
-      _committeeType.value = newCommitteeType;
+  int get selectedType => _selectedType.value;
+  set selectedType(int newCommitteeType) =>
+      _selectedType.value = newCommitteeType;
 
   void fromTemplate(String template) => _committee.update((committee) {
         if (committee != null) {

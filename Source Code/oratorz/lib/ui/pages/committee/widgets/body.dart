@@ -8,7 +8,6 @@ import '/ui/widgets/rounded_button.dart';
 
 class Body extends StatelessWidget {
   final Widget child;
-
   final Widget? trailing;
 
   const Body({
@@ -29,7 +28,6 @@ class Body extends StatelessWidget {
           SizedBox(
             height: context.height / 15,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Obx(
                   () => Row(
@@ -69,7 +67,14 @@ class Body extends StatelessWidget {
                     ],
                   ),
                 ),
-                trailing ?? const SizedBox()
+                const Spacer(),
+                trailing ?? const SizedBox(),
+                const SizedBox(width: 12),
+                RoundedButton(
+                  onPressed: () {},
+                  color: Colors.red.shade400,
+                  child: const Text("End"),
+                ),
               ],
             ),
           ),

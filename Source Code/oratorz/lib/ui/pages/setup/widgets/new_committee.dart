@@ -69,13 +69,13 @@ class _CommitteeType extends StatelessWidget {
 
     return GetBuilder<SetupController>(
       builder: (setupController) {
-        final bool isOpen = setupController.committeeType == index;
+        final bool isOpen = setupController.selectedType == index;
 
         final Widget widget = Column(
           children: [
             InkWell(
               onTap: () {
-                setupController.committeeType = index;
+                setupController.selectedType = index;
                 setupController.update();
               },
               child: Container(
