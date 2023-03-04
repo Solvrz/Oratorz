@@ -30,7 +30,7 @@ class TableHeader extends StatelessWidget {
             ),
           ),
           ...List.generate(
-            controller.parameters.length,
+            controller.scorecard.parameters.length - 1,
             (index) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
@@ -41,7 +41,7 @@ class TableHeader extends StatelessWidget {
               width: DIMENSIONS[1],
               height: DIMENSIONS[2],
               child: ParameterWidget(
-                index: index,
+                parameter: controller.scorecard.parameters[index],
                 mode: controller.mode.value,
               ),
             ),
@@ -51,7 +51,7 @@ class TableHeader extends StatelessWidget {
             height: DIMENSIONS[2],
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: ParameterWidget(
-              index: controller.parameters.length,
+              parameter: controller.scorecard.parameters.last,
               mode: controller.mode.value,
               isTotal: true,
             ),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/extensions.dart';
+import '../../../../../models/scorecard.dart';
 
 class ScoreCell extends StatefulWidget {
   final String delegate;
@@ -78,7 +79,7 @@ class _ScoreCellState extends State<ScoreCell> {
                 )
               : Center(
                   child: Text(
-                    controller.scores[widget.delegate]![widget.index]
+                    controller.scorecard.scores[widget.delegate]![widget.index]
                         .toString(),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
@@ -106,11 +107,13 @@ class _ScoreCellEditing extends StatefulWidget {
 
 class _ScoreCellEditingState extends State<_ScoreCellEditing> {
   final ScorecardController controller = Get.find<ScorecardController>();
+  late final Scorecard scorecard;
   late final TextEditingController textController;
 
   @override
   void initState() {
-    final double score = controller.scores[widget.delegate]![widget.index];
+    scorecard = controller.scorecard;
+    final double score = scorecard.scores[widget.delegate]![widget.index];
 
     textController =
         TextEditingController(text: score != 0 ? score.toString() : null);
@@ -127,7 +130,7 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
   @override
   Widget build(BuildContext context) {
     final int delegateIndex =
-        controller.scores.keys.toList().indexOf(widget.delegate);
+        scorecard.scores.keys.toList().indexOf(widget.delegate);
 
     return CallbackShortcuts(
       bindings: {
@@ -136,15 +139,15 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
 
           if (delegateIndex != 0) {
             controller.selected[0] =
-                controller.scores.keys.toList()[delegateIndex - 1];
+                scorecard.scores.keys.toList()[delegateIndex - 1];
           }
         },
         const SingleActivator(LogicalKeyboardKey.enter): () {
           FocusScope.of(context).unfocus();
 
-          if (delegateIndex != controller.scores.length - 1) {
+          if (delegateIndex != scorecard.scores.length - 1) {
             controller.selected[0] =
-                controller.scores.keys.toList()[delegateIndex + 1];
+                scorecard.scores.keys.toList()[delegateIndex + 1];
           }
         },
         const SingleActivator(LogicalKeyboardKey.tab, shift: true): () {
@@ -152,9 +155,9 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
 
           if (widget.index == 0 && delegateIndex != 0) {
             controller.selected[0] =
-                controller.scores.keys.toList()[delegateIndex - 1];
+                scorecard.scores.keys.toList()[delegateIndex - 1];
 
-            controller.selected[1] = controller.parameters.length - 1;
+            controller.selected[1] = scorecard.parameters.length - 1;
           } else {
             controller.selected[1] = widget.index - 1;
           }
@@ -162,10 +165,10 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
         const SingleActivator(LogicalKeyboardKey.tab): () {
           FocusScope.of(context).unfocus();
 
-          if (widget.index == controller.parameters.length - 1 &&
-              delegateIndex != controller.scores.length - 1) {
+          if (widget.index == scorecard.parameters.length - 1 &&
+              delegateIndex != scorecard.scores.length - 1) {
             controller.selected[0] =
-                controller.scores.keys.toList()[delegateIndex + 1];
+                scorecard.scores.keys.toList()[delegateIndex + 1];
             controller.selected[1] = 0;
           } else {
             controller.selected[1] = widget.index + 1;
@@ -195,7 +198,7 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
 
           if (double.tryParse(text) == null) return;
 
-          if (text.toDouble <= controller.parameters[widget.index].maxScore) {
+          if (text.toDouble <= scorecard.parameters[widget.index].maxScore) {
             controller.updateScore(
               widget.delegate,
               widget.index,
@@ -203,7 +206,7 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
             );
           } else {
             final String score =
-                controller.scores[widget.delegate]![widget.index].toString();
+                scorecard.scores[widget.delegate]![widget.index].toString();
 
             if (score != "0") {
               textController.text = score;

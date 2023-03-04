@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -88,7 +89,8 @@ class RollCallDialog extends StatelessWidget {
 
                         return GetBuilder<CommitteeController>(
                           builder: (_) {
-                            final int? rollCall = controller.rollCall[delegate];
+                            final int? rollCall =
+                                controller.committee.rollCall[delegate];
 
                             return DelegateTile(
                               delegate: delegate,

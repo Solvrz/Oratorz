@@ -3,18 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/models/scorecard.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
 
 class ParameterWidget extends StatefulWidget {
-  final int index;
+  final Parameter parameter;
   final int mode;
   final bool isTotal;
 
   const ParameterWidget({
     super.key,
-    required this.index,
+    required this.parameter,
     required this.mode,
     this.isTotal = false,
   });
@@ -29,33 +30,35 @@ class ParameterWidgetState extends State<ParameterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double total = 0;
-    controller.parameters.forEach((e) => total += e.maxScore);
+    final Scorecard scorecard = controller.scorecard;
 
-    final String title = widget.isTotal
-        ? "Total ($total)"
-        : controller.parameters[widget.index].toString();
+    double total = 0;
+    scorecard.parameters.forEach((e) => total += e.maxScore);
+
+    final String title =
+        widget.isTotal ? "Total ($total)" : widget.parameter.toString();
 
     if (widget.mode == 0) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            title,
-            style: context.textTheme.titleLarge,
-            textAlign: TextAlign.center,
+          Expanded(
+            child: Text(
+              title,
+              style: context.textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(width: 8),
           Obx(
             () {
               final bool isSortParameter =
-                  widget.index == (controller.sort.value.abs() - 1);
+                  widget.parameter.id == controller.sort.value.abs();
 
               return InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () {
                   if (!isSortParameter) {
-                    controller.sort.value = -(widget.index + 1);
+                    controller.sort.value = -widget.parameter.id;
                   } else if (controller.sort.value < 0) {
                     controller.sort.value *= -1;
                   } else {
@@ -116,6 +119,8 @@ class ParameterWidgetState extends State<ParameterWidget> {
       );
     }
 
+    final int index = scorecard.parameters.indexOf(widget.parameter);
+
     return MouseRegion(
       onEnter: (_) => setState(() => hovering = true),
       onExit: (_) => setState(() => hovering = false),
@@ -133,17 +138,18 @@ class ParameterWidgetState extends State<ParameterWidget> {
             GestureDetector(
               onTap: () => showDialog(
                 context: context,
-                builder: (context) => _EditParameterDialog(index: widget.index),
+                builder: (context) =>
+                    _EditParameterDialog(parameter: widget.parameter),
               ),
               child: Icon(Icons.edit, color: Colors.grey[600]),
             ),
-            if (widget.index != controller.parameters.length - 1)
+            if (index != scorecard.parameters.length - 1)
               GestureDetector(
-                onTap: () => controller.reorderParameter(widget.index),
+                onTap: () => controller.reorderParameter(index),
                 child: Icon(Icons.arrow_forward, color: Colors.grey[600]),
               ),
             GestureDetector(
-              onTap: () => controller.deleteParameter(widget.index),
+              onTap: () => controller.deleteParameter(index),
               child: Icon(
                 Icons.delete_forever_outlined,
                 color: Colors.red[400],
@@ -157,26 +163,24 @@ class ParameterWidgetState extends State<ParameterWidget> {
 }
 
 class _EditParameterDialog extends StatelessWidget {
-  final int index;
+  final Parameter parameter;
 
-  const _EditParameterDialog({required this.index});
+  const _EditParameterDialog({required this.parameter});
 
   @override
   Widget build(BuildContext context) {
     final ScorecardController _scorecardController =
         Get.find<ScorecardController>();
 
-    final TextEditingController titleController = TextEditingController(
-      text: _scorecardController.parameters[index].title,
-    );
+    final TextEditingController titleController =
+        TextEditingController(text: parameter.title);
 
-    final TextEditingController scoreController = TextEditingController(
-      text: _scorecardController.parameters[index].maxScore.toString(),
-    );
+    final TextEditingController scoreController =
+        TextEditingController(text: parameter.maxScore.toString());
 
     void submit() {
       _scorecardController.updateParameter(
-        index,
+        parameter,
         titleController.text.trim(),
         scoreController.text.toInt,
       );

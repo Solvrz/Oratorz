@@ -4,21 +4,13 @@ import '/models/committee.dart';
 import '/services/local_storage.dart';
 import './vote.dart';
 
-abstract class RollCall {
-  static const int presentAndVoting = 2;
-  static const int present = 1;
-  static const int absent = 0;
-}
-
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
-  late final RxMap<String, int> _rollCall;
   late final RxInt _tab;
 
   CommitteeController({required Committee committee, int tab = 0}) {
     _tab = tab.obs;
     _committee = committee.obs;
-    _rollCall = {for (String delegate in committee.delegates) delegate: -1}.obs;
   }
 
   Committee get committee => _committee.value;
@@ -28,23 +20,11 @@ class CommitteeController extends GetxController {
       if (committee != null) committee.agenda = agenda;
     });
 
-    LocalStorage.updateCommittee("committee", _committee.value.toJson());
+    LocalStorage.updateCommittee("committee", committee.toJson());
   }
 
-  Map<String, int> get rollCall => _rollCall;
-
-  set rollCall(Map<String, int> newRollCall) => _rollCall.value = newRollCall;
-
-  bool get areAllPresent => rollCall.values.toList().every(
-        (call) => call == RollCall.present || call == RollCall.presentAndVoting,
-      );
-
-  bool get areAllAbsent => rollCall.values.toList().every(
-        (call) => call == RollCall.absent,
-      );
-
   void _saveRollCall() {
-    LocalStorage.updateCommittee("rollCall", _rollCall);
+    LocalStorage.updateCommittee("rollCall", committee.rollCall);
 
     if (Get.isRegistered<VoteController>(tag: "vote")) {
       Get.find<VoteController>(tag: "vote").voters =
@@ -58,32 +38,45 @@ class CommitteeController extends GetxController {
   }
 
   void setAllPresentAndVoting() {
-    _rollCall.updateAll((_, __) => RollCall.presentAndVoting);
+    _committee.update((committee) {
+      if (committee != null) {
+        committee.rollCall.updateAll((_, __) => RollCall.presentAndVoting);
+      }
+    });
+
     _saveRollCall();
   }
 
   void setAllPresent() {
-    _rollCall.updateAll((_, __) => RollCall.present);
+    _committee.update((committee) {
+      if (committee != null) {
+        committee.rollCall.updateAll((_, __) => RollCall.present);
+      }
+    });
+
     _saveRollCall();
   }
 
   void setAllAbsent() {
-    _rollCall.updateAll((_, __) => RollCall.absent);
+    _committee.update((committee) {
+      if (committee != null) {
+        committee.rollCall.updateAll((_, __) => RollCall.absent);
+      }
+    });
+
     _saveRollCall();
   }
 
   void setRollCall(String delegate, int attendance) {
-    _rollCall[delegate] = attendance;
+    _committee.update((committee) {
+      if (committee != null) committee.rollCall[delegate] = attendance;
+    });
+
     _saveRollCall();
   }
 
   int get tab => _tab.value;
   set tab(int newTab) => _tab.value = newTab;
 
-  Map<String, dynamic> toJson() {
-    return {
-      "committee": _committee.value.toJson(),
-      "rollCall": rollCall,
-    };
-  }
+  Map<String, dynamic> toJson() => _committee.value.toJson();
 }

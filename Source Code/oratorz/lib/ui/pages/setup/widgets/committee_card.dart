@@ -138,6 +138,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
 
     if (INVITE_CODES.contains(code) || TESTING) {
       final Committee committee = Get.find<SetupController>().committee;
+      committee.initRollCall();
 
       LocalStorage.createCommittee(committee);
       Get.delete<SetupController>();

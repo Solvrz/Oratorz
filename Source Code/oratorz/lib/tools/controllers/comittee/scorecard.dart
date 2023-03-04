@@ -1,119 +1,101 @@
 import 'package:get/get.dart';
 
+import '/models/scorecard.dart';
 import '/services/local_storage.dart';
 import './committee.dart';
 
-class Parameter {
-  String title;
-  int maxScore;
-
-  Parameter(this.title, this.maxScore);
-
-  @override
-  String toString() => "$title ($maxScore)";
-}
-
 class ScorecardController extends GetxController {
-  final RxList<Parameter> parameters = [
-    Parameter("GSL", 10),
-    Parameter("Mod", 10),
-    Parameter("POI", 10),
-    Parameter("Chits", 5),
-  ].obs;
-
-  final RxMap<String, List<double>> scores = <String, List<double>>{}.obs;
-
+  late final Rx<Scorecard> _scorecard;
   final RxInt mode = 0.obs;
   final RxInt sort = 0.obs;
 
-  int get sortIndex => sort.value.abs() - 1;
+  Scorecard get scorecard => _scorecard.value;
+  int get sortIndex => scorecard.parameters
+      .indexWhere((element) => element.id == sort.value.abs());
 
   void toggleMode() => mode.value = mode.value == 0 ? 1 : 0;
 
   final RxList<dynamic> selected = ["", 0].obs;
 
-  ScorecardController() {
-    for (final String delegate
-        in Get.find<CommitteeController>().committee.delegates) {
-      scores[delegate] = parameters.map<double>((_) => 0).toList();
-    }
+  ScorecardController([Scorecard? scorecard]) {
+    _scorecard =
+        (scorecard ?? Scorecard(Get.find<CommitteeController>().committee)).obs;
   }
 
   void addParameter(String title, int maxScore) {
-    if (sortIndex == parameters.length) {
-      sort.value += sort.value > 0 ? 1 : -1;
-    }
+    _scorecard.update((val) {
+      if (val != null) {
+        val.parameters.add(Parameter(title, maxScore));
+        val.scores.values.forEach((score) => score.add(0));
+      }
+    });
 
-    parameters.add(Parameter(title, maxScore));
-
-    scores.keys.forEach((delegate) => scores[delegate]!.add(0));
     _saveScores();
   }
 
   void deleteParameter(int index) {
-    if (sortIndex == parameters.length) {
-      sort.value += sort.value > 0 ? -1 : 1;
-    }
+    _scorecard.update((val) {
+      if (val != null) {
+        val.parameters.removeAt(index);
+        val.scores.values.forEach((score) => score.removeAt(index));
+      }
+    });
 
-    parameters.removeAt(index);
-
-    scores.keys.forEach((delegate) => scores[delegate]!.removeAt(index));
     _saveScores();
   }
 
   void reorderParameter(int index) {
-    if (index == sortIndex) {
-      sort.value += sort.value > 0 ? 1 : -1;
-    } else if (index == sortIndex - 1) {
-      sort.value += sort.value > 0 ? -1 : 1;
-    }
+    _scorecard.update((val) {
+      if (val != null) {
+        val.parameters.insert(index + 1, val.parameters.removeAt(index));
 
-    parameters.insert(index + 1, parameters.removeAt(index));
+        val.scores.values.forEach(
+          (score) => score.insert(index + 1, score.removeAt(index)),
+        );
+      }
+    });
 
-    scores.keys.forEach(
-      (delegate) => scores[delegate]!
-          .insert(index + 1, scores[delegate]!.removeAt(index)),
-    );
     _saveScores();
   }
 
-  void updateParameter(int index, String title, int maxScore) {
-    parameters[index].title = title;
-    parameters[index].maxScore = maxScore;
+  void updateParameter(Parameter parameter, String title, int maxScore) {
+    _scorecard.update((val) {
+      if (val != null) {
+        parameter.title = title;
+        parameter.maxScore = maxScore;
+      }
+    });
 
-    update();
+    _saveScores();
   }
 
   void _saveScores() {
     LocalStorage.updateScore(
       "parameters",
-      parameters.map<String>((e) => e.title).toList(),
+      scorecard.parameters.map<String>((e) => e.title).toList(),
     );
 
     LocalStorage.updateScore(
       "maxScores",
-      parameters.map<int>((e) => e.maxScore).toList(),
+      scorecard.parameters.map<int>((e) => e.maxScore).toList(),
     );
 
-    LocalStorage.updateScore("scores", scores);
+    LocalStorage.updateScore("scores", scorecard.scores);
   }
 
   void updateScore(String delegate, int index, double score) {
-    scores.update(
-      delegate,
-      (value) {
-        value[index] = score;
-        return value;
-      },
-    );
-    _saveScores();
-  }
+    _scorecard.update((val) {
+      if (val != null) {
+        val.scores.update(
+          delegate,
+          (value) {
+            value[index] = score;
+            return value;
+          },
+        );
+      }
+    });
 
-  Map<String, dynamic> toJson() {
-    return {
-      "parameters": parameters.map<String>((e) => e.title).toList(),
-      "maxScores": parameters.map<int>((e) => e.maxScore).toList(),
-      "scores": scores,
-    };
+    _saveScores();
   }
 }

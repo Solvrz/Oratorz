@@ -18,7 +18,7 @@ class ScoreTable extends StatelessWidget {
   List<String> getDelegates() {
     final ScorecardController controller = Get.find<ScorecardController>();
 
-    final Map<String, List<double>> scores = controller.scores;
+    final Map<String, List<double>> scores = controller.scorecard.scores;
 
     final List<String> delegates =
         List.from(Get.find<CommitteeController>().committee.delegates);
@@ -28,7 +28,7 @@ class ScoreTable extends StatelessWidget {
         final double valA;
         final double valB;
 
-        if (controller.sortIndex == controller.parameters.length) {
+        if (controller.sortIndex == controller.scorecard.parameters.length) {
           valA = scores[a]!.sum;
           valB = scores[b]!.sum;
         } else {
@@ -56,7 +56,7 @@ class ScoreTable extends StatelessWidget {
           child: SizedBox(
             width: 20 +
                 DIMENSIONS[0] +
-                DIMENSIONS[1] * (controller.parameters.length + 1),
+                DIMENSIONS[1] * controller.scorecard.parameters.length,
             child: Column(
               children: [
                 const TableHeader(),
@@ -74,7 +74,7 @@ class ScoreTable extends StatelessWidget {
                               child: DelegateTile(delegate: delegate),
                             ),
                             ...List.generate(
-                              controller.parameters.length,
+                              controller.scorecard.parameters.length - 1,
                               (index) => SizedBox(
                                 width: DIMENSIONS[1],
                                 child:
@@ -86,7 +86,8 @@ class ScoreTable extends StatelessWidget {
                               child: Center(
                                 child: Obx(
                                   () => Text(
-                                    controller.scores[delegate]!.sum.toString(),
+                                    controller.scorecard.scores[delegate]!.sum
+                                        .toString(),
                                     style:
                                         Theme.of(context).textTheme.bodyLarge,
                                   ),
