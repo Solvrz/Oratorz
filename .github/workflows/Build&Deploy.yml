@@ -10,13 +10,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Config & Build
+    - name: Config
       uses: subosito/flutter-action@v2
       with:
         channel: beta
-    - run: |
+        
+    - name: Build
+      run: |
         flutter config --enable-web
         cd "Source Code/oratorz"
+        flutter clean
         flutter pub get
         flutter build web
         cp -r assets/* build/web/assets/
