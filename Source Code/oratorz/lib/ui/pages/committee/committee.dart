@@ -44,11 +44,14 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        controller.committee.name,
-                        style: context.textTheme.displayMedium!
-                            .copyWith(color: Colors.white),
-                        textAlign: TextAlign.center,
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          controller.committee.name,
+                          style: context.textTheme.displayMedium!
+                              .copyWith(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       const SizedBox(height: 32),
                       ...List.generate(

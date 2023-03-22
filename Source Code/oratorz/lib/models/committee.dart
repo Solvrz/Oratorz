@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:get/get.dart';
 
 import '/config/constants/data.dart';
+import '/services/uid.dart';
 import '/tools/controllers/comittee/committee.dart';
 
 class Committee {
@@ -27,8 +26,7 @@ class Committee {
     this.agenda = "Your Agenda",
     List<String>? delegates,
   }) {
-    this.id =
-        id ?? (Random().nextInt(pow(10, 8) as int) + pow(10, 8)).toString();
+    this.id = id ?? Uid.generate();
     this.delegates = delegates ?? [];
   }
 

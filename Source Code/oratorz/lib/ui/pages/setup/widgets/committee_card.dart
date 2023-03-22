@@ -137,9 +137,16 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
     setState(() => error = false);
 
     if (INVITE_CODES.contains(code) || TESTING) {
-      final Committee committee = Get.find<SetupController>().committee;
+      final SetupController setupController = Get.find<SetupController>();
+      final Committee committee = setupController.committee;
 
-      LocalStorage.createCommittee(committee);
+      if (setupController.editing) {
+        LocalStorage.overwriteCommittee(committee);
+        LocalStorage.loadCommittee(committee.id);
+      } else {
+        LocalStorage.createCommittee(committee);
+      }
+
       Get.delete<SetupController>();
 
       final controller = Get.find<RouteController>();

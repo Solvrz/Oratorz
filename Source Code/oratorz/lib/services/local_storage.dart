@@ -97,6 +97,25 @@ class LocalStorage {
 
   static bool committeeExists(String id) => box.hasData(id);
 
+  static bool overwriteCommittee(Committee committee) {
+    final Map<String, dynamic>? data = box.read(committee.id);
+
+    if (data == null) return false;
+
+    final Map<String, int> newRollCall = {};
+
+    for (final String delegate in committee.delegates) {
+      newRollCall[delegate] = data["rollCall"][delegate] ?? -1;
+    }
+
+    data["rollCall"] = newRollCall;
+    data["committee"] = committee.toJson();
+
+    box.write(committee.id, data);
+
+    return true;
+  }
+
   static bool updateCommittee(String key, dynamic value) {
     if (!Get.isRegistered<CommitteeController>()) return false;
 

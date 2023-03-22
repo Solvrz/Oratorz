@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import '/models/router.dart';
 
+import '/models/router.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import '../widgets/body.dart';

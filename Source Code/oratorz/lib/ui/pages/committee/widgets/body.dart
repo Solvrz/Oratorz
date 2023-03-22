@@ -73,6 +73,7 @@ class Body extends StatelessWidget {
                 RoundedButton(
                   onPressed: () {},
                   color: Colors.red.shade400,
+                  tooltip: "End Committee",
                   child: const Text("End"),
                 ),
               ],

@@ -4,7 +4,17 @@ import '/config/constants/data.dart';
 import '/models/committee.dart';
 
 class SetupController extends GetxController {
-  final Rx<Committee> _committee = Committee().obs;
+  SetupController({Committee? committee}) {
+    if (committee == null) {
+      _committee = Committee().obs;
+    } else {
+      _committee = committee.obs;
+      editing = true;
+    }
+  }
+
+  late final Rx<Committee> _committee;
+  late bool editing = false;
   final RxInt _selectedType = 0.obs;
 
   Committee get committee => _committee.value;
