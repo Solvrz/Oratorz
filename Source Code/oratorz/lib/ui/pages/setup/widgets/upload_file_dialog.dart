@@ -135,26 +135,25 @@ class UploadFileDialogState extends State<UploadFileDialog> {
             horizontal: 20,
           ),
           child: const Text("Upload File"),
-          onPressed: () async {
-            final FilePickerResult? _result =
-                await FilePicker.platform.pickFiles(
+          onPressed: () {
+            FilePicker.platform.pickFiles(
               type: FileType.custom,
               allowedExtensions: ["xlsx", "xls", "json"],
-            );
+            ).then((value) {
+              if (mounted && context.canPop()) {
+                context.pop();
+              }
 
-            if (mounted && context.canPop()) {
-              context.pop();
-            }
+              if (value != null) {
+                final PlatformFile _file = value.files.first;
 
-            if (_result != null) {
-              final PlatformFile _file = _result.files.first;
-
-              loadData(
-                context: context,
-                data: _file.bytes,
-                extension: ".${_file.extension}",
-              );
-            }
+                loadData(
+                  context: context,
+                  data: _file.bytes,
+                  extension: ".${_file.extension}",
+                );
+              }
+            });
           },
         ),
       ],
