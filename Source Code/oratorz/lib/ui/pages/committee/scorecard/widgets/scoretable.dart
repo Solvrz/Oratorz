@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/widgets/delegate_tile.dart';
+import '../../../../../config/constants/data.dart';
 import 'header.dart';
 import 'scorecell.dart';
 
@@ -21,7 +22,13 @@ class ScoreTable extends StatelessWidget {
     final Map<String, List<double>> scores = controller.scores;
 
     final List<String> delegates =
-        List.from(Get.find<CommitteeController>().committee.delegates);
+        List<String>.from(Get.find<CommitteeController>().committee.delegates)
+            .where(
+              (element) => DELEGATES[element]!
+                  .toLowerCase()
+                  .contains(controller.query.value.toLowerCase()),
+            )
+            .toList();
 
     if (controller.sort.value != 0) {
       delegates.sort((a, b) {

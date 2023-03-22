@@ -25,6 +25,7 @@ class ScorecardController extends GetxController {
 
   final RxInt mode = 0.obs;
   final RxInt sort = 0.obs;
+  final RxString query = "".obs;
 
   int get sortIndex => sort.value.abs() - 1;
 

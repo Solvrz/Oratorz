@@ -26,36 +26,52 @@ class ScorecardPage extends StatelessWidget {
     controller = Get.find<ScorecardController>();
 
     return Body(
-      trailing: Obx(
-        () => Row(
+      footer: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
           children: [
-            if (controller.mode.value == 1) ...[
-              RoundedButton(
-                style: RoundedButtonStyle.border,
-                onPressed: () => controller.addParameter(
-                  "New",
-                  10,
+            SizedBox(
+              width: 350,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: "Search Delegate",
+                  fillColor: Colors.white,
                 ),
-                child: const Text("Add Parameter"),
+                onChanged: (value) => controller.query.value = value,
               ),
-              const SizedBox(width: 10),
-            ],
-            RoundedButton(
-              onPressed: controller.toggleMode,
-              child: Text(
-                controller.mode.value == 0 ? "Edit Parameters" : "Done",
+            ),
+            const Spacer(),
+            Obx(
+              () => Row(
+                children: [
+                  if (controller.mode.value == 1) ...[
+                    RoundedButton(
+                      style: RoundedButtonStyle.border,
+                      onPressed: () => controller.addParameter(
+                        "New",
+                        10,
+                      ),
+                      child: const Text("Add Parameter"),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
+                  RoundedButton(
+                    onPressed: controller.toggleMode,
+                    child: Text(
+                      controller.mode.value == 0 ? "Edit Parameters" : "Done",
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [
-          SizedBox(height: 24),
-          Expanded(child: ScoreTable()),
-        ],
-      ),
+      child: const ScoreTable(),
     );
   }
 }
