@@ -25,8 +25,9 @@ class Committee {
     return "Custom";
   }
 
-  void initRollCall() =>
-      rollCall = {for (String delegate in delegates) delegate: RollCall.none};
+  void initRollCall() => rollCall = {
+        for (final String delegate in delegates) delegate: RollCall.none,
+      };
 
   Committee({
     String? id,

@@ -11,10 +11,10 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../../../../models/router.dart';
-import '../../../../tools/controllers/route.dart';
 import '/config/constants/data.dart';
+import '/models/router.dart';
 import '/services/local_storage.dart';
+import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';

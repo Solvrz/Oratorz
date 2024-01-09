@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '/models/scorecard.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/extensions.dart';
-import '../../../../../models/scorecard.dart';
 
 class Cell extends StatefulWidget {
   final String delegate;
