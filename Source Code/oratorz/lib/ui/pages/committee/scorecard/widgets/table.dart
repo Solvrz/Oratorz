@@ -2,12 +2,12 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import './cell.dart';
+import './header.dart';
 import '/config/constants/data.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/widgets/delegate_tile.dart';
-import 'cell.dart';
-import 'header.dart';
 
 const List<double> DIMENSIONS = [240, 200, 50];
 

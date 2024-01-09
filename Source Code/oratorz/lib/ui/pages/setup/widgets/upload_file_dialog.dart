@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:excel/excel.dart';
+import 'package:excel/excel.dart' hide Border;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -172,7 +172,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
         for (final String table in excel.tables.keys) {
           final Sheet? sheet = excel.tables[table];
 
-          if (sheet != null && sheet.maxCols == 3) {
+          if (sheet != null && sheet.maxColumns == 3) {
             final List<List<Data?>> rows = sheet.rows;
             final List<String> _delegates = createDelegates(rows..removeAt(0));
 

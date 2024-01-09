@@ -44,6 +44,7 @@ linter:
     - cast_nullable_to_non_nullable
     - control_flow_in_finally
     - curly_braces_in_flow_control_structures
+    - depend_on_referenced_packages
     - deprecated_consistency
     - empty_catches
     - empty_constructor_bodies
@@ -53,12 +54,11 @@ linter:
     - file_names
     - hash_and_equals
     - implementation_imports
-    - iterable_contains_unrelated_type
     - join_return_with_assignment
     - leading_newlines_in_multiline_strings
     - library_names
     - library_prefixes
-    - list_remove_unrelated_type
+    - collection_methods_unrelated_type
     - missing_whitespace_between_adjacent_strings
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
@@ -81,13 +81,13 @@ linter:
     - prefer_const_literals_to_create_immutables
     - prefer_constructors_over_static_methods
     - prefer_contains
-    - prefer_equal_for_default_values
     - prefer_final_fields
     - prefer_final_in_for_each
     - prefer_final_locals
     - prefer_for_elements_to_map_fromIterable
     - prefer_function_declarations_over_variables
     - prefer_generic_function_type_aliases
+    - prefer_if_elements_to_conditional_expressions
     - prefer_if_null_operators
     - prefer_initializing_formals
     - prefer_inlined_adds

@@ -118,15 +118,15 @@ class AppRouter {
     if (!Get.isRegistered<RouteController>()) {
       Get.put<RouteController>(
         RouteController(
-          path: state.subloc,
-          args: state.queryParams,
+          path: state.matchedLocation,
+          args: state.pathParameters,
         ),
       );
     } else {
       final RouteController controller = Get.find<RouteController>();
 
-      controller.args = state.queryParams;
-      controller.path = state.subloc;
+      controller.args = state.pathParameters;
+      controller.path = state.matchedLocation;
     }
   }
 
@@ -171,14 +171,14 @@ class AppRouter {
 
                         if (!Get.isRegistered<CommitteeController>()) {
                           LocalStorage.loadCommittee(
-                            state.queryParams["id"]!,
+                            state.pathParameters["id"]!,
                           );
                         }
 
                         return NoTransitionPage(child: route.builder!());
                       },
                       redirect: (_, state) => LocalStorage.committeeExists(
-                        state.queryParams["id"] ?? "null",
+                        state.pathParameters["id"] ?? "null",
                       )
                           ? null
                           : home.path,
@@ -195,16 +195,17 @@ class AppRouter {
                   _putRouteController(state);
 
                   if (!Get.isRegistered<CommitteeController>()) {
-                    LocalStorage.loadCommittee(state.queryParams["id"]!);
+                    LocalStorage.loadCommittee(state.pathParameters["id"]!);
                   }
 
-                  Get.find<CommitteeController>().tab =
-                      tabs.indexWhere((route) => route.path == state.subloc);
+                  Get.find<CommitteeController>().tab = tabs.indexWhere(
+                    (route) => route.path == state.matchedLocation,
+                  );
 
                   return NoTransitionPage(child: route.builder!());
                 },
                 redirect: (context, state) => LocalStorage.committeeExists(
-                  state.queryParams["id"] ?? "null",
+                  state.pathParameters["id"] ?? "null",
                 )
                     ? null
                     : home.path,

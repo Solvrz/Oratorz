@@ -12,9 +12,9 @@ import 'package:intl/intl.dart';
 import '/config/constants/constants.dart';
 import '/config/theme.dart';
 import '/firebase_options.dart';
+import '/models/router.dart';
+import '/tools/controllers/home.dart';
 import '/tools/extensions.dart';
-import 'models/router.dart';
-import 'tools/controllers/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

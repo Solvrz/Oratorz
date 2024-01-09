@@ -52,7 +52,7 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                       ),
                       onChanged: (value) => setState(() {
                         if (value != null) {
-                          selected = value as int;
+                          selected = value;
                         }
                       }),
                     ),
