@@ -119,13 +119,13 @@ class AppRouter {
       Get.put<RouteController>(
         RouteController(
           path: state.matchedLocation,
-          args: state.pathParameters,
+          args: state.uri.queryParameters,
         ),
       );
     } else {
       final RouteController controller = Get.find<RouteController>();
 
-      controller.args = state.pathParameters;
+      controller.args = state.uri.queryParameters;
       controller.path = state.matchedLocation;
     }
   }
@@ -158,27 +158,47 @@ class AppRouter {
           },
         ),
         ShellRoute(
-          builder: (_, __, child) => CommitteePage(child: child),
+          builder: (_, state, child) {
+            _putRouteController(state);
+
+            if (!Get.isRegistered<CommitteeController>()) {
+              LocalStorage.loadCommittee(
+                state.uri.queryParameters["id"]!,
+              );
+            }
+
+            return CommitteePage(child: child);
+          },
           routes: [
             ShellRoute(
-              builder: (_, __, child) => ModesPage(child: child),
+              builder: (_, state, child) {
+                _putRouteController(state);
+
+                if (!Get.isRegistered<CommitteeController>()) {
+                  LocalStorage.loadCommittee(
+                    state.uri.queryParameters["id"]!,
+                  );
+                }
+
+                return ModesPage(child: child);
+              },
               routes: modes
                   .map<GoRoute>(
                     (route) => GoRoute(
                       path: route.path,
                       pageBuilder: (_, state) {
-                        _putRouteController(state);
+                        // _putRouteController(state);
 
-                        if (!Get.isRegistered<CommitteeController>()) {
-                          LocalStorage.loadCommittee(
-                            state.pathParameters["id"]!,
-                          );
-                        }
+                        // if (!Get.isRegistered<CommitteeController>()) {
+                        //   LocalStorage.loadCommittee(
+                        //     state.uri.queryParameters["id"]!,
+                        //   );
+                        // }
 
                         return NoTransitionPage(child: route.builder!());
                       },
                       redirect: (_, state) => LocalStorage.committeeExists(
-                        state.pathParameters["id"] ?? "null",
+                        state.uri.queryParameters["id"] ?? "null",
                       )
                           ? null
                           : home.path,
@@ -195,7 +215,9 @@ class AppRouter {
                   _putRouteController(state);
 
                   if (!Get.isRegistered<CommitteeController>()) {
-                    LocalStorage.loadCommittee(state.pathParameters["id"]!);
+                    LocalStorage.loadCommittee(
+                      state.uri.queryParameters["id"]!,
+                    );
                   }
 
                   Get.find<CommitteeController>().tab = tabs.indexWhere(
@@ -205,7 +227,7 @@ class AppRouter {
                   return NoTransitionPage(child: route.builder!());
                 },
                 redirect: (context, state) => LocalStorage.committeeExists(
-                  state.pathParameters["id"] ?? "null",
+                  state.uri.queryParameters["id"] ?? "null",
                 )
                     ? null
                     : home.path,

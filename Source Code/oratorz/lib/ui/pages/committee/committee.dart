@@ -18,7 +18,14 @@ class CommitteePage extends StatefulWidget {
 }
 
 class _CommitteePageState extends State<CommitteePage> {
-  final CommitteeController controller = Get.find<CommitteeController>();
+  late final CommitteeController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = Get.find<CommitteeController>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +141,8 @@ class OratorzSection extends StatelessWidget {
               height: 32,
               width: 32,
               // TODO: Test
+              // TODO: Check This
+
               theme: const SvgTheme(currentColor: Colors.white),
               // color: Colors.white,
             ),

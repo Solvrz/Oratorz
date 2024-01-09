@@ -17,7 +17,7 @@ class CurrentMotionCard extends StatelessWidget {
 
     return GetBuilder<MotionsController>(
       builder: (_) => SizedBox(
-        height: context.height / 2.95,
+        height: context.height / 2.85,
         width: context.width / 3,
         child: Card(
           child: Container(

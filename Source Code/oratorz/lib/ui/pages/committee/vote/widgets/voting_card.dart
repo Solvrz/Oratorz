@@ -36,7 +36,7 @@ class VotingCard extends StatelessWidget {
                       ? Column(
                           children: [
                             Container(
-                              height: context.height / 6,
+                              height: context.height / 7,
                               margin: const EdgeInsets.symmetric(vertical: 25),
                               decoration: BoxDecoration(
                                 border: Border.all(width: 0.5),

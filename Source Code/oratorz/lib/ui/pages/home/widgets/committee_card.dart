@@ -86,9 +86,6 @@ class _CommitteeCardState extends State<CommitteeCard>
                   controller.path = route.path;
                   controller.args = {"id": widget.committee.id};
 
-                  print("${route.path}?id=${widget.committee.id}");
-                  context.go("/home");
-
                   context.go("${route.path}?id=${widget.committee.id}");
                 },
                 child: Container(

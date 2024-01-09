@@ -9,6 +9,7 @@ class OratorzTheme {
     final TextTheme textTheme = GoogleFonts.poppinsTextTheme();
 
     return ThemeData(
+      useMaterial3: true,
       scaffoldBackgroundColor: OratorzColors.primaryColor,
       hoverColor: Colors.grey.shade100,
       colorScheme: const ColorScheme.light().copyWith(
