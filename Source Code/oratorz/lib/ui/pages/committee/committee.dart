@@ -140,11 +140,7 @@ class OratorzSection extends StatelessWidget {
               "images/Logo.svg",
               height: 32,
               width: 32,
-              // TODO: Test
-              // TODO: Check This
-
               theme: const SvgTheme(currentColor: Colors.white),
-              // color: Colors.white,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
