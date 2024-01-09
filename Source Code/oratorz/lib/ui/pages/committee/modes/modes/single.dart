@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/hourglass.dart';
+import '../../widgets/speakers_info.dart';
+import '../widgets/add_speaker_card.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '../widgets/hourglass.dart';
-import '../widgets/speakers_info.dart';
-import 'widgets/add_speaker_card.dart';
 
-class SingleTab extends StatelessWidget {
-  const SingleTab({super.key});
+class SingleMode extends StatelessWidget {
+  const SingleMode({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +30,9 @@ class SingleTab extends StatelessWidget {
                     horizontal: 24,
                     vertical: 18,
                   ),
-                  child: Row(
+                  child: const Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Center(child: Hourglass(tag: "single")),
                       SizedBox(width: 48),
                       SpeakersInfo(tag: "single"),

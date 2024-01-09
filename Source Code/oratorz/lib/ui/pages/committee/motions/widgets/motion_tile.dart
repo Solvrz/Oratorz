@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import './motion_dialog.dart';
 import '/config/constants/data.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/extensions.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/rounded_button.dart';
-import './motion_dialog.dart';
 
 class MotionTile extends StatelessWidget {
   final Map<String, dynamic> motion;
@@ -64,7 +64,7 @@ class MotionTile extends StatelessWidget {
                                             .values
                                             .first,
                                         style: context.textTheme.bodyMedium,
-                                      )
+                                      ),
                                     ],
                                   ),
                               ],
@@ -90,7 +90,7 @@ class MotionTile extends StatelessWidget {
                           ],
                         ],
                       ),
-                      Text(motion["time"])
+                      Text(motion["time"]),
                     ],
                   ),
                 ),
@@ -146,7 +146,7 @@ class MotionTile extends StatelessWidget {
             Icons.drag_handle,
             color: Colors.grey.shade600,
           ),
-        ]
+        ],
       ],
     );
   }

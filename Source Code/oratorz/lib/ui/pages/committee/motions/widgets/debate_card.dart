@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/tools/controllers/comittee/speech.dart';
 import '../../widgets/add_speaker.dart';
 import '../../widgets/hourglass.dart';
 import '../../widgets/speakers_info.dart';
+import '/tools/controllers/comittee/speech.dart';
 
 class DebateCard extends StatelessWidget {
   const DebateCard({super.key});
@@ -46,7 +46,7 @@ class DebateCard extends StatelessWidget {
               SizedBox(
                 height: context.height / 2.75,
                 child: const AddSpeaker(tag: "motions"),
-              )
+              ),
             ],
           ),
         ),

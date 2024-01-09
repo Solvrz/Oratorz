@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import './upload_file_dialog.dart';
 import '/config/constants/data.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import './upload_file_dialog.dart';
 
 class LoadCommitteeCard extends StatelessWidget {
   const LoadCommitteeCard({super.key});

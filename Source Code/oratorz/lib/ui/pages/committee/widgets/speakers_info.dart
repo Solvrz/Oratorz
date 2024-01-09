@@ -35,7 +35,7 @@ class SpeakersInfo extends StatelessWidget {
                 onPressed: () {
                   if (controller.stopwatch.elapsedTicks == 0) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      getSnackbar(
+                      snackbar(
                         context,
                         const Center(
                           child: Text("The delegate has not yet spoken"),

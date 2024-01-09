@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
 
+import './committee.dart';
 import '/models/scorecard.dart';
 import '/services/local_storage.dart';
-import './committee.dart';
 
 class ScorecardController extends GetxController {
   late final Rx<Scorecard> _scorecard;
   final RxInt mode = 0.obs;
   final RxInt sort = 0.obs;
+  final RxString query = "".obs;
 
   Scorecard get scorecard => _scorecard.value;
   int get sortIndex => scorecard.parameters

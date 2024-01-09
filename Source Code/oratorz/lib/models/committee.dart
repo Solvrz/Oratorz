@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import '/config/constants/data.dart';
+import '/services/uid.dart';
 
 abstract class RollCall {
   static const int presentAndVoting = 2;
@@ -35,8 +34,7 @@ class Committee {
     this.agenda = "Your Agenda",
     List<String>? delegates,
   }) {
-    this.id =
-        id ?? (Random().nextInt(pow(10, 8) as int) + pow(10, 8)).toString();
+    this.id = id ?? Uid.generate();
     this.delegates = delegates ?? [];
 
     initRollCall();

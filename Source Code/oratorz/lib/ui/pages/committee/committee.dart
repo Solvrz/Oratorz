@@ -3,21 +3,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import './widgets/dialogs/roll_call.dart';
 import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
-import './widgets/dialogs/roll_call.dart';
 
-class CommitteeMainPage extends StatefulWidget {
+class CommitteePage extends StatefulWidget {
   final Widget child;
 
-  const CommitteeMainPage({super.key, required this.child});
+  const CommitteePage({super.key, required this.child});
 
   @override
-  State<CommitteeMainPage> createState() => _CommitteeMainPageState();
+  State<CommitteePage> createState() => _CommitteePageState();
 }
 
-class _CommitteeMainPageState extends State<CommitteeMainPage> {
+class _CommitteePageState extends State<CommitteePage> {
   final CommitteeController controller = Get.find<CommitteeController>();
 
   @override
@@ -44,11 +44,14 @@ class _CommitteeMainPageState extends State<CommitteeMainPage> {
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        controller.committee.name,
-                        style: context.textTheme.displayMedium!
-                            .copyWith(color: Colors.white),
-                        textAlign: TextAlign.center,
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          controller.committee.name,
+                          style: context.textTheme.displayMedium!
+                              .copyWith(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       const SizedBox(height: 32),
                       ...List.generate(
@@ -127,10 +130,12 @@ class OratorzSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
+              "images/Logo.svg",
               height: 32,
               width: 32,
-              "images/Logo.svg",
-              color: Colors.white,
+              // TODO: Test
+              theme: const SvgTheme(currentColor: Colors.white),
+              // color: Colors.white,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),

@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '/config/constants/constants.dart';
 import '/models/committee.dart';
+import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../models/router.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -99,10 +99,16 @@ class CommitteeCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   RoundedButton(
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (_) => const _InviteCodeDialog(),
-                    ),
+                    onPressed: () {
+                      if (INVITE_CODES_ENABLED) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => const _InviteCodeDialog(),
+                        );
+                      } else {
+                        submit(context);
+                      }
+                    },
                     child: Text(
                       "Start Session",
                       style: context.textTheme.bodyLarge
@@ -119,48 +125,18 @@ class CommitteeCard extends StatelessWidget {
   }
 }
 
-class _InviteCodeDialog extends StatefulWidget {
+class _InviteCodeDialog extends StatelessWidget {
   const _InviteCodeDialog();
 
   @override
-  State<_InviteCodeDialog> createState() => _InviteCodeDialogState();
-}
-
-class _InviteCodeDialogState extends State<_InviteCodeDialog> {
-  final TextEditingController inviteCodeController = TextEditingController();
-  bool error = false;
-
-  void submit({String? value}) {
-    final String code =
-        (value ?? inviteCodeController.text).trim().toUpperCase();
-
-    setState(() => error = false);
-
-    if (INVITE_CODES.contains(code) || TESTING) {
-      final Committee committee = Get.find<SetupController>().committee;
-      committee.initRollCall();
-
-      LocalStorage.createCommittee(committee);
-      Get.delete<SetupController>();
-
-      final controller = Get.find<RouteController>();
-      final AppRoute route = AppRouter.modes.first;
-
-      controller.path = route.path;
-      controller.args = {"id": committee.id};
-
-      context.go("${route.path}?id=${committee.id}");
-    } else {
-      setState(() => error = true);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final TextEditingController inviteCodeController = TextEditingController();
+    final Rx<bool> error = false.obs;
+
     return DialogBox(
       heading: "Enter Invite Code",
       content: SizedBox(
-        height: error ? 85 : 50,
+        height: error.value ? 85 : 50,
         child: Column(
           children: [
             TextField(
@@ -170,9 +146,9 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
                 hintText: "Invite Code",
                 prefixIcon: Icon(Icons.vpn_key),
               ),
-              onSubmitted: (value) => submit(value: value),
+              onSubmitted: (value) => submit(context, code: value),
             ),
-            if (error) ...[
+            if (error.value) ...[
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -190,7 +166,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
                   ),
                 ],
               ),
-            ]
+            ],
           ],
         ),
       ),
@@ -202,9 +178,10 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
             vertical: 4,
             horizontal: 8,
           ),
-          onPressed: submit,
+          onPressed: () =>
+              submit(context, code: inviteCodeController.text, error: error),
           child: const Text("Done"),
-        )
+        ),
       ],
     );
   }
@@ -247,8 +224,39 @@ class _CommitteeNameDialog extends StatelessWidget {
             context.pop();
           },
           child: const Text("Select"),
-        )
+        ),
       ],
     );
+  }
+}
+
+void submit(BuildContext context, {String? code, Rx<bool>? error}) {
+  if (error != null) error.value = false;
+
+  final String _code = code?.trim().toUpperCase() ?? "";
+
+  if (INVITE_CODES.contains(_code) || !INVITE_CODES_ENABLED) {
+    final SetupController setupController = Get.find<SetupController>();
+    final Committee committee = setupController.committee;
+    committee.initRollCall();
+
+    if (setupController.editing) {
+      LocalStorage.overwriteCommittee(committee);
+      LocalStorage.loadCommittee(committee.id);
+    } else {
+      LocalStorage.createCommittee(committee);
+    }
+
+    Get.delete<SetupController>();
+
+    final controller = Get.find<RouteController>();
+    final AppRoute route = AppRouter.modes.first;
+
+    controller.path = route.path;
+    controller.args = {"id": committee.id};
+
+    context.go("${route.path}?id=${committee.id}");
+  } else {
+    if (error != null) error.value = false;
   }
 }

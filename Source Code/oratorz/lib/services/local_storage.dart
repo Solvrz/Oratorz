@@ -5,15 +5,15 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../models/scorecard.dart';
+import '../tools/controllers/comittee/vote.dart';
+import '../tools/controllers/home.dart';
 import '/config/constants/constants.dart';
 import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
+import '/tools/controllers/comittee/motions.dart';
+import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '../models/scorecard.dart';
-import '../tools/controllers/comittee/motions.dart';
-import '../tools/controllers/comittee/scorecard.dart';
-import '../tools/controllers/comittee/vote.dart';
-import '../tools/controllers/home.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {
@@ -94,6 +94,25 @@ class LocalStorage {
   }
 
   static bool committeeExists(String id) => box.hasData(id);
+
+  static bool overwriteCommittee(Committee committee) {
+    final Map<String, dynamic>? data = box.read(committee.id);
+
+    if (data == null) return false;
+
+    final Map<String, int> newRollCall = {};
+
+    for (final String delegate in committee.delegates) {
+      newRollCall[delegate] = data["rollCall"][delegate] ?? -1;
+    }
+
+    data["rollCall"] = newRollCall;
+    data["committee"] = committee.toJson();
+
+    box.write(committee.id, data);
+
+    return true;
+  }
 
   static bool updateCommittee(String key, dynamic value) {
     if (!Get.isRegistered<CommitteeController>()) return false;
@@ -185,7 +204,7 @@ class LocalStorage {
     controller.pastSpeakers.value = past
         .map<Map<String, Duration>>(
           (element) => <String, Duration>{
-            element.keys.first: Duration(seconds: element.values.first)
+            element.keys.first: Duration(seconds: element.values.first),
           },
         )
         .toList();
@@ -360,7 +379,7 @@ class LocalStorage {
   static bool exportToFile(Committee committee) {
     js.context.callMethod("saveAs", [
       html.Blob([jsonEncode(box.read(committee.id))], "application/json"),
-      "session-${committee.id}.json"
+      "session-${committee.id}.json",
     ]);
 
     return true;

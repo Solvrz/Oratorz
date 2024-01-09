@@ -82,7 +82,7 @@ class VoteSettingsDialog extends StatelessWidget {
                 ],
               ),
             ],
-          )
+          ),
         ],
       ),
       actions: [
@@ -137,7 +137,7 @@ class _Majority extends StatelessWidget {
             "$title (${_voteController.majorityVal(value: value)}/${_voteController.totalVoters})",
             style: context.textTheme.bodyLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
-          )
+          ),
         ],
       ),
     );

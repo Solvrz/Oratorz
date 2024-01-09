@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '/models/committee.dart';
+import '/models/router.dart';
 import '/services/local_storage.dart';
-import '../../../../models/router.dart';
-import '../../../../tools/controllers/route.dart';
+import '/tools/controllers/route.dart';
+import '/tools/controllers/setup.dart';
 
 class CommitteeCard extends StatefulWidget {
   final Committee committee;
@@ -80,11 +81,13 @@ class _CommitteeCardState extends State<CommitteeCard>
                   LocalStorage.loadCommittee(widget.committee.id);
 
                   final AppRoute route = AppRouter.modes.first;
-
                   final controller = Get.find<RouteController>();
 
                   controller.path = route.path;
                   controller.args = {"id": widget.committee.id};
+
+                  print("${route.path}?id=${widget.committee.id}");
+                  context.go("/home");
 
                   context.go("${route.path}?id=${widget.committee.id}");
                 },
@@ -182,7 +185,11 @@ class _EditOptions extends StatelessWidget {
           children: [
             InkWell(
               hoverColor: Colors.transparent,
-              onTap: () {},
+              onTap: () {
+                Get.put<SetupController>(SetupController(committee: committee));
+
+                context.push(AppRouter.setup.path);
+              },
               child: const Icon(Icons.edit, size: 26),
             ),
             Divider(

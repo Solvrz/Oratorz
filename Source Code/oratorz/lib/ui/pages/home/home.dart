@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import './widgets/committees_section.dart';
+import './widgets/profile_card.dart';
 import '/tools/controllers/home.dart';
-import '/ui/widgets/oratorz_card.dart';
-import 'widgets/committees_section.dart';
-import 'widgets/profile_card.dart';
+import '/ui/widgets/oratorz_banner.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -33,30 +33,30 @@ class HomePage extends StatelessWidget {
                 child: const Text(""),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
+            const Padding(
+              padding: EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 12,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const ProfileCard(),
-                  const SizedBox(width: 60),
+                  ProfileCard(),
+                  SizedBox(width: 60),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        OratorzCard(),
+                      children: [
+                        OratorzBanner(),
                         SizedBox(height: 30),
                         CommitteesSection(),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 44),
+                  SizedBox(width: 44),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import './motion_tile.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import './motion_tile.dart';
 
 class CurrentMotionCard extends StatelessWidget {
   const CurrentMotionCard({super.key});

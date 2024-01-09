@@ -91,7 +91,7 @@ class VotingCard extends StatelessWidget {
                                           child: const Text("Against"),
                                         ),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -133,7 +133,7 @@ class VotingCard extends StatelessWidget {
                                             ? Colors.green
                                             : Colors.red,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                                 textAlign: TextAlign.center,

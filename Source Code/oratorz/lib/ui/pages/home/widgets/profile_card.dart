@@ -27,12 +27,14 @@ class ProfileCard extends StatelessWidget {
               style: context.textTheme.bodyLarge!.copyWith(fontSize: 14),
             ),
             Text(
-              "Taylor Simora",
+              "User",
               style: context.textTheme.titleLarge!.copyWith(fontSize: 21),
             ),
             const Spacer(),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                // TODO: Settings
+              },
               horizontalTitleGap: 8,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -48,7 +50,9 @@ class ProfileCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                // TODO: Log Out
+              },
               horizontalTitleGap: 8,
               hoverColor: Colors.white12,
               tileColor: const Color(0xff2a313b),
@@ -64,7 +68,7 @@ class ProfileCard extends StatelessWidget {
                 style:
                     context.textTheme.bodyMedium?.copyWith(color: Colors.white),
               ),
-            )
+            ),
           ],
         ),
       ),

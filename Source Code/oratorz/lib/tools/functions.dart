@@ -34,7 +34,7 @@ Widget carousel(BuildContext context) => Text(
       style: context.textTheme.bodyLarge,
     );
 
-SnackBar getSnackbar(BuildContext context, Widget content) {
+SnackBar snackbar(BuildContext context, Widget content) {
   return SnackBar(
     margin: EdgeInsets.only(
       top: context.mediaQuerySize.height / 1.1,

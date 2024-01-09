@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/dialogs/vote_settings.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../widgets/dialogs/vote_settings.dart';
 
 class ResultCard extends StatelessWidget {
   const ResultCard({super.key});
@@ -35,7 +35,7 @@ class ResultCard extends StatelessWidget {
                               text: _voteController.topic,
                               style: context.textTheme.headlineSmall!
                                   .copyWith(fontWeight: FontWeight.w500),
-                            )
+                            ),
                           ],
                         ),
                       ),

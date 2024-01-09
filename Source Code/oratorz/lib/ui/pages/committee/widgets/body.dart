@@ -9,11 +9,13 @@ import '/ui/widgets/rounded_button.dart';
 class Body extends StatelessWidget {
   final Widget child;
   final Widget? trailing;
+  final Widget? footer;
 
   const Body({
     super.key,
     required this.child,
     this.trailing,
+    this.footer,
   });
 
   @override
@@ -21,67 +23,75 @@ class Body extends StatelessWidget {
     final CommitteeController _committeeController =
         Get.find<CommitteeController>();
 
-    return Container(
-      margin: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          SizedBox(
-            height: context.height / 15,
-            child: Row(
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
               children: [
-                Obx(
-                  () => Row(
+                SizedBox(
+                  height: context.height / 15,
+                  child: Row(
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "Agenda: ",
-                          style: context.textTheme.displayMedium,
+                      Obx(
+                        () => Row(
                           children: [
-                            TextSpan(
-                              text: _committeeController.committee.agenda,
-                              style: context.textTheme.headlineSmall!
-                                  .copyWith(fontWeight: FontWeight.w500),
+                            RichText(
+                              text: TextSpan(
+                                text: "Agenda: ",
+                                style: context.textTheme.displayMedium,
+                                children: [
+                                  TextSpan(
+                                    text: _committeeController.committee.agenda,
+                                    style: context.textTheme.headlineSmall!
+                                        .copyWith(fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            RoundedButton(
+                              style: RoundedButtonStyle.border,
+                              color: Colors.amber.shade400,
+                              tooltip: "Set Agenda",
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4,
+                                horizontal: 8,
+                              ),
+                              onPressed: () => showDialog(
+                                context: context,
+                                builder: (_) => const _AgendaDialog(),
+                              ),
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.amber.shade400,
+                                size: 20,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const Spacer(),
+                      trailing ?? const SizedBox(),
+                      const SizedBox(width: 12),
                       RoundedButton(
-                        style: RoundedButtonStyle.border,
-                        color: Colors.amber.shade400,
-                        tooltip: "Set Agenda",
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 8,
-                        ),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (_) => const _AgendaDialog(),
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.amber.shade400,
-                          size: 20,
-                        ),
+                        onPressed: () {},
+                        color: Colors.red.shade400,
+                        tooltip: "End Committee",
+                        child: const Text("End"),
                       ),
                     ],
                   ),
                 ),
-                const Spacer(),
-                trailing ?? const SizedBox(),
-                const SizedBox(width: 12),
-                RoundedButton(
-                  onPressed: () {},
-                  color: Colors.red.shade400,
-                  child: const Text("End"),
-                ),
+                const SizedBox(height: 24),
+                Expanded(child: child),
               ],
             ),
           ),
-          const SizedBox(height: 24),
-          Expanded(child: child),
-        ],
-      ),
+        ),
+        if (footer != null) footer!,
+      ],
     );
   }
 }
@@ -122,7 +132,7 @@ class _AgendaDialog extends StatelessWidget {
             context.pop();
           },
           child: const Text("Select"),
-        )
+        ),
       ],
     );
   }

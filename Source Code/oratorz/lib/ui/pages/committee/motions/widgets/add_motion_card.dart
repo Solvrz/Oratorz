@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import './motion_dialog.dart';
 import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/rounded_button.dart';
-import './motion_dialog.dart';
 
 class AddMotionCard extends StatelessWidget {
   const AddMotionCard({super.key});
@@ -45,6 +45,11 @@ class AddMotionCard extends StatelessWidget {
           Get.find<CommitteeController>().tab = tab;
 
           // TODO: Push
+          // final int tab = COMMITTEE_TABS.indexWhere(
+          //   (tab) => tab["route"].toString().contains("/id/modes/mod"),
+          // );
+          // Get.find<CommitteeController>().tab = tab;
+
           // context.pushReplacement("/committee/mod");
         },
       },
@@ -129,7 +134,7 @@ class AddMotionCard extends StatelessWidget {
           );
 
           LocalStorage.saveSpeech(_speechController);
-        }
+        },
 
         // TODO: Push
         // context.pushReplacement("/committee/mod");

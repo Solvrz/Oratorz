@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/local_storage.dart';
-import '../tools/controllers/comittee/committee.dart';
-import '../tools/controllers/route.dart';
-import '../ui/pages/committee/modes/export.dart';
-import '../ui/pages/export.dart';
+import '/services/local_storage.dart';
+import '/tools/controllers/comittee/committee.dart';
+import '/tools/controllers/route.dart';
+import '/ui/pages/committee/modes/modes/export.dart';
+import '/ui/pages/export.dart';
 
 class AppRoute {
   final String path;
@@ -54,7 +54,7 @@ class AppRouter {
       title: "Scorecard",
       icon: Icons.scoreboard_outlined,
       builder: () => const ScorecardPage(),
-    )
+    ),
   ];
 
   static List<AppRoute> modes = [
@@ -62,55 +62,55 @@ class AppRouter {
       path: "/gsl",
       title: "GSL",
       icon: Icons.groups,
-      builder: () => const GSLTab(),
+      builder: () => const GSLMode(),
     ),
     AppRoute(
       path: "/mod",
       title: "Moderated Caucus",
       icon: Icons.forum,
-      builder: () => const ModTab(),
+      builder: () => const ModMode(),
     ),
     AppRoute(
       path: "/unmod",
       title: "Unmoderated Caucus",
       icon: Icons.workspaces,
-      builder: () => const UnmodTab(),
+      builder: () => const UnmodMode(),
     ),
     AppRoute(
       path: "/consultation",
       title: "Consultation",
       icon: Icons.circle_outlined,
-      builder: () => const ConsultationTab(),
+      builder: () => const ConsultationMode(),
     ),
     AppRoute(
       path: "/prayer",
       title: "Prayer",
       icon: Icons.church,
-      builder: () => const PrayerTab(),
+      builder: () => const PrayerMode(),
     ),
     AppRoute(
       path: "/adjournment",
       title: "Adjourn Meeting",
       icon: Icons.pause,
-      builder: () => const AdjournTab(),
+      builder: () => const AdjournMode(),
     ),
     AppRoute(
       path: "/tourdetable",
       title: "Tour de Table",
       icon: Icons.autorenew,
-      builder: () => const TourDeTableTab(),
+      builder: () => const TourDeTableMode(),
     ),
     AppRoute(
       path: "/single",
       title: "Single Speaker",
       icon: Icons.mic,
-      builder: () => const SingleTab(),
+      builder: () => const SingleMode(),
     ),
     AppRoute(
       path: "/custom",
       title: "Custom",
       icon: Icons.edit,
-      builder: () => const CustomTab(),
+      builder: () => const CustomMode(),
     ),
   ];
 
@@ -118,15 +118,15 @@ class AppRouter {
     if (!Get.isRegistered<RouteController>()) {
       Get.put<RouteController>(
         RouteController(
-          path: state.subloc,
-          args: state.queryParams,
+          path: state.matchedLocation,
+          args: state.pathParameters,
         ),
       );
     } else {
       final RouteController controller = Get.find<RouteController>();
 
-      controller.args = state.queryParams;
-      controller.path = state.subloc;
+      controller.args = state.pathParameters;
+      controller.path = state.matchedLocation;
     }
   }
 
@@ -158,10 +158,10 @@ class AppRouter {
           },
         ),
         ShellRoute(
-          builder: (_, __, child) => CommitteeMainPage(child: child),
+          builder: (_, __, child) => CommitteePage(child: child),
           routes: [
             ShellRoute(
-              builder: (_, __, child) => CommitteePage(child: child),
+              builder: (_, __, child) => ModesPage(child: child),
               routes: modes
                   .map<GoRoute>(
                     (route) => GoRoute(
@@ -171,14 +171,14 @@ class AppRouter {
 
                         if (!Get.isRegistered<CommitteeController>()) {
                           LocalStorage.loadCommittee(
-                            state.queryParams["id"]!,
+                            state.pathParameters["id"]!,
                           );
                         }
 
                         return NoTransitionPage(child: route.builder!());
                       },
                       redirect: (_, state) => LocalStorage.committeeExists(
-                        state.queryParams["id"] ?? "null",
+                        state.pathParameters["id"] ?? "null",
                       )
                           ? null
                           : home.path,
@@ -195,16 +195,17 @@ class AppRouter {
                   _putRouteController(state);
 
                   if (!Get.isRegistered<CommitteeController>()) {
-                    LocalStorage.loadCommittee(state.queryParams["id"]!);
+                    LocalStorage.loadCommittee(state.pathParameters["id"]!);
                   }
 
-                  Get.find<CommitteeController>().tab =
-                      tabs.indexWhere((route) => route.path == state.subloc);
+                  Get.find<CommitteeController>().tab = tabs.indexWhere(
+                    (route) => route.path == state.matchedLocation,
+                  );
 
                   return NoTransitionPage(child: route.builder!());
                 },
                 redirect: (context, state) => LocalStorage.committeeExists(
-                  state.queryParams["id"] ?? "null",
+                  state.pathParameters["id"] ?? "null",
                 )
                     ? null
                     : home.path,

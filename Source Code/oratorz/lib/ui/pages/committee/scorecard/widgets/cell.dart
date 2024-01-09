@@ -6,21 +6,21 @@ import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/extensions.dart';
 import '../../../../../models/scorecard.dart';
 
-class ScoreCell extends StatefulWidget {
+class Cell extends StatefulWidget {
   final String delegate;
   final int index;
 
-  const ScoreCell({
+  const Cell({
     super.key,
     required this.delegate,
     required this.index,
   });
 
   @override
-  State<ScoreCell> createState() => _ScoreCellState();
+  State<Cell> createState() => _CellState();
 }
 
-class _ScoreCellState extends State<ScoreCell> {
+class _CellState extends State<Cell> {
   final ScorecardController controller = Get.find<ScorecardController>();
   late final FocusNode focusNode;
 
@@ -70,7 +70,7 @@ class _ScoreCellState extends State<ScoreCell> {
                       focusNode.requestFocus();
                     }
 
-                    return _ScoreCellEditing(
+                    return _CellEditing(
                       delegate: widget.delegate,
                       index: widget.index,
                       focusNode: focusNode,
@@ -90,22 +90,22 @@ class _ScoreCellState extends State<ScoreCell> {
   }
 }
 
-class _ScoreCellEditing extends StatefulWidget {
+class _CellEditing extends StatefulWidget {
   final String delegate;
   final int index;
   final FocusNode focusNode;
 
-  const _ScoreCellEditing({
+  const _CellEditing({
     required this.delegate,
     required this.index,
     required this.focusNode,
   });
 
   @override
-  State<_ScoreCellEditing> createState() => _ScoreCellEditingState();
+  State<_CellEditing> createState() => _CellEditingState();
 }
 
-class _ScoreCellEditingState extends State<_ScoreCellEditing> {
+class _CellEditingState extends State<_CellEditing> {
   final ScorecardController controller = Get.find<ScorecardController>();
   late final Scorecard scorecard;
   late final TextEditingController textController;
@@ -173,7 +173,7 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
           } else {
             controller.selected[1] = widget.index + 1;
           }
-        }
+        },
       },
       child: TextField(
         focusNode: widget.focusNode,
@@ -189,7 +189,7 @@ class _ScoreCellEditingState extends State<_ScoreCellEditing> {
         inputFormatters: [
           FilteringTextInputFormatter.allow(
             RegExp(r'(^-?\d*\.?\d*)'),
-          )
+          ),
         ],
         onChanged: (text) {
           if (text.trim() == "") {

@@ -2,16 +2,17 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import './cell.dart';
+import './header.dart';
+import '/config/constants/data.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/widgets/delegate_tile.dart';
-import 'header.dart';
-import 'scorecell.dart';
 
 const List<double> DIMENSIONS = [240, 200, 50];
 
-class ScoreTable extends StatelessWidget {
-  const ScoreTable({super.key});
+class Table extends StatelessWidget {
+  const Table({super.key});
 
   //TODO (YUG): Add search and auto scroll to matching delegate
 
@@ -21,7 +22,13 @@ class ScoreTable extends StatelessWidget {
     final Map<String, List<double>> scores = controller.scorecard.scores;
 
     final List<String> delegates =
-        List.from(Get.find<CommitteeController>().committee.delegates);
+        List<String>.from(Get.find<CommitteeController>().committee.delegates)
+            .where(
+              (element) => DELEGATES[element]!
+                  .toLowerCase()
+                  .contains(controller.query.value.toLowerCase()),
+            )
+            .toList();
 
     if (controller.sort.value != 0) {
       delegates.sort((a, b) {
@@ -77,8 +84,7 @@ class ScoreTable extends StatelessWidget {
                               controller.scorecard.parameters.length - 1,
                               (index) => SizedBox(
                                 width: DIMENSIONS[1],
-                                child:
-                                    ScoreCell(delegate: delegate, index: index),
+                                child: Cell(delegate: delegate, index: index),
                               ),
                             ),
                             SizedBox(

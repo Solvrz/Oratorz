@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/hourglass.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../widgets/hourglass.dart';
 
-class UnmodTab extends StatelessWidget {
-  const UnmodTab({super.key});
+class PrayerMode extends StatelessWidget {
+  const PrayerMode({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<SpeechController>(tag: "unmod")) {
-      Get.put<SpeechController>(SpeechController("unmod"), tag: "unmod");
+    if (!Get.isRegistered<SpeechController>(tag: "prayer")) {
+      final SpeechController _speechController =
+          Get.put<SpeechController>(SpeechController("prayer"), tag: "prayer");
+
+      _speechController.subtopic = {"Cause": "Your Cause"};
     }
 
     return Column(
@@ -24,7 +27,7 @@ class UnmodTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const Hourglass(tag: "unmod"),
+            child: const Hourglass(tag: "prayer"),
           ),
         ),
         carousel(context),

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:excel/excel.dart';
+import 'package:excel/excel.dart' hide Border;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +12,11 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/data.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../services/local_storage.dart';
 
 class UploadFileDialog extends StatefulWidget {
   const UploadFileDialog({super.key});
@@ -103,7 +103,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                         TextSpan(
                           text: "\n(Suported: .xlsx, .xls or .json)",
                           style: context.textTheme.bodySmall,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -135,26 +135,25 @@ class UploadFileDialogState extends State<UploadFileDialog> {
             horizontal: 20,
           ),
           child: const Text("Upload File"),
-          onPressed: () async {
-            final FilePickerResult? _result =
-                await FilePicker.platform.pickFiles(
+          onPressed: () {
+            FilePicker.platform.pickFiles(
               type: FileType.custom,
               allowedExtensions: ["xlsx", "xls", "json"],
-            );
+            ).then((value) {
+              if (mounted && context.canPop()) {
+                context.pop();
+              }
 
-            if (mounted && context.canPop()) {
-              context.pop();
-            }
+              if (value != null) {
+                final PlatformFile _file = value.files.first;
 
-            if (_result != null) {
-              final PlatformFile _file = _result.files.first;
-
-              loadData(
-                context: context,
-                data: _file.bytes,
-                extension: ".${_file.extension}",
-              );
-            }
+                loadData(
+                  context: context,
+                  data: _file.bytes,
+                  extension: ".${_file.extension}",
+                );
+              }
+            });
           },
         ),
       ],
@@ -173,7 +172,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
         for (final String table in excel.tables.keys) {
           final Sheet? sheet = excel.tables[table];
 
-          if (sheet != null && sheet.maxCols == 3) {
+          if (sheet != null && sheet.maxColumns == 3) {
             final List<List<Data?>> rows = sheet.rows;
             final List<String> _delegates = createDelegates(rows..removeAt(0));
 

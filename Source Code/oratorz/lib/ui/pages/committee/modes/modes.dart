@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import '/models/router.dart';
 
+import '../widgets/body.dart';
+import '/models/router.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
-import '../widgets/body.dart';
 
-class CommitteePage extends StatefulWidget {
+class ModesPage extends StatefulWidget {
   final Widget child;
 
-  const CommitteePage({super.key, required this.child});
+  const ModesPage({super.key, required this.child});
 
   @override
-  State<CommitteePage> createState() => _CommitteePageState();
+  State<ModesPage> createState() => _ModesPageState();
 }
 
-class _CommitteePageState extends State<CommitteePage> {
+class _ModesPageState extends State<ModesPage> {
   final CommitteeController committeeController =
       Get.find<CommitteeController>();
 

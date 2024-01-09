@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
+import './vote.dart';
 import '/models/committee.dart';
 import '/services/local_storage.dart';
-import './vote.dart';
 
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;

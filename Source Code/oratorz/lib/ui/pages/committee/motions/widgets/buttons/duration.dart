@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/tools/extensions.dart';
 import '../../../widgets/timer_button.dart';
+import '/tools/extensions.dart';
 
 class DurationButton extends StatefulWidget {
   final String title;
