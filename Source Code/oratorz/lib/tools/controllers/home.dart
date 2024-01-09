@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../services/local_storage.dart';
+import '/services/local_storage.dart';
 
 class HomeController extends GetxController {
   final RxList<String> committees = <String>[].obs;

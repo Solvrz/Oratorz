@@ -73,7 +73,7 @@ class PastSpeakersCard extends StatelessWidget {
                           ),
                         ),
                       ),
-              )
+              ),
             ],
           ),
         ),

@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/hourglass.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../widgets/hourglass.dart';
 
-class CustomTab extends StatelessWidget {
-  const CustomTab({super.key});
+class UnmodMode extends StatelessWidget {
+  const UnmodMode({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<SpeechController>(tag: "custom")) {
-      final SpeechController _speechController =
-          Get.put<SpeechController>(SpeechController("custom"), tag: "custom");
-
-      _speechController.subtopic = {"Title": "Your Title"};
+    if (!Get.isRegistered<SpeechController>(tag: "unmod")) {
+      Get.put<SpeechController>(SpeechController("unmod"), tag: "unmod");
     }
 
     return Column(
@@ -27,7 +24,7 @@ class CustomTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const Hourglass(tag: "custom"),
+            child: const Hourglass(tag: "unmod"),
           ),
         ),
         carousel(context),

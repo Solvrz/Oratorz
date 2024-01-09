@@ -8,11 +8,11 @@ import 'package:universal_html/html.dart' as html;
 import '/config/constants/constants.dart';
 import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
+import '/tools/controllers/comittee/motions.dart';
+import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '../tools/controllers/comittee/motions.dart';
-import '../tools/controllers/comittee/scorecard.dart';
-import '../tools/controllers/comittee/vote.dart';
-import '../tools/controllers/home.dart';
+import '/tools/controllers/comittee/vote.dart';
+import '/tools/controllers/home.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {
@@ -220,7 +220,7 @@ class LocalStorage {
     controller.pastSpeakers.value = past
         .map<Map<String, Duration>>(
           (element) => <String, Duration>{
-            element.keys.first: Duration(seconds: element.values.first)
+            element.keys.first: Duration(seconds: element.values.first),
           },
         )
         .toList();
@@ -410,7 +410,7 @@ class LocalStorage {
   static bool exportToFile(Committee committee) {
     js.context.callMethod("saveAs", [
       html.Blob([jsonEncode(box.read(committee.id))], "application/json"),
-      "session-${committee.id}.json"
+      "session-${committee.id}.json",
     ]);
 
     return true;

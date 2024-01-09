@@ -81,7 +81,6 @@ class _CommitteeCardState extends State<CommitteeCard>
                   LocalStorage.loadCommittee(widget.committee.id);
 
                   final AppRoute route = AppRouter.modes.first;
-
                   final controller = Get.find<RouteController>();
 
                   controller.path = route.path;

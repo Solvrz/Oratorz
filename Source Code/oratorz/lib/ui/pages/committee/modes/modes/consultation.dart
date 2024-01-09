@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/hourglass.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/functions.dart';
-import '../widgets/hourglass.dart';
 
-class AdjournTab extends StatelessWidget {
-  const AdjournTab({super.key});
+class ConsultationMode extends StatelessWidget {
+  const ConsultationMode({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<SpeechController>(tag: "adjourn")) {
-      Get.put<SpeechController>(
-        SpeechController("adjourn"),
-        tag: "adjourn",
+    if (!Get.isRegistered<SpeechController>(tag: "consultation")) {
+      final SpeechController _speechController = Get.put<SpeechController>(
+        SpeechController("consultation"),
+        tag: "consultation",
       );
+
+      _speechController.subtopic = {"Topic": "Your Topic"};
     }
 
     return Column(
@@ -27,7 +29,7 @@ class AdjournTab extends StatelessWidget {
               horizontal: 100,
               vertical: 18,
             ),
-            child: const Hourglass(tag: "adjourn"),
+            child: const Hourglass(tag: "consultation"),
           ),
         ),
         carousel(context),

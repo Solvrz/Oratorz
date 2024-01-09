@@ -378,7 +378,7 @@ const Map<String, List<String>> COMMITTEES = {
     "TKM",
     "UKR",
     "URY",
-    "USA"
+    "USA",
   ],
   "WHO": [
     "ARE",
@@ -414,7 +414,7 @@ const Map<String, List<String>> COMMITTEES = {
     "TJK",
     "TON",
     "TUN",
-    "USA"
+    "USA",
   ],
   "UNHCR": [
     "AFG",
@@ -576,7 +576,7 @@ const Map<String, List<String>> COMMITTEES = {
     "YEM",
     "ZAF",
     "ZMB",
-    "ZWE"
+    "ZWE",
   ],
   "UNHRC": [
     "AFG",
@@ -625,7 +625,7 @@ const Map<String, List<String>> COMMITTEES = {
     "TUN",
     "UKR",
     "URY",
-    "ZAF"
+    "ZAF",
   ],
   "UNICEF": [
     "BDI",
@@ -663,7 +663,7 @@ const Map<String, List<String>> COMMITTEES = {
     "TKM",
     "USA",
     "YEM",
-    "ZWE"
+    "ZWE",
   ],
   "UNGA": [
     "AFG",
@@ -860,7 +860,7 @@ const Map<String, List<String>> COMMITTEES = {
     "YEM",
     "ZAF",
     "ZMB",
-    "ZWE"
+    "ZWE",
   ],
   "ASEAN": [
     "BRN",
@@ -873,7 +873,7 @@ const Map<String, List<String>> COMMITTEES = {
     "PNG",
     "SGP",
     "THA",
-    "VNM"
+    "VNM",
   ],
   "NATO": [
     "ALB",
@@ -905,7 +905,7 @@ const Map<String, List<String>> COMMITTEES = {
     "SVK",
     "SVN",
     "TUR",
-    "USA"
+    "USA",
   ],
   "EU": [
     "AUT",
@@ -934,7 +934,7 @@ const Map<String, List<String>> COMMITTEES = {
     "ROU",
     "SVK",
     "SVN",
-    "SWE"
+    "SWE",
   ],
   "G20": [
     "ARG",
@@ -956,7 +956,7 @@ const Map<String, List<String>> COMMITTEES = {
     "SAU",
     "TUR",
     "USA",
-    "ZAF"
+    "ZAF",
   ],
   "AU": [
     "AGO",
@@ -1013,7 +1013,7 @@ const Map<String, List<String>> COMMITTEES = {
     "UGA",
     "ZAF",
     "ZMB",
-    "ZWE"
+    "ZWE",
   ],
   "AIPPM 1": [
     "AAP 00",

@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '/config/constants/constants.dart';
 import '/models/committee.dart';
+import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../models/router.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -136,7 +136,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
 
     setState(() => error = false);
 
-    if (INVITE_CODES.contains(code) || TESTING) {
+    if (INVITE_CODES.contains(code) || !INVITE_CODES_ENABLED) {
       final SetupController setupController = Get.find<SetupController>();
       final Committee committee = setupController.committee;
 
@@ -196,7 +196,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
                   ),
                 ],
               ),
-            ]
+            ],
           ],
         ),
       ),
@@ -210,7 +210,7 @@ class _InviteCodeDialogState extends State<_InviteCodeDialog> {
           ),
           onPressed: submit,
           child: const Text("Done"),
-        )
+        ),
       ],
     );
   }
@@ -253,7 +253,7 @@ class _CommitteeNameDialog extends StatelessWidget {
             context.pop();
           },
           child: const Text("Select"),
-        )
+        ),
       ],
     );
   }

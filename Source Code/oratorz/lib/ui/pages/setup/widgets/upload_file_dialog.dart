@@ -12,11 +12,11 @@ import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '/config/constants/data.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../services/local_storage.dart';
 
 class UploadFileDialog extends StatefulWidget {
   const UploadFileDialog({super.key});
@@ -103,7 +103,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                         TextSpan(
                           text: "\n(Suported: .xlsx, .xls or .json)",
                           style: context.textTheme.bodySmall,
-                        )
+                        ),
                       ],
                     ),
                   ),

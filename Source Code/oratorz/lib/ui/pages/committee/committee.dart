@@ -3,21 +3,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import './widgets/dialogs/roll_call.dart';
 import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
-import './widgets/dialogs/roll_call.dart';
 
-class CommitteeMainPage extends StatefulWidget {
+class CommitteePage extends StatefulWidget {
   final Widget child;
 
-  const CommitteeMainPage({super.key, required this.child});
+  const CommitteePage({super.key, required this.child});
 
   @override
-  State<CommitteeMainPage> createState() => _CommitteeMainPageState();
+  State<CommitteePage> createState() => _CommitteePageState();
 }
 
-class _CommitteeMainPageState extends State<CommitteeMainPage> {
+class _CommitteePageState extends State<CommitteePage> {
   final CommitteeController controller = Get.find<CommitteeController>();
 
   @override

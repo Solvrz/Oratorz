@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
+import './vote.dart';
 import '/models/committee.dart';
 import '/services/local_storage.dart';
-import './vote.dart';
 
 abstract class RollCall {
   static const int presentAndVoting = 2;
@@ -18,7 +18,8 @@ class CommitteeController extends GetxController {
   CommitteeController({required Committee committee, int tab = 0}) {
     _tab = tab.obs;
     _committee = committee.obs;
-    _rollCall = {for (String delegate in committee.delegates) delegate: -1}.obs;
+    _rollCall =
+        {for (final String delegate in committee.delegates) delegate: -1}.obs;
   }
 
   Committee get committee => _committee.value;

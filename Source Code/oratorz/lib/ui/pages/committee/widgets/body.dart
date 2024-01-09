@@ -132,7 +132,7 @@ class _AgendaDialog extends StatelessWidget {
             context.pop();
           },
           child: const Text("Select"),
-        )
+        ),
       ],
     );
   }

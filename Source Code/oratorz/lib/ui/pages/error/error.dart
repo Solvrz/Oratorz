@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '/models/router.dart';
-import '/ui/widgets/oratorz_card.dart';
+import '/ui/widgets/oratorz_banner.dart';
 import '/ui/widgets/rounded_button.dart';
 
 class ErrorPage extends StatelessWidget {
@@ -18,12 +18,12 @@ class ErrorPage extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: context.mediaQuerySize.height / 9,
           flexibleSpace: Image.asset(
-            'images/Banner.png',
+            "images/Banner.png",
             repeat: ImageRepeat.repeatX,
           ),
           title: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 3),
-            child: const OratorzCard(),
+            child: const OratorzBanner(),
           ),
         ),
         body: Row(
@@ -84,7 +84,7 @@ class ErrorPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

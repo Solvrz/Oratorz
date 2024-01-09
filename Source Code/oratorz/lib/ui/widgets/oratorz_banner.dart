@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/utils.dart';
 
-class OratorzCard extends StatelessWidget {
-  const OratorzCard({super.key});
+class OratorzBanner extends StatelessWidget {
+  const OratorzBanner({super.key});
 
   @override
   Widget build(BuildContext context) {

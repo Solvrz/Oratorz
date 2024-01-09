@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '/services/local_storage.dart';
 import './committee.dart';
+import '/services/local_storage.dart';
 
 class Parameter {
   String title;

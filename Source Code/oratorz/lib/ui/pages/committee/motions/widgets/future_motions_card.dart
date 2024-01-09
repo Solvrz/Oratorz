@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/tools/controllers/comittee/motions.dart';
 import './motion_tile.dart';
+import '/tools/controllers/comittee/motions.dart';
 
 class FutureMotionsCard extends StatelessWidget {
   const FutureMotionsCard({super.key});
@@ -43,7 +43,7 @@ class FutureMotionsCard extends StatelessWidget {
                             ),
                             if (index !=
                                 _motionsController.nextMotions.length - 1)
-                              const SizedBox(height: 20)
+                              const SizedBox(height: 20),
                           ],
                         ),
                       ),

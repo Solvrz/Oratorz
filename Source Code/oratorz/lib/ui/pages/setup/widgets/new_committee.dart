@@ -65,11 +65,12 @@ class _CommitteeType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
+    final SetupController _setupController = Get.find<SetupController>();
+    final TextEditingController _searchController = TextEditingController();
 
     return GetBuilder<SetupController>(
       builder: (setupController) {
-        final bool isOpen = setupController.selectedType == index;
+        final bool isOpen = _setupController.selectedType == index;
 
         final Widget widget = Column(
           children: [
@@ -98,8 +99,8 @@ class _CommitteeType extends StatelessWidget {
                 margin: const EdgeInsets.all(12),
                 child: TextField(
                   autofocus: true,
-                  controller: searchController,
-                  onChanged: (_) => setupController.update(),
+                  controller: _searchController,
+                  onChanged: (_) => _setupController.update(),
                   decoration: const InputDecoration(
                     hintText: "Search",
                     prefixIcon: Icon(Icons.search),
@@ -111,7 +112,7 @@ class _CommitteeType extends StatelessWidget {
                   final List<String> searchResults = [];
 
                   delegates.forEach((delegate) {
-                    final String query = searchController.toText;
+                    final String query = _searchController.toText;
 
                     if (query.isNotEmpty) {
                       if (DELEGATES[delegate]!
@@ -130,7 +131,7 @@ class _CommitteeType extends StatelessWidget {
                             itemCount: searchResults.length,
                             itemBuilder: (context, index) {
                               final String delegate = searchResults[index];
-                              final bool hasDelegate = setupController
+                              final bool hasDelegate = _setupController
                                   .committee.delegates
                                   .contains(delegate);
 
@@ -140,8 +141,8 @@ class _CommitteeType extends StatelessWidget {
                                   delegate: searchResults[index],
                                   onTap: () {
                                     if (!hasDelegate) {
-                                      setupController.add(delegate);
-                                      setupController.update();
+                                      _setupController.add(delegate);
+                                      _setupController.update();
                                     }
                                   },
                                   trailing: Icon(
