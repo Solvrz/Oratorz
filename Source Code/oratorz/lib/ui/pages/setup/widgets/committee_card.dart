@@ -238,6 +238,7 @@ void submit(BuildContext context, {String? code, Rx<bool>? error}) {
   if (INVITE_CODES.contains(_code) || !INVITE_CODES_ENABLED) {
     final SetupController setupController = Get.find<SetupController>();
     final Committee committee = setupController.committee;
+    committee.initRollCall();
 
     if (setupController.editing) {
       LocalStorage.overwriteCommittee(committee);

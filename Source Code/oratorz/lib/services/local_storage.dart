@@ -5,14 +5,15 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../models/scorecard.dart';
+import '../tools/controllers/comittee/vote.dart';
+import '../tools/controllers/home.dart';
 import '/config/constants/constants.dart';
 import '/models/committee.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/tools/controllers/comittee/vote.dart';
-import '/tools/controllers/home.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {
@@ -68,23 +69,20 @@ class LocalStorage {
   static void createCommittee(Committee committee) {
     if (committees.contains(committee.id)) return;
 
-    final CommitteeController controller =
-        CommitteeController(committee: committee);
-
     analytics.logEvent(
       name: "committe_created",
       parameters: {
-        "committee": controller.toJson().toString(),
-        "id": controller.committee.id,
+        "committee": committee.toJson().toString(),
+        "id": committee.id,
       },
     );
 
     Get.find<HomeController>().addCommittee(committee.id);
 
-    box.write(controller.committee.id, controller.toJson());
+    box.write(committee.id, committee.toJson());
     box.write("committees", committees);
 
-    Get.put<CommitteeController>(controller);
+    Get.put<CommitteeController>(CommitteeController(committee: committee));
   }
 
   static void deleteCommittee(String id) {
@@ -139,30 +137,16 @@ class LocalStorage {
     return true;
   }
 
-  static Committee getCommittee(String id) {
-    final Map<String, dynamic> data = box.read(id);
-
-    final Committee committee = Committee(
-      id: id,
-      name: data["committee"]["name"],
-      agenda: data["committee"]["agenda"],
-      delegates: data["committee"]["delegates"].cast<String>(),
-    );
-
-    return committee;
-  }
+  static Committee getCommittee(String id) => Committee.fromJson(box.read(id));
 
   static void loadCommittee(String id) {
     final Map<String, dynamic>? data = box.read(id);
 
     if (data == null) return;
 
-    final CommitteeController controller =
-        CommitteeController(committee: getCommittee(id));
-
-    controller.rollCall = Map<String, int>.from(data["rollCall"]);
-
-    Get.put<CommitteeController>(controller);
+    Get.put<CommitteeController>(
+      CommitteeController(committee: getCommittee(id)),
+    );
 
     analytics.logEvent(name: "committe_loaded");
   }
@@ -352,7 +336,7 @@ class LocalStorage {
 
     final Map<String, dynamic> data = box.read(committee.id);
 
-    data["score"] = Get.find<ScorecardController>().toJson();
+    data["score"] = Get.find<ScorecardController>().scorecard.toJson();
 
     box.write(committee.id, data);
 
@@ -377,28 +361,13 @@ class LocalStorage {
   static bool loadScore() {
     if (!Get.isRegistered<CommitteeController>()) return false;
 
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = box.read(committee.id);
+    final Map<String, dynamic> data =
+        box.read(Get.find<CommitteeController>().committee.id);
 
     if (data["score"] == null) return false;
 
-    final ScorecardController controller = ScorecardController();
-
-    controller.parameters.value = List.generate(
-      data["score"]["parameters"].length,
-      (index) => Parameter(
-        data["score"]["parameters"][index],
-        data["score"]["maxScores"][index],
-      ),
-    );
-
-    controller.scores.value = Map<String, List<double>>.from(
-      data["score"]["scores"].map<String, List<double>>(
-        (key, value) =>
-            MapEntry<String, List<double>>(key, List<double>.from(value)),
-      ),
-    );
+    final ScorecardController controller =
+        ScorecardController(Scorecard.fromJson(data["score"]));
 
     Get.put<ScorecardController>(controller);
 
@@ -426,12 +395,7 @@ class LocalStorage {
       delegates: data["committee"]["delegates"].cast<String>(),
     );
 
-    final CommitteeController controller =
-        CommitteeController(committee: committee);
-
-    controller.rollCall = Map<String, int>.from(data["rollCall"]);
-
-    Get.put<CommitteeController>(controller);
+    Get.put<CommitteeController>(CommitteeController(committee: committee));
 
     analytics.logEvent(name: "committe_loaded");
 
@@ -439,8 +403,6 @@ class LocalStorage {
 
     box.write(committee.id, data);
     box.write("committees", committees);
-
-    Get.put<CommitteeController>(controller);
 
     return true;
   }
