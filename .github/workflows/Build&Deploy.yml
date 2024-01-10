@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: |
           flutter config --enable-web
-          cd "Source Code/oratorz"
+          cd "Source Code/website"
           flutter clean
           flutter pub get
           flutter build web
@@ -26,7 +26,7 @@ jobs:
       - name: Deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          entryPoint: "Source Code/oratorz"
+          entryPoint: "Source Code/website"
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_ORATORZ37 }}"
           projectId: oratorz37
