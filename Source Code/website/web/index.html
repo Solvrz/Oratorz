@@ -1,158 +1,145 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base href="$FLUTTER_BASE_HREF" />
-    <title>Oratorz: An All-In-One MUN Aid</title>
 
-    <meta charset="UTF-8" />
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="An All-In-One MUN Aid" />
+<head>
+  <base href="$FLUTTER_BASE_HREF">
 
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Oratorz" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title>Oratorz</title>
+  <meta name="description" content="A MUN & Similar Mock Simulation Aid.">
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="icons/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="icons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="icons/favicon-16x16.png"
-    />
-    <link rel="icon" type="image/png" href="favicon.ico" />
+  <meta charset="UTF-8">
+  <link rel="manifest" href="manifest.json">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Poppins"
-      rel="stylesheet"
-    />
-    <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"> -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.15/plugins/export/libs/FileSaver.js/FileSaver.min.js"></script>
+  <link rel="icon" type="image/ico" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 
-    <script>
-      var serviceWorkerVersion = null;
-    </script>
-    <script src="flutter.js" defer></script>
+  <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#2f3146">
+  <meta name="msapplication-TileColor" content="#2f3146">
 
-    <style>
-      .loading {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Oratorz">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+
+
+
+  <script>
+    const serviceWorkerVersion = null;
+  </script>
+  <script src="flutter.js" defer></script>
+
+  <style>
+    .loading {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .loader {
+      position: relative;
+    }
+
+    .spinner {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border-top: 8px solid #0d1520;
+      border-right: 8px solid white;
+      border-bottom: 8px solid #0d1520;
+      border-left: 8px solid white;
+      animation: spin 2s linear infinite;
+      -webkit-animation: spin 2s linear infinite;
+    }
+
+    .center {
+      top: 50%;
+      left: 50%;
+      height: 75px;
+      width: 75px;
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+
+    .name {
+      margin-top: 25px;
+    }
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
       }
 
-      .loader {
-        position: relative;
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
       }
 
-      .spinner {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border-top: 8px solid #0d1520;
-        border-right: 8px solid white;
-        border-bottom: 8px solid #0d1520;
-        border-left: 8px solid white;
-        animation: spin 2s linear infinite;
-        -webkit-animation: spin 2s linear infinite;
+      100% {
+        transform: rotate(360deg);
       }
+    }
+  </style>
+</head>
 
-      .center {
-        top: 50%;
-        left: 50%;
-        height: 75px;
-        width: 75px;
-        position: absolute;
-        transform: translate(-50%, -50%);
-      }
-
-      .name {
-        margin-top: 25px;
-      }
-
-      @-webkit-keyframes spin {
-        0% {
-          -webkit-transform: rotate(0deg);
-        }
-
-        100% {
-          -webkit-transform: rotate(360deg);
-        }
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="loading">
-      <div class="loader">
-        <div class="spinner"></div>
-        <img src="icons/android-chrome-512x512.png" class="center" />
-      </div>
-      <img src="name.png" class="name" />
+<body>
+  <div class="loading">
+    <div class="loader">
+      <div class="spinner"></div>
+      <img src="icons/android-chrome-512x512.png" class="center" />
     </div>
+    <img src="name.png" class="name" />
+  </div>
 
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
 
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      const firebaseConfig = {
-        apiKey: "AIzaSyDuLF8uzcD51hS9fiJKYzZHX5uWFvBuVmg",
-        authDomain: "oratorz37.firebaseapp.com",
-        projectId: "oratorz37",
-        storageBucket: "oratorz37.appspot.com",
-        messagingSenderId: "349136834707",
-        appId: "1:349136834707:web:3d6d0d62fca250d6cebd66",
-        measurementId: "G-Q6TCZ1SW7D",
-      };
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDuLF8uzcD51hS9fiJKYzZHX5uWFvBuVmg",
+      authDomain: "oratorz37.firebaseapp.com",
+      projectId: "oratorz37",
+      storageBucket: "oratorz37.appspot.com",
+      messagingSenderId: "349136834707",
+      appId: "1:349136834707:web:3d6d0d62fca250d6cebd66",
+      measurementId: "G-Q6TCZ1SW7D",
+    };
 
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    </script>
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
 
-    <script>
-      window.addEventListener("load", function (ev) {
-        _flutter.loader
-          .loadEntrypoint({
-            serviceWorker: {
-              serviceWorkerVersion: serviceWorkerVersion,
-            },
-          })
-          .then(function (engineInitializer) {
-            return engineInitializer.initializeEngine();
-          })
-          .then(function (appRunner) {
-            return appRunner.runApp();
+  <script>
+    window.addEventListener("load", function (ev) {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
           });
+        }
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
