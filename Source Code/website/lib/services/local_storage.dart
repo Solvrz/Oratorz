@@ -66,7 +66,7 @@ class LocalStorage {
   static void createCommittee(Committee committee) {
     if (committees.contains(committee.id)) return;
 
-    analytics.logEvent(
+    ANALYTICS.logEvent(
       name: "committe_created",
       parameters: {
         "committee": committee.toJson().toString(),
@@ -120,7 +120,7 @@ class LocalStorage {
 
     if (data == null) return false;
 
-    analytics.logEvent(
+    ANALYTICS.logEvent(
       name: "committe_updated",
       parameters: {
         "committee": data.toString(),
@@ -145,7 +145,7 @@ class LocalStorage {
       CommitteeController(committee: getCommittee(id)),
     );
 
-    analytics.logEvent(name: "committe_loaded");
+    ANALYTICS.logEvent(name: "committe_loaded");
   }
 
   static bool saveSpeech(SpeechController controller) {

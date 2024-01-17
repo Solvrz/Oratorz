@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 
@@ -6,4 +8,4 @@ const bool TESTING = kDebugMode;
 
 const List<String> INVITE_CODES = ["ORASI0037"];
 
-final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+final FirebaseAnalytics ANALYTICS = FirebaseAnalytics.instance;

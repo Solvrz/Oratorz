@@ -18,8 +18,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await analytics.setAnalyticsCollectionEnabled(!TESTING);
-  await analytics.logAppOpen();
+  await ANALYTICS.setAnalyticsCollectionEnabled(!TESTING);
+  await ANALYTICS.logAppOpen();
 
   await GetStorage.init();
 
