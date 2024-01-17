@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
 import 'dart:math';
 
-// ignore: avoid_classes_with_only_static_members
 abstract class Uid {
   static bool exists(String id) {
     return false;

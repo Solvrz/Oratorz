@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
+// ignore_for_file: avoid_classes_with_only_static_members
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,7 +13,6 @@ import '/tools/controllers/comittee/speech.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/tools/controllers/home.dart';
 
-// ignore: avoid_classes_with_only_static_members
 class LocalStorage {
   static GetStorage box = GetStorage();
 
