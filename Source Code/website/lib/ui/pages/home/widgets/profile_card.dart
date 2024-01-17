@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 
+import '/tools/functions.dart';
+
 class ProfileCard extends StatelessWidget {
   const ProfileCard({super.key});
 
@@ -33,7 +35,17 @@ class ProfileCard extends StatelessWidget {
             const Spacer(),
             ListTile(
               onTap: () {
-                // TODO: Settings
+                ScaffoldMessenger.of(context).showSnackBar(
+                  snackbar(
+                    context,
+                    const Center(
+                      child: Text(
+                        "This feature is under devlopent. Please try again later...",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                );
               },
               horizontalTitleGap: 8,
               shape: RoundedRectangleBorder(
@@ -51,7 +63,17 @@ class ProfileCard extends StatelessWidget {
             const SizedBox(height: 8),
             ListTile(
               onTap: () {
-                // TODO: Log Out
+                ScaffoldMessenger.of(context).showSnackBar(
+                  snackbar(
+                    context,
+                    const Center(
+                      child: Text(
+                        "This feature is under devlopent. Please try again later...",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                );
               },
               horizontalTitleGap: 8,
               hoverColor: Colors.white12,

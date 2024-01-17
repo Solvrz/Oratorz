@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/hourglass.dart';
-import '../../widgets/speakers_info.dart';
-import '../widgets/add_speaker_card.dart';
 import '/tools/controllers/comittee/speech.dart';
+import '/ui/pages/committee/modes/widgets/add_speaker_card.dart';
+import '/ui/pages/committee/widgets/hourglass.dart';
+import '/ui/pages/committee/widgets/speakers_info.dart';
 
 class SingleMode extends StatelessWidget {
   const SingleMode({super.key});
@@ -38,13 +38,6 @@ class SingleMode extends StatelessWidget {
                       SpeakersInfo(tag: "single"),
                     ],
                   ),
-                ),
-              ),
-              const SizedBox(height: 50),
-              Center(
-                child: Text(
-                  "Carousel Placeholder",
-                  style: context.textTheme.bodyLarge,
                 ),
               ),
             ],

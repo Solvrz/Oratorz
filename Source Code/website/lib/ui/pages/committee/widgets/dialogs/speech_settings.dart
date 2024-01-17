@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '../timer_button.dart';
 import '/tools/controllers/comittee/speech.dart';
+import '/ui/pages/committee/widgets/timer_button.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
 

@@ -1,4 +1,4 @@
-import 'committee.dart';
+import './committee.dart';
 
 class Parameter {
   late int id;

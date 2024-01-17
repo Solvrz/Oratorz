@@ -2,7 +2,6 @@ import 'dart:math';
 
 // ignore: avoid_classes_with_only_static_members
 abstract class Uid {
-  //TODO: Integrate with Firebase
   static bool exists(String id) {
     return false;
   }

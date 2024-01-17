@@ -20,7 +20,6 @@ class _TopicButtonState extends State<TopicButton> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Not Clearing
     _topicController = TextEditingController(text: widget.topic.values.first);
 
     return Column(

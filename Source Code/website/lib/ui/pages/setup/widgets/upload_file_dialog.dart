@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:excel/excel.dart' hide Border;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -11,10 +8,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '/config/constants/data.dart';
-import '/models/router.dart';
-import '/services/local_storage.dart';
-import '/tools/controllers/route.dart';
+import '/config/data.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
@@ -53,23 +47,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
               operation: DragOperation.copy,
               cursor: CursorType.grab,
               onCreated: (controller) => _dropController = controller,
-              onDrop: (file) async {
-                if (context.canPop()) {
-                  context.pop();
-                }
-
-                loadData(
-                  context: context,
-                  data: await _dropController.getFileData(file),
-                  extension:
-                      (await _dropController.getFileMIME(file)).extension,
-                );
-              },
               onDropMultiple: (files) async {
-                if (context.canPop()) {
-                  context.pop();
-                }
-
                 if (files != null) {
                   for (final dynamic file in files) {
                     loadData(
@@ -79,6 +57,9 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                           (await _dropController.getFileMIME(file)).extension,
                     );
                   }
+                }
+                if (context.mounted && context.canPop()) {
+                  context.pop();
                 }
               },
               onHover: () => setState(() => _dropzoneHovered = true),
@@ -103,7 +84,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                       ),
                       children: [
                         TextSpan(
-                          text: "\n(Suported: .xlsx, .xls or .json)",
+                          text: "\n(Suported: .xlsx & .xls)",
                           style: context.textTheme.bodySmall,
                         ),
                       ],
@@ -137,25 +118,28 @@ class UploadFileDialogState extends State<UploadFileDialog> {
             horizontal: 20,
           ),
           child: const Text("Upload File"),
-          onPressed: () {
-            FilePicker.platform.pickFiles(
+          onPressed: () async {
+            final FilePickerResult? _result =
+                await FilePicker.platform.pickFiles(
               type: FileType.custom,
-              allowedExtensions: ["xlsx", "xls", "json"],
-            ).then((value) {
-              if (mounted && context.canPop()) {
-                context.pop();
-              }
+              allowedExtensions: ["xlsx", "xls"],
+            );
 
-              if (value != null) {
-                final PlatformFile _file = value.files.first;
+            if (mounted && context.canPop()) {
+              context.pop();
+            }
 
+            if (_result != null) {
+              final PlatformFile _file = _result.files.first;
+
+              if (context.mounted) {
                 loadData(
                   context: context,
                   data: _file.bytes,
                   extension: ".${_file.extension}",
                 );
               }
-            });
+            }
           },
         ),
       ],
@@ -168,7 +152,7 @@ class UploadFileDialogState extends State<UploadFileDialog> {
     required String? extension,
   }) {
     try {
-      if ([".sheet", ".xlsx", ".xls"].contains(extension)) {
+      if ([".xlsx", ".xls"].contains(extension)) {
         final Excel excel = Excel.decodeBytes(data ?? []);
 
         for (final String table in excel.tables.keys) {
@@ -190,29 +174,11 @@ class UploadFileDialogState extends State<UploadFileDialog> {
             }
           }
         }
-      } else if (extension == ".json") {
-        final Map<String, dynamic> committeeData =
-            jsonDecode(String.fromCharCodes(data!));
-
-        if (LocalStorage.loadFromJson(committeeData)) {
-          final controller = Get.find<RouteController>();
-          final AppRoute route = AppRouter.modes.first;
-
-          controller.path = route.path;
-          controller.args = {"id": committeeData["committee"]["id"]};
-
-          context.go("/gsl?id=${committeeData["committee"]["id"]}");
-        } else {
-          throw UnsupportedError("Invalid File");
-        }
       } else {
-        // TODO: Show Error
         throw UnsupportedError("Invalid File");
       }
     } catch (e) {
-      log(e.toString());
-
-      if (mounted) {
+      if (context.mounted) {
         showDialog(
           context: context,
           builder: (_) => _ErrorDialog(

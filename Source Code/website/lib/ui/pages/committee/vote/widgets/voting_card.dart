@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/data.dart';
+import '/config/data.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/delegate_tile.dart';

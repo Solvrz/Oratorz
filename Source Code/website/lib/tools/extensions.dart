@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' hide Tab;
-import 'package:intl/intl.dart';
 
 extension ToolsString on String {
   String get capitalize => substring(0, 1).toUpperCase() + substring(1);
@@ -11,13 +10,6 @@ extension ToolsString on String {
   int get toInt => int.parse(this);
 
   String get extension => ".${split("/")[1].split(".").last}";
-}
-
-extension ToolsDouble on double {
-  String toCurrencyFormat({int decimalDigits = 2}) =>
-      NumberFormat.simpleCurrency(
-        decimalDigits: decimalDigits,
-      ).format(this);
 }
 
 extension ToolsColor on Color {
@@ -42,10 +34,8 @@ extension ToolsDuration on Duration {
 }
 
 extension ToolsDateTime on DateTime {
-  String get toFormattedDate => DateFormat("dd MMMM").format(this);
-
-  String get to12Hour => DateFormat("jm").format(this).toUpperCase();
-  String get to24Hour => DateFormat("Hm").format(this);
+  String get to12Hour =>
+      "${hour > 12 ? hour - 12 : hour}:$minute ${hour > 12 ? "PM" : "AM"}";
 }
 
 extension ToolsTextEditingController on TextEditingController {

@@ -2,7 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/data.dart';
+import '/../config/data.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/delegate_tile.dart';
 

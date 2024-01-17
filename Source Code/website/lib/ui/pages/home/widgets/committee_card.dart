@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router, Route;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -80,7 +80,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                 onTap: () {
                   LocalStorage.loadCommittee(widget.committee.id);
 
-                  final AppRoute route = AppRouter.modes.first;
+                  final Route route = Router.modes.first;
                   final controller = Get.find<RouteController>();
 
                   controller.path = route.path;
@@ -185,17 +185,9 @@ class _EditOptions extends StatelessWidget {
               onTap: () {
                 Get.put<SetupController>(SetupController(committee: committee));
 
-                context.push(AppRouter.setup.path);
+                context.push(Router.setup.path);
               },
               child: const Icon(Icons.edit, size: 26),
-            ),
-            Divider(
-              color: Colors.grey.shade400,
-            ),
-            InkWell(
-              hoverColor: Colors.transparent,
-              onTap: () => LocalStorage.exportToFile(committee),
-              child: const Icon(Icons.save_alt, size: 26),
             ),
             Divider(
               color: Colors.grey.shade400,

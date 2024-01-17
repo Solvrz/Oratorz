@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router, Route;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/config/constants/constants.dart';
+import '/config/constants.dart';
 import '/models/committee.dart';
 import '/models/router.dart';
 import '/services/local_storage.dart';
@@ -250,7 +250,7 @@ void submit(BuildContext context, {String? code, Rx<bool>? error}) {
     Get.delete<SetupController>();
 
     final controller = Get.find<RouteController>();
-    final AppRoute route = AppRouter.modes.first;
+    final Route route = Router.modes.first;
 
     controller.path = route.path;
     controller.args = {"id": committee.id};

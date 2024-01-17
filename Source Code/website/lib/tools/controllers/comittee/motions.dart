@@ -5,8 +5,6 @@ import '/services/local_storage.dart';
 class MotionsController extends GetxController {
   final RxMap<String, dynamic> _currentMotion = <String, dynamic>{}.obs;
 
-  final RxList<Map<Map<String, dynamic>, bool>> _pastMotions =
-      <Map<Map<String, dynamic>, bool>>[].obs;
   final RxList<Map<String, dynamic>> _nextMotions =
       <Map<String, dynamic>>[].obs;
 
@@ -20,18 +18,17 @@ class MotionsController extends GetxController {
   set nextMotions(List<Map<String, dynamic>> motions) =>
       _nextMotions.value = motions;
 
-  List<Map<Map<String, dynamic>, bool>> get pastMotions => _pastMotions;
-  set pastMotions(List<Map<Map<String, dynamic>, bool>> motions) =>
-      _pastMotions.value = motions;
-
   int get mode => _mode.value;
   set mode(int newMode) => _mode.value = newMode;
 
   void _saveMotions() {
-    // TODO: Fails To Encode
-    // LocalStorage.updateMotions("current", _currentMotion);
+    LocalStorage.updateMotions("current", _currentMotion);
     LocalStorage.updateMotions("next", _nextMotions);
-    LocalStorage.updateMotions("past", _pastMotions);
+  }
+
+  bool isCurrentMotion(Map<String, dynamic> motion) {
+    return _currentMotion["type"] == motion["type"] &&
+        _currentMotion["delegate"] == _currentMotion["delegate"];
   }
 
   void reorder(int oldIndex, int newIndex) {
@@ -60,10 +57,8 @@ class MotionsController extends GetxController {
     _saveMotions();
   }
 
-  void nextMotion({required bool passed, bool add = true}) {
+  void nextMotion({required bool passed}) {
     if (_currentMotion.isEmpty) return;
-
-    if (add) _pastMotions.add({_currentMotion: passed});
 
     if (_nextMotions.isEmpty) {
       _currentMotion.value = {};
@@ -79,7 +74,6 @@ class MotionsController extends GetxController {
     return {
       "mode": _mode.value,
       "current": _currentMotion,
-      "past": _pastMotions,
       "next": _nextMotions,
     };
   }

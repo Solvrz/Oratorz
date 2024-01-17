@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,19 +68,7 @@ class ErrorPage extends StatelessWidget {
                                   ?.copyWith(color: Colors.white),
                             ),
                             onPressed: () =>
-                                context.pushReplacement(AppRouter.home.path),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: RoundedButton(
-                            onPressed: () =>
-                                context.pushReplacement(AppRouter.home.path),
-                            style: RoundedButtonStyle.border,
-                            child: Text(
-                              "Visit our Help Center",
-                              style: context.textTheme.bodyLarge,
-                            ),
+                                context.pushReplacement(Router.home.path),
                           ),
                         ),
                       ],

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../widgets/dialogs/vote_settings.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/vote.dart';
+import '/ui/pages/committee/widgets/dialogs/vote_settings.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/rounded_button.dart';
 

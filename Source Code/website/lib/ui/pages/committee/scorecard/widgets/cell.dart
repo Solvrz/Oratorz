@@ -45,8 +45,6 @@ class _CellState extends State<Cell> {
         final bool selected = controller.selected[0] == widget.delegate &&
             controller.selected[1] == widget.index;
 
-        //FIXME (adityataggar05): Change InkWell to MouseRegion
-
         return InkWell(
           onTap: () {},
           hoverColor: Colors.transparent,

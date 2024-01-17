@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router, Route;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import './widgets/dialogs/roll_call.dart';
 import '/models/router.dart';
-import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
+import '/tools/controllers/route.dart';
 
 class CommitteePage extends StatefulWidget {
   final Widget child;
@@ -25,6 +25,9 @@ class _CommitteePageState extends State<CommitteePage> {
     super.initState();
 
     controller = Get.find<CommitteeController>();
+    controller.tab = Router.tabs.indexWhere(
+      (route) => route.path == Get.find<RouteController>().path,
+    );
   }
 
   @override
@@ -37,7 +40,7 @@ class _CommitteePageState extends State<CommitteePage> {
               width: context.width / 8,
               child: Card(
                 margin: EdgeInsets.zero,
-                color: const Color(0xff0d1520),
+                color: const Color(0xFF0F1825),
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(10),
@@ -62,9 +65,9 @@ class _CommitteePageState extends State<CommitteePage> {
                       ),
                       const SizedBox(height: 32),
                       ...List.generate(
-                        AppRouter.tabs.length,
+                        Router.tabs.length,
                         (index) {
-                          final AppRoute route = AppRouter.tabs[index];
+                          final Route route = Router.tabs[index];
 
                           return Obx(
                             () => _SidebarTile(
@@ -94,19 +97,14 @@ class _CommitteePageState extends State<CommitteePage> {
                       ),
                       const Spacer(),
                       _SidebarTile(
-                        title: "Export Session",
-                        icon: Icons.save_alt,
-                        onTap: () =>
-                            LocalStorage.exportToFile(controller.committee),
-                      ),
-                      _SidebarTile(
                         title: "Home",
                         icon: Icons.home,
                         onTap: () {
                           Get.deleteAll();
-                          context.pushReplacement(AppRouter.home.path);
+                          context.pushReplacement(Router.home.path);
                         },
                       ),
+                      const SizedBox(height: 20),
                       const OratorzSection(),
                     ],
                   ),

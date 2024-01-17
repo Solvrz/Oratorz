@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/hourglass.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/tools/functions.dart';
+import '/ui/pages/committee/widgets/hourglass.dart';
 
 class UnmodMode extends StatelessWidget {
   const UnmodMode({super.key});
@@ -27,7 +26,6 @@ class UnmodMode extends StatelessWidget {
             child: const Hourglass(tag: "unmod"),
           ),
         ),
-        carousel(context),
       ],
     );
   }

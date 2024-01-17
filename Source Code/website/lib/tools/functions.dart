@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -29,11 +31,6 @@ Widget flag(String delegate, {double size = 30}) => Container(
       ),
     );
 
-Widget carousel(BuildContext context) => Text(
-      "Carousel Placeholder",
-      style: context.textTheme.bodyLarge,
-    );
-
 SnackBar snackbar(BuildContext context, Widget content) {
   return SnackBar(
     margin: EdgeInsets.only(
@@ -44,5 +41,22 @@ SnackBar snackbar(BuildContext context, Widget content) {
     ),
     behavior: SnackBarBehavior.floating,
     content: content,
+  );
+}
+
+Widget proxyDecorator(Widget child, int index, Animation<double> animation) {
+  return AnimatedBuilder(
+    animation: animation,
+    builder: (context, child) {
+      final double animValue = Curves.easeInOut.transform(animation.value);
+      final double elevation = lerpDouble(0, 6, animValue)!;
+      return Material(
+        elevation: elevation,
+        color: Colors.transparent,
+        shadowColor: Colors.transparent,
+        child: child,
+      );
+    },
+    child: child,
   );
 }

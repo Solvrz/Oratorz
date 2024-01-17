@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import './motion_tile.dart';
 import '/tools/controllers/comittee/motions.dart';
+import '/tools/functions.dart';
 
 class FutureMotionsCard extends StatelessWidget {
   const FutureMotionsCard({super.key});
@@ -12,7 +13,7 @@ class FutureMotionsCard extends StatelessWidget {
     final MotionsController _motionsController = Get.find<MotionsController>();
 
     return SizedBox(
-      height: context.height / 2.25,
+      height: context.height / 2.325,
       width: context.width / 3,
       child: Card(
         child: Container(
@@ -30,6 +31,7 @@ class FutureMotionsCard extends StatelessWidget {
                   return Expanded(
                     child: ReorderableListView.builder(
                       buildDefaultDragHandles: false,
+                      proxyDecorator: proxyDecorator,
                       onReorder: (oldIndex, newIndex) =>
                           _motionsController.reorder(oldIndex, newIndex),
                       itemCount: _motionsController.nextMotions.length,

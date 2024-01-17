@@ -1,4 +1,4 @@
-import '/config/constants/data.dart';
+import '/config/data.dart';
 import '/services/uid.dart';
 
 abstract class RollCall {

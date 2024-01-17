@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/hourglass.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/tools/functions.dart';
+import '/ui/pages/committee/widgets/hourglass.dart';
 
 class ConsultationMode extends StatelessWidget {
   const ConsultationMode({super.key});
@@ -32,7 +31,6 @@ class ConsultationMode extends StatelessWidget {
             child: const Hourglass(tag: "consultation"),
           ),
         ),
-        carousel(context),
       ],
     );
   }

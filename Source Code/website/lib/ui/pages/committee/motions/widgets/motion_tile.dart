@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './motion_dialog.dart';
-import '/config/constants/data.dart';
+import '/config/data.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/extensions.dart';
 import '/tools/functions.dart';
+import '/ui/pages/committee/motions/widgets/motion_dialog.dart';
 import '/ui/widgets/rounded_button.dart';
 
 class MotionTile extends StatelessWidget {
   final Map<String, dynamic> motion;
-  final bool reorderable;
+  final bool current;
 
   const MotionTile({
     super.key,
     required this.motion,
-    this.reorderable = true,
+    this.current = false,
   });
 
   @override
@@ -25,7 +25,7 @@ class MotionTile extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: context.width / (reorderable ? 3.5 : 3.3),
+          width: context.width / (current ? 3.3 : 3.5),
           decoration: BoxDecoration(
             border: Border.all(),
             borderRadius: BorderRadius.circular(10),
@@ -33,43 +33,45 @@ class MotionTile extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: context.width / (reorderable ? 4.2 : 4),
+                width: context.width / (current ? 4 : 4.2),
                 child: ListTile(
                   leading: flag(motion["delegate"] ?? ""),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: motion["type"],
-                          style: context.textTheme.bodySmall,
-                          children: [
-                            TextSpan(
-                              text:
-                                  "\n${DELEGATES[motion["delegate"]] ?? "Delegate"}",
-                              style: context.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              children: [
-                                if (motion.containsKey("topic"))
-                                  TextSpan(
-                                    text:
-                                        "\n${(motion["topic"] as Map<String, String>).keys.first}: ",
-                                    style: context.textTheme.bodyLarge
-                                        ?.copyWith(fontWeight: FontWeight.bold),
-                                    children: [
-                                      TextSpan(
-                                        text: (motion["topic"]
-                                                as Map<String, String>)
-                                            .values
-                                            .first,
-                                        style: context.textTheme.bodyMedium,
+                      Flexible(
+                        flex: 2,
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            text: motion["type"],
+                            style: context.textTheme.bodySmall,
+                            children: [
+                              TextSpan(
+                                text:
+                                    "\n${DELEGATES[motion["delegate"].toString()] ?? "Delegate"}",
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  if (motion.containsKey("topic"))
+                                    TextSpan(
+                                      text: "\n${motion["topic"].keys.first}: ",
+                                      style:
+                                          context.textTheme.bodyLarge?.copyWith(
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    ],
-                                  ),
-                              ],
-                            ),
-                          ],
+                                      children: [
+                                        TextSpan(
+                                          text: motion["topic"].values.first,
+                                          style: context.textTheme.bodySmall,
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Column(
@@ -88,9 +90,15 @@ class MotionTile extends StatelessWidget {
                                   (motion["overallDuration"] as String).toInt,
                             ),
                           ],
+                          Center(
+                            child: Text(
+                              motion["time"],
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textTheme.bodySmall,
+                            ),
+                          ),
                         ],
                       ),
-                      Text(motion["time"]),
                     ],
                   ),
                 ),
@@ -99,23 +107,21 @@ class MotionTile extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 child: Column(
                   children: [
-                    RoundedButton(
-                      style: RoundedButtonStyle.border,
-                      color: Colors.red.shade400,
-                      padding: const EdgeInsets.all(4),
-                      onPressed: () {
-                        _motionsController.nextMotion(
-                          passed: false,
-                          add: false,
-                        );
-                        _motionsController.update();
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 20,
+                    if (!current)
+                      RoundedButton(
+                        style: RoundedButtonStyle.border,
                         color: Colors.red.shade400,
+                        padding: const EdgeInsets.all(4),
+                        onPressed: () {
+                          _motionsController.removeMotion(motion);
+                          _motionsController.update();
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 20,
+                          color: Colors.red.shade400,
+                        ),
                       ),
-                    ),
                     const SizedBox(height: 5),
                     RoundedButton(
                       style: RoundedButtonStyle.border,
@@ -140,7 +146,7 @@ class MotionTile extends StatelessWidget {
             ],
           ),
         ),
-        if (reorderable) ...[
+        if (!current) ...[
           const SizedBox(width: 8),
           Icon(
             Icons.drag_handle,

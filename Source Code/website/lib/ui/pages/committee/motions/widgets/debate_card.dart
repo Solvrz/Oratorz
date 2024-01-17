@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/add_speaker.dart';
-import '../../widgets/hourglass.dart';
-import '../../widgets/speakers_info.dart';
 import '/tools/controllers/comittee/speech.dart';
+import '/ui/pages/committee/widgets/add_speaker.dart';
+import '/ui/pages/committee/widgets/hourglass.dart';
+import '/ui/pages/committee/widgets/speakers_info.dart';
 
 class DebateCard extends StatelessWidget {
   const DebateCard({super.key});

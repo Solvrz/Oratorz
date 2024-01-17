@@ -76,7 +76,7 @@ class Body extends StatelessWidget {
                       trailing ?? const SizedBox(),
                       const SizedBox(width: 12),
                       RoundedButton(
-                        onPressed: () {},
+                        onPressed: () => context.pushReplacement("/"),
                         color: Colors.red.shade400,
                         tooltip: "End Committee",
                         child: const Text("End"),

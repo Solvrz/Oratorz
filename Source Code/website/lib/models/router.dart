@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -12,13 +10,13 @@ import '/tools/controllers/route.dart';
 import '/ui/pages/committee/modes/modes/export.dart';
 import '/ui/pages/export.dart';
 
-class AppRoute {
+class Route {
   final String path;
   final String? title;
   final IconData? icon;
   final Widget Function()? builder;
 
-  const AppRoute({
+  const Route({
     required this.path,
     this.title,
     this.icon,
@@ -26,30 +24,30 @@ class AppRoute {
   });
 }
 
-class AppRouter {
-  static const AppRoute root = AppRoute(path: "/");
-  static const AppRoute home = AppRoute(path: "/home", title: "Home");
-  static const AppRoute setup = AppRoute(path: "/setup", title: "Setup");
+class Router {
+  static const Route root = Route(path: "/");
+  static const Route home = Route(path: "/home", title: "Home");
+  static const Route setup = Route(path: "/setup", title: "Setup");
 
-  static List<AppRoute> tabs = [
-    const AppRoute(
+  static List<Route> tabs = [
+    const Route(
       path: "/gsl",
       title: "Committee",
       icon: Icons.groups_outlined,
     ),
-    AppRoute(
+    Route(
       path: "/vote",
       title: "Vote",
       icon: Icons.how_to_vote,
       builder: () => const VotePage(),
     ),
-    AppRoute(
+    Route(
       path: "/motions",
       title: "Motions",
       icon: Icons.ballot_outlined,
       builder: () => const MotionsPage(),
     ),
-    AppRoute(
+    Route(
       path: "/score",
       title: "Scorecard",
       icon: Icons.scoreboard_outlined,
@@ -57,56 +55,56 @@ class AppRouter {
     ),
   ];
 
-  static List<AppRoute> modes = [
-    AppRoute(
+  static List<Route> modes = [
+    Route(
       path: "/gsl",
       title: "GSL",
       icon: Icons.groups,
       builder: () => const GSLMode(),
     ),
-    AppRoute(
+    Route(
       path: "/mod",
       title: "Moderated Caucus",
       icon: Icons.forum,
       builder: () => const ModMode(),
     ),
-    AppRoute(
+    Route(
       path: "/unmod",
       title: "Unmoderated Caucus",
       icon: Icons.workspaces,
       builder: () => const UnmodMode(),
     ),
-    AppRoute(
+    Route(
       path: "/consultation",
       title: "Consultation",
       icon: Icons.circle_outlined,
       builder: () => const ConsultationMode(),
     ),
-    AppRoute(
+    Route(
       path: "/prayer",
       title: "Prayer",
       icon: Icons.church,
       builder: () => const PrayerMode(),
     ),
-    AppRoute(
+    Route(
       path: "/adjournment",
       title: "Adjourn Meeting",
       icon: Icons.pause,
       builder: () => const AdjournMode(),
     ),
-    AppRoute(
+    Route(
       path: "/tourdetable",
       title: "Tour de Table",
       icon: Icons.autorenew,
       builder: () => const TourDeTableMode(),
     ),
-    AppRoute(
+    Route(
       path: "/single",
       title: "Single Speaker",
       icon: Icons.mic,
       builder: () => const SingleMode(),
     ),
-    AppRoute(
+    Route(
       path: "/custom",
       title: "Custom",
       icon: Icons.edit,
@@ -134,7 +132,6 @@ class AppRouter {
     return GoRouter(
       initialLocation: "/",
       errorBuilder: (_, state) {
-        log("[GoRouter]: ${state.error}");
         _putRouteController(state);
         return const ErrorPage();
       },
@@ -187,7 +184,7 @@ class AppRouter {
                     (route) => GoRoute(
                       path: route.path,
                       pageBuilder: (_, state) {
-                        // _putRouteController(state);
+                        _putRouteController(state);
 
                         // if (!Get.isRegistered<CommitteeController>()) {
                         //   LocalStorage.loadCommittee(
@@ -207,7 +204,7 @@ class AppRouter {
                   .toList(),
             ),
             ...List.generate(tabs.length - 1, (index) {
-              final AppRoute route = tabs[index + 1];
+              final Route route = tabs[index + 1];
 
               return GoRoute(
                 path: route.path,
@@ -219,10 +216,6 @@ class AppRouter {
                       state.uri.queryParameters["id"]!,
                     );
                   }
-
-                  Get.find<CommitteeController>().tab = tabs.indexWhere(
-                    (route) => route.path == state.matchedLocation,
-                  );
 
                   return NoTransitionPage(child: route.builder!());
                 },

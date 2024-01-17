@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import './motion_tile.dart';
 import '/services/local_storage.dart';
+import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
+import '/tools/controllers/comittee/speech.dart';
+import '/tools/extensions.dart';
+import '/tools/functions.dart';
+import '/ui/pages/committee/motions/widgets/motion_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
 
@@ -17,7 +21,7 @@ class CurrentMotionCard extends StatelessWidget {
 
     return GetBuilder<MotionsController>(
       builder: (_) => SizedBox(
-        height: context.height / 2.85,
+        height: context.height / 2.75,
         width: context.width / 3,
         child: Card(
           child: Container(
@@ -35,7 +39,7 @@ class CurrentMotionCard extends StatelessWidget {
                     if (_motionsController.currentMotion.isNotEmpty) {
                       return MotionTile(
                         motion: _motionsController.currentMotion,
-                        reorderable: false,
+                        current: true,
                       );
                     } else {
                       return Container(
@@ -110,9 +114,7 @@ class _PassMotionDialog extends StatelessWidget {
     return Obx(
       () => DialogBox(
         heading: "Activate ${_motionsController.currentMotion["type"]}",
-        content: const Text(
-          "Do you want to activate this motion now?\nAfter Activation go to the respective page!",
-        ),
+        content: const Text("Do you want to activate this motion now?"),
         actions: [
           RoundedButton(
             style: RoundedButtonStyle.border,
@@ -135,8 +137,7 @@ class _PassMotionDialog extends StatelessWidget {
               vertical: 4,
             ),
             onPressed: () {
-              _motionsController
-                  .currentMotion["onPass"](_motionsController.currentMotion);
+              _onPass(context, _motionsController.currentMotion);
 
               _motionsController.nextMotion(passed: true);
               _motionsController.update();
@@ -194,4 +195,179 @@ class _MultipleModeButton extends StatelessWidget {
       }
     });
   }
+}
+
+void _onPass(BuildContext context, Map<String, dynamic> motion) {
+  final Map<String, Function> functions = {
+    "Moderated Caucus": () {
+      if (Get.isRegistered<SpeechController>(tag: "mod")) {
+        Get.delete<SpeechController>(tag: "mod");
+      }
+
+      final SpeechController _speechController =
+          Get.put(SpeechController("mod"), tag: "mod");
+
+      _speechController.subtopic = motion["topic"] as Map<String, String>;
+      _speechController.overallDuration = Duration(
+        seconds: (motion["overallDuration"] as String).toInt,
+      );
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      LocalStorage.saveSpeech(_speechController);
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go("/mod?id=${Get.find<CommitteeController>().committee.id}");
+    },
+    "Unmoderated Caucus": () {
+      if (Get.isRegistered<SpeechController>(tag: "unmod")) {
+        Get.delete<SpeechController>(tag: "unmod");
+      }
+
+      final SpeechController _speechController =
+          Get.put(SpeechController("unmod"), tag: "unmod");
+
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go("/unmod?id=${Get.find<CommitteeController>().committee.id}");
+    },
+    "Consultation": () {
+      if (Get.isRegistered<SpeechController>(tag: "consultation")) {
+        Get.delete<SpeechController>(tag: "consultation");
+      }
+
+      final SpeechController _speechController =
+          Get.put(SpeechController("consultation"), tag: "consultation");
+
+      _speechController.subtopic = motion["topic"] as Map<String, String>;
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go(
+        "/consultation?id=${Get.find<CommitteeController>().committee.id}",
+      );
+    },
+    "Adjourn Meeting": () {
+      if (Get.isRegistered<SpeechController>(tag: "adjourn")) {
+        Get.delete<SpeechController>(tag: "adjourn");
+      }
+
+      final SpeechController _speechController =
+          Get.put(SpeechController("adjourn"), tag: "adjourn");
+
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go(
+        "/adjournment?id=${Get.find<CommitteeController>().committee.id}",
+      );
+    },
+    "Change GSL Time": () {
+      late final SpeechController _speechController;
+
+      if (Get.isRegistered<SpeechController>(tag: "gsl")) {
+        _speechController = Get.find<SpeechController>(tag: "gsl");
+      } else {
+        _speechController =
+            Get.put<SpeechController>(SpeechController("gsl"), tag: "gsl");
+      }
+
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      LocalStorage.saveSpeech(_speechController);
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go("/gsl?id=${Get.find<CommitteeController>().committee.id}");
+    },
+    "Prayer": () {
+      if (Get.isRegistered<SpeechController>(tag: "prayer")) {
+        Get.delete<SpeechController>(tag: "prayer");
+      }
+
+      final SpeechController _speechController =
+          Get.put(SpeechController("prayer"), tag: "prayer");
+
+      _speechController.subtopic = motion["topic"] as Map<String, String>;
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go("/prayer?id=${Get.find<CommitteeController>().committee.id}");
+    },
+    "End Meeting": () => context.pushReplacement("/"),
+    "Set Agenda": () {
+      final CommitteeController _committeeController =
+          Get.find<CommitteeController>();
+
+      _committeeController.setAgenda(
+        (motion["topic"] as Map<String, String>).values.first,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        snackbar(
+          context,
+          const Center(
+            child: Text("Agenda Changed"),
+          ),
+        ),
+      );
+    },
+    "Tour de Table": () {
+      if (Get.isRegistered<SpeechController>(tag: "tourdetable")) {
+        Get.delete<SpeechController>(tag: "tourdetable");
+      }
+
+      final SpeechController _speechController =
+          Get.put(SpeechController("tourdetable"), tag: "tourdetable");
+
+      _speechController.subtopic = motion["topic"] as Map<String, String>;
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go(
+        "/tourdetable?id=${Get.find<CommitteeController>().committee.id}",
+      );
+    },
+    "Appeal Chair's Decision": () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        snackbar(
+          context,
+          const Center(
+            child: Text("Decision Appealed"),
+          ),
+        ),
+      );
+    },
+    "Custom": () {
+      if (Get.isRegistered<SpeechController>(tag: "custom")) {
+        Get.delete<SpeechController>(tag: "custom");
+      }
+
+      final SpeechController _speechController =
+          Get.put(SpeechController("custom"), tag: "custom");
+
+      _speechController.subtopic = motion["topic"] as Map<String, String>;
+      _speechController.duration = Duration(
+        seconds: (motion["duration"] as String).toInt,
+      );
+
+      Get.find<CommitteeController>().tab = 0;
+      context.go("/custom?id=${Get.find<CommitteeController>().committee.id}");
+    },
+  };
+
+  functions[motion["type"]]!();
 }

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import './committee.dart';
 import '/services/local_storage.dart';
+import '/tools/controllers/comittee/committee.dart';
 
 class VoteController extends GetxController {
   final RxString _topic = "Your Topic".obs;

@@ -89,6 +89,7 @@ class SpeakersInfo extends StatelessWidget {
                 ? Expanded(
                     child: ReorderableListView.builder(
                       buildDefaultDragHandles: false,
+                      proxyDecorator: proxyDecorator,
                       onReorder: (oldIndex, newIndex) =>
                           controller.reorder(oldIndex, newIndex),
                       itemCount: controller.nextSpeakers.length,

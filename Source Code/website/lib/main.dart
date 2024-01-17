@@ -1,38 +1,29 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
+import 'package:url_strategy/url_strategy.dart';
 
-import '/config/constants/constants.dart';
+import '/config/constants.dart';
 import '/config/theme.dart';
 import '/firebase_options.dart';
 import '/models/router.dart';
 import '/tools/controllers/home.dart';
-import '/tools/extensions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Intl.defaultLocale = LOCALE.code;
-  await initializeDateFormatting(Intl.defaultLocale);
-
-  await GetStorage.init();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  analytics = FirebaseAnalytics.instance;
 
-  await analytics.setAnalyticsCollectionEnabled(!kDebugMode);
+  await analytics.setAnalyticsCollectionEnabled(!TESTING);
   await analytics.logAppOpen();
 
-  setUrlStrategy(PathUrlStrategy());
+  await GetStorage.init();
+
+  setPathUrlStrategy();
   runApp(const Oratorz());
 }
 
@@ -52,7 +43,7 @@ class Oratorz extends StatelessWidget {
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {PointerDeviceKind.mouse},
       ),
-      routerConfig: AppRouter.router,
+      routerConfig: Router.router,
     );
   }
 }

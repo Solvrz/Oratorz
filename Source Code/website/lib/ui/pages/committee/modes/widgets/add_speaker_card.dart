@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/add_speaker.dart';
+import '/ui/pages/committee/widgets/add_speaker.dart';
 
 class AddSpeakerCard extends StatelessWidget {
   final String tag;

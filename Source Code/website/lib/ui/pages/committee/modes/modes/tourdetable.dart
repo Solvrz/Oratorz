@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/hourglass.dart';
-import '../../widgets/speakers_info.dart';
-import '../widgets/add_speaker_card.dart';
-import '../widgets/past_speakers_card.dart';
 import '/tools/controllers/comittee/speech.dart';
+import '/ui/pages/committee/modes/widgets/add_speaker_card.dart';
+import '/ui/pages/committee/modes/widgets/past_speakers_card.dart';
+import '/ui/pages/committee/widgets/hourglass.dart';
+import '/ui/pages/committee/widgets/speakers_info.dart';
 
 class TourDeTableMode extends StatelessWidget {
   const TourDeTableMode({super.key});

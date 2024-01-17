@@ -1,5 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,7 +40,7 @@ class CommitteesSection extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () => context.push(AppRouter.setup.path),
+                  onTap: () => context.push(Router.setup.path),
                   child: DottedBorder(
                     strokeWidth: 3,
                     dashPattern: const [10, 4],

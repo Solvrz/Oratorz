@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/hourglass.dart';
 import '/tools/controllers/comittee/speech.dart';
-import '/tools/functions.dart';
+import '/ui/pages/committee/widgets/hourglass.dart';
 
 class PrayerMode extends StatelessWidget {
   const PrayerMode({super.key});
@@ -30,7 +29,6 @@ class PrayerMode extends StatelessWidget {
             child: const Hourglass(tag: "prayer"),
           ),
         ),
-        carousel(context),
       ],
     );
   }

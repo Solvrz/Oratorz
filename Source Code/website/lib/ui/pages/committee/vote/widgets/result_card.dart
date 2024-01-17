@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/dialogs/vote_settings.dart';
 import '/tools/controllers/comittee/vote.dart';
+import '/ui/pages/committee/widgets/dialogs/vote_settings.dart';
 import '/ui/widgets/rounded_button.dart';
 
 class ResultCard extends StatelessWidget {

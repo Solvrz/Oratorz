@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router, Route;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '../widgets/body.dart';
 import '/models/router.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
+import '/ui/pages/committee/widgets/body.dart';
 
 class ModesPage extends StatefulWidget {
   final Widget child;
@@ -24,7 +24,7 @@ class _ModesPageState extends State<ModesPage> {
 
   @override
   void initState() {
-    selected = AppRouter.modes.indexWhere(
+    selected = Router.modes.indexWhere(
       (route) => route.path == Get.find<RouteController>().path,
     );
 
@@ -52,12 +52,12 @@ class _ModesPageState extends State<ModesPage> {
               Row(
                 children: [
                   Icon(
-                    AppRouter.modes[selected].icon,
+                    Router.modes[selected].icon,
                     color: context.theme.colorScheme.tertiary,
                   ),
                   const VerticalDivider(),
                   Text(
-                    AppRouter.modes[selected].title ?? "",
+                    Router.modes[selected].title ?? "",
                     style: context.textTheme.bodyLarge,
                   ),
                 ],
@@ -71,8 +71,8 @@ class _ModesPageState extends State<ModesPage> {
             ],
           ),
         ),
-        itemBuilder: (_) => List.generate(AppRouter.modes.length, (index) {
-          final AppRoute route = AppRouter.modes[index];
+        itemBuilder: (_) => List.generate(Router.modes.length, (index) {
+          final Route route = Router.modes[index];
 
           return PopupMenuItem(
             value: index,
@@ -96,7 +96,7 @@ class _ModesPageState extends State<ModesPage> {
           setState(() => selected = index);
 
           context.go(
-            "${AppRouter.modes[index].path}?id=${committeeController.committee.id}",
+            "${Router.modes[index].path}?id=${committeeController.committee.id}",
           );
         },
       ),

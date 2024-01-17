@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import './cell.dart';
 import './header.dart';
-import '/config/constants/data.dart';
+import '/config/data.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/widgets/delegate_tile.dart';
@@ -13,8 +13,6 @@ const List<double> DIMENSIONS = [240, 200, 50];
 
 class Table extends StatelessWidget {
   const Table({super.key});
-
-  //TODO (YUG): Add search and auto scroll to matching delegate
 
   List<String> getDelegates() {
     final ScorecardController controller = Get.find<ScorecardController>();

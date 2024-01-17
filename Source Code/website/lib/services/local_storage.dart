@@ -1,19 +1,17 @@
-import 'dart:convert';
-import 'dart:js' as js;
+// ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:universal_html/html.dart' as html;
 
-import '../models/scorecard.dart';
-import '../tools/controllers/comittee/vote.dart';
-import '../tools/controllers/home.dart';
-import '/config/constants/constants.dart';
+import '/config/constants.dart';
 import '/models/committee.dart';
+import '/models/scorecard.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/controllers/comittee/speech.dart';
+import '/tools/controllers/comittee/vote.dart';
+import '/tools/controllers/home.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class LocalStorage {
@@ -303,7 +301,6 @@ class LocalStorage {
     final Committee committee = Get.find<CommitteeController>().committee;
 
     final Map<String, dynamic> data = box.read(committee.id);
-
     if (data["motions"] == null) return false;
 
     final MotionsController controller = MotionsController();
@@ -315,12 +312,6 @@ class LocalStorage {
     controller.nextMotions = data["motions"]["next"]
         .map<Map<String, dynamic>>(
           (element) => Map<String, dynamic>.from(element),
-        )
-        .toList();
-
-    controller.pastMotions = data["motions"]["past"]
-        .map<Map<Map<String, dynamic>, bool>>(
-          (element) => Map<Map<String, dynamic>, bool>.from(element),
         )
         .toList();
 
@@ -375,35 +366,4 @@ class LocalStorage {
   }
 
   static void clearData() => box.erase();
-
-  static bool exportToFile(Committee committee) {
-    js.context.callMethod("saveAs", [
-      html.Blob([jsonEncode(box.read(committee.id))], "application/json"),
-      "session-${committee.id}.json",
-    ]);
-
-    return true;
-  }
-
-  static bool loadFromJson(Map<String, dynamic> data) {
-    if (committees.contains(data["committee"]["id"])) return false;
-
-    final Committee committee = Committee(
-      id: data["committee"]["id"],
-      name: data["committee"]["name"],
-      agenda: data["committee"]["agenda"],
-      delegates: data["committee"]["delegates"].cast<String>(),
-    );
-
-    Get.put<CommitteeController>(CommitteeController(committee: committee));
-
-    analytics.logEvent(name: "committe_loaded");
-
-    Get.find<HomeController>().addCommittee(committee.id);
-
-    box.write(committee.id, data);
-    box.write("committees", committees);
-
-    return true;
-  }
 }

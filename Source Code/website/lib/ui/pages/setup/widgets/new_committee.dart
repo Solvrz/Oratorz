@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/config/constants/data.dart';
+import '/config/data.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/delegate_tile.dart';
