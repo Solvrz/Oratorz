@@ -1,1 +1,1 @@
-cd Source\ Code/oratorz && flutter build web && firebase deploy --only hosting
+cd Source\ Code/oratorz && flutter build web --release && firebase deploy --only hosting
