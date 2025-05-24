@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './widgets/past_voters_card.dart';
-import './widgets/result_card.dart';
-import './widgets/voting_card.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/pages/committee/widgets/body.dart';
+import './widgets/past_voters_card.dart';
+import './widgets/result_card.dart';
+import './widgets/voting_card.dart';
 
 class VotePage extends StatelessWidget {
   const VotePage({super.key});

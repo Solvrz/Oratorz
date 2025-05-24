@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart' hide Table;
 import 'package:get/get.dart';
 
-import './widgets/table.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/pages/committee/widgets/body.dart';
 import '/ui/widgets/rounded_button.dart';
+import './widgets/table.dart';
 
 class ScorecardPage extends StatelessWidget {
   const ScorecardPage({super.key});

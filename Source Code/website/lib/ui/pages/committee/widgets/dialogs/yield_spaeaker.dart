@@ -44,10 +44,10 @@ class _YieldSpeakerDialogState extends State<YieldSpeakerDialog> {
                       groupValue: selected,
                       hoverColor: Colors.transparent,
                       focusColor: Colors.transparent,
-                      overlayColor: MaterialStateProperty.all<Color>(
+                      overlayColor: WidgetStateProperty.all<Color>(
                         Colors.transparent,
                       ),
-                      fillColor: MaterialStateProperty.all<Color>(
+                      fillColor: WidgetStateProperty.all<Color>(
                         Colors.grey.shade700,
                       ),
                       onChanged: (value) => setState(() {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './table.dart' show DIMENSIONS;
 import '/tools/controllers/comittee/scorecard.dart';
+import './table.dart' show DIMENSIONS;
 import 'parameter.dart';
 
 class TableHeader extends StatelessWidget {

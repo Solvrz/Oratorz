@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './widgets/committees_section.dart';
 import '/tools/controllers/home.dart';
 import '/ui/pages/home/widgets/profile_card.dart';
 import '/ui/widgets/oratorz_banner.dart';
+import './widgets/committees_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

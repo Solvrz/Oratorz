@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dropzone/flutter_dropzone.dart';
+// import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
@@ -24,8 +24,8 @@ class UploadFileDialog extends StatefulWidget {
 class UploadFileDialogState extends State<UploadFileDialog> {
   final SetupController _setupController = Get.find<SetupController>();
 
-  late final DropzoneViewController _dropController;
-  bool _dropzoneHovered = false;
+  // late final DropzoneViewController _dropController;
+  final bool _dropzoneHovered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,28 +43,29 @@ class UploadFileDialogState extends State<UploadFileDialog> {
         ),
         child: Stack(
           children: [
-            DropzoneView(
-              operation: DragOperation.copy,
-              cursor: CursorType.grab,
-              onCreated: (controller) => _dropController = controller,
-              onDropMultiple: (files) async {
-                if (files != null) {
-                  for (final dynamic file in files) {
-                    loadData(
-                      context: context,
-                      data: await _dropController.getFileData(file),
-                      extension:
-                          (await _dropController.getFileMIME(file)).extension,
-                    );
-                  }
-                }
-                if (context.mounted && context.canPop()) {
-                  context.pop();
-                }
-              },
-              onHover: () => setState(() => _dropzoneHovered = true),
-              onLeave: () => setState(() => _dropzoneHovered = false),
-            ),
+            // TODO : Fix Dropdown File Menu
+            // DropzoneView(
+            //   operation: DragOperation.copy,
+            //   cursor: CursorType.grab,
+            //   onCreated: (controller) => _dropController = controller,
+            //   onDropMultiple: (files) async {
+            //     if (files != null) {
+            //       for (final dynamic file in files) {
+            //         loadData(
+            //           context: context,
+            //           data: await _dropController.getFileData(file),
+            //           extension:
+            //               (await _dropController.getFileMIME(file)).extension,
+            //         );
+            //       }
+            //     }
+            //     if (context.mounted && context.canPop()) {
+            //       context.pop();
+            //     }
+            //   },
+            //   onHover: () => setState(() => _dropzoneHovered = true),
+            //   onLeave: () => setState(() => _dropzoneHovered = false),
+            // ),
             Center(
               child: Column(
                 children: [
@@ -76,20 +77,20 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                       color: context.theme.colorScheme.secondary,
                     ),
                   ),
-                  RichText(
-                    text: TextSpan(
-                      text: "Drag & Drop Files Here",
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        color: context.theme.colorScheme.secondary,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "\n(Suported: .xlsx & .xls)",
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
+                  // RichText(
+                  //   text: TextSpan(
+                  //     text: "Drag & Drop Files Here",
+                  //     style: context.textTheme.bodyLarge?.copyWith(
+                  //       color: context.theme.colorScheme.secondary,
+                  //     ),
+                  //     children: [
+                  //       TextSpan(
+                  //         text: "\n(Suported: .xlsx & .xls)",
+                  //         style: context.textTheme.bodySmall,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './motion_dialog.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/rounded_button.dart';
+import './motion_dialog.dart';
 
 class AddMotionCard extends StatelessWidget {
   const AddMotionCard({super.key});

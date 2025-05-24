@@ -3,10 +3,10 @@ import 'package:flutter/material.dart' hide Router;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import './committee_card.dart';
 import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/home.dart';
+import './committee_card.dart';
 
 class CommitteesSection extends StatelessWidget {
   const CommitteesSection({super.key});
@@ -42,11 +42,12 @@ class CommitteesSection extends StatelessWidget {
                 InkWell(
                   onTap: () => context.push(Router.setup.path),
                   child: DottedBorder(
-                    strokeWidth: 3,
-                    dashPattern: const [10, 4],
-                    borderType: BorderType.RRect,
-                    color: Colors.grey.shade500,
-                    radius: const Radius.circular(10),
+                    options: RoundedRectDottedBorderOptions(
+                      strokeWidth: 3,
+                      dashPattern: const [10, 4],
+                      color: Colors.grey.shade500,
+                      radius: const Radius.circular(10),
+                    ),
                     child: SizedBox(
                       height: 174,
                       width: 150,

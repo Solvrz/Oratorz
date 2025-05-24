@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './motion_tile.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/functions.dart';
+import './motion_tile.dart';
 
 class FutureMotionsCard extends StatelessWidget {
   const FutureMotionsCard({super.key});

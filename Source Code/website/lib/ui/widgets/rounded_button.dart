@@ -29,7 +29,7 @@ class RoundedButton extends StatelessWidget {
       message: tooltip ?? "",
       child: TextButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<OutlinedBorder>(
+          shape: WidgetStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: style == RoundedButtonStyle.empty
@@ -37,13 +37,13 @@ class RoundedButton extends StatelessWidget {
                   : BorderSide(color: _color),
             ),
           ),
-          backgroundColor: MaterialStateProperty.all<Color>(
+          backgroundColor: WidgetStateProperty.all<Color>(
             style == RoundedButtonStyle.border ? Colors.white : _color,
           ),
-          foregroundColor: MaterialStateProperty.all<Color>(
+          foregroundColor: WidgetStateProperty.all<Color>(
             style == RoundedButtonStyle.border ? _color : Colors.white,
           ),
-          overlayColor: MaterialStateProperty.all<Color>(
+          overlayColor: WidgetStateProperty.all<Color>(
             style == RoundedButtonStyle.border
                 ? _color.withAlpha(30)
                 : Colors.white12,

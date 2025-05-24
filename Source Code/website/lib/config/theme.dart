@@ -48,23 +48,23 @@ class OratorzTheme {
       tooltipTheme: const TooltipThemeData(
         margin: EdgeInsets.all(5),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 5,
         shadowColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          padding: MaterialStateProperty.all<EdgeInsets>(
+          padding: WidgetStateProperty.all<EdgeInsets>(
             const EdgeInsets.all(12),
           ),
-          overlayColor: MaterialStateProperty.all<Color>(
+          overlayColor: WidgetStateProperty.all<Color>(
             const Color.fromARGB(255, 255, 250, 230),
           ),
-          foregroundColor: MaterialStateProperty.all<Color>(
+          foregroundColor: WidgetStateProperty.all<Color>(
             Colors.amber.shade400,
           ),
-          shape: MaterialStateProperty.all<OutlinedBorder>(
+          shape: WidgetStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
               side: BorderSide(
                 color: Colors.amber.shade400,
@@ -105,8 +105,8 @@ class OratorzTheme {
       scrollbarTheme: ScrollbarThemeData(
         interactive: true,
         crossAxisMargin: -2,
-        thumbColor: MaterialStateProperty.all(OratorzColors.secondaryColor),
-        thickness: MaterialStateProperty.all(5),
+        thumbColor: WidgetStateProperty.all(OratorzColors.secondaryColor),
+        thickness: WidgetStateProperty.all(5),
         radius: const Radius.circular(20),
       ),
       snackBarTheme: const SnackBarThemeData(

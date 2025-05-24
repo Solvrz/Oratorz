@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
-import './committee.dart';
 import '/models/scorecard.dart';
 import '/services/local_storage.dart';
+import './committee.dart';
 
 class ScorecardController extends GetxController {
   late final Rx<Scorecard> _scorecard;

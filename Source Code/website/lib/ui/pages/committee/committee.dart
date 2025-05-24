@@ -3,10 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import './widgets/dialogs/roll_call.dart';
 import '/models/router.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
+import './widgets/dialogs/roll_call.dart';
 
 class CommitteePage extends StatefulWidget {
   final Widget child;

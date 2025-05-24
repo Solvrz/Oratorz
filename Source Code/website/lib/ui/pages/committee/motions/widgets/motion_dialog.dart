@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import './buttons/duration.dart';
-import './buttons/submitted_by.dart';
-import './buttons/topic.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import './buttons/duration.dart';
+import './buttons/submitted_by.dart';
+import './buttons/topic.dart';
 
 class MotionDialog extends StatelessWidget {
   final Map<String, dynamic> motion;

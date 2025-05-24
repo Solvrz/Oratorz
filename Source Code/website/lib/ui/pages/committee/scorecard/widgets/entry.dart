@@ -2,9 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './cell.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/widgets/delegate_tile.dart';
+import './cell.dart';
 
 class Entry extends StatelessWidget {
   final String delegate;

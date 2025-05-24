@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import './dialogs/speech_settings.dart';
-import './dialogs/yield_spaeaker.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/extensions.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import './dialogs/speech_settings.dart';
+import './dialogs/yield_spaeaker.dart';
 
 class Hourglass extends StatefulWidget {
   final String tag;
