@@ -42,14 +42,18 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ProfileCard(),
-                  SizedBox(width: 60),
+                  SizedBox(width: 30),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         OratorzBanner(),
                         SizedBox(height: 30),
-                        CommitteesSection(),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: CommitteesSection(),
+                          ),
+                        ),
                       ],
                     ),
                   ),

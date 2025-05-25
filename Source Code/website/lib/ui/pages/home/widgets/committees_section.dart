@@ -28,44 +28,42 @@ class CommitteesSection extends StatelessWidget {
             final List<String> committees =
                 Get.find<HomeController>().committees;
 
-            return SingleChildScrollView(
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 16,
-                runSpacing: 24,
-                children: [
-                  ...List.generate(
-                    committees.length,
-                    (index) => CommitteeCard(
-                      committee: LocalStorage.getCommittee(committees[index]),
-                    ),
+            return Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 16,
+              runSpacing: 24,
+              children: [
+                ...List.generate(
+                  committees.length,
+                  (index) => CommitteeCard(
+                    committee: LocalStorage.getCommittee(committees[index]),
                   ),
-                  InkWell(
-                    onTap: () => context.push(Router.setup.path),
-                    child: DottedBorder(
-                      options: RoundedRectDottedBorderOptions(
-                        strokeWidth: 3,
-                        dashPattern: const [10, 4],
-                        color: Colors.grey.shade500,
-                        radius: const Radius.circular(10),
-                      ),
-                      child: SizedBox(
-                        height: 174,
-                        width: 150,
-                        child: Center(
-                          child: Text(
-                            "Start a New Committee",
-                            style: context.textTheme.titleLarge!.copyWith(
-                              color: Colors.grey.shade500,
-                            ),
-                            textAlign: TextAlign.center,
+                ),
+                InkWell(
+                  onTap: () => context.push(Router.setup.path),
+                  child: DottedBorder(
+                    options: RoundedRectDottedBorderOptions(
+                      strokeWidth: 3,
+                      dashPattern: const [10, 4],
+                      color: Colors.grey.shade500,
+                      radius: const Radius.circular(10),
+                    ),
+                    child: SizedBox(
+                      height: 174,
+                      width: 150,
+                      child: Center(
+                        child: Text(
+                          "Start a New Committee",
+                          style: context.textTheme.titleLarge!.copyWith(
+                            color: Colors.grey.shade500,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           },
         ),

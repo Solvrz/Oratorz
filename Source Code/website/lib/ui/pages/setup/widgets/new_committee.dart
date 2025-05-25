@@ -11,8 +11,6 @@ class NewCommitteeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SetupController _setupController = Get.find<SetupController>();
-
     return SizedBox(
       height: context.height / 1.5,
       width: context.width / 2,
