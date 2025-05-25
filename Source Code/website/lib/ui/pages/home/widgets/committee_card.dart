@@ -96,8 +96,8 @@ class _CommitteeCardState extends State<CommitteeCard>
                     boxShadow: [
                       if (controller.value > 1)
                         BoxShadow(
-                          color:
-                              Colors.grey.shade300.withValues(alpha:animationStatus),
+                          color: Colors.grey.shade300
+                              .withValues(alpha: animationStatus),
                           offset: const Offset(2, 2),
                           blurRadius: 3,
                           spreadRadius: 2,
@@ -112,7 +112,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                         Positioned(
                           right: 100 * (controller.value) - 200,
                           child: Image.asset(
-                            "logos/${widget.committee.type}.png",
+                            "logos/${widget.committee.type.contains("AIPPM") ? "AIPPM" : widget.committee.type}.png",
                             height: 185,
                             opacity: const AlwaysStoppedAnimation(0.4),
                           ),
@@ -138,7 +138,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                                 Text(
                                   widget.committee.type,
                                   style: context.textTheme.titleLarge!.copyWith(
-                                    color: Colors.white.withValues(alpha:0.7),
+                                    color: Colors.white.withValues(alpha: 0.7),
                                   ),
                                 ),
                               ],

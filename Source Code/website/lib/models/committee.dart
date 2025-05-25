@@ -18,7 +18,7 @@ class Committee {
   String get type {
     for (final MapEntry<String, List<String>> entry in COMMITTEES.entries) {
       if (entry.value.every((element) => delegates.contains(element))) {
-        return entry.key;
+        return entry.key.contains("AIPPM") ? "AIPPM" : entry.key;
       }
     }
 
