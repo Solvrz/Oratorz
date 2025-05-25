@@ -18,6 +18,7 @@ class SetupPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
           title: Text(
             "Setup Committee",
             style:

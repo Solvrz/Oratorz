@@ -29,20 +29,12 @@ class NewCommitteeCard extends StatelessWidget {
               _CommitteeType(
                 index: 0,
                 title: "UN Member States",
-                delegates: COUNTRIES.keys.toList()
-                  ..removeWhere(
-                    (_delegate) => _setupController.committee.delegates
-                        .contains(_delegate),
-                  ),
+                delegates: COUNTRIES.keys.toList(),
               ),
               _CommitteeType(
                 index: 1,
                 title: "AIPPM Members",
-                delegates: AIPPM.keys.toList()
-                  ..removeWhere(
-                    (_delegate) => _setupController.committee.delegates
-                        .contains(_delegate),
-                  ),
+                delegates: AIPPM.keys.toList(),
               ),
             ],
           ),
