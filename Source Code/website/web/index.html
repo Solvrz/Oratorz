@@ -34,9 +34,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="apple-touch-icon" sizes="180x180" />
 
-    <script src="flutter.js" defer></script>
-    <script src="flutter_bootstrap.js" async></script>
-
     <style>
       .loading {
         height: 100vh;
@@ -107,16 +104,8 @@
     </div>
 
     <script>
-      {
-        {
-          flutter_js;
-        }
-      }
-      {
-        {
-          flutter_build_config;
-        }
-      }
+      {{flutter_js}}
+      {{flutter_build_config}}
 
       _flutter.loader.load({
         onEntrypointLoaded: function (engineInitializer) {

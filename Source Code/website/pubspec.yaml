@@ -12,12 +12,10 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-
   firebase_core: ^3.13.1
   firebase_analytics: ^11.4.6
   scrollable_positioned_list: ^0.3.8
   percent_indicator: ^4.2.3
-  # flutter_dropzone: ^3.0.6
   dropdown_search: ^6.0.2
   universal_html: ^2.2.4
   dotted_border: ^3.0.1
@@ -32,6 +30,7 @@ dependencies:
   excel: ^4.0.2
   http: ^1.2.0
   get: ^4.6.6
+  firebase_auth: ^5.5.4
 
 dev_dependencies:
   flutter_lints: ^5.0.0
