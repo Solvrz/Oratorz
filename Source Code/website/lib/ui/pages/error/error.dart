@@ -67,6 +67,7 @@ class ErrorPage extends StatelessWidget {
                               style: context.textTheme.bodyLarge
                                   ?.copyWith(color: Colors.white),
                             ),
+                            // TODO: Directly going to error page and then clicking the button raises exception
                             onPressed: () =>
                                 context.pushReplacement(Router.home.path),
                           ),

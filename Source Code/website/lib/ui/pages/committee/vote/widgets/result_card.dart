@@ -151,7 +151,7 @@ class ResultCard extends StatelessWidget {
                     child: const Icon(Icons.settings),
                   ),
                   RoundedButton(
-                    color: Colors.blue.shade400,
+                    color: context.theme.colorScheme.tertiary,
                     tooltip: "Reset Vote",
                     onPressed: () {
                       _voteController.reset();

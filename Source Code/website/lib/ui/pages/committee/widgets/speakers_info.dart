@@ -27,7 +27,7 @@ class SpeakersInfo extends StatelessWidget {
                 style: context.textTheme.headlineSmall,
               ),
               RoundedButton(
-                color: Colors.blue.shade400,
+                color: context.theme.colorScheme.tertiary,
                 padding: const EdgeInsets.symmetric(
                   vertical: 2,
                   horizontal: 4,
@@ -103,7 +103,7 @@ class SpeakersInfo extends StatelessWidget {
                               trailing: Row(
                                 children: [
                                   RoundedButton(
-                                    color: Colors.blue.shade400,
+                                    color: context.theme.colorScheme.tertiary,
                                     padding: const EdgeInsets.all(4),
                                     onPressed: () => controller
                                         .swapWithCurrentSpeaker(index),

@@ -68,7 +68,7 @@ class VoteCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       RoundedButton(
-                        color: Colors.blue.shade400,
+                        color: context.theme.colorScheme.tertiary,
                         tooltip: "Reset Vote",
                         onPressed: () {
                           _voteController.reset();

@@ -31,6 +31,10 @@ class OratorzTheme {
           fontWeight: FontWeight.bold,
           fontSize: 24,
         ),
+        headlineLarge: textTheme.headlineLarge!.copyWith(
+          fontWeight: FontWeight.bold,
+          fontSize: 36,
+        ),
         titleLarge: textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 18,

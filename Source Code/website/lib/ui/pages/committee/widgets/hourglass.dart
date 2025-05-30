@@ -185,7 +185,7 @@ class _HourglassState extends State<Hourglass> {
                         setupTimer();
                       },
                       tooltip: "Reset Timer",
-                      color: Colors.blue.shade400,
+                      color: context.theme.colorScheme.tertiary,
                       child: const Icon(Icons.restart_alt),
                     ),
                     RoundedButton(

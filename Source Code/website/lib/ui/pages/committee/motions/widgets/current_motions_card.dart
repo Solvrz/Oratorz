@@ -63,10 +63,10 @@ class CurrentMotionCard extends StatelessWidget {
                       color: Colors.amber,
                       icon: Icons.connect_without_contact,
                     ),
-                    const _MultipleModeButton(
+                    _MultipleModeButton(
                       mode: 2,
                       tooltip: "Vote Motion",
-                      color: Colors.lightBlue,
+                      color: context.theme.colorScheme.tertiary,
                       icon: Icons.how_to_vote,
                     ),
                     RoundedButton(

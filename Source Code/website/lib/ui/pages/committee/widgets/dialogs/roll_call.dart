@@ -101,7 +101,7 @@ class RollCallDialog extends StatelessWidget {
                                     style: rollCall == RollCall.presentAndVoting
                                         ? RoundedButtonStyle.fill
                                         : RoundedButtonStyle.border,
-                                    color: Colors.blue.shade400,
+                                    color: context.theme.colorScheme.tertiary,
                                     onPressed: () {
                                       controller.setRollCall(
                                         delegate,
