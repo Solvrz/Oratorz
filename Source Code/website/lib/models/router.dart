@@ -28,7 +28,7 @@ class Router {
   static const Route root = Route(path: "/");
   static const Route home = Route(path: "/home", title: "Home");
   static const Route setup = Route(path: "/setup", title: "Setup");
-  static const Route login = Route(path: "/login", title: "Login");
+  static const Route signin = Route(path: "/signin", title: "Sign In");
   static const Route signup = Route(path: "/signup", title: "Sign Up");
 
   static List<Route> tabs = [
@@ -160,7 +160,14 @@ class Router {
           path: signup.path,
           builder: (_, state) {
             _putRouteController(state);
-            return const SignupPage();
+            return const SignUpPage();
+          },
+        ),
+        GoRoute(
+          path: signin.path,
+          builder: (_, state) {
+            _putRouteController(state);
+            return const SigninPage();
           },
         ),
         ShellRoute(

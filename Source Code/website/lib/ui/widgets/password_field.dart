@@ -5,38 +5,20 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class PasswordField extends StatefulWidget {
-  final void Function(String value)? onSubmitted;
-  final EdgeInsets? errorPadding;
+  final RxString text;
+  final RxString error;
 
-  PasswordField({
+  const PasswordField({
     super.key,
-    this.onSubmitted,
-    this.errorPadding,
+    required this.text,
+    required this.error,
   });
 
-  _PasswordFieldState _state = _PasswordFieldState();
-
-  void setError(String? newError) => _state.setError(newError);
-
-  final TextEditingController controller = TextEditingController();
-
-  String get pass => _state.pass;
-  void clear() => _state.clear();
-
   @override
-  _PasswordFieldState createState() => _state = _PasswordFieldState();
+  _PasswordFieldState createState() => _PasswordFieldState();
 }
 
 class _PasswordFieldState extends State<PasswordField> {
-  String? error;
-
-  String get pass => widget.controller.text.trim();
-  void clear() => widget.controller.clear();
-
-  void setError(String? newError) {
-    if (mounted) setState(() => error = newError);
-  }
-
   bool hide = true;
 
   @override
@@ -48,9 +30,8 @@ class _PasswordFieldState extends State<PasswordField> {
           children: [
             TextField(
               obscureText: hide,
-              controller: widget.controller,
               cursorColor: context.theme.colorScheme.secondary,
-              onSubmitted: widget.onSubmitted,
+              onChanged: (value) => widget.text.value = value,
               decoration: InputDecoration(
                 fillColor: context.theme.colorScheme.primary,
                 focusColor: context.theme.colorScheme.primary,
@@ -80,24 +61,28 @@ class _PasswordFieldState extends State<PasswordField> {
             ),
           ],
         ),
-        Padding(
-          padding: widget.errorPadding ?? const EdgeInsets.fromLTRB(8, 4, 0, 8),
-          child: error != null && error != ""
-              ? Row(
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      color: context.theme.colorScheme.error,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      error!,
-                      style: TextStyle(color: context.theme.colorScheme.error),
-                    ),
-                  ],
-                )
-              : const SizedBox(),
+        Obx(
+          () => Padding(
+            padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
+            child: widget.error.value != ""
+                ? Row(
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        color: context.theme.colorScheme.error,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        widget.error.value,
+                        softWrap: true,
+                        style:
+                            TextStyle(color: context.theme.colorScheme.error),
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
         ),
       ],
     );

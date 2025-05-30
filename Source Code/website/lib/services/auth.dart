@@ -4,7 +4,10 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
+import '../tools/controllers/signup.dart';
 import '/models/account.dart';
 import './account.dart';
 
@@ -50,11 +53,7 @@ class Auth {
 
       if (pushToSplash) {
         if (context.mounted) {
-          await Navigator.pushNamedAndRemoveUntil(
-            context,
-            "/",
-            (_) => false,
-          );
+          context.pushReplacement("/");
         }
       }
     } catch (e) {
@@ -127,5 +126,11 @@ class Auth {
     if (context.mounted) {
       await Navigator.pushNamedAndRemoveUntil(context, "/", (_) => false);
     }
+  }
+
+  static Future<bool> signup() async {
+    final SignUpController controller = Get.find<SignUpController>();
+
+    return true;
   }
 }

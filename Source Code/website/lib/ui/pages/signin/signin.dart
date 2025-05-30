@@ -3,39 +3,17 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../models/router.dart';
-import '../../../tools/controllers/signup.dart';
+import '../../../tools/controllers/signin.dart';
 import '../../widgets/input_field.dart';
 import '../../widgets/oratorz_banner.dart';
 import '../../widgets/password_field.dart';
 import '../../widgets/rounded_button.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class SigninPage extends StatelessWidget {
+  const SigninPage({super.key});
 
-  bool handleErrors(SignUpController controller) {
+  bool handleErrors(SignInController controller) {
     bool success = true;
-
-    if (controller.firstName.value == "") {
-      controller.errors["firstName"]!.value = "Required";
-      success = false;
-    } else if (!RegExp(r'^([a-z]|[A-Z])+$')
-        .hasMatch(controller.firstName.value)) {
-      controller.errors["firstName"]!.value = "Enter a valid name";
-      success = false;
-    } else {
-      controller.errors["firstName"]!.value = "";
-    }
-
-    if (controller.lastName.value == "") {
-      controller.errors["lastName"]!.value = "Required";
-      success = false;
-    } else if (!RegExp(r'^([a-z]|[A-Z])+$')
-        .hasMatch(controller.lastName.value)) {
-      controller.errors["lastName"]!.value = "Enter a valid name";
-      success = false;
-    } else {
-      controller.errors["lastName"]!.value = "";
-    }
 
     if (controller.email.value == "") {
       controller.errors["email"]!.value = "Required";
@@ -67,11 +45,11 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<SignUpController>()) {
-      Get.put<SignUpController>(SignUpController());
+    if (!Get.isRegistered<SignInController>()) {
+      Get.put<SignInController>(SignInController());
     }
 
-    final SignUpController controller = Get.find<SignUpController>();
+    final SignInController controller = Get.find<SignInController>();
 
     return SafeArea(
       child: Scaffold(
@@ -97,13 +75,13 @@ class SignUpPage extends StatelessWidget {
                           children: [
                             const Spacer(),
                             Text(
-                              "Get Started Now!",
+                              "Welcome Back!",
                               style: context.textTheme.headlineLarge,
                             ),
                             const SizedBox(height: 8),
                             Row(
                               children: [
-                                const Text("Have an account? "),
+                                const Text("No account? "),
                                 OutlinedButton(
                                   style: ButtonStyle(
                                     padding: WidgetStateProperty.all(
@@ -114,11 +92,11 @@ class SignUpPage extends StatelessWidget {
                                     ),
                                   ),
                                   onPressed: () {
-                                    context.pushReplacement(Router.signin.path);
+                                    context.pushReplacement(Router.signup.path);
                                     controller.dispose();
                                   },
                                   child: Text(
-                                    "Sign In",
+                                    "Sign Up",
                                     style:
                                         context.textTheme.bodyMedium?.copyWith(
                                       color: context.theme.colorScheme.tertiary,
@@ -128,45 +106,19 @@ class SignUpPage extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 60),
-                            Column(
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: InputField(
-                                        hintText: "First Name",
-                                        text: controller.firstName,
-                                        error: controller.errors["firstName"]!,
-                                        textInputType: TextInputType.name,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      child: InputField(
-                                        hintText: "Last Name",
-                                        text: controller.lastName,
-                                        error: controller.errors["lastName"]!,
-                                        textInputType: TextInputType.name,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                InputField(
-                                  hintText: "Email",
-                                  text: controller.email,
-                                  error: controller.errors["email"]!,
-                                ),
-                                PasswordField(
-                                  text: controller.password,
-                                  error: controller.errors["password"]!,
-                                ),
-                              ],
+                            InputField(
+                              hintText: "Email",
+                              text: controller.email,
+                              error: controller.errors["email"]!,
+                            ),
+                            PasswordField(
+                              text: controller.password,
+                              error: controller.errors["password"]!,
                             ),
                             const SizedBox(height: 24),
                             RoundedButton(
                               color: context.theme.colorScheme.tertiary,
-                              onPressed: () async {
+                              onPressed: () {
                                 final bool success = handleErrors(controller);
 
                                 if (success) {
@@ -174,7 +126,7 @@ class SignUpPage extends StatelessWidget {
                                   controller.dispose();
                                 }
                               },
-                              child: const Text("Sign Up"),
+                              child: const Text("Sign In"),
                             ),
                             const Spacer(),
                             const Center(
