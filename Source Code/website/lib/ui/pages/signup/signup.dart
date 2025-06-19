@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../models/router.dart';
+import '../../../services/auth.dart';
 import '../../../tools/controllers/signup.dart';
 import '../../widgets/input_field.dart';
 import '../../widgets/oratorz_banner.dart';
@@ -164,17 +165,32 @@ class SignUpPage extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 24),
-                            RoundedButton(
-                              color: context.theme.colorScheme.tertiary,
-                              onPressed: () async {
-                                final bool success = handleErrors(controller);
+                            Obx(
+                              () => RoundedButton(
+                                color: controller.status.value
+                                    ? Colors.blueGrey
+                                    : context.theme.colorScheme.tertiary,
+                                onPressed: controller.status.value
+                                    ? null
+                                    : () async {
+                                        bool success = handleErrors(controller);
 
-                                if (success) {
-                                  context.pushReplacement(Router.home.path);
-                                  controller.dispose();
-                                }
-                              },
-                              child: const Text("Sign Up"),
+                                        if (success) {
+                                          controller.status.value = true;
+                                          success = await Auth.signup(context);
+
+                                          //FIXME: Verify how to work around the async gap
+                                          if (success && context.mounted) {
+                                            context.pushReplacement(
+                                                Router.home.path);
+                                            controller.dispose();
+                                          }
+
+                                          controller.status.value = false;
+                                        }
+                                      },
+                                child: const Text("Sign Up"),
+                              ),
                             ),
                             const Spacer(),
                             const Center(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 class SignInController extends GetxController {
   RxString email = "".obs;
   RxString password = "".obs;
+  RxBool status = false.obs;
 
   final Map<String, RxString> errors = {
     "email": "".obs,

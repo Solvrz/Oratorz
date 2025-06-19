@@ -2,6 +2,7 @@ analyzer:
   language:
     strict-raw-types: true
   errors:
+    avoid_print: ignore
     missing_required_param: warning
     missing_return: warning
 

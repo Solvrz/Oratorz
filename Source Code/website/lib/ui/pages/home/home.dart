@@ -13,7 +13,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put<HomeController>(HomeController());
+    if (!Get.isRegistered<HomeController>()) {
+      Get.put<HomeController>(HomeController());
+    }
 
     return SafeArea(
       child: Scaffold(

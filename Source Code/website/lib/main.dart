@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -9,7 +8,6 @@ import '/config/constants.dart';
 import '/config/theme.dart';
 import '/firebase_options.dart';
 import '/models/router.dart';
-import '/tools/controllers/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,10 +30,6 @@ class Oratorz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<HomeController>()) {
-      Get.put<HomeController>(HomeController());
-    }
-
     return MaterialApp.router(
       title: "Oratorz",
       theme: OratorzTheme.of(context),

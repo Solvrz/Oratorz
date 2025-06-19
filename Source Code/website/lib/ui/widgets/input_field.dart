@@ -30,7 +30,7 @@ class _InputFieldState extends State<InputField> {
         TextField(
           keyboardType: widget.textInputType,
           cursorColor: context.theme.colorScheme.secondary,
-          onChanged: (value) => widget.text.value = value,
+          onChanged: (value) => widget.text.value = value.trim(),
           decoration: InputDecoration(
             fillColor: context.theme.colorScheme.primary,
             focusColor: context.theme.colorScheme.primary,

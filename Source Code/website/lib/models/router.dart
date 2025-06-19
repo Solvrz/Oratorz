@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -133,6 +134,21 @@ class Router {
   static GoRouter get router {
     return GoRouter(
       initialLocation: "/",
+      redirect: (_, state) {
+        if (FirebaseAuth.instance.currentUser == null) {
+          if (state.fullPath == signup.path || state.fullPath == signin.path) {
+            return null;
+          }
+
+          return signup.path;
+        } else {
+          if (state.fullPath == signup.path || state.fullPath == signin.path) {
+            return home.path;
+          }
+
+          return null;
+        }
+      },
       errorBuilder: (_, state) {
         _putRouteController(state);
         return const ErrorPage();

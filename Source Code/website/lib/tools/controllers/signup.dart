@@ -5,6 +5,7 @@ class SignUpController extends GetxController {
   RxString lastName = "".obs;
   RxString email = "".obs;
   RxString password = "".obs;
+  RxBool status = false.obs;
 
   final Map<String, RxString> errors = {
     "firstName": "".obs,

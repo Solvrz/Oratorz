@@ -5,10 +5,11 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
-import '../tools/controllers/signup.dart';
 import '/models/account.dart';
+import '/tools/controllers/signin.dart';
+import '/tools/controllers/signup.dart';
+import '/tools/functions.dart';
 import './account.dart';
 
 class Auth {
@@ -35,48 +36,60 @@ class Auth {
     return errors;
   }
 
-  static Future<void> login(
-    BuildContext context, {
-    String? password,
-    Function? onLoggedIn,
-    bool pushToSplash = true,
-    bool showError = true,
-  }) async {
+  static Future<bool> signin(BuildContext context) async {
+    final SignInController controller = Get.find<SignInController>();
+
     try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: controller.email.value,
+        password: controller.password.value,
+      );
 
-      if (auth.currentUser != null) {
-        // TODO: Add account to local storage
-      }
-
-      if (onLoggedIn != null) onLoggedIn();
-
-      if (pushToSplash) {
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
         if (context.mounted) {
-          context.pushReplacement("/");
+          snackbar(
+            context,
+            const Center(
+              child: Text(
+                "No user found for the email provided. Please check and try again.",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+      } else if (e.code == 'wrong-password') {
+        if (context.mounted) {
+          snackbar(
+            context,
+            const Center(
+              child: Text(
+                "Wrong password provided for the user. Please check and try again.",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
         }
       }
+
+      return false;
     } catch (e) {
-      if (showError) {
-        if (context.mounted) {
-          // TODO : Show an error message
-          // await showDialog(
-          //   context: context,
-          //   builder: (context) => RoundedAlertDialog(
-          //     title: "An Error Occurred",
-          //     description:
-          //         "Please report the error to the administration.\n\nError: $e",
-          //     descriptionSize: 18,
-          //     buttonsList: [
-          //       TextButton(
-          //         onPressed: () => SystemNavigator.pop(),
-          //         child: const Text("Okay"),
-          //       ),
-          //     ],
-          //   ),
-          // );
-        }
+      print(e);
+
+      if (context.mounted) {
+        snackbar(
+          context,
+          const Center(
+            child: Text(
+              "An unknown error occured. Please try again later or contact the support team.",
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
       }
+
+      return false;
     }
   }
 
@@ -117,20 +130,55 @@ class Auth {
     ).catchError((_) => onError());
   }
 
-  static Future<void> logout(BuildContext context) async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
+  static Future<void> signout(BuildContext context) async {
     await AccountManager.clearAccount();
-    await auth.signOut();
-
-    if (context.mounted) {
-      await Navigator.pushNamedAndRemoveUntil(context, "/", (_) => false);
-    }
+    await FirebaseAuth.instance.signOut();
   }
 
-  static Future<bool> signup() async {
+  static Future<bool> signup(BuildContext context) async {
     final SignUpController controller = Get.find<SignUpController>();
 
-    return true;
+    try {
+      final UserCredential credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: controller.email.value,
+        password: controller.password.value,
+      );
+
+      await credential.user!.updateDisplayName(
+        "${controller.firstName.value} ${controller.lastName.value}",
+      );
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        if (context.mounted) {
+          snackbar(
+            context,
+            const Center(
+              child: Text(
+                "The account already exists for the email provided. Please try signing in.",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+      }
+
+      return false;
+    } catch (e) {
+      if (context.mounted) {
+        snackbar(
+          context,
+          const Center(
+            child: Text(
+              "An unknown error occured. Please try again later or contact the support team.",
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+      return false;
+    }
   }
 }
