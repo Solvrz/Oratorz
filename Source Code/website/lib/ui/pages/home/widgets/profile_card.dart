@@ -35,14 +35,12 @@ class ProfileCard extends StatelessWidget {
             const Spacer(),
             ListTile(
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  snackbar(
-                    context,
-                    const Center(
-                      child: Text(
-                        "This feature is under devlopent. Please try again later...",
-                        textAlign: TextAlign.center,
-                      ),
+                snackbar(
+                  context,
+                  const Center(
+                    child: Text(
+                      "This feature is under devlopent. Please try again later...",
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 );
@@ -63,17 +61,7 @@ class ProfileCard extends StatelessWidget {
             const SizedBox(height: 8),
             ListTile(
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  snackbar(
-                    context,
-                    const Center(
-                      child: Text(
-                        "This feature is under devlopent. Please try again later...",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                );
+                Auth.signout(context);
               },
               horizontalTitleGap: 8,
               hoverColor: Colors.white12,

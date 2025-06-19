@@ -314,12 +314,10 @@ void _onPass(BuildContext context, Map<String, dynamic> motion) {
         (motion["topic"] as Map<String, String>).values.first,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        snackbar(
-          context,
-          const Center(
-            child: Text("Agenda Changed"),
-          ),
+      snackbar(
+        context,
+        const Center(
+          child: Text("Agenda Changed"),
         ),
       );
     },
@@ -342,12 +340,10 @@ void _onPass(BuildContext context, Map<String, dynamic> motion) {
       );
     },
     "Appeal Chair's Decision": () {
-      ScaffoldMessenger.of(context).showSnackBar(
-        snackbar(
-          context,
-          const Center(
-            child: Text("Decision Appealed"),
-          ),
+      snackbar(
+        context,
+        const Center(
+          child: Text("Decision Appealed"),
         ),
       );
     },
