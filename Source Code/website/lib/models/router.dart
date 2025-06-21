@@ -142,7 +142,9 @@ class Router {
 
           return signup.path;
         } else {
-          if (state.fullPath == signup.path || state.fullPath == signin.path) {
+          if (state.fullPath == signup.path ||
+              state.fullPath == signin.path ||
+              FirebaseAuth.instance.currentUser!.emailVerified) {
             return home.path;
           }
 

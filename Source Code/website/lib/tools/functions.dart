@@ -41,7 +41,7 @@ void snackbar(BuildContext context, Widget content) {
     ),
     behavior: SnackBarBehavior.floating,
     content: content,
-  ));
+  ),);
 }
 
 Widget proxyDecorator(Widget child, int index, Animation<double> animation) {

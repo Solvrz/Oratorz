@@ -2,13 +2,13 @@ import 'package:flutter/material.dart' hide Router;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../models/router.dart';
-import '../../../services/auth.dart';
-import '../../../tools/controllers/signup.dart';
-import '../../widgets/input_field.dart';
-import '../../widgets/oratorz_banner.dart';
-import '../../widgets/password_field.dart';
-import '../../widgets/rounded_button.dart';
+import '/models/router.dart';
+import '/services/auth.dart';
+import '/tools/controllers/signup.dart';
+import '/ui/widgets/input_field.dart';
+import '/ui/widgets/oratorz_banner.dart';
+import '/ui/widgets/password_field.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -178,15 +178,15 @@ class SignUpPage extends StatelessWidget {
                                         if (success) {
                                           controller.status.value = true;
                                           success = await Auth.signup(context);
+                                          controller.status.value = false;
 
                                           //FIXME: Verify how to work around the async gap
                                           if (success && context.mounted) {
                                             context.pushReplacement(
-                                                Router.home.path);
+                                              Router.home.path,
+                                            );
                                             controller.dispose();
                                           }
-
-                                          controller.status.value = false;
                                         }
                                       },
                                 child: const Text("Sign Up"),

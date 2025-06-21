@@ -7,6 +7,7 @@ class DialogBox extends StatelessWidget {
   final Widget? content;
   final List<Widget>? actions;
   final MainAxisAlignment? actionsAlignment;
+  final bool barrierDismissible;
 
   const DialogBox({
     super.key,
@@ -14,6 +15,7 @@ class DialogBox extends StatelessWidget {
     this.content,
     this.actions,
     this.actionsAlignment,
+    this.barrierDismissible = true,
   });
 
   @override
@@ -25,23 +27,26 @@ class DialogBox extends StatelessWidget {
       title: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 heading,
                 style: context.textTheme.headlineSmall,
               ),
-              const SizedBox(width: 24),
-              const Spacer(),
-              InkWell(
-                onTap: () => context.pop(),
-                child: Container(
-                  margin: const EdgeInsets.all(8),
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.grey.shade600,
+              if (barrierDismissible) ...[
+                const SizedBox(width: 24),
+                const Spacer(),
+                InkWell(
+                  onTap: () => context.pop(),
+                  child: Container(
+                    margin: const EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.grey.shade600,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
           ),
           Divider(height: 2, color: Colors.grey.shade400),

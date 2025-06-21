@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/models/account.dart';
 import '/tools/controllers/signin.dart';
@@ -40,7 +41,7 @@ class Auth {
     final SignInController controller = Get.find<SignInController>();
 
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: controller.email.value,
         password: controller.password.value,
       );
@@ -133,6 +134,10 @@ class Auth {
   static Future<void> signout(BuildContext context) async {
     await AccountManager.clearAccount();
     await FirebaseAuth.instance.signOut();
+
+    if (context.mounted) {
+      context.pushReplacement("/");
+    }
   }
 
   static Future<bool> signup(BuildContext context) async {
@@ -148,6 +153,8 @@ class Auth {
       await credential.user!.updateDisplayName(
         "${controller.firstName.value} ${controller.lastName.value}",
       );
+
+      await credential.user?.sendEmailVerification();
 
       return true;
     } on FirebaseAuthException catch (e) {
