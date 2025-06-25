@@ -21,7 +21,6 @@ dependencies:
   dotted_border: ^3.0.1
   url_launcher: ^6.2.3
   google_fonts: ^6.1.0
-  url_strategy: ^0.3.0
   flutter_svg: ^2.0.9
   get_storage: ^2.1.1
   file_picker: ^10.1.9

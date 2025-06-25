@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:url_strategy/url_strategy.dart';
 
 import '/config/constants.dart';
 import '/config/theme.dart';
@@ -21,7 +21,7 @@ void main() async {
 
   await GetStorage.init();
 
-  setPathUrlStrategy();
+  usePathUrlStrategy();
   runApp(const Oratorz());
 }
 
