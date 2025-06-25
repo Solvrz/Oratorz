@@ -33,8 +33,7 @@ class _InputFieldState extends State<InputField> {
           onChanged: (value) => widget.text.value = value.trim(),
           decoration: InputDecoration(
             fillColor: context.theme.colorScheme.primary,
-            focusColor: context.theme.colorScheme.primary,
-            hoverColor: context.theme.colorScheme.primary,
+            hoverColor: Colors.transparent,
             hintText: widget.hintText,
             hintStyle: TextStyle(color: Colors.grey.shade500),
             focusedBorder: OutlineInputBorder(
