@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/services/auth.dart';
-import '/tools/controllers/home.dart';
 import '/ui/pages/home/widgets/profile_card.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/oratorz_banner.dart';
@@ -91,10 +90,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<HomeController>()) {
-      Get.put<HomeController>(HomeController());
-    }
-
     return SafeArea(
       child: Scaffold(
         body: Stack(

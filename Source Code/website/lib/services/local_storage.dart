@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -11,22 +12,12 @@ import '/tools/controllers/comittee/motions.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/controllers/comittee/vote.dart';
-import '/tools/controllers/home.dart';
+import '../models/user.dart';
+import '../tools/controllers/app.dart';
 
 class LocalStorage {
   static GetStorage box = GetStorage();
-
-  static List<String> get committees {
-    final List<String>? data = box.read("committees")?.cast<String>();
-
-    if (data == null) {
-      box.write("committees", []);
-
-      return [];
-    }
-
-    return data;
-  }
+  static AppController get controller => Get.find<AppController>();
 
   static List<String> get pinned {
     final List<String>? data = box.read("pinned")?.cast<String>();
@@ -40,102 +31,20 @@ class LocalStorage {
     return data;
   }
 
-  static void addPin(String id) {
-    final List<String> data = box.read("pinned")?.cast<String>() ?? [];
+  static Future<void> deleteCommittee(String id) async {
+    final User user = controller.user!;
+    user.committees.removeWhere((committee) => committee.id == id);
+    controller.update();
 
-    data.add(id);
-
-    box.write("pinned", data);
-
-    Get.find<HomeController>().addPin(id);
-  }
-
-  static bool removePin(String id) {
-    final List<dynamic>? data = box.read("pinned");
-
-    if (data == null) return false;
-    if (data.remove(id) == false) return false;
-
-    box.write("pinned", data);
-
-    Get.find<HomeController>().removePin(id);
-
-    return true;
-  }
-
-  static void createCommittee(Committee committee) {
-    if (committees.contains(committee.id)) return;
-
-    ANALYTICS.logEvent(
-      name: "committe_created",
-      parameters: {
-        "committee": committee.toJson().toString(),
-        "id": committee.id,
-      },
-    );
-
-    Get.find<HomeController>().addCommittee(committee.id);
-
-    box.write(committee.id, committee.toJson());
-    box.write("committees", committees);
-
-    Get.put<CommitteeController>(CommitteeController(committee: committee));
-  }
-
-  static void deleteCommittee(String id) {
-    box.remove(id);
-
-    Get.find<HomeController>().deleteCommittee(id);
-
-    box.write("committees", committees);
+    await FirebaseFirestore.instance.collection("committees").doc(id).delete();
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user.id)
+        .set(user.toJson());
   }
 
   static bool committeeExists(String id) =>
-      Get.find<HomeController>().committees.contains(id);
-
-  static bool overwriteCommittee(Committee committee) {
-    //FIXME: Fix according to new Firebase structure
-    final Map<String, dynamic>? data = box.read(committee.id);
-
-    if (data == null) return false;
-
-    final Map<String, int> newRollCall = {};
-
-    for (final String delegate in committee.delegates) {
-      newRollCall[delegate] = data["rollCall"][delegate] ?? -1;
-    }
-
-    data["rollCall"] = newRollCall;
-    data["committee"] = committee.toJson();
-
-    box.write(committee.id, data);
-
-    return true;
-  }
-
-  static bool updateCommittee(String key, dynamic value) {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    //FIXME: Fix according to new Firebase structure
-    final Map<String, dynamic>? data = box.read(committee.id);
-
-    if (data == null) return false;
-
-    ANALYTICS.logEvent(
-      name: "committe_updated",
-      parameters: {
-        "committee": data.toString(),
-        "id": committee.id,
-      },
-    );
-
-    data[key] = value;
-    box.write(committee.id, data);
-
-    return true;
-  }
+      controller.user!.committees.any((committee) => committee.id == id);
 
   static Committee getCommittee(String id) => Committee.fromJson(box.read(id));
 

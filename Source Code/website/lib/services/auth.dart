@@ -2,16 +2,17 @@
 
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/models/account.dart';
 import '/tools/controllers/signin.dart';
 import '/tools/controllers/signup.dart';
 import '/tools/functions.dart';
-import './account.dart';
+import '../models/user.dart';
+import '../tools/controllers/app.dart';
 
 class Auth {
   static Future<Map<String, String>> handleErrors(String error) async {
@@ -45,6 +46,14 @@ class Auth {
         email: controller.email.value,
         password: controller.password.value,
       );
+
+      final Map<String, dynamic> data = (await FirebaseFirestore.instance
+              .collection("users")
+              .doc(controller.email.value)
+              .get())
+          .data()!;
+
+      Get.find<AppController>().user = User.fromJson(data);
 
       return true;
     } on FirebaseAuthException catch (e) {
@@ -94,46 +103,9 @@ class Auth {
     }
   }
 
-  static Future<void> changePassword(
-    BuildContext context,
-    String oldPass,
-    String newPass,
-    Function onError,
-  ) async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
-    final Account account = (await AccountManager.account)!;
-
-    await auth.currentUser!.reauthenticateWithCredential(
-      EmailAuthProvider.credential(
-        email: account.email,
-        password: account.password,
-      ),
-    );
-
-    await auth.currentUser!.updatePassword(newPass).then(
-      (_) async {
-        await auth.currentUser!.reauthenticateWithCredential(
-          EmailAuthProvider.credential(
-            email: account.email,
-            password: newPass,
-          ),
-        );
-
-        await AccountManager.addAccount(
-          account.id,
-          account.name,
-          newPass,
-          account.email,
-          account.institution,
-        );
-      },
-    ).catchError((_) => onError());
-  }
-
   static Future<void> signout(BuildContext context) async {
-    await AccountManager.clearAccount();
     await FirebaseAuth.instance.signOut();
+    Get.find<AppController>().user = null;
 
     if (context.mounted) {
       context.pushReplacement("/");
@@ -150,9 +122,22 @@ class Auth {
         password: controller.password.value,
       );
 
+      final User user = User(
+        firstName: controller.firstName.value,
+        lastName: controller.lastName.value,
+        email: controller.email.value,
+      );
+
+      Get.find<AppController>().user = user;
+
       await credential.user!.updateDisplayName(
         "${controller.firstName.value} ${controller.lastName.value}",
       );
+
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(controller.email.value)
+          .set(user.toJson());
 
       await credential.user?.sendEmailVerification();
 

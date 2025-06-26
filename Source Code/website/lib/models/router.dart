@@ -134,7 +134,7 @@ class Router {
   static GoRouter get router {
     return GoRouter(
       initialLocation: "/",
-      redirect: (_, state) {
+      redirect: (_, state) async {
         if (FirebaseAuth.instance.currentUser == null) {
           if (state.fullPath == signup.path || state.fullPath == signin.path) {
             return null;

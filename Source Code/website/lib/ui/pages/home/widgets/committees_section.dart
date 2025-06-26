@@ -3,9 +3,9 @@ import 'package:flutter/material.dart' hide Router;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '/models/committee.dart';
 import '/models/router.dart';
-import '/services/local_storage.dart';
-import '/tools/controllers/home.dart';
+import '/tools/controllers/app.dart';
 import './committee_card.dart';
 
 class CommitteesSection extends StatelessWidget {
@@ -23,10 +23,10 @@ class CommitteesSection extends StatelessWidget {
             style: context.textTheme.headlineSmall,
           ),
         ),
-        Obx(
-          () {
-            final List<String> committees =
-                Get.find<HomeController>().committees;
+        GetBuilder<AppController>(
+          builder: (_) {
+            final List<Committee> committees =
+                Get.find<AppController>().user!.committees;
 
             return Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -36,7 +36,7 @@ class CommitteesSection extends StatelessWidget {
                 ...List.generate(
                   committees.length,
                   (index) => CommitteeCard(
-                    committee: LocalStorage.getCommittee(committees[index]),
+                    committee: committees[index],
                   ),
                 ),
                 InkWell(

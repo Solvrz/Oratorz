@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 import '/models/committee.dart';
-import '/services/local_storage.dart';
 import './vote.dart';
 
 class CommitteeController extends GetxController {
@@ -20,11 +19,13 @@ class CommitteeController extends GetxController {
       if (committee != null) committee.agenda = agenda;
     });
 
-    LocalStorage.updateCommittee("committee", committee.toJson());
+    //FIXME: Update Firebase Data
+    // LocalStorage.updateCommittee("committee", committee.toJson());
   }
 
   void _saveRollCall() {
-    LocalStorage.updateCommittee("rollCall", committee.rollCall);
+    //FIXME: Update Firebase Data
+    // LocalStorage.updateCommittee("rollCall", committee.rollCall);
 
     if (Get.isRegistered<VoteController>(tag: "vote")) {
       Get.find<VoteController>(tag: "vote").voters =

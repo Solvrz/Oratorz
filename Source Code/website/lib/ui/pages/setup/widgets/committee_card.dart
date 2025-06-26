@@ -6,12 +6,13 @@ import 'package:go_router/go_router.dart';
 import '/config/constants.dart';
 import '/models/committee.dart';
 import '/models/router.dart';
+import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
+import '/tools/functions.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../tools/functions.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -249,28 +250,36 @@ class _CommitteeNameDialog extends StatelessWidget {
   }
 }
 
-Future<void> submit(BuildContext context,
-    {String? code, Rx<bool>? error}) async {
+Future<void> submit(
+  BuildContext context, {
+  String? code,
+  Rx<bool>? error,
+}) async {
   if (error != null) error.value = false;
 
   final String _code = code?.trim().toUpperCase() ?? "";
 
   if (INVITE_CODES.contains(_code) || !INVITE_CODES_ENABLED) {
     final SetupController setupController = Get.find<SetupController>();
+    final AppController appController = Get.find<AppController>();
+
     final Committee committee = setupController.committee;
     committee.initRollCall();
 
-    // if (setupController.editing) {
-    //   LocalStorage.overwriteCommittee(committee);
-    //   LocalStorage.loadCommittee(committee.id);
-    // } else {
-    //   LocalStorage.createCommittee(committee);
-    // }
+    if (!setupController.editing) {
+      appController.user!.committees.add(committee);
+      appController.update();
+    }
 
     await FirebaseFirestore.instance
         .collection("committees")
         .doc(committee.id)
         .set(committee.toJson());
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(appController.user!.email)
+        .set(appController.user!.toJson());
 
     await Get.delete<SetupController>();
 
