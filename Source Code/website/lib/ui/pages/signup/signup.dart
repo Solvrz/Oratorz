@@ -116,7 +116,7 @@ class SignUpPage extends StatelessWidget {
                                   ),
                                   onPressed: () {
                                     context.pushReplacement(Router.signin.path);
-                                    controller.dispose();
+                                    Get.delete<SignUpController>();
                                   },
                                   child: Text(
                                     "Sign In",
@@ -185,7 +185,8 @@ class SignUpPage extends StatelessWidget {
                                             context.pushReplacement(
                                               Router.home.path,
                                             );
-                                            controller.dispose();
+                                            await Get.delete<
+                                                SignUpController>();
                                           }
                                         }
                                       },

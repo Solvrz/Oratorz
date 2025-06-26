@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
 
 import '/config/constants.dart';
 import '/config/theme.dart';
@@ -11,6 +12,7 @@ import '/models/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

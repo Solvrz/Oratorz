@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart' hide Router, Route;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -5,12 +6,12 @@ import 'package:go_router/go_router.dart';
 import '/config/constants.dart';
 import '/models/committee.dart';
 import '/models/router.dart';
-import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import '../../../../tools/functions.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
@@ -20,107 +21,125 @@ class CommitteeCard extends StatelessWidget {
     final SetupController _setupController = Get.find<SetupController>();
 
     return GetBuilder<SetupController>(
-      builder: (_) {
-        return Expanded(
-          child: Card(
-            child: Container(
-              constraints: BoxConstraints(
-                maxHeight: context.height * 0.9,
-              ),
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        _setupController.committee.name,
-                        style: context.textTheme.headlineSmall,
+      builder: (controller) => Expanded(
+        child: Card(
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: context.height * 0.9,
+            ),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      _setupController.committee.name,
+                      style: context.textTheme.headlineSmall,
+                    ),
+                    const SizedBox(width: 16),
+                    RoundedButton(
+                      style: RoundedButtonStyle.border,
+                      color: Colors.amber.shade400,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 8,
                       ),
-                      const SizedBox(width: 16),
-                      RoundedButton(
-                        style: RoundedButtonStyle.border,
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (_) => const _CommitteeNameDialog(),
+                      ),
+                      tooltip: "Set Committee Name",
+                      child: Icon(
+                        Icons.edit,
                         color: Colors.amber.shade400,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 8,
-                        ),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (_) => const _CommitteeNameDialog(),
-                        ),
-                        tooltip: "Set Committee Name",
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.amber.shade400,
-                          size: 20,
-                        ),
+                        size: 20,
                       ),
-                    ],
-                  ),
-                  Text(
-                    "${_setupController.committee.count} Delegates",
-                    style: context.textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: _setupController.committee.count,
-                      itemBuilder: (_, index) => DelegateTile(
-                        delegate: _setupController.committee.delegates[index],
-                        onTap: () {
-                          _setupController.removeAt(index);
-                          _setupController.update();
-                        },
-                        trailing: Icon(
-                          Icons.remove,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                      separatorBuilder: (_, index) => Divider(
-                        indent: 66,
-                        thickness: 0.5,
-                        height: 6,
+                    ),
+                  ],
+                ),
+                Text(
+                  "${_setupController.committee.count} Delegates",
+                  style: context.textTheme.titleLarge,
+                ),
+                const SizedBox(height: 12),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: _setupController.committee.count,
+                    itemBuilder: (_, index) => DelegateTile(
+                      delegate: _setupController.committee.delegates[index],
+                      onTap: () {
+                        _setupController.removeAt(index);
+                        _setupController.update();
+                      },
+                      trailing: Icon(
+                        Icons.remove,
                         color: Colors.grey.shade400,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  RoundedButton(
-                    style: RoundedButtonStyle.border,
-                    onPressed: () {
-                      _setupController.clear();
-                      _setupController.update();
-                    },
-                    child: Text(
-                      "Reset Selection",
-                      style: context.textTheme.bodyLarge,
+                    separatorBuilder: (_, index) => Divider(
+                      indent: 66,
+                      thickness: 0.5,
+                      height: 6,
+                      color: Colors.grey.shade400,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  RoundedButton(
-                    onPressed: () {
-                      if (INVITE_CODES_ENABLED) {
-                        showDialog(
-                          context: context,
-                          builder: (_) => const _InviteCodeDialog(),
-                        );
-                      } else {
-                        submit(context);
-                      }
-                    },
+                ),
+                const SizedBox(height: 24),
+                RoundedButton(
+                  style: RoundedButtonStyle.border,
+                  onPressed: () {
+                    _setupController.clear();
+                    _setupController.update();
+                  },
+                  child: Text(
+                    "Reset Selection",
+                    style: context.textTheme.bodyLarge,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Obx(
+                  () => RoundedButton(
+                    color: controller.status.value == false
+                        ? null
+                        : Colors.blueGrey,
+                    onPressed: controller.status.value == false
+                        ? () async {
+                            if (INVITE_CODES_ENABLED) {
+                              await showDialog(
+                                context: context,
+                                builder: (_) => const _InviteCodeDialog(),
+                              );
+                            } else {
+                              if (controller.committee.delegates.isEmpty) {
+                                snackbar(
+                                  context,
+                                  const Center(
+                                    child: Text(
+                                      "Add atleast 1 delegate to continue",
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                controller.status.value = true;
+                                await submit(context);
+                                controller.status.value = false;
+                              }
+                            }
+                          }
+                        : null,
                     child: Text(
                       "Start Session",
                       style: context.textTheme.bodyLarge
                           ?.copyWith(color: Colors.white),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
@@ -230,7 +249,8 @@ class _CommitteeNameDialog extends StatelessWidget {
   }
 }
 
-void submit(BuildContext context, {String? code, Rx<bool>? error}) {
+Future<void> submit(BuildContext context,
+    {String? code, Rx<bool>? error}) async {
   if (error != null) error.value = false;
 
   final String _code = code?.trim().toUpperCase() ?? "";
@@ -240,14 +260,19 @@ void submit(BuildContext context, {String? code, Rx<bool>? error}) {
     final Committee committee = setupController.committee;
     committee.initRollCall();
 
-    if (setupController.editing) {
-      LocalStorage.overwriteCommittee(committee);
-      LocalStorage.loadCommittee(committee.id);
-    } else {
-      LocalStorage.createCommittee(committee);
-    }
+    // if (setupController.editing) {
+    //   LocalStorage.overwriteCommittee(committee);
+    //   LocalStorage.loadCommittee(committee.id);
+    // } else {
+    //   LocalStorage.createCommittee(committee);
+    // }
 
-    Get.delete<SetupController>();
+    await FirebaseFirestore.instance
+        .collection("committees")
+        .doc(committee.id)
+        .set(committee.toJson());
+
+    await Get.delete<SetupController>();
 
     final controller = Get.find<RouteController>();
     final Route route = Router.modes.first;
@@ -255,7 +280,9 @@ void submit(BuildContext context, {String? code, Rx<bool>? error}) {
     controller.path = route.path;
     controller.args = {"id": committee.id};
 
-    context.go("${route.path}?id=${committee.id}");
+    if (context.mounted) {
+      context.go("${route.path}?id=${committee.id}");
+    }
   } else {
     if (error != null) error.value = false;
   }

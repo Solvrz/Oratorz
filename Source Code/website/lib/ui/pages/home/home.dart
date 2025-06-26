@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/services/auth.dart';
 import '/tools/controllers/home.dart';
 import '/ui/pages/home/widgets/profile_card.dart';
+import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/oratorz_banner.dart';
-import '../../../services/auth.dart';
-import '../../widgets/dialog_box.dart';
 import './widgets/committees_section.dart';
 
 class HomePage extends StatefulWidget {

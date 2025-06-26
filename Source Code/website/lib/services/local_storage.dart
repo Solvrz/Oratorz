@@ -90,9 +90,11 @@ class LocalStorage {
     box.write("committees", committees);
   }
 
-  static bool committeeExists(String id) => box.hasData(id);
+  static bool committeeExists(String id) =>
+      Get.find<HomeController>().committees.contains(id);
 
   static bool overwriteCommittee(Committee committee) {
+    //FIXME: Fix according to new Firebase structure
     final Map<String, dynamic>? data = box.read(committee.id);
 
     if (data == null) return false;
@@ -116,6 +118,7 @@ class LocalStorage {
 
     final Committee committee = Get.find<CommitteeController>().committee;
 
+    //FIXME: Fix according to new Firebase structure
     final Map<String, dynamic>? data = box.read(committee.id);
 
     if (data == null) return false;
@@ -137,6 +140,7 @@ class LocalStorage {
   static Committee getCommittee(String id) => Committee.fromJson(box.read(id));
 
   static void loadCommittee(String id) {
+    //FIXME: Fix according to new Firebase structure
     final Map<String, dynamic>? data = box.read(id);
 
     if (data == null) return;
