@@ -140,7 +140,7 @@ class Router {
             return null;
           }
 
-          return signup.path;
+          return signin.path;
         } else {
           if (state.fullPath == signup.path ||
               state.fullPath == signin.path ||
@@ -162,30 +162,30 @@ class Router {
         ),
         GoRoute(
           path: setup.path,
-          builder: (_, state) {
+          pageBuilder: (_, state) {
             _putRouteController(state);
-            return const SetupPage();
+            return const NoTransitionPage(child: SetupPage());
           },
         ),
         GoRoute(
           path: home.path,
-          builder: (_, state) {
+          pageBuilder: (_, state) {
             _putRouteController(state);
-            return const HomePage();
+            return const NoTransitionPage(child: HomePage());
           },
         ),
         GoRoute(
           path: signup.path,
-          builder: (_, state) {
+          pageBuilder: (_, state) {
             _putRouteController(state);
-            return const SignUpPage();
+            return const NoTransitionPage(child: SignUpPage());
           },
         ),
         GoRoute(
           path: signin.path,
-          builder: (_, state) {
+          pageBuilder: (_, state) {
             _putRouteController(state);
-            return const SigninPage();
+            return const NoTransitionPage(child: SignInPage());
           },
         ),
         ShellRoute(

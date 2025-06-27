@@ -10,8 +10,8 @@ import '../../widgets/oratorz_banner.dart';
 import '../../widgets/password_field.dart';
 import '../../widgets/rounded_button.dart';
 
-class SigninPage extends StatelessWidget {
-  const SigninPage({super.key});
+class SignInPage extends StatelessWidget {
+  const SignInPage({super.key});
 
   bool handleErrors(SignInController controller) {
     bool success = true;
