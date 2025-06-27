@@ -39,7 +39,7 @@ class LocalStorage {
     await FirebaseFirestore.instance.collection("committees").doc(id).delete();
     await FirebaseFirestore.instance
         .collection("users")
-        .doc(user.id)
+        .doc(user.email)
         .set(user.toJson());
   }
 
