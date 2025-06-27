@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ProfileCard(),
+                  ProfileCard(isHome: true),
                   SizedBox(width: 30),
                   Expanded(
                     child: Column(

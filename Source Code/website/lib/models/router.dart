@@ -28,6 +28,7 @@ class Route {
 class Router {
   static const Route root = Route(path: "/");
   static const Route home = Route(path: "/home", title: "Home");
+  static const Route settings = Route(path: "/settings", title: "Settings");
   static const Route setup = Route(path: "/setup", title: "Setup");
   static const Route signin = Route(path: "/signin", title: "Sign In");
   static const Route signup = Route(path: "/signup", title: "Sign Up");
@@ -172,6 +173,13 @@ class Router {
           pageBuilder: (_, state) {
             _putRouteController(state);
             return const NoTransitionPage(child: HomePage());
+          },
+        ),
+        GoRoute(
+          path: settings.path,
+          pageBuilder: (_, state) {
+            _putRouteController(state);
+            return const NoTransitionPage(child: SettingsPage());
           },
         ),
         GoRoute(
