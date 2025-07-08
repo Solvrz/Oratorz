@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '/config/data.dart';
 import '/services/uid.dart';
 
@@ -9,9 +11,12 @@ abstract class RollCall {
 }
 
 class Committee {
-  late String id;
+  late final String id;
   late String name;
   late String agenda;
+  late final Timestamp? createdAt;
+  late Timestamp? startTime;
+  late Timestamp? endTime;
   late List<String> delegates;
   late Map<String, int> rollCall;
 
@@ -34,9 +39,13 @@ class Committee {
     this.name = "Your Committee",
     this.agenda = "Your Agenda",
     List<String>? delegates,
+    Timestamp? createdAt,
+    this.startTime,
+    this.endTime,
   }) {
     this.id = id ?? Uid.generate();
     this.delegates = delegates ?? [];
+    this.createdAt = createdAt ?? Timestamp.now();
 
     initRollCall();
   }
@@ -53,6 +62,21 @@ class Committee {
     name = data["name"] ?? "Your Committee";
     agenda = data["agenda"] ?? "Your Agenda";
     delegates = data["delegates"].cast<String>() ?? [];
+    createdAt = data["createdAt"] == null
+        ? null
+        : Timestamp.fromMillisecondsSinceEpoch(
+            int.parse(data["createdAt"]),
+          );
+    startTime = data["startTime"] == null
+        ? null
+        : Timestamp.fromMillisecondsSinceEpoch(
+            int.parse(data["startTime"]),
+          );
+    endTime = data["endTime"] == null
+        ? null
+        : Timestamp.fromMillisecondsSinceEpoch(
+            int.parse(data["endTime"]),
+          );
 
     if (data["rollCall"] != null) {
       rollCall = Map<String, int>.from(data["rollCall"]);
@@ -75,6 +99,17 @@ class Committee {
       .where((element) => rollCall[element]! == RollCall.presentAndVoting)
       .toList();
 
+  Map<String, dynamic> toJsonShort() => {
+        "id": id,
+        "name": name,
+        "agenda": agenda,
+        "type": type,
+        if (startTime != null)
+          "startTime": startTime!.millisecondsSinceEpoch.toString(),
+        if (endTime != null)
+          "endTime": endTime!.millisecondsSinceEpoch.toString(),
+      };
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
@@ -82,5 +117,11 @@ class Committee {
         "delegates": delegates,
         "rollCall": rollCall,
         "type": type,
+        if (createdAt != null)
+          "createdAt": createdAt!.millisecondsSinceEpoch.toString(),
+        if (startTime != null)
+          "startTime": startTime!.millisecondsSinceEpoch.toString(),
+        if (endTime != null)
+          "endTime": endTime!.millisecondsSinceEpoch.toString(),
       };
 }
