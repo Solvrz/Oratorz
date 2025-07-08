@@ -10,17 +10,15 @@ import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/functions.dart';
-import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
+import 'setup_delegate_tile.dart';
 
 class CommitteeCard extends StatelessWidget {
   const CommitteeCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SetupController _setupController = Get.find<SetupController>();
-
     return GetBuilder<SetupController>(
       builder: (controller) => Expanded(
         child: Card(
@@ -35,7 +33,7 @@ class CommitteeCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      _setupController.committee.name,
+                      controller.committee.name,
                       style: context.textTheme.headlineSmall,
                     ),
                     const SizedBox(width: 16),
@@ -60,18 +58,19 @@ class CommitteeCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "${_setupController.committee.count} Delegates",
+                  "${controller.committee.count} Delegates",
                   style: context.textTheme.titleLarge,
                 ),
                 const SizedBox(height: 12),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: _setupController.committee.count,
-                    itemBuilder: (_, index) => DelegateTile(
-                      delegate: _setupController.committee.delegates[index],
+                    itemCount: controller.committee.count,
+                    itemBuilder: (_, index) => SetupDelegateTile(
+                      isExpanded: true,
+                      delegate: controller.committee.delegates[index],
                       onTap: () {
-                        _setupController.removeAt(index);
-                        _setupController.update();
+                        controller.removeAt(index);
+                        controller.update();
                       },
                       trailing: Icon(
                         Icons.remove,
@@ -90,8 +89,8 @@ class CommitteeCard extends StatelessWidget {
                 RoundedButton(
                   style: RoundedButtonStyle.border,
                   onPressed: () {
-                    _setupController.clear();
-                    _setupController.update();
+                    controller.clear();
+                    controller.update();
                   },
                   child: Text(
                     "Reset Selection",
@@ -267,7 +266,7 @@ Future<void> submit(
     committee.initRollCall();
 
     if (!setupController.editing) {
-      appController.user!.committees.add(committee);
+      appController.user!.addCommittee(committee);
       appController.update();
     }
 

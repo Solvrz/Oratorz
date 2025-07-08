@@ -24,48 +24,60 @@ class CommitteesSection extends StatelessWidget {
           ),
         ),
         GetBuilder<AppController>(
-          builder: (_) {
-            final List<Committee> committees =
-                Get.find<AppController>().user!.committees;
-
-            return Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 16,
-              runSpacing: 24,
-              children: [
-                ...List.generate(
-                  committees.length,
-                  (index) => CommitteeCard(
-                    committee: committees[index],
-                  ),
-                ),
-                InkWell(
-                  onTap: () => context.push(Router.setup.path),
-                  child: DottedBorder(
-                    options: RoundedRectDottedBorderOptions(
-                      strokeWidth: 3,
-                      dashPattern: const [10, 4],
-                      color: Colors.grey.shade500,
-                      radius: const Radius.circular(10),
+          builder: (controller) => FutureBuilder(
+            future: controller.user!.fetchCommittees(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return const Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(
+                      color: Color(0xff2a313b),
                     ),
-                    child: SizedBox(
-                      height: 174,
-                      width: 150,
-                      child: Center(
-                        child: Text(
-                          "Start a New Committee",
-                          style: context.textTheme.titleLarge!.copyWith(
-                            color: Colors.grey.shade500,
+                  ),
+                );
+              }
+
+              final List<Committee> committees = snapshot.data!;
+
+              return Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 16,
+                runSpacing: 24,
+                children: [
+                  ...List.generate(
+                    committees.length,
+                    (index) => CommitteeCard(
+                      committee: committees[index],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () => context.push(Router.setup.path),
+                    child: DottedBorder(
+                      options: RoundedRectDottedBorderOptions(
+                        strokeWidth: 3,
+                        dashPattern: const [10, 4],
+                        color: Colors.grey.shade500,
+                        radius: const Radius.circular(10),
+                      ),
+                      child: SizedBox(
+                        height: 174,
+                        width: 150,
+                        child: Center(
+                          child: Text(
+                            "Start a New Committee",
+                            style: context.textTheme.titleLarge!.copyWith(
+                              color: Colors.grey.shade500,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ],
     );

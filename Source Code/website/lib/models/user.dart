@@ -12,6 +12,7 @@ class User {
   final String email;
   late final Timestamp createdAt;
   late final List<Committee> committees;
+  late final List<String> _committeesId;
 
   User({
     String? id,
@@ -32,22 +33,54 @@ class User {
       email: data["email"],
       firstName: data["firstName"],
       lastName: data["lastName"],
-      createdAt:
-          Timestamp.fromMillisecondsSinceEpoch(int.parse(data["createdAt"])),
+      createdAt: Timestamp.fromMillisecondsSinceEpoch(
+        int.parse(data["createdAt"]),
+      ),
     );
 
-    for (final String id in data["committees"]) {
-      FirebaseFirestore.instance
-          .collection("committees")
-          .doc(id)
-          .get()
-          .then((doc) {
-        user.committees.add(Committee.fromJson(doc.data()!));
-        Get.find<AppController>().update();
-      });
-    }
+    user._committeesId = data["committees"].cast<String>();
 
     return user;
+  }
+
+  bool _isCommitteeLoaded(String id) {
+    return committees.any((elem) => elem.id == id);
+  }
+
+  Future<List<Committee>> fetchCommittees() async {
+    await Future.wait(
+      _committeesId.map<Future<Committee>>((id) => fetchCommittee(id)),
+    );
+
+    return committees;
+  }
+
+  Future<Committee> fetchCommittee(String? id) async {
+    if (id == null) {
+      return Committee();
+    }
+
+    if (_isCommitteeLoaded(id)) {
+      return committees.firstWhere((elem) => elem.id == id);
+    } else {
+      final DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+          .instance
+          .collection("committees")
+          .doc(id)
+          .get();
+
+      final Committee committee = Committee.fromJson(doc.data()!);
+
+      committees.add(committee);
+      Get.find<AppController>().update();
+
+      return committee;
+    }
+  }
+
+  void addCommittee(Committee committee) {
+    committees.add(committee);
+    _committeesId.add(committee.id);
   }
 
   Map<String, dynamic> toJson() => {

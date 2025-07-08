@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../tools/functions.dart';
+import '/tools/functions.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({super.key});
@@ -21,6 +21,7 @@ class SettingsSection extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             children: [
+              //FIXME: Hero widget not working
               Hero(
                 tag: "profile",
                 child: CircleAvatar(

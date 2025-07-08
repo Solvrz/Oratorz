@@ -6,7 +6,6 @@ import '/models/committee.dart';
 import '/models/router.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/route.dart';
-import '/tools/controllers/setup.dart';
 
 class CommitteeCard extends StatefulWidget {
   final Committee committee;
@@ -130,7 +129,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                                       .copyWith(color: Colors.white),
                                 ),
                                 Text(
-                                  "${widget.committee.delegates.length} Delegates",
+                                  "Date Placeholder",
                                   style: context.textTheme.bodyLarge!
                                       .copyWith(color: Colors.white),
                                 ),
@@ -183,9 +182,13 @@ class _EditOptions extends StatelessWidget {
             InkWell(
               hoverColor: Colors.transparent,
               onTap: () {
-                Get.put<SetupController>(SetupController(committee: committee));
+                const Route route = Router.setup;
+                final controller = Get.find<RouteController>();
 
-                context.push(Router.setup.path);
+                controller.path = route.path;
+                controller.args = {"id": committee.id};
+
+                context.push("${route.path}?id=${committee.id}");
               },
               child: const Icon(Icons.edit, size: 26),
             ),
