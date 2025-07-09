@@ -39,7 +39,10 @@ class SetupPage extends StatelessWidget {
 
             if (!Get.isRegistered<SetupController>()) {
               Get.put<SetupController>(
-                SetupController(committee: snapshot.data),
+                SetupController(
+                  committee: snapshot.data!,
+                  editing: controller.args["id"] != null,
+                ),
               );
             }
 

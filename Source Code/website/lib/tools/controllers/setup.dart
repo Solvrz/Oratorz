@@ -4,13 +4,8 @@ import '/config/data.dart';
 import '/models/committee.dart';
 
 class SetupController extends GetxController {
-  SetupController({Committee? committee}) {
-    if (committee == null) {
-      _committee = Committee().obs;
-    } else {
-      _committee = committee.obs;
-      editing = true;
-    }
+  SetupController({required Committee committee, required this.editing}) {
+    _committee = committee.obs;
   }
 
   late final Rx<Committee> _committee;
