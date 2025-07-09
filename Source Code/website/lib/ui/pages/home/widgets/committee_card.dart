@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '/models/committee.dart';
 import '/models/router.dart';
+import '/services/cloud_storage.dart';
 import '/services/local_storage.dart';
+import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 
 class CommitteeCard extends StatefulWidget {
@@ -39,6 +41,7 @@ class _CommitteeCardState extends State<CommitteeCard>
   };
 
   late final AnimationController controller;
+  bool isDeleting = false;
 
   @override
   void initState() {
@@ -76,17 +79,19 @@ class _CommitteeCardState extends State<CommitteeCard>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               InkWell(
-                onTap: () {
-                  LocalStorage.loadCommittee(widget.committee.id);
+                onTap: isDeleting
+                    ? null
+                    : () {
+                        LocalStorage.loadCommittee(widget.committee.id);
 
-                  final Route route = Router.modes.first;
-                  final controller = Get.find<RouteController>();
+                        final Route route = Router.modes.first;
+                        final controller = Get.find<RouteController>();
 
-                  controller.path = route.path;
-                  controller.args = {"id": widget.committee.id};
+                        controller.path = route.path;
+                        controller.args = {"id": widget.committee.id};
 
-                  context.go("${route.path}?id=${widget.committee.id}");
-                },
+                        context.go("${route.path}?id=${widget.committee.id}");
+                      },
                 child: Container(
                   width: 260,
                   decoration: BoxDecoration(
@@ -144,6 +149,15 @@ class _CommitteeCardState extends State<CommitteeCard>
                             ),
                           ),
                         ),
+                        if (isDeleting)
+                          Container(
+                            width: 260,
+                            height: 180,
+                            color: Colors.white54,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -155,7 +169,11 @@ class _CommitteeCardState extends State<CommitteeCard>
                 height: 189 * animationStatus,
                 child: Opacity(
                   opacity: animationStatus,
-                  child: _EditOptions(committee: widget.committee),
+                  child: _EditOptions(
+                    committee: widget.committee,
+                    onDelete: ({required status}) =>
+                        setState(() => isDeleting = status),
+                  ),
                 ),
               ),
             ],
@@ -168,8 +186,9 @@ class _CommitteeCardState extends State<CommitteeCard>
 
 class _EditOptions extends StatelessWidget {
   final Committee committee;
+  final void Function({required bool status}) onDelete;
 
-  const _EditOptions({required this.committee});
+  const _EditOptions({required this.committee, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +216,18 @@ class _EditOptions extends StatelessWidget {
             ),
             InkWell(
               hoverColor: Colors.transparent,
-              onTap: () => LocalStorage.deleteCommittee(committee.id),
+              onTap: () async {
+                onDelete(status: true);
+
+                final AppController appController = Get.find<AppController>();
+
+                appController.user!.deleteCommittee(committee);
+
+                await CloudStorage.deleteCommittee(committee);
+                onDelete(status: false);
+
+                appController.update();
+              },
               child: Icon(Icons.delete, color: Colors.red.shade400, size: 26),
             ),
           ],

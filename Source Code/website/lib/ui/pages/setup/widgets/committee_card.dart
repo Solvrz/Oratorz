@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart' hide Router, Route;
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '/config/constants.dart';
 import '/models/committee.dart';
 import '/models/router.dart';
+import '/services/cloud_storage.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
@@ -270,15 +270,7 @@ Future<void> submit(
       appController.update();
     }
 
-    await FirebaseFirestore.instance
-        .collection("committees")
-        .doc(committee.id)
-        .set(committee.toJson());
-
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(appController.user!.email)
-        .set(appController.user!.toJson());
+    await CloudStorage.createCommittee();
 
     await Get.delete<SetupController>();
 

@@ -83,6 +83,11 @@ class User {
     _committeesId.add(committee.id);
   }
 
+  void deleteCommittee(Committee committee) {
+    committees.remove(committee);
+    _committeesId.remove(committee.id);
+  }
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "firstName": firstName,
