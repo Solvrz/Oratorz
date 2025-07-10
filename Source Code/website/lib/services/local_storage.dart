@@ -1,23 +1,35 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '/config/constants.dart';
 import '/models/committee.dart';
 import '/models/scorecard.dart';
+import '/tools/controllers/app.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/controllers/comittee/vote.dart';
-import '../models/user.dart';
-import '../tools/controllers/app.dart';
+import '/tools/controllers/setup.dart';
 
 class LocalStorage {
   static GetStorage box = GetStorage();
   static AppController get controller => Get.find<AppController>();
+
+  static Committee? loadSetup() {
+    final Map<String, dynamic>? data = box.read("setup-committee");
+
+    return data != null ? Committee.fromJson(data) : null;
+  }
+
+  static void saveSetup() => box.write(
+        "setup-committee",
+        Get.find<SetupController>().committee.toJsonConfig(),
+      );
+
+  static void clearSetup() => box.remove("setup-committee");
 
   static List<String> get pinned {
     final List<String>? data = box.read("pinned")?.cast<String>();
@@ -29,18 +41,6 @@ class LocalStorage {
     }
 
     return data;
-  }
-
-  static Future<void> deleteCommittee(String id) async {
-    final User user = controller.user!;
-    user.committees.removeWhere((committee) => committee.id == id);
-    controller.update();
-
-    await FirebaseFirestore.instance.collection("committees").doc(id).delete();
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user.email)
-        .set(user.toJson());
   }
 
   static bool committeeExists(String id) =>

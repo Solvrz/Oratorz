@@ -13,6 +13,7 @@ import '/tools/controllers/signup.dart';
 import '/tools/functions.dart';
 import '../models/user.dart';
 import '../tools/controllers/app.dart';
+import 'local_storage.dart';
 
 class Auth {
   static Future<Map<String, String>> handleErrors(String error) async {
@@ -106,6 +107,7 @@ class Auth {
   static Future<void> signout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Get.find<AppController>().user = null;
+    LocalStorage.clearSetup();
 
     if (context.mounted) {
       context.pushReplacement("/");

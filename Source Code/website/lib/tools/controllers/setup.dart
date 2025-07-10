@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '/config/data.dart';
 import '/models/committee.dart';
+import '/services/local_storage.dart';
 
 class SetupController extends GetxController {
   SetupController({required Committee committee, required this.editing}) {
@@ -43,10 +44,14 @@ class SetupController extends GetxController {
         sort();
       });
 
-  void clear() => _committee.update((committee) {
-        committee?.delegates.clear();
-        committee?.name = "Your Committee";
-      });
+  void clear() {
+    _committee.update((committee) {
+      committee?.delegates.clear();
+      committee?.name = "Your Committee";
+    });
+
+    LocalStorage.clearSetup();
+  }
 
   void sort() => committee.delegates
       .sort((a, b) => DELEGATES[a]!.compareTo(DELEGATES[b]!));

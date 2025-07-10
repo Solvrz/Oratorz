@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/models/committee.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
+import '/tools/functions.dart';
+import '/ui/widgets/rounded_button.dart';
 import './widgets/committee_card.dart';
 import './widgets/load_committee.dart';
 import './widgets/new_committee.dart';
@@ -25,6 +29,19 @@ class SetupPage extends StatelessWidget {
             style:
                 context.textTheme.headlineSmall?.copyWith(color: Colors.white),
           ),
+          actions: [
+            RoundedButton(
+              child: const Text("Save"),
+              onPressed: () {
+                LocalStorage.saveSetup();
+
+                snackbar(
+                  context,
+                  const Center(child: Text("Saved Successfully!")),
+                );
+              },
+            ),
+          ],
         ),
         body: FutureBuilder(
           future: appController.user!.fetchCommittee(controller.args["id"]),
@@ -38,9 +55,13 @@ class SetupPage extends StatelessWidget {
             }
 
             if (!Get.isRegistered<SetupController>()) {
+              final Committee? committee = LocalStorage.loadSetup();
+
               Get.put<SetupController>(
                 SetupController(
-                  committee: snapshot.data!,
+                  committee: controller.args["id"] == null && committee != null
+                      ? committee
+                      : snapshot.data!,
                   editing: controller.args["id"] != null,
                 ),
               );

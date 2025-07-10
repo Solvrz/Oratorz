@@ -255,7 +255,6 @@ Future<void> submit(
     final AppController appController = Get.find<AppController>();
 
     final Committee committee = setupController.committee;
-    committee.initRollCall();
 
     if (!setupController.editing) {
       appController.user!.addCommittee(committee);

@@ -99,11 +99,14 @@ class Committee {
       .where((element) => rollCall[element]! == RollCall.presentAndVoting)
       .toList();
 
-  Map<String, dynamic> toJsonShort() => {
+  Map<String, dynamic> toJsonConfig() => {
         "id": id,
         "name": name,
         "agenda": agenda,
         "type": type,
+        "delegates": delegates,
+        if (createdAt != null)
+          "createdAt": createdAt!.millisecondsSinceEpoch.toString(),
         if (startTime != null)
           "startTime": startTime!.millisecondsSinceEpoch.toString(),
         if (endTime != null)
