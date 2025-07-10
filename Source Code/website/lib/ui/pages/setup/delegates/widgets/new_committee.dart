@@ -11,31 +11,27 @@ class NewCommitteeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.height / 1.5,
-      width: context.width / 2,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                "Set Up New Committee",
-                style: context.textTheme.headlineSmall,
-              ),
-              _CommitteeType(
-                index: 0,
-                title: "UN Member States",
-                delegates: COUNTRIES.keys.toList(),
-              ),
-              _CommitteeType(
-                index: 1,
-                title: "AIPPM Members",
-                delegates: AIPPM.keys.toList(),
-              ),
-            ],
-          ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "Set Up New Committee",
+              style: context.textTheme.headlineSmall,
+            ),
+            _CommitteeType(
+              index: 0,
+              title: "UN Member States",
+              delegates: COUNTRIES.keys.toList(),
+            ),
+            _CommitteeType(
+              index: 1,
+              title: "AIPPM Members",
+              delegates: AIPPM.keys.toList(),
+            ),
+          ],
         ),
       ),
     );

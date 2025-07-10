@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,12 +9,23 @@ import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/rounded_button.dart';
-import './widgets/committee_card.dart';
-import './widgets/load_committee.dart';
-import './widgets/new_committee.dart';
+import 'delegates/delegates.dart';
+import 'options/options.dart';
 
-class SetupPage extends StatelessWidget {
+class SetupPage extends StatefulWidget {
   const SetupPage({super.key});
+
+  @override
+  State<SetupPage> createState() => _SetupPageState();
+}
+
+class _SetupPageState extends State<SetupPage> {
+  @override
+  void dispose() {
+    Get.delete<SetupController>();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,23 +79,28 @@ class SetupPage extends StatelessWidget {
               );
             }
 
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        LoadCommitteeCard(),
-                        SizedBox(height: 12),
-                        Expanded(child: NewCommitteeCard()),
-                      ],
-                    ),
+            return GetX<SetupController>(
+              builder: (controller) => PageTransitionSwitcher(
+                reverse: !controller.showOptions.value,
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (
+                  child,
+                  primaryAnimation,
+                  secondaryAnimation,
+                ) =>
+                    FadeTransition(
+                  opacity: primaryAnimation,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(1.0, 0.0),
+                      end: Offset.zero,
+                    ).animate(primaryAnimation),
+                    child: child,
                   ),
-                  SizedBox(width: 36),
-                  CommitteeCard(),
-                ],
+                ),
+                child: controller.showOptions.value
+                    ? const SetupOptionsPage()
+                    : const SetupDelegatesPage(),
               ),
             );
           },

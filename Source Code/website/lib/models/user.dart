@@ -94,6 +94,6 @@ class User {
         "lastName": lastName,
         "email": email,
         "createdAt": createdAt.millisecondsSinceEpoch.toString(),
-        "committees": committees.map<String>((e) => e.id),
+        "committees": _committeesId,
       };
 }
