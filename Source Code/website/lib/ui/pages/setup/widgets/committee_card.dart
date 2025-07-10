@@ -66,16 +66,8 @@ class CommitteeCard extends StatelessWidget {
                   child: ListView.separated(
                     itemCount: controller.committee.count,
                     itemBuilder: (_, index) => SetupDelegateTile(
-                      isExpanded: true,
                       delegate: controller.committee.delegates[index],
-                      onTap: () {
-                        controller.removeAt(index);
-                        controller.update();
-                      },
-                      trailing: Icon(
-                        Icons.remove,
-                        color: Colors.grey.shade400,
-                      ),
+                      index: index,
                     ),
                     separatorBuilder: (_, index) => Divider(
                       indent: 66,
@@ -129,7 +121,7 @@ class CommitteeCard extends StatelessWidget {
                           }
                         : null,
                     child: Text(
-                      "Start Session",
+                      "Configure Options",
                       style: context.textTheme.bodyLarge
                           ?.copyWith(color: Colors.white),
                     ),

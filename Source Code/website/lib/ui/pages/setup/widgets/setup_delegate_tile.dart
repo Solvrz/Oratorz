@@ -2,22 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/config/data.dart';
+import '/tools/controllers/setup.dart';
 import '/tools/functions.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class SetupDelegateTile extends StatefulWidget {
   final String delegate;
-  final Function()? onTap;
-  final Widget? trailing;
-  final Widget? onHover;
-  final bool isExpanded;
+  final int index;
 
   const SetupDelegateTile({
     super.key,
     required this.delegate,
-    this.onTap,
-    this.trailing,
-    this.onHover,
-    this.isExpanded = false,
+    required this.index,
   });
 
   @override
@@ -26,6 +22,7 @@ class SetupDelegateTile extends StatefulWidget {
 
 class _SetupDelegateTileState extends State<SetupDelegateTile> {
   bool hovering = false;
+  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +30,9 @@ class _SetupDelegateTileState extends State<SetupDelegateTile> {
       onEnter: (_) => setState(() => hovering = true),
       onExit: (_) => setState(() => hovering = false),
       child: ListTile(
-        onTap: widget.onTap,
+        onTap: () => setState(() => isExpanded = !isExpanded),
         leading: flag(widget.delegate),
-        subtitle: widget.isExpanded
+        subtitle: isExpanded
             ? const Row(
                 children: [
                   Text("Delegate E-mail:"),
@@ -44,26 +41,38 @@ class _SetupDelegateTileState extends State<SetupDelegateTile> {
                     child: TextField(
                       decoration: InputDecoration(
                         border: UnderlineInputBorder(),
+                        focusedBorder: UnderlineInputBorder(),
+                        fillColor: Colors.white,
+                        hoverColor: Colors.transparent,
+                        isDense: true,
                       ),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ),
+                  SizedBox(width: 36),
                 ],
               )
             : null,
         contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        title: Text(
-          DELEGATES[widget.delegate]!,
-          style: context.textTheme.bodyLarge,
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
+        title: Row(
           children: [
-            if (widget.trailing != null) widget.trailing!,
-            if (widget.trailing != null && widget.onHover != null)
-              const SizedBox(width: 8),
-            if (hovering && widget.onHover != null) widget.onHover!,
+            Text(
+              DELEGATES[widget.delegate]!,
+              style: context.textTheme.bodyLarge,
+            ),
           ],
+        ),
+        trailing: RoundedButton(
+          onPressed: () {
+            final SetupController controller = Get.find<SetupController>();
+
+            controller.removeAt(widget.index);
+            controller.update();
+          },
+          padding: EdgeInsets.zero,
+          tooltip: "Remove Delegate",
+          color: Colors.red.shade400,
+          child: const Icon(Icons.remove),
         ),
       ),
     );
