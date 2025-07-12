@@ -51,7 +51,7 @@ class ProfileCard extends StatelessWidget {
                   backgroundColor: Colors.grey.shade800,
                   child: Icon(
                     Icons.person,
-                    color: Colors.grey[400],
+                    color: Colors.grey.shade400,
                     size: 42,
                   ),
                 ),
