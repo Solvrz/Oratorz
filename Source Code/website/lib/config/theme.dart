@@ -17,6 +17,7 @@ class OratorzTheme {
         primary: OratorzColors.primaryColor,
         secondary: OratorzColors.secondaryColor,
         tertiary: OratorzColors.tertiaryColor,
+        onPrimary: OratorzColors.secondaryColor,
       ),
       textTheme: textTheme.copyWith(
         displayLarge: textTheme.headlineSmall!.copyWith(

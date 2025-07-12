@@ -88,7 +88,7 @@ class _MembersCardState extends State<MembersCard> {
               ),
               onPressed: () => setState(() => members.add("")),
               child: Text(
-                "+ Add New EB Member",
+                "+ Add a new EB Member",
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: Colors.amber.shade400,
                 ),
