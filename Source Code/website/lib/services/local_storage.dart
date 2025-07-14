@@ -21,7 +21,7 @@ class LocalStorage {
   static Committee? loadSetup() {
     final Map<String, dynamic>? data = box.read("setup-committee");
 
-    return data != null ? Committee.fromJson(data) : null;
+    return data != null ? Committee.fromJsonConfig(data) : null;
   }
 
   static void saveSetup() => box.write(

@@ -72,7 +72,7 @@ class CommitteeCard extends StatelessWidget {
                 RoundedButton(
                   style: RoundedButtonStyle.border,
                   onPressed: () {
-                    controller.clear();
+                    controller.clearDelegatePage();
                     controller.update();
                   },
                   child: Text(

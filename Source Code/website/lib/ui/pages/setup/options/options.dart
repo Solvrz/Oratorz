@@ -17,7 +17,7 @@ class SetupOptionsPage extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                MembersCard(),
+                Expanded(child: MembersCard()),
                 SizedBox(height: 12),
                 Expanded(child: DateCard()),
               ],

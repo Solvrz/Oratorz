@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '/config/data.dart';
 import '/services/uid.dart';
@@ -15,10 +16,10 @@ class Committee {
   late String name;
   late String agenda;
   late final Timestamp? createdAt;
-  late Timestamp? startTime;
-  late Timestamp? endTime;
   late List<String> delegates;
   late Map<String, int> rollCall;
+  late List<String> members;
+  late List<DateTime?> days;
 
   String get type {
     for (final MapEntry<String, List<String>> entry in COMMITTEES.entries) {
@@ -39,12 +40,14 @@ class Committee {
     this.name = "Your Committee",
     this.agenda = "Your Agenda",
     List<String>? delegates,
+    List<String>? members,
+    List<DateTime?>? days,
     Timestamp? createdAt,
-    this.startTime,
-    this.endTime,
   }) {
     this.id = id ?? Uid.generate();
     this.delegates = delegates ?? [];
+    this.members = members ?? [FirebaseAuth.instance.currentUser!.email!];
+    this.days = days ?? [];
     this.createdAt = createdAt ?? Timestamp.now();
 
     initRollCall();
@@ -61,22 +64,38 @@ class Committee {
     id = data["id"] ?? "";
     name = data["name"] ?? "Your Committee";
     agenda = data["agenda"] ?? "Your Agenda";
-    delegates = data["delegates"].cast<String>() ?? [];
+    delegates = (data["delegates"] ?? []).cast<String>();
+    members = (data["members"] ?? []).cast<String>();
+
+    days = [];
+    for (final Timestamp? day in data["days"] ?? []) {
+      days.add(day != null ? day.toDate() : null);
+    }
+
+    createdAt = data["createdAt"];
+
+    if (data["rollCall"] != null) {
+      rollCall = Map<String, int>.from(data["rollCall"]);
+    } else {
+      initRollCall();
+    }
+  }
+
+  Committee.fromJsonConfig(Map<String, dynamic> data) {
+    id = data["id"] ?? "";
+    name = data["name"] ?? "Your Committee";
+    agenda = data["agenda"] ?? "Your Agenda";
+    delegates = (data["delegates"] ?? []).cast<String>();
+    members = (data["members"] ?? []).cast<String>();
+
+    days = [];
+    for (final int? day in data["days"] ?? []) {
+      days.add(day != null ? DateTime.fromMillisecondsSinceEpoch(day) : null);
+    }
+
     createdAt = data["createdAt"] == null
         ? null
-        : Timestamp.fromMillisecondsSinceEpoch(
-            int.parse(data["createdAt"]),
-          );
-    startTime = data["startTime"] == null
-        ? null
-        : Timestamp.fromMillisecondsSinceEpoch(
-            int.parse(data["startTime"]),
-          );
-    endTime = data["endTime"] == null
-        ? null
-        : Timestamp.fromMillisecondsSinceEpoch(
-            int.parse(data["endTime"]),
-          );
+        : Timestamp.fromMillisecondsSinceEpoch(int.parse(data["createdAt"]));
 
     if (data["rollCall"] != null) {
       rollCall = Map<String, int>.from(data["rollCall"]);
@@ -99,20 +118,6 @@ class Committee {
       .where((element) => rollCall[element]! == RollCall.presentAndVoting)
       .toList();
 
-  Map<String, dynamic> toJsonConfig() => {
-        "id": id,
-        "name": name,
-        "agenda": agenda,
-        "type": type,
-        "delegates": delegates,
-        if (createdAt != null)
-          "createdAt": createdAt!.millisecondsSinceEpoch.toString(),
-        if (startTime != null)
-          "startTime": startTime!.millisecondsSinceEpoch.toString(),
-        if (endTime != null)
-          "endTime": endTime!.millisecondsSinceEpoch.toString(),
-      };
-
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
@@ -120,11 +125,30 @@ class Committee {
         "delegates": delegates,
         "rollCall": rollCall,
         "type": type,
+        if (createdAt != null) "createdAt": createdAt,
+        "days": days
+            .map<Timestamp?>(
+              (day) => day != null ? Timestamp.fromDate(day) : null,
+            )
+            .toList(),
+        "members": members,
+      };
+
+  Map<String, dynamic> toJsonConfig() => {
+        "id": id,
+        "name": name,
+        "agenda": agenda,
+        "delegates": delegates,
+        "type": type,
         if (createdAt != null)
           "createdAt": createdAt!.millisecondsSinceEpoch.toString(),
-        if (startTime != null)
-          "startTime": startTime!.millisecondsSinceEpoch.toString(),
-        if (endTime != null)
-          "endTime": endTime!.millisecondsSinceEpoch.toString(),
+        "days": days
+            .map<int?>(
+              (day) => day != null
+                  ? Timestamp.fromDate(day).millisecondsSinceEpoch
+                  : null,
+            )
+            .toList(),
+        "members": members,
       };
 }

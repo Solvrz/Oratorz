@@ -34,6 +34,18 @@ class InfoCard extends StatelessWidget {
               RoundedButton(
                 style: RoundedButtonStyle.border,
                 onPressed: () {
+                  controller.clearOptionsPage();
+                  controller.update();
+                },
+                child: Text(
+                  "Reset Options",
+                  style: context.textTheme.bodyLarge,
+                ),
+              ),
+              const SizedBox(height: 12),
+              RoundedButton(
+                style: RoundedButtonStyle.border,
+                onPressed: () {
                   controller.showOptions.value = false;
                   controller.update();
                 },
@@ -43,25 +55,30 @@ class InfoCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              RoundedButton(
-                onPressed: controller.status.value == false
-                    ? () async {
-                        // if (INVITE_CODES_ENABLED) {
-                        //   await showDialog(
-                        //     context: context,
-                        //     builder: (_) => const _InviteCodeDialog(),
-                        //   );
-                        // } else {
-                        controller.status.value = true;
-                        await submit(context);
-                        controller.status.value = false;
-                        // }
-                      }
-                    : null,
-                child: Text(
-                  "Publish Committee",
-                  style: context.textTheme.bodyLarge
-                      ?.copyWith(color: Colors.white),
+              Obx(
+                () => RoundedButton(
+                  color: controller.status.value
+                      ? Colors.blueGrey
+                      : context.theme.colorScheme.tertiary,
+                  onPressed: controller.status.value
+                      ? null
+                      : () async {
+                          // if (INVITE_CODES_ENABLED) {
+                          //   await showDialog(
+                          //     context: context,
+                          //     builder: (_) => const _InviteCodeDialog(),
+                          //   );
+                          // } else {
+                          controller.status.value = true;
+                          await submit(context);
+                          controller.status.value = false;
+                          // }
+                        },
+                  child: Text(
+                    "Publish Committee",
+                    style: context.textTheme.bodyLarge
+                        ?.copyWith(color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -86,6 +103,10 @@ Future<void> submit(
   if (INVITE_CODES.contains(_code) || !INVITE_CODES_ENABLED) {
     final SetupController setupController = Get.find<SetupController>();
     final AppController appController = Get.find<AppController>();
+
+    if (!setupController.validate(context)) {
+      return;
+    }
 
     final Committee committee = setupController.committee;
 

@@ -33,9 +33,7 @@ class User {
       email: data["email"],
       firstName: data["firstName"],
       lastName: data["lastName"],
-      createdAt: Timestamp.fromMillisecondsSinceEpoch(
-        int.parse(data["createdAt"]),
-      ),
+      createdAt: data["createdAt"],
     );
 
     user._committeesId = data["committees"].cast<String>();
@@ -93,7 +91,7 @@ class User {
         "firstName": firstName,
         "lastName": lastName,
         "email": email,
-        "createdAt": createdAt.millisecondsSinceEpoch.toString(),
+        "createdAt": createdAt,
         "committees": _committeesId,
       };
 }
