@@ -57,9 +57,7 @@ class InfoCard extends StatelessWidget {
               const SizedBox(height: 12),
               Obx(
                 () => RoundedButton(
-                  color: controller.status.value
-                      ? Colors.blueGrey
-                      : context.theme.colorScheme.tertiary,
+                  color: controller.status.value ? Colors.blueGrey : null,
                   onPressed: controller.status.value
                       ? null
                       : () async {

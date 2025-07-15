@@ -8,6 +8,7 @@ import '/services/cloud_storage.dart';
 import '/services/local_storage.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
+import '/tools/extensions.dart';
 
 class CommitteeCard extends StatefulWidget {
   final Committee committee;
@@ -60,6 +61,20 @@ class _CommitteeCardState extends State<CommitteeCard>
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  String datePlaceholder(List<DateTime?> days) {
+    for (int i = 0; i < days.length; i++) {
+      if (DateTime.now().isAfter(days[i]!)) {
+        if (DateTime.now().isBefore(days[i]!.add(const Duration(days: 1)))) {
+          return "Continue Day ${i + 1}";
+        }
+      } else {
+        return "Day ${i + 1} starts on ${days[i]!.dateFormat}";
+      }
+    }
+
+    return "Ended on ${days.last!.dateFormat}";
   }
 
   @override
@@ -134,7 +149,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                                       .copyWith(color: Colors.white),
                                 ),
                                 Text(
-                                  "Date Placeholder",
+                                  datePlaceholder(widget.committee.days),
                                   style: context.textTheme.bodyLarge!
                                       .copyWith(color: Colors.white),
                                 ),

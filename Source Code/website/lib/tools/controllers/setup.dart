@@ -16,7 +16,7 @@ class SetupController extends GetxController {
   late bool editing = false;
   final RxInt _selectedType = 0.obs;
   final RxBool status = false.obs;
-  final RxBool showOptions = true.obs;
+  final RxBool showOptions = false.obs;
 
   Committee get committee => _committee.value;
 
