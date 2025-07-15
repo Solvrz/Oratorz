@@ -9,6 +9,7 @@ class InputField extends StatefulWidget {
   final String hintText;
   final RxString text;
   final RxString error;
+  final EdgeInsets? padding;
 
   const InputField({
     super.key,
@@ -16,6 +17,7 @@ class InputField extends StatefulWidget {
     required this.text,
     required this.error,
     this.textInputType = TextInputType.emailAddress,
+    this.padding,
   });
 
   @override
@@ -28,6 +30,7 @@ class _InputFieldState extends State<InputField> {
     return Column(
       children: [
         TextField(
+          controller: TextEditingController(text: widget.text.value),
           keyboardType: widget.textInputType,
           cursorColor: context.theme.colorScheme.secondary,
           onChanged: (value) => widget.text.value = value.trim(),
@@ -51,7 +54,7 @@ class _InputFieldState extends State<InputField> {
         ),
         Obx(
           () => Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
+            padding: widget.padding ?? const EdgeInsets.fromLTRB(0, 8, 0, 16),
             child: widget.error.value != ""
                 ? Row(
                     children: [
