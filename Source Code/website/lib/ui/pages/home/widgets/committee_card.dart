@@ -82,6 +82,9 @@ class _CommitteeCardState extends State<CommitteeCard>
     final double animationStatus = (controller.value - controller.lowerBound) /
         (controller.upperBound - controller.lowerBound);
 
+    final bool showOptions =
+        widget.committee.days.first!.isAfter(DateTime.now());
+
     return MouseRegion(
       onEnter: (_) => controller.forward(),
       onExit: (_) => controller.reverse(),
@@ -178,19 +181,22 @@ class _CommitteeCardState extends State<CommitteeCard>
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(left: 12),
-                width: 50 * animationStatus,
-                height: 189 * animationStatus,
-                child: Opacity(
-                  opacity: animationStatus,
-                  child: _EditOptions(
-                    committee: widget.committee,
-                    onDelete: ({required status}) =>
-                        setState(() => isDeleting = status),
+              if (showOptions)
+                Container(
+                  margin: const EdgeInsets.only(left: 12),
+                  width: 50 * animationStatus,
+                  height: 189 * animationStatus,
+                  child: Opacity(
+                    opacity: animationStatus,
+                    child: _EditOptions(
+                      committee: widget.committee,
+                      onDelete: ({required status}) =>
+                          setState(() => isDeleting = status),
+                    ),
                   ),
-                ),
-              ),
+                )
+              else
+                const SizedBox(width: 12),
             ],
           ),
         ),
