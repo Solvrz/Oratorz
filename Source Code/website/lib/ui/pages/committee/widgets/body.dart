@@ -73,7 +73,13 @@ class Body extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      trailing ?? const SizedBox(),
+                      if (trailing != null) trailing!,
+                      const SizedBox(width: 12),
+                      RoundedButton(
+                        onPressed: () {},
+                        tooltip: "Save Committee",
+                        child: const Text("Save"),
+                      ),
                       const SizedBox(width: 12),
                       RoundedButton(
                         onPressed: () => context.pushReplacement("/"),

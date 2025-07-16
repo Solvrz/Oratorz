@@ -8,6 +8,10 @@ class CommitteeController extends GetxController {
   late final RxInt _tab;
 
   CommitteeController({required Committee committee, int tab = 0}) {
+    if (committee.rollCall.isEmpty) {
+      committee.initRollCall();
+    }
+
     _tab = tab.obs;
     _committee = committee.obs;
   }
@@ -23,7 +27,7 @@ class CommitteeController extends GetxController {
     // LocalStorage.updateCommittee("committee", committee.toJson());
   }
 
-  void _saveRollCall() {
+  void _updateVoteControllers() {
     //FIXME: Update Firebase Data
     // LocalStorage.updateCommittee("rollCall", committee.rollCall);
 
@@ -45,7 +49,7 @@ class CommitteeController extends GetxController {
       }
     });
 
-    _saveRollCall();
+    _updateVoteControllers();
   }
 
   void setAllPresent() {
@@ -55,7 +59,7 @@ class CommitteeController extends GetxController {
       }
     });
 
-    _saveRollCall();
+    _updateVoteControllers();
   }
 
   void setAllAbsent() {
@@ -65,7 +69,7 @@ class CommitteeController extends GetxController {
       }
     });
 
-    _saveRollCall();
+    _updateVoteControllers();
   }
 
   void setRollCall(String delegate, int attendance) {
@@ -73,7 +77,7 @@ class CommitteeController extends GetxController {
       if (committee != null) committee.rollCall[delegate] = attendance;
     });
 
-    _saveRollCall();
+    _updateVoteControllers();
   }
 
   int get tab => _tab.value;

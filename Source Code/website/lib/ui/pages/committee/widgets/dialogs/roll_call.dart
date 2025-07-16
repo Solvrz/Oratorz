@@ -3,13 +3,21 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '/models/committee.dart';
+import '/services/cloud_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/ui/widgets/delegate_tile.dart';
 import '/ui/widgets/dialog_box.dart';
 import '/ui/widgets/rounded_button.dart';
 
-class RollCallDialog extends StatelessWidget {
+class RollCallDialog extends StatefulWidget {
   const RollCallDialog({super.key});
+
+  @override
+  State<RollCallDialog> createState() => _RollCallDialogState();
+}
+
+class _RollCallDialogState extends State<RollCallDialog> {
+  bool updating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,62 +31,67 @@ class RollCallDialog extends StatelessWidget {
         child: controller.committee.count > 0
             ? Column(
                 children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: RoundedButton(
-                                style: RoundedButtonStyle.border,
-                                onPressed: () {
-                                  controller.setAllPresent();
-                                  controller.update();
-                                },
-                                child: Text(
-                                  "SET ALL PRESENT",
-                                  style: context.textTheme.bodyLarge,
-                                ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RoundedButton(
+                              style: RoundedButtonStyle.border,
+                              onPressed: updating
+                                  ? null
+                                  : () {
+                                      controller.setAllPresent();
+                                      controller.update();
+                                    },
+                              child: Text(
+                                "SET ALL PRESENT",
+                                style: context.textTheme.bodyLarge,
                               ),
                             ),
-                            const SizedBox(width: 32),
-                            Expanded(
-                              child: RoundedButton(
-                                style: RoundedButtonStyle.border,
-                                onPressed: () {
-                                  controller.setAllAbsent();
-                                  controller.update();
-                                },
-                                child: Text(
-                                  "SET ALL ABSENT",
-                                  style: context.textTheme.bodyLarge,
-                                ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: RoundedButton(
+                              style: RoundedButtonStyle.border,
+                              onPressed: updating
+                                  ? null
+                                  : () {
+                                      controller.setAllAbsent();
+                                      controller.update();
+                                    },
+                              child: Text(
+                                "SET ALL ABSENT",
+                                style: context.textTheme.bodyLarge,
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: RoundedButton(
-                                style: RoundedButtonStyle.border,
-                                onPressed: () {
-                                  controller.setAllPresentAndVoting();
-                                  controller.update();
-                                },
-                                child: Text(
-                                  "SET ALL PRESENT & VOTING",
-                                  textAlign: TextAlign.center,
-                                  style: context.textTheme.bodyLarge,
-                                ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RoundedButton(
+                              style: RoundedButtonStyle.border,
+                              onPressed: updating
+                                  ? null
+                                  : () {
+                                      controller.setAllPresentAndVoting();
+                                      controller.update();
+                                    },
+                              child: Text(
+                                "SET ALL PRESENT & VOTING",
+                                textAlign: TextAlign.center,
+                                style: context.textTheme.bodyLarge,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 16),
                   Expanded(
                     flex: 3,
                     child: ListView.builder(
@@ -102,14 +115,16 @@ class RollCallDialog extends StatelessWidget {
                                         ? RoundedButtonStyle.fill
                                         : RoundedButtonStyle.border,
                                     color: context.theme.colorScheme.tertiary,
-                                    onPressed: () {
-                                      controller.setRollCall(
-                                        delegate,
-                                        RollCall.presentAndVoting,
-                                      );
+                                    onPressed: updating
+                                        ? null
+                                        : () {
+                                            controller.setRollCall(
+                                              delegate,
+                                              RollCall.presentAndVoting,
+                                            );
 
-                                      controller.update();
-                                    },
+                                            controller.update();
+                                          },
                                     child: const Text("PV"),
                                   ),
                                   const SizedBox(width: 4),
@@ -118,14 +133,16 @@ class RollCallDialog extends StatelessWidget {
                                         ? RoundedButtonStyle.fill
                                         : RoundedButtonStyle.border,
                                     color: Colors.amber.shade400,
-                                    onPressed: () {
-                                      controller.setRollCall(
-                                        delegate,
-                                        RollCall.present,
-                                      );
+                                    onPressed: updating
+                                        ? null
+                                        : () {
+                                            controller.setRollCall(
+                                              delegate,
+                                              RollCall.present,
+                                            );
 
-                                      controller.update();
-                                    },
+                                            controller.update();
+                                          },
                                     child: const Text("P"),
                                   ),
                                   const SizedBox(width: 4),
@@ -134,14 +151,16 @@ class RollCallDialog extends StatelessWidget {
                                         ? RoundedButtonStyle.fill
                                         : RoundedButtonStyle.border,
                                     color: Colors.red.shade400,
-                                    onPressed: () {
-                                      controller.setRollCall(
-                                        delegate,
-                                        RollCall.absent,
-                                      );
+                                    onPressed: updating
+                                        ? null
+                                        : () {
+                                            controller.setRollCall(
+                                              delegate,
+                                              RollCall.absent,
+                                            );
 
-                                      controller.update();
-                                    },
+                                            controller.update();
+                                          },
                                     child: const Text("A"),
                                   ),
                                 ],
@@ -165,8 +184,19 @@ class RollCallDialog extends StatelessWidget {
         SizedBox(
           width: context.width / 3,
           child: RoundedButton(
-            onPressed: () => context.pop(),
-            child: const Text("DONE"),
+            color: updating ? Colors.blueGrey : null,
+            onPressed: updating
+                ? null
+                : () async {
+                    setState(() => updating = true);
+                    await CloudStorage.updateCommitte();
+                    setState(() => updating = false);
+
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                  },
+            child: const Text("UPDATE"),
           ),
         ),
       ],

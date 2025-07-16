@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../models/committee.dart';
 import '../tools/controllers/app.dart';
+import '../tools/controllers/comittee/committee.dart';
 import '../tools/controllers/setup.dart';
 
 class CloudStorage {
@@ -35,5 +36,14 @@ class CloudStorage {
         .delete();
 
     await updateUser();
+  }
+
+  static Future<void> updateCommitte() async {
+    final Committee committee = Get.find<CommitteeController>().committee;
+
+    await FirebaseFirestore.instance
+        .collection("committees")
+        .doc(committee.id)
+        .set(committee.toJson());
   }
 }

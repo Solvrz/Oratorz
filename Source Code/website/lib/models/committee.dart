@@ -18,7 +18,7 @@ class Committee {
   late String agenda;
   late final Timestamp? createdAt;
   late List<String> delegates;
-  late Map<String, int> rollCall;
+  Map<String, int> rollCall = {};
   late List<String> members;
   late List<DateTime?> days;
 
@@ -42,15 +42,12 @@ class Committee {
     this.members = members ?? [FirebaseAuth.instance.currentUser!.email!];
     this.days = days ?? [];
     this.createdAt = createdAt ?? Timestamp.now();
-
-    initRollCall();
   }
 
   Committee.fromTemplate(String id) {
     name = id;
     agenda = "Your Agenda";
     delegates = COMMITTEES[id]!;
-    initRollCall();
   }
 
   Committee.fromJson(Map<String, dynamic> data) {
@@ -70,8 +67,6 @@ class Committee {
 
     if (data["rollCall"] != null) {
       rollCall = Map<String, int>.from(data["rollCall"]);
-    } else {
-      initRollCall();
     }
   }
 
@@ -94,8 +89,6 @@ class Committee {
 
     if (data["rollCall"] != null) {
       rollCall = Map<String, int>.from(data["rollCall"]);
-    } else {
-      initRollCall();
     }
   }
 

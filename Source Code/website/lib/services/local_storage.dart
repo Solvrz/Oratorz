@@ -30,18 +30,6 @@ class LocalStorage {
 
   static void clearSetup() => box.remove("setup-committee");
 
-  static List<String> get pinned {
-    final List<String>? data = box.read("pinned")?.cast<String>();
-
-    if (data == null) {
-      box.write("pinned", []);
-
-      return [];
-    }
-
-    return data;
-  }
-
   static bool committeeExists(String id) =>
       controller.user!.committees.any((committee) => committee.id == id);
 
@@ -52,7 +40,7 @@ class LocalStorage {
 
     final Committee committee = Get.find<CommitteeController>().committee;
 
-    final Map<String, dynamic> data = box.read(committee.id);
+    final Map<String, dynamic> data = {};
 
     data[controller.tag] = controller.toJson();
 
@@ -82,7 +70,7 @@ class LocalStorage {
 
     final Committee committee = Get.find<CommitteeController>().committee;
 
-    final Map<String, dynamic> data = box.read(committee.id);
+    final Map<String, dynamic> data = {};
 
     if (data[tag] == null) return false;
 
