@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '/models/committee.dart';
 import '/models/router.dart';
 import '/services/cloud_storage.dart';
-import '/services/local_storage.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
@@ -100,8 +99,6 @@ class _CommitteeCardState extends State<CommitteeCard>
                 onTap: isDeleting
                     ? null
                     : () {
-                        LocalStorage.loadCommittee(widget.committee.id);
-
                         final Route route = Router.modes.first;
                         final controller = Get.find<RouteController>();
 

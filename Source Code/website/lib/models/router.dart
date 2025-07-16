@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/services/local_storage.dart';
-import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import '/ui/pages/committee/modes/modes/export.dart';
 import '/ui/pages/export.dart';
@@ -200,24 +198,12 @@ class Router {
           builder: (_, state, child) {
             _putRouteController(state);
 
-            if (!Get.isRegistered<CommitteeController>()) {
-              LocalStorage.loadCommittee(
-                state.uri.queryParameters["id"]!,
-              );
-            }
-
             return CommitteePage(child: child);
           },
           routes: [
             ShellRoute(
               builder: (_, state, child) {
                 _putRouteController(state);
-
-                if (!Get.isRegistered<CommitteeController>()) {
-                  LocalStorage.loadCommittee(
-                    state.uri.queryParameters["id"]!,
-                  );
-                }
 
                 return ModesPage(child: child);
               },
@@ -228,19 +214,8 @@ class Router {
                       pageBuilder: (_, state) {
                         _putRouteController(state);
 
-                        // if (!Get.isRegistered<CommitteeController>()) {
-                        //   LocalStorage.loadCommittee(
-                        //     state.uri.queryParameters["id"]!,
-                        //   );
-                        // }
-
                         return NoTransitionPage(child: route.builder!());
                       },
-                      redirect: (_, state) => LocalStorage.committeeExists(
-                        state.uri.queryParameters["id"] ?? "null",
-                      )
-                          ? null
-                          : home.path,
                     ),
                   )
                   .toList(),
@@ -253,19 +228,8 @@ class Router {
                 pageBuilder: (_, state) {
                   _putRouteController(state);
 
-                  if (!Get.isRegistered<CommitteeController>()) {
-                    LocalStorage.loadCommittee(
-                      state.uri.queryParameters["id"]!,
-                    );
-                  }
-
                   return NoTransitionPage(child: route.builder!());
                 },
-                redirect: (context, state) => LocalStorage.committeeExists(
-                  state.uri.queryParameters["id"] ?? "null",
-                )
-                    ? null
-                    : home.path,
               );
             }),
           ],

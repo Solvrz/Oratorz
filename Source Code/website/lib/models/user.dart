@@ -47,15 +47,19 @@ class User {
 
   Future<List<Committee>> fetchCommittees() async {
     await Future.wait(
-      _committeesId.map<Future<Committee>>((id) => fetchCommittee(id)),
+      _committeesId.map<Future<Committee?>>((id) => fetchCommittee(id)),
     );
 
     return committees;
   }
 
-  Future<Committee> fetchCommittee(String? id) async {
+  Future<Committee?> fetchCommittee(String? id) async {
     if (id == null) {
       return Committee();
+    }
+
+    if (!_committeesId.contains(id)) {
+      return null;
     }
 
     if (_isCommitteeLoaded(id)) {

@@ -3,7 +3,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '/config/constants.dart';
 import '/models/committee.dart';
 import '/models/scorecard.dart';
 import '/tools/controllers/app.dart';
@@ -47,19 +46,6 @@ class LocalStorage {
       controller.user!.committees.any((committee) => committee.id == id);
 
   static Committee getCommittee(String id) => Committee.fromJson(box.read(id));
-
-  static void loadCommittee(String id) {
-    //FIXME: Fix according to new Firebase structure
-    final Map<String, dynamic>? data = box.read(id);
-
-    if (data == null) return;
-
-    Get.put<CommitteeController>(
-      CommitteeController(committee: getCommittee(id)),
-    );
-
-    ANALYTICS.logEvent(name: "committe_loaded");
-  }
 
   static bool saveSpeech(SpeechController controller) {
     if (!Get.isRegistered<CommitteeController>()) return false;
