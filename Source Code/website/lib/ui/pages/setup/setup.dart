@@ -42,17 +42,18 @@ class _SetupPageState extends State<SetupPage> {
                 context.textTheme.headlineSmall?.copyWith(color: Colors.white),
           ),
           actions: [
-            RoundedButton(
-              child: const Text("Save"),
-              onPressed: () {
-                LocalStorage.saveSetup();
+            if (controller.args["id"] == null)
+              RoundedButton(
+                child: const Text("Save"),
+                onPressed: () {
+                  LocalStorage.saveSetup();
 
-                snackbar(
-                  context,
-                  const Center(child: Text("Saved Successfully!")),
-                );
-              },
-            ),
+                  snackbar(
+                    context,
+                    const Center(child: Text("Saved Successfully!")),
+                  );
+                },
+              ),
           ],
         ),
         body: FutureBuilder(

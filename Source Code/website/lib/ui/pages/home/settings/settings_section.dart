@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '/tools/controllers/app.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/input_field.dart';
-import '../../../widgets/rounded_button.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({super.key});
