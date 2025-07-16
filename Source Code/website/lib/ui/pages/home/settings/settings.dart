@@ -46,13 +46,11 @@ class SettingsPage extends StatelessWidget {
                       children: [
                         OratorzBanner(),
                         SizedBox(height: 30),
-                        Expanded(
-                          child: SettingsSection(),
-                        ),
+                        Expanded(child: SettingsSection()),
                       ],
                     ),
                   ),
-                  SizedBox(width: 44),
+                  SizedBox(width: 12),
                 ],
               ),
             ),

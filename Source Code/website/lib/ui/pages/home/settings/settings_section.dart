@@ -19,12 +19,26 @@ class SettingsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Account",
-            style: context.textTheme.headlineSmall,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Account",
+                    style: context.textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 4),
+                  const Text("Manage your profile"),
+                ],
+              ),
+              RoundedButton(
+                onPressed: () {},
+                child: const Text("Save"),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          const Text("Manage your profile"),
           Divider(
             height: 48,
             color: Colors.grey.shade300,
@@ -147,11 +161,6 @@ class SettingsSection extends StatelessWidget {
                     ],
                     onChanged: (value) {},
                   ),
-                ),
-                const Spacer(),
-                RoundedButton(
-                  onPressed: () {},
-                  child: const Text("Save"),
                 ),
               ],
             ),

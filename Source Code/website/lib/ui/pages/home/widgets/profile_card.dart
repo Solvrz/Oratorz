@@ -39,7 +39,7 @@ class ProfileCard extends StatelessWidget {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(24),
-        width: context.mediaQuerySize.width / 6,
+        width: context.mediaQuerySize.width / 6.25,
         child: Column(
           children: [
             //FIXME: Fix Hero widget animation
