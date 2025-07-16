@@ -27,6 +27,7 @@ class SetupController extends GetxController {
   void fromTemplate(String template) => _committee.update((committee) {
         if (committee != null) {
           committee.name = template;
+          committee.type = template;
           committee.delegates = COMMITTEES[template]!.toList();
 
           sort();

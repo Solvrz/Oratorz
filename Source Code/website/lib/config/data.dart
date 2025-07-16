@@ -306,6 +306,23 @@ final Map<String, String> AIPPM = {
 
 final Map<String, String> DELEGATES = {...COUNTRIES, ...AIPPM};
 
+const List<String> TYPES = [
+  "Custom",
+  "UNSC",
+  "ECOSOC",
+  "WHO",
+  "UNHCR",
+  "UNHRC",
+  "UNICEF",
+  "UNGA",
+  "ASEAN",
+  "NATO",
+  "EU",
+  "G20",
+  "AU",
+  "AIPPM",
+];
+
 const Map<String, List<String>> COMMITTEES = {
   "UNSC": [
     "BEL",

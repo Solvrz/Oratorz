@@ -134,7 +134,7 @@ class _CommitteeCardState extends State<CommitteeCard>
                         Positioned(
                           right: 100 * (controller.value) - 200,
                           child: Image.asset(
-                            "logos/${widget.committee.type.contains("AIPPM") ? "AIPPM" : widget.committee.type}.png",
+                            "logos/${widget.committee.type}.png",
                             height: 185,
                             opacity: const AlwaysStoppedAnimation(0.4),
                           ),

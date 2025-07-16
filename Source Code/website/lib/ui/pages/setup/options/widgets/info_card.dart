@@ -3,83 +3,125 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '/config/constants.dart';
+import '/config/data.dart';
 import '/models/committee.dart';
 import '/models/router.dart';
 import '/services/cloud_storage.dart';
+import '/services/local_storage.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 import '/tools/controllers/setup.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../../services/local_storage.dart';
 
 class InfoCard extends StatelessWidget {
   const InfoCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SetupController controller = Get.find<SetupController>();
-
     return Expanded(
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                "Other Info",
-                style: context.textTheme.headlineSmall,
-              ),
-              const Spacer(),
-              RoundedButton(
-                style: RoundedButtonStyle.border,
-                onPressed: () {
-                  controller.clearOptionsPage();
-                  controller.update();
-                },
-                child: Text(
-                  "Reset Options",
-                  style: context.textTheme.bodyLarge,
-                ),
-              ),
-              const SizedBox(height: 12),
-              RoundedButton(
-                style: RoundedButtonStyle.border,
-                onPressed: () {
-                  controller.showOptions.value = false;
-                  controller.update();
-                },
-                child: Text(
-                  "Configure Delegates",
-                  style: context.textTheme.bodyLarge,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Obx(
-                () => RoundedButton(
-                  color: controller.status.value ? Colors.blueGrey : null,
-                  onPressed: controller.status.value
-                      ? null
-                      : () async {
-                          // if (INVITE_CODES_ENABLED) {
-                          //   await showDialog(
-                          //     context: context,
-                          //     builder: (_) => const _InviteCodeDialog(),
-                          //   );
-                          // } else {
-                          controller.status.value = true;
-                          await submit(context);
-                          controller.status.value = false;
-                          // }
-                        },
-                  child: Text(
-                    "Publish Committee",
-                    style: context.textTheme.bodyLarge
-                        ?.copyWith(color: Colors.white),
+          child: GetBuilder<SetupController>(
+            builder: (controller) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "Other Info",
+                    style: context.textTheme.headlineSmall,
                   ),
-                ),
-              ),
-            ],
+                  Row(
+                    children: [
+                      Text(
+                        "Committee Type: ",
+                        style: context.textTheme.titleLarge,
+                      ),
+                      const SizedBox(width: 12),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                        child: DropdownButton(
+                          value: controller.committee.type,
+                          borderRadius: BorderRadius.circular(16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          underline: const SizedBox(),
+                          focusColor: Colors.transparent,
+                          iconEnabledColor: Colors.grey.shade400,
+                          items: TYPES
+                              .map<DropdownMenuItem<String>>(
+                                (type) => DropdownMenuItem(
+                                  value: type,
+                                  child: Text(type),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value != null) {
+                              controller.committee.type = value;
+                              controller.update();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  RoundedButton(
+                    style: RoundedButtonStyle.border,
+                    onPressed: () {
+                      controller.clearOptionsPage();
+                      controller.update();
+                    },
+                    child: Text(
+                      "Reset Options",
+                      style: context.textTheme.bodyLarge,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  RoundedButton(
+                    style: RoundedButtonStyle.border,
+                    onPressed: () {
+                      controller.showOptions.value = false;
+                      controller.update();
+                    },
+                    child: Text(
+                      "Configure Delegates",
+                      style: context.textTheme.bodyLarge,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Obx(
+                    () => RoundedButton(
+                      color: controller.status.value ? Colors.blueGrey : null,
+                      onPressed: controller.status.value
+                          ? null
+                          : () async {
+                              // if (INVITE_CODES_ENABLED) {
+                              //   await showDialog(
+                              //     context: context,
+                              //     builder: (_) => const _InviteCodeDialog(),
+                              //   );
+                              // } else {
+                              controller.status.value = true;
+                              await submit(context);
+                              controller.status.value = false;
+                              // }
+                            },
+                      child: Text(
+                        "Publish Committee",
+                        style: context.textTheme.bodyLarge
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

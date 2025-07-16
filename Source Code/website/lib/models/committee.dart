@@ -13,6 +13,7 @@ abstract class RollCall {
 
 class Committee {
   late final String id;
+  late String type;
   late String name;
   late String agenda;
   late final Timestamp? createdAt;
@@ -20,16 +21,6 @@ class Committee {
   late Map<String, int> rollCall;
   late List<String> members;
   late List<DateTime?> days;
-
-  String get type {
-    for (final MapEntry<String, List<String>> entry in COMMITTEES.entries) {
-      if (entry.value.every((element) => delegates.contains(element))) {
-        return entry.key.contains("AIPPM") ? "AIPPM" : entry.key;
-      }
-    }
-
-    return "Custom";
-  }
 
   void initRollCall() => rollCall = {
         for (final String delegate in delegates) delegate: RollCall.none,
@@ -39,6 +30,7 @@ class Committee {
     String? id,
     this.name = "Your Committee",
     this.agenda = "Your Agenda",
+    String? type,
     List<String>? delegates,
     List<String>? members,
     List<DateTime?>? days,
@@ -46,6 +38,7 @@ class Committee {
   }) {
     this.id = id ?? Uid.generate();
     this.delegates = delegates ?? [];
+    this.type = type ?? "Custom";
     this.members = members ?? [FirebaseAuth.instance.currentUser!.email!];
     this.days = days ?? [];
     this.createdAt = createdAt ?? Timestamp.now();
@@ -62,6 +55,7 @@ class Committee {
 
   Committee.fromJson(Map<String, dynamic> data) {
     id = data["id"] ?? "";
+    type = data["type"] ?? "Custom";
     name = data["name"] ?? "Your Committee";
     agenda = data["agenda"] ?? "Your Agenda";
     delegates = (data["delegates"] ?? []).cast<String>();
@@ -83,6 +77,7 @@ class Committee {
 
   Committee.fromJsonConfig(Map<String, dynamic> data) {
     id = data["id"] ?? "";
+    type = data["type"] ?? "Custom";
     name = data["name"] ?? "Your Committee";
     agenda = data["agenda"] ?? "Your Agenda";
     delegates = (data["delegates"] ?? []).cast<String>();

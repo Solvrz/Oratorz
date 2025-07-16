@@ -140,7 +140,7 @@ class SettingsSection extends StatelessWidget {
                   "Role: ",
                   style: context.textTheme.titleLarge,
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
