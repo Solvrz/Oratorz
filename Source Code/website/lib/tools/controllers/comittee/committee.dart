@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import '/models/committee.dart';
 import './vote.dart';
+import 'scorecard.dart';
 
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
   late final RxInt _tab;
+  static const Duration DELAY = Duration(seconds: 20);
+  Timer? _timer;
+  RxBool saving = false.obs;
 
   CommitteeController({required Committee committee, int tab = 0}) {
     if (committee.rollCall.isEmpty) {
@@ -17,6 +23,19 @@ class CommitteeController extends GetxController {
   }
 
   Committee get committee => _committee.value;
+
+  void resetTimer() {
+    _timer?.cancel();
+    _timer = Timer(DELAY, save);
+  }
+
+  void save() {
+    print("AUTOSAVE");
+
+    if (Get.isRegistered<ScorecardController>()) {
+      Get.find<ScorecardController>().syncToFirebase();
+    }
+  }
 
   void setAgenda(String agenda) {
     _committee.update((committee) {

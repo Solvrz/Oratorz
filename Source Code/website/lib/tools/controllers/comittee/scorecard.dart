@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '/models/scorecard.dart';
@@ -10,6 +11,8 @@ class ScorecardController extends GetxController {
   final RxInt sort = 0.obs;
   final RxString query = "".obs;
 
+  bool _isChanged = false;
+
   Scorecard get scorecard => _scorecard.value;
   int get sortIndex => scorecard.parameters
       .indexWhere((element) => element.id == sort.value.abs());
@@ -21,6 +24,26 @@ class ScorecardController extends GetxController {
   ScorecardController([Scorecard? scorecard]) {
     _scorecard =
         (scorecard ?? Scorecard(Get.find<CommitteeController>().committee)).obs;
+
+    ever(_scorecard, (value) {
+      _isChanged = true;
+      Get.find<CommitteeController>().resetTimer();
+    });
+  }
+
+  void syncToFirebase() {
+    if (!_isChanged) return;
+
+    _isChanged = false;
+
+    final CommitteeController controller = Get.find<CommitteeController>();
+
+    FirebaseFirestore.instance
+        .collection("committees")
+        .doc(controller.committee.id)
+        .collection("days")
+        .doc("0")
+        .update({"scorecard": _scorecard.value.toJson()});
   }
 
   void addParameter(String title, int maxScore) {
