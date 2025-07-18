@@ -4,14 +4,13 @@ import 'package:get/get.dart';
 import '/models/scorecard.dart';
 import '/services/local_storage.dart';
 import './committee.dart';
+import 'autosave.dart';
 
 class ScorecardController extends GetxController {
   late final Rx<Scorecard> _scorecard;
   final RxInt mode = 0.obs;
   final RxInt sort = 0.obs;
   final RxString query = "".obs;
-
-  bool _isChanged = false;
 
   Scorecard get scorecard => _scorecard.value;
   int get sortIndex => scorecard.parameters
@@ -26,15 +25,12 @@ class ScorecardController extends GetxController {
         (scorecard ?? Scorecard(Get.find<CommitteeController>().committee)).obs;
 
     ever(_scorecard, (value) {
-      _isChanged = true;
-      Get.find<CommitteeController>().resetTimer();
+      Get.find<AutoSaveController>().debounceSave("scorecard", syncToFirebase);
     });
   }
 
   void syncToFirebase() {
-    if (!_isChanged) return;
-
-    _isChanged = false;
+    print("AUTOSAVE SCORECARD");
 
     final CommitteeController controller = Get.find<CommitteeController>();
 
