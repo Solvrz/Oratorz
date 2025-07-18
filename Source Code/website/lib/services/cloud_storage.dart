@@ -11,6 +11,7 @@ import '../models/router.dart';
 import '../models/scorecard.dart';
 import '../tools/controllers/app.dart';
 import '../tools/controllers/comittee/committee.dart';
+import '../tools/controllers/comittee/scorecard.dart';
 import '../tools/controllers/route.dart';
 import '../tools/controllers/setup.dart';
 
@@ -107,6 +108,10 @@ class CloudStorage {
           "rollCall": committee.rollCall,
           "scorecard": committee.scorecard!.toJson(),
         });
+      }
+
+      if (Get.isRegistered<ScorecardController>()) {
+        Get.find<ScorecardController>().onInit();
       }
     }
 

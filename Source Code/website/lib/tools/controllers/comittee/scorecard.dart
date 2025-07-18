@@ -20,8 +20,11 @@ class ScorecardController extends GetxController {
 
   final RxList<dynamic> selected = ["", 0].obs;
 
-  ScorecardController() {
-    ever(scorecard, (value) {
+  @override
+  void onInit() {
+    super.onInit();
+
+    ever(Get.find<CommitteeController>().committee.scorecard!, (value) {
       Get.find<AutoSaveController>().debounceSave("scorecard", syncToFirebase);
     });
   }
