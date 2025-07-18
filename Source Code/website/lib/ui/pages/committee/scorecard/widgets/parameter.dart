@@ -30,7 +30,7 @@ class ParameterWidgetState extends State<ParameterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final Scorecard scorecard = controller.scorecard;
+    final Scorecard scorecard = controller.scorecard.value;
 
     double total = 0;
     scorecard.parameters.forEach((e) => total += e.maxScore);

@@ -77,7 +77,8 @@ class _CellState extends State<Cell> {
                 )
               : Center(
                   child: Text(
-                    controller.scorecard.scores[widget.delegate]![widget.index]
+                    controller
+                        .scorecard.value.scores[widget.delegate]![widget.index]
                         .toString(),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
@@ -110,7 +111,7 @@ class _CellEditingState extends State<_CellEditing> {
 
   @override
   void initState() {
-    scorecard = controller.scorecard;
+    scorecard = controller.scorecard.value;
     final double score = scorecard.scores[widget.delegate]![widget.index];
 
     textController =

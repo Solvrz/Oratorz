@@ -26,7 +26,7 @@ class Entry extends StatelessWidget {
             child: DelegateTile(delegate: delegate),
           ),
           ...List.generate(
-            controller.scorecard.parameters.length,
+            controller.scorecard.value.parameters.length,
             (index) => SizedBox(
               width: 200,
               child: Cell(delegate: delegate, index: index),
@@ -37,7 +37,7 @@ class Entry extends StatelessWidget {
             child: Center(
               child: Obx(
                 () => Text(
-                  controller.scorecard.scores[delegate]!.sum.toString(),
+                  controller.scorecard.value.scores[delegate]!.sum.toString(),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),

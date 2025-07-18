@@ -7,16 +7,13 @@ import 'autosave.dart';
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
   late final RxInt _tab;
-  static const Duration DELAY = Duration(seconds: 20);
-  RxBool saving = false.obs;
+  late final RxInt selectedDay;
+  bool refetch = false;
 
   CommitteeController({required Committee committee, int tab = 0}) {
-    if (committee.rollCall.isEmpty) {
-      committee.initRollCall();
-    }
-
     _tab = tab.obs;
     _committee = committee.obs;
+    selectedDay = committee.currDay.obs;
 
     Get.put<AutoSaveController>(AutoSaveController());
   }

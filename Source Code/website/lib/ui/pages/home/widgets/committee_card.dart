@@ -96,7 +96,7 @@ class _CommitteeCardState extends State<CommitteeCard>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               InkWell(
-                onTap: isDeleting
+                onTap: isDeleting || widget.committee.currDay == -1
                     ? null
                     : () {
                         final Route route = Router.modes.first;

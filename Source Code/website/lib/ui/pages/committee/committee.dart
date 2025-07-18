@@ -3,9 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/config/constants.dart';
 import '/models/router.dart';
-import '/tools/controllers/app.dart';
+import '/services/cloud_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import '/tools/functions.dart';
@@ -34,9 +33,7 @@ class _CommitteePageState extends State<CommitteePage> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-          future: Get.find<AppController>()
-              .user!
-              .fetchCommittee(routeController.args["id"]),
+          future: CloudStorage.fetchCommittee(routeController.args["id"]),
           builder: (context, snapshot) {
             if (snapshot.data == null) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -64,20 +61,8 @@ class _CommitteePageState extends State<CommitteePage> {
               );
             }
 
-            late final CommitteeController controller;
-
-            if (!Get.isRegistered<CommitteeController>()) {
-              controller = CommitteeController(committee: snapshot.data!);
-              controller.tab = Router.tabs.indexWhere(
-                (route) => route.path == Get.find<RouteController>().path,
-              );
-
-              Get.put<CommitteeController>(controller);
-
-              ANALYTICS.logEvent(name: "committe_loaded");
-            } else {
-              controller = Get.find<CommitteeController>();
-            }
+            final CommitteeController controller =
+                Get.find<CommitteeController>();
 
             return Row(
               children: [

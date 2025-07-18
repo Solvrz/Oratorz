@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '/models/committee.dart';
-import '/models/scorecard.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
-import '/tools/controllers/comittee/scorecard.dart';
 import '/tools/controllers/comittee/speech.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/tools/controllers/setup.dart';
@@ -202,51 +200,6 @@ class LocalStorage {
         .toList();
 
     Get.put<MotionsController>(controller);
-
-    return true;
-  }
-
-  static bool saveScore() {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = box.read(committee.id);
-
-    data["score"] = Get.find<ScorecardController>().scorecard.toJson();
-
-    box.write(committee.id, data);
-
-    return true;
-  }
-
-  static bool updateScore(String key, dynamic value) {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = box.read(committee.id);
-
-    if (data["score"] == null) return false;
-
-    data["score"][key] = value;
-    box.write(committee.id, data);
-
-    return true;
-  }
-
-  static bool loadScore() {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Map<String, dynamic> data =
-        box.read(Get.find<CommitteeController>().committee.id);
-
-    if (data["score"] == null) return false;
-
-    final ScorecardController controller =
-        ScorecardController(Scorecard.fromJson(data["score"]));
-
-    Get.put<ScorecardController>(controller);
 
     return true;
   }

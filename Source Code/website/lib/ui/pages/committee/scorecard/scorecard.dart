@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart' hide Table;
 import 'package:get/get.dart';
 
-import '/services/local_storage.dart';
+import '/services/cloud_storage.dart';
+import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/pages/committee/widgets/body.dart';
 import '/ui/widgets/rounded_button.dart';
@@ -12,18 +13,13 @@ class ScorecardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScorecardController controller;
-
     if (!Get.isRegistered<ScorecardController>()) {
-      final bool exists = LocalStorage.loadScore();
-
-      if (!exists) {
-        Get.put<ScorecardController>(ScorecardController());
-        LocalStorage.saveScore();
-      }
+      Get.put<ScorecardController>(ScorecardController());
     }
 
-    controller = Get.find<ScorecardController>();
+    final ScorecardController controller = Get.find<ScorecardController>();
+    final CommitteeController committeeController =
+        Get.find<CommitteeController>();
 
     return Body(
       footer: Container(
@@ -45,6 +41,40 @@ class ScorecardPage extends StatelessWidget {
               ),
             ),
             const Spacer(),
+            Obx(
+              () => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.shade700),
+                ),
+                child: DropdownButton(
+                  value: committeeController.selectedDay.value,
+                  borderRadius: BorderRadius.circular(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  underline: const SizedBox(),
+                  focusColor: Colors.transparent,
+                  iconEnabledColor: Colors.grey.shade400,
+                  items: List.generate(
+                    committeeController.committee.days.length,
+                    (index) => DropdownMenuItem(
+                      value: index,
+                      child: Text("Day ${index + 1}"),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    if (value != null) {
+                      CloudStorage.saveScorecard(
+                        data: committeeController.committee.scorecard!.toJson(),
+                      );
+
+                      committeeController.refetch = true;
+                      committeeController.selectedDay.value = value;
+                    }
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
             Obx(
               () => Row(
                 children: [
@@ -71,7 +101,34 @@ class ScorecardPage extends StatelessWidget {
           ],
         ),
       ),
-      child: const Table(),
+      child: Obx(
+        () {
+          //FIXME: Find a better way to update this Obx
+
+          // NOTE: Do not remove the variable print
+          // ignore: unnecessary_statements
+          print(committeeController.selectedDay);
+
+          return FutureBuilder(
+            future: CloudStorage.fetchDayData(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(
+                      color: Color(0xff2a313b),
+                    ),
+                  ),
+                );
+              }
+
+              // NOTE: Do not add const
+              // ignore: prefer_const_constructors
+              return Table();
+            },
+          );
+        },
+      ),
     );
   }
 }
