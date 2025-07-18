@@ -33,7 +33,8 @@ class Table extends StatelessWidget {
         final double valA;
         final double valB;
 
-        if (controller.sortIndex == controller.scorecard.parameters.length) {
+        if (controller.sortIndex ==
+            controller.scorecard.parameters.length - 1) {
           valA = scores[a]!.sum;
           valB = scores[b]!.sum;
         } else {
