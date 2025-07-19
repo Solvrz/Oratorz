@@ -190,8 +190,13 @@ class OratorzSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TODO: Change color to white
-            SvgPicture.asset("images/Logo.svg", height: 32, width: 32),
+            SvgPicture.asset(
+              "images/Logo.svg",
+              height: 32,
+              width: 32,
+              colorFilter:
+                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Text(
