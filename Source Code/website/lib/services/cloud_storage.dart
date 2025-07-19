@@ -10,6 +10,7 @@ import '../models/committee.dart';
 import '../models/router.dart';
 import '../models/scorecard.dart';
 import '../tools/controllers/app.dart';
+import '../tools/controllers/comittee/autosave.dart';
 import '../tools/controllers/comittee/committee.dart';
 import '../tools/controllers/comittee/scorecard.dart';
 import '../tools/controllers/route.dart';
@@ -113,6 +114,7 @@ class CloudStorage {
       }
 
       if (Get.isRegistered<ScorecardController>()) {
+        Get.find<AutoSaveController>().timers.remove("scorecard");
         Get.find<ScorecardController>().onInit();
       }
     }
@@ -134,6 +136,8 @@ class CloudStorage {
 
   static Future<void> saveScorecard({Map<String, dynamic>? data}) async {
     final CommitteeController controller = Get.find<CommitteeController>();
+
+    print("SAVING SCORECARD\tDAY: ${controller.selectedDay.value + 1}");
 
     if (data != null) {
       await FirebaseFirestore.instance

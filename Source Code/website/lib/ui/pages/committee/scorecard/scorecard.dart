@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Table;
 import 'package:get/get.dart';
 
 import '/services/cloud_storage.dart';
+import '/tools/controllers/comittee/autosave.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/pages/committee/widgets/body.dart';
@@ -63,9 +64,16 @@ class ScorecardPage extends StatelessWidget {
                   ),
                   onChanged: (value) {
                     if (value != null) {
-                      CloudStorage.saveScorecard(
-                        data: committeeController.committee.scorecard!.toJson(),
-                      );
+                      final AutoSaveController saveController =
+                          Get.find<AutoSaveController>();
+
+                      if (saveController.timers["scorecard"] != null) {
+                        saveController.timers["scorecard"]?.cancel();
+                        CloudStorage.saveScorecard(
+                          data:
+                              committeeController.committee.scorecard!.toJson(),
+                        );
+                      }
 
                       committeeController.refetch = true;
                       committeeController.selectedDay.value = value;

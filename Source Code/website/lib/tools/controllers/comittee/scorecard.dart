@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '/models/scorecard.dart';
+import '/services/cloud_storage.dart';
 import './committee.dart';
 import 'autosave.dart';
 
@@ -25,21 +25,9 @@ class ScorecardController extends GetxController {
     super.onInit();
 
     ever(Get.find<CommitteeController>().committee.scorecard!, (value) {
-      Get.find<AutoSaveController>().debounceSave("scorecard", syncToFirebase);
+      Get.find<AutoSaveController>()
+          .debounceSave("scorecard", CloudStorage.saveScorecard);
     });
-  }
-
-  void syncToFirebase() {
-    print("AUTOSAVE SCORECARD");
-
-    final CommitteeController controller = Get.find<CommitteeController>();
-
-    FirebaseFirestore.instance
-        .collection("committees")
-        .doc(controller.committee.id)
-        .collection("days")
-        .doc(controller.selectedDay.toString())
-        .update({"scorecard": controller.committee.scorecard!.value.toJson()});
   }
 
   void addParameter(String title, int maxScore) => scorecard.update((val) {
