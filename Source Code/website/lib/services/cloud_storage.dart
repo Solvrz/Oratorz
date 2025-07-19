@@ -13,6 +13,7 @@ import '../tools/controllers/app.dart';
 import '../tools/controllers/comittee/autosave.dart';
 import '../tools/controllers/comittee/committee.dart';
 import '../tools/controllers/comittee/scorecard.dart';
+import '../tools/controllers/comittee/speech.dart';
 import '../tools/controllers/route.dart';
 import '../tools/controllers/setup.dart';
 
@@ -81,6 +82,8 @@ class CloudStorage {
   static Future<bool> fetchDayData() async {
     final CommitteeController controller = Get.find<CommitteeController>();
     final Committee committee = controller.committee;
+
+    if (committee.currDay == -1) return false;
 
     if (committee.rollCall.isEmpty ||
         committee.scorecard == null ||
@@ -156,5 +159,39 @@ class CloudStorage {
         "scorecard": controller.committee.scorecard!.value.toJson(),
       });
     }
+  }
+
+  static Future<void> fetchCaucus() async {
+    final CommitteeController controller = Get.find<CommitteeController>();
+    final SpeechController speechController = Get.find<SpeechController>();
+
+    final DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+        .instance
+        .collection("committees")
+        .doc(controller.committee.id)
+        .collection("days")
+        .doc(controller.committee.currDay.toString())
+        .collection("caucus")
+        .doc(speechController.tag)
+        .get();
+
+    if (doc.exists) {
+    } else {}
+  }
+
+  static Future<void> saveCaucus() async {
+    final CommitteeController controller = Get.find<CommitteeController>();
+    final SpeechController speechController = Get.find<SpeechController>();
+
+    print("SAVING CAUCUS-${speechController.tag}");
+
+    await FirebaseFirestore.instance
+        .collection("committees")
+        .doc(controller.committee.id)
+        .collection("days")
+        .doc(controller.committee.currDay.toString())
+        .collection("caucus")
+        .doc(speechController.tag)
+        .set(speechController.toJson());
   }
 }

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
+import '/services/cloud_storage.dart';
 import '/services/local_storage.dart';
+import 'autosave.dart';
 
 class SpeechController extends GetxController {
   final String tag;
@@ -22,6 +24,23 @@ class SpeechController extends GetxController {
 
   final RxList<Map<String, Duration>> pastSpeakers =
       <Map<String, Duration>>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    everAll([
+      _subtopic,
+      _overallDuration,
+      _duration,
+      _currentSpeaker,
+      nextSpeakers,
+      pastSpeakers,
+    ], (_) {
+      Get.find<AutoSaveController>()
+          .debounceSave("caucus-$tag", CloudStorage.saveCaucus);
+    });
+  }
 
   List<Map<String, int>> get pastSpeakersEncode => pastSpeakers
       .map<Map<String, int>>(
