@@ -9,7 +9,7 @@ class SpeechController extends GetxController {
 
   SpeechController(this.tag);
 
-  final RxMap<String, String> _subtopic = {"": ""}.obs;
+  final RxMap<String, String> _subtopic = <String, String>{}.obs;
 
   final Rx<Stopwatch> _overallStopwatch = Stopwatch().obs;
   final Rx<Stopwatch> _stopwatch = Stopwatch().obs;
@@ -38,8 +38,29 @@ class SpeechController extends GetxController {
       pastSpeakers,
     ], (_) {
       Get.find<AutoSaveController>()
-          .debounceSave("caucus-$tag", CloudStorage.saveCaucus);
+          .debounceSave("caucus-$tag", () => CloudStorage.saveCaucus(tag));
     });
+  }
+
+  SpeechController.fromJson(this.tag, Map<String, dynamic> data) {
+    subtopic = Map<String, String>.from(data["subtopic"]);
+    overallDuration = Duration(seconds: data["overall"]);
+    duration = Duration(seconds: data["duration"]);
+    currentSpeaker = data["current"];
+
+    final List<Map<String, int>> past = data["past"]
+        .map<Map<String, int>>((element) => Map<String, int>.from(element))
+        .toList();
+
+    pastSpeakers.value = past
+        .map<Map<String, Duration>>(
+          (element) => <String, Duration>{
+            element.keys.first: Duration(seconds: element.values.first),
+          },
+        )
+        .toList();
+
+    nextSpeakers.value = List<String>.from(data["next"]);
   }
 
   List<Map<String, int>> get pastSpeakersEncode => pastSpeakers
@@ -53,7 +74,7 @@ class SpeechController extends GetxController {
   set subtopic(Map<String, String> newSubtopic) =>
       _subtopic.value = newSubtopic;
 
-  bool get hasSubtopic => subtopic.keys.first.isNotEmpty;
+  bool get hasSubtopic => subtopic.keys.isNotEmpty;
   bool get hasOverallDuration => overallDuration.inSeconds > 0;
 
   Stopwatch get overallStopwatch => _overallStopwatch.value;

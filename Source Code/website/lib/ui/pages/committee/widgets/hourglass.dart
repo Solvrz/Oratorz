@@ -79,7 +79,7 @@ class _HourglassState extends State<Hourglass> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (_speechController.subtopic.keys.first.isNotEmpty) ...[
+          if (_speechController.hasSubtopic) ...[
             RichText(
               text: TextSpan(
                 text: "${_speechController.subtopic.keys.first}: ",

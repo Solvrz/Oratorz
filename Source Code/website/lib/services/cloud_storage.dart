@@ -161,9 +161,12 @@ class CloudStorage {
     }
   }
 
-  static Future<void> fetchCaucus() async {
+  static Future<bool> fetchCaucus(String tag) async {
     final CommitteeController controller = Get.find<CommitteeController>();
-    final SpeechController speechController = Get.find<SpeechController>();
+
+    if (Get.isRegistered<SpeechController>(tag: tag)) {
+      return true;
+    }
 
     final DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
         .instance
@@ -172,18 +175,27 @@ class CloudStorage {
         .collection("days")
         .doc(controller.committee.currDay.toString())
         .collection("caucus")
-        .doc(speechController.tag)
+        .doc(tag)
         .get();
 
     if (doc.exists) {
-    } else {}
+      Get.put<SpeechController>(
+        SpeechController.fromJson(tag, doc.data()!),
+        tag: tag,
+      );
+    } else {
+      Get.put<SpeechController>(SpeechController(tag), tag: tag);
+    }
+
+    return true;
   }
 
-  static Future<void> saveCaucus() async {
+  static Future<void> saveCaucus(String tag) async {
     final CommitteeController controller = Get.find<CommitteeController>();
-    final SpeechController speechController = Get.find<SpeechController>();
+    final SpeechController speechController =
+        Get.find<SpeechController>(tag: tag);
 
-    print("SAVING CAUCUS-${speechController.tag}");
+    print("SAVING CAUCUS-$tag");
 
     await FirebaseFirestore.instance
         .collection("committees")
@@ -191,7 +203,7 @@ class CloudStorage {
         .collection("days")
         .doc(controller.committee.currDay.toString())
         .collection("caucus")
-        .doc(speechController.tag)
+        .doc(tag)
         .set(speechController.toJson());
   }
 }
