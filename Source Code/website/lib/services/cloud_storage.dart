@@ -93,7 +93,9 @@ class CloudStorage {
           .get();
 
       if (doc.exists) {
-        committee.rollCall = Map<String, int>.from(doc.data()!["rollCall"]);
+        if (!controller.refetch) {
+          committee.rollCall = Map<String, int>.from(doc.data()!["rollCall"]);
+        }
         committee.scorecard = Scorecard.fromJson(doc.data()!["scorecard"]).obs;
       } else {
         committee.initRollCall();
