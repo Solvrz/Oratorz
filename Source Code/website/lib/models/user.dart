@@ -36,7 +36,8 @@ class User {
       createdAt: data["createdAt"],
     );
 
-    user._committeesId = data["committees"].cast<String>();
+    // TODO: Fix Committees ID not initilized when creating a new account
+    user._committeesId = data["committees"].cast<String>() ?? "";
 
     return user;
   }

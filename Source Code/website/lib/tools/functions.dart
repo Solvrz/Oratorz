@@ -32,16 +32,18 @@ Widget flag(String delegate, {double size = 30}) => Container(
     );
 
 void snackbar(BuildContext context, Widget content) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    margin: EdgeInsets.only(
-      top: context.mediaQuerySize.height / 1.1,
-      bottom: 16,
-      right: context.mediaQuerySize.width / 3,
-      left: context.mediaQuerySize.width / 3,
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      margin: EdgeInsets.only(
+        top: context.mediaQuerySize.height / 1.1,
+        bottom: 16,
+        right: context.mediaQuerySize.width / 3,
+        left: context.mediaQuerySize.width / 3,
+      ),
+      behavior: SnackBarBehavior.floating,
+      content: content,
     ),
-    behavior: SnackBarBehavior.floating,
-    content: content,
-  ),);
+  );
 }
 
 Widget proxyDecorator(Widget child, int index, Animation<double> animation) {

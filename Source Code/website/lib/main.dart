@@ -12,8 +12,8 @@ import '/config/constants.dart';
 import '/config/theme.dart';
 import '/firebase_options.dart';
 import '/models/router.dart';
-import 'models/user.dart';
-import 'tools/controllers/app.dart';
+import '/models/user.dart';
+import '/tools/controllers/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

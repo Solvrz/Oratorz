@@ -161,6 +161,8 @@ class Auth {
 
       return false;
     } catch (e) {
+      print(e);
+
       if (context.mounted) {
         snackbar(
           context,
