@@ -7,7 +7,6 @@ import '/models/committee.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
-import '/tools/controllers/comittee/speech.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/tools/controllers/setup.dart';
 
@@ -32,71 +31,6 @@ class LocalStorage {
       controller.user!.committees.any((committee) => committee.id == id);
 
   static Committee getCommittee(String id) => Committee.fromJson(box.read(id));
-
-  static bool saveSpeech(SpeechController controller) {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = {};
-
-    data[controller.tag] = controller.toJson();
-
-    box.write(committee.id, data);
-
-    return true;
-  }
-
-  static bool updateSpeech(String key, dynamic value, String tag) {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = box.read(committee.id);
-
-    if (data[tag] == null) return false;
-
-    data[tag][key] = value;
-
-    box.write(committee.id, data);
-
-    return true;
-  }
-
-  static bool loadSpeech(String tag) {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = {};
-
-    if (data[tag] == null) return false;
-
-    final SpeechController controller = SpeechController(tag);
-
-    controller.subtopic = Map<String, String>.from(data[tag]["subtopic"]);
-    controller.overallDuration = Duration(seconds: data[tag]["overall"]);
-    controller.duration = Duration(seconds: data[tag]["duration"]);
-    controller.currentSpeaker = data[tag]["current"];
-
-    final List<Map<String, int>> past = data[tag]["past"]
-        .map<Map<String, int>>((element) => Map<String, int>.from(element))
-        .toList();
-
-    controller.pastSpeakers.value = past
-        .map<Map<String, Duration>>(
-          (element) => <String, Duration>{
-            element.keys.first: Duration(seconds: element.values.first),
-          },
-        )
-        .toList();
-
-    controller.nextSpeakers.value = List<String>.from(data[tag]["next"]);
-
-    Get.put<SpeechController>(controller, tag: tag);
-
-    return true;
-  }
 
   static bool saveVote(VoteController vote) {
     if (!Get.isRegistered<CommitteeController>()) return false;

@@ -16,8 +16,9 @@ class SpeechSettingsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final SpeechController _speechController =
         Get.find<SpeechController>(tag: tag);
-    final TextEditingController _subtopicController =
-        TextEditingController(text: _speechController.subtopic.values.first);
+    final TextEditingController _subtopicController = TextEditingController(
+      text: _speechController.subtopic.values.firstOrNull,
+    );
 
     return DialogBox(
       heading: "Settings",

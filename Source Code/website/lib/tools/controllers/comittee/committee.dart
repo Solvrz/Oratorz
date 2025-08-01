@@ -10,12 +10,34 @@ class CommitteeController extends GetxController {
   late final RxInt selectedDay;
   bool refetch = false;
 
+  final List<void Function()> _deletions = [];
+
   CommitteeController({required Committee committee, int tab = 0}) {
     _tab = tab.obs;
     _committee = committee.obs;
     selectedDay = committee.currDay.obs;
+  }
 
-    Get.put<AutoSaveController>(AutoSaveController());
+  @override
+  void onInit() {
+    super.onInit();
+
+    final AutoSaveController controller = AutoSaveController();
+    Get.put<AutoSaveController>(controller);
+
+    trackController(controller);
+  }
+
+  @override
+  void onClose() {
+    _deletions.forEach((del) => del());
+    _deletions.clear();
+
+    super.onClose();
+  }
+
+  void trackController<T extends GetxController>(T controller, {String? tag}) {
+    _deletions.add(() => Get.delete<T>(tag: tag));
   }
 
   Committee get committee => _committee.value;

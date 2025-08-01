@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
 import '/services/cloud_storage.dart';
-import '/services/local_storage.dart';
 import 'autosave.dart';
+import 'committee.dart';
 
 class SpeechController extends GetxController {
   final String tag;
@@ -40,6 +40,8 @@ class SpeechController extends GetxController {
       Get.find<AutoSaveController>()
           .debounceSave("caucus-$tag", () => CloudStorage.saveCaucus(tag));
     });
+
+    Get.find<CommitteeController>().trackController(this, tag: tag);
   }
 
   SpeechController.fromJson(this.tag, Map<String, dynamic> data) {
@@ -83,15 +85,10 @@ class SpeechController extends GetxController {
   Duration get overallDuration => _overallDuration.value;
   Duration get duration => _duration.value;
 
-  set overallDuration(Duration newDuration) {
-    _overallDuration.value = newDuration;
-    LocalStorage.updateSpeech("overall", newDuration.inSeconds, tag);
-  }
+  set overallDuration(Duration newDuration) =>
+      _overallDuration.value = newDuration;
 
-  set duration(Duration newDuration) {
-    _duration.value = newDuration;
-    LocalStorage.updateSpeech("duration", newDuration.inSeconds, tag);
-  }
+  set duration(Duration newDuration) => _duration.value = newDuration;
 
   String get currentSpeaker => _currentSpeaker.value;
   set currentSpeaker(String newSpeaker) => _currentSpeaker.value = newSpeaker;
@@ -107,7 +104,6 @@ class SpeechController extends GetxController {
 
     nextSpeakers.removeAt(oldIndex);
     nextSpeakers.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, old);
-    LocalStorage.updateSpeech("next", nextSpeakers, tag);
   }
 
   void swapWithCurrentSpeaker(int index) {
@@ -120,7 +116,6 @@ class SpeechController extends GetxController {
   void addSpeaker(String delegate) {
     if (currentSpeaker.isEmpty) {
       currentSpeaker = delegate;
-      LocalStorage.updateSpeech("current", currentSpeaker, tag);
       return;
     }
 
@@ -129,12 +124,10 @@ class SpeechController extends GetxController {
     }
 
     nextSpeakers.add(delegate);
-    LocalStorage.updateSpeech("next", nextSpeakers, tag);
   }
 
   void removeSpeaker(String delegate) {
     nextSpeakers.remove(delegate);
-    LocalStorage.updateSpeech("next", nextSpeakers, tag);
 
     update();
   }
@@ -145,17 +138,13 @@ class SpeechController extends GetxController {
     } else {
       _currentSpeaker.value = nextSpeakers.first;
       nextSpeakers.removeAt(0);
-      LocalStorage.updateSpeech("next", nextSpeakers, tag);
     }
-
-    LocalStorage.updateSpeech("current", currentSpeaker, tag);
 
     update();
   }
 
   void removePastSpeaker(int index) {
     pastSpeakers.removeAt(index);
-    LocalStorage.updateSpeech("past", pastSpeakers, tag);
 
     update();
   }
@@ -164,7 +153,6 @@ class SpeechController extends GetxController {
     if (_currentSpeaker.value.isEmpty) return;
 
     pastSpeakers.add({_currentSpeaker.value: stopwatch.elapsed});
-    LocalStorage.updateSpeech("past", pastSpeakersEncode, tag);
 
     removeCurrentSpeaker();
 

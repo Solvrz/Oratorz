@@ -215,8 +215,6 @@ void _onPass(BuildContext context, Map<String, dynamic> motion) {
         seconds: (motion["duration"] as String).toInt,
       );
 
-      LocalStorage.saveSpeech(_speechController);
-
       Get.find<CommitteeController>().tab = 0;
       context.go("/mod?id=${Get.find<CommitteeController>().committee.id}");
     },
@@ -283,8 +281,6 @@ void _onPass(BuildContext context, Map<String, dynamic> motion) {
       _speechController.duration = Duration(
         seconds: (motion["duration"] as String).toInt,
       );
-
-      LocalStorage.saveSpeech(_speechController);
 
       Get.find<CommitteeController>().tab = 0;
       context.go("/gsl?id=${Get.find<CommitteeController>().committee.id}");

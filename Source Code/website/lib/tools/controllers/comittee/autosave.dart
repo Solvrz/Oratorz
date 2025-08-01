@@ -17,6 +17,7 @@ class AutoSaveController extends GetxController {
   @override
   void onClose() {
     timers.values.forEach((t) => t.cancel());
+
     super.onClose();
   }
 }

@@ -28,6 +28,8 @@ class ScorecardController extends GetxController {
       Get.find<AutoSaveController>()
           .debounceSave("scorecard", CloudStorage.saveScorecard);
     });
+
+    Get.find<CommitteeController>().trackController(this);
   }
 
   void addParameter(String title, int maxScore) => scorecard.update((val) {
