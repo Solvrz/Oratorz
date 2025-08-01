@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/services/auth.dart';
 import '/ui/pages/home/widgets/profile_card.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                   const Spacer(),
                   Center(
                     child: Text(
-                      "The account for '${FirebaseAuth.instance.currentUser!.email}' is not verified! Check your inbox for the verification email or log in to another account.",
+                      "The account for '${FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.email : ""}' is not verified! Check your inbox for the verification email or log in to another account.",
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -71,7 +72,10 @@ class _HomePageState extends State<HomePage> {
                         BorderSide.none,
                       ),
                     ),
-                    onPressed: () => Auth.signout(context),
+                    onPressed: () {
+                      context.pop();
+                      Auth.signout(context);
+                    },
                     child: Text(
                       "Log In to another account",
                       style: context.textTheme.bodyMedium?.copyWith(

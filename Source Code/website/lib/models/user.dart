@@ -12,7 +12,7 @@ class User {
   final String email;
   late final Timestamp createdAt;
   late final List<Committee> committees;
-  late final List<String> _committeesId;
+  List<String> _committeesId = [];
 
   User({
     String? id,
