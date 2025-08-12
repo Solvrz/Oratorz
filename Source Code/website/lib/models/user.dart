@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../services/uid.dart';
@@ -10,6 +11,7 @@ class User {
   final String firstName;
   final String lastName;
   final String email;
+  Image? image;
   late final Timestamp createdAt;
   late final List<Committee> committees;
   late final List<String> _committeesId;
@@ -36,7 +38,6 @@ class User {
       createdAt: data["createdAt"],
     );
 
-    // TODO: Fix Committees ID not initilized when creating a new account
     user._committeesId = data["committees"].cast<String>() ?? "";
 
     return user;
