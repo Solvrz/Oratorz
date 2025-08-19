@@ -119,6 +119,12 @@ class _CommitteePageState extends State<CommitteePage> {
                               textAlign: TextAlign.center,
                             ),
                           ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Day ${controller.committee.currDay + 1}",
+                            style: context.textTheme.titleLarge!
+                                .copyWith(color: Colors.white),
+                          ),
                           const SizedBox(height: 32),
                           ...List.generate(
                             Router.tabs.length,
