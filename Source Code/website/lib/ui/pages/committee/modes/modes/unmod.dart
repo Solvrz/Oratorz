@@ -10,7 +10,10 @@ class UnmodMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!Get.isRegistered<SpeechController>(tag: "unmod")) {
-      Get.put<SpeechController>(SpeechController("unmod"), tag: "unmod");
+      Get.put<SpeechController>(
+        SpeechController("unmod", autosave: false),
+        tag: "unmod",
+      );
     }
 
     return Column(

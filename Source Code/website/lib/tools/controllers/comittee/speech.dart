@@ -6,8 +6,9 @@ import 'committee.dart';
 
 class SpeechController extends GetxController {
   final String tag;
+  bool autosave = true;
 
-  SpeechController(this.tag);
+  SpeechController(this.tag, {this.autosave = true});
 
   final RxMap<String, String> _subtopic = <String, String>{}.obs;
 
@@ -29,19 +30,21 @@ class SpeechController extends GetxController {
   void onInit() {
     super.onInit();
 
-    everAll([
-      _subtopic,
-      _overallDuration,
-      _duration,
-      _currentSpeaker,
-      nextSpeakers,
-      pastSpeakers,
-    ], (_) {
-      Get.find<AutoSaveController>()
-          .debounceSave("caucus-$tag", () => CloudStorage.saveCaucus(tag));
-    });
+    if (autosave) {
+      everAll([
+        _subtopic,
+        _overallDuration,
+        _duration,
+        _currentSpeaker,
+        nextSpeakers,
+        pastSpeakers,
+      ], (_) {
+        Get.find<AutoSaveController>()
+            .debounceSave("caucus-$tag", () => CloudStorage.saveCaucus(tag));
+      });
 
-    Get.find<CommitteeController>().trackController(this, tag: tag);
+      Get.find<CommitteeController>().trackController(this, tag: tag);
+    }
   }
 
   SpeechController.fromJson(this.tag, Map<String, dynamic> data) {
