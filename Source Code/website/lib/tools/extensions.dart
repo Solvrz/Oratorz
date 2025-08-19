@@ -35,7 +35,7 @@ extension ToolsDuration on Duration {
 
 extension ToolsDateTime on DateTime {
   String get to12Hour =>
-      "${hour > 12 ? hour - 12 : hour}:$minute ${hour > 12 ? "PM" : "AM"}";
+      "${hour > 12 ? hour - 12 : hour}:${minute < 10 ? "0$minute" : minute} ${hour > 12 ? "PM" : "AM"}";
 
   String get dateFormat => "$day/$month/$year";
 }

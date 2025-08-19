@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/tools/controllers/comittee/speech.dart';
@@ -178,8 +177,6 @@ class _MultipleModeButton extends StatelessWidget {
           onPressed: () {
             _motionsController.mode = mode;
             _motionsController.update();
-
-            LocalStorage.updateMotions("mode", mode);
           },
           child: Icon(icon),
         );

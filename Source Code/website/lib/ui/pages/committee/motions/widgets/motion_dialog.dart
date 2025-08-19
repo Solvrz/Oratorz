@@ -71,16 +71,14 @@ class MotionDialog extends StatelessWidget {
           ),
           onPressed: () {
             if (add) {
-              _motionsController.addMotion(
-                motion
-                  ..removeWhere((key, value) {
-                    try {
-                      return value.isEmpty;
-                    } catch (_) {
-                      return false;
-                    }
-                  }),
-              );
+              _motionsController.currentMotion = motion
+                ..removeWhere((key, value) {
+                  try {
+                    return value.isEmpty;
+                  } catch (_) {
+                    return false;
+                  }
+                });
             }
 
             _motionsController.update();

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:get/get.dart';
 
 import 'autosave.dart';
@@ -15,8 +17,8 @@ class MotionsController extends GetxController {
   set currentMotion(Map<String, dynamic> motion) =>
       _currentMotion.value = motion;
 
-  List<Map<String, dynamic>> get nextMotions => _pastMotions;
-  set nextMotions(List<Map<String, dynamic>> motions) =>
+  List<Map<String, dynamic>> get pastMotions => _pastMotions;
+  set pastMotions(List<Map<String, dynamic>> motions) =>
       _pastMotions.value = motions;
 
   int get mode => _mode.value;
@@ -28,6 +30,7 @@ class MotionsController extends GetxController {
 
     everAll([
       _currentMotion,
+      _pastMotions,
     ], (value) {
       //TODO: Implement save motions to cloud storage
       Get.find<AutoSaveController>()
@@ -42,23 +45,6 @@ class MotionsController extends GetxController {
         _currentMotion["delegate"] == _currentMotion["delegate"];
   }
 
-  void reorder(int oldIndex, int newIndex) {
-    final Map<String, dynamic> _old = _pastMotions[oldIndex];
-
-    _pastMotions.removeAt(oldIndex);
-    _pastMotions.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, _old);
-  }
-
-  void addMotion(Map<String, dynamic> motion) {
-    if (_currentMotion.isEmpty) {
-      _currentMotion.value = motion;
-
-      return;
-    }
-
-    _pastMotions.add(motion);
-  }
-
   void removeMotion(Map<String, dynamic> motion) {
     _pastMotions.remove(motion);
   }
@@ -66,17 +52,12 @@ class MotionsController extends GetxController {
   void nextMotion({required bool passed}) {
     if (_currentMotion.isEmpty) return;
 
-    if (_pastMotions.isEmpty) {
-      _currentMotion.value = {};
-    } else {
-      _currentMotion.value = _pastMotions.first;
-      _pastMotions.removeAt(0);
-    }
+    _pastMotions.add(Map.from(_currentMotion.value));
+    currentMotion = {};
   }
 
   Map<String, dynamic> toJson() => {
-        "mode": _mode.value,
         "current": _currentMotion,
-        "next": _pastMotions,
+        "past": _pastMotions,
       };
 }

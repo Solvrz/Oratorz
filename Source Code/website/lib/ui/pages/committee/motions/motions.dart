@@ -6,8 +6,8 @@ import '/ui/pages/committee/widgets/body.dart';
 import './widgets/add_motion_card.dart';
 import './widgets/current_motions_card.dart';
 import './widgets/debate_card.dart';
-import './widgets/future_motions_card.dart';
 import './widgets/vote_card.dart';
+import 'widgets/past_motions_card.dart';
 
 class MotionsPage extends StatelessWidget {
   const MotionsPage({super.key});
@@ -28,7 +28,7 @@ class MotionsPage extends StatelessWidget {
             children: [
               CurrentMotionCard(),
               SizedBox(height: 12),
-              Expanded(child: FutureMotionsCard()),
+              Expanded(child: PastMotionsCard()),
             ],
           ),
           const SizedBox(width: 36),

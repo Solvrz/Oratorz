@@ -6,7 +6,6 @@ import 'package:get_storage/get_storage.dart';
 import '/models/committee.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/comittee/committee.dart';
-import '/tools/controllers/comittee/motions.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/tools/controllers/setup.dart';
 
@@ -80,60 +79,6 @@ class LocalStorage {
         .toList();
 
     Get.put<VoteController>(controller, tag: "vote");
-
-    return true;
-  }
-
-  static bool saveMotions() {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = box.read(committee.id);
-
-    data["motions"] = Get.find<MotionsController>().toJson();
-
-    box.write(committee.id, data);
-
-    return true;
-  }
-
-  static bool updateMotions(String key, dynamic value) {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = box.read(committee.id);
-
-    if (data["motions"] == null) return false;
-
-    data["motions"][key] = value;
-    box.write(committee.id, data);
-
-    return true;
-  }
-
-  static bool loadMotions() {
-    if (!Get.isRegistered<CommitteeController>()) return false;
-
-    final Committee committee = Get.find<CommitteeController>().committee;
-
-    final Map<String, dynamic> data = box.read(committee.id);
-    if (data["motions"] == null) return false;
-
-    final MotionsController controller = MotionsController();
-
-    controller.mode = data["motions"]["mode"];
-    controller.currentMotion =
-        Map<String, dynamic>.from(data["motions"]["current"]);
-
-    controller.nextMotions = data["motions"]["next"]
-        .map<Map<String, dynamic>>(
-          (element) => Map<String, dynamic>.from(element),
-        )
-        .toList();
-
-    Get.put<MotionsController>(controller);
 
     return true;
   }

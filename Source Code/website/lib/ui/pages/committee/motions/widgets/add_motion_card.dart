@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -109,6 +110,8 @@ class AddMotionCard extends StatelessWidget {
                               "widgets": _motion["widgets"] ?? <String>[],
                               "time":
                                   _motion["time"] ?? DateTime.now().to12Hour,
+                              "timestamp":
+                                  _motion["timestamp"] ?? Timestamp.now(),
                             },
                           ),
                         ),
