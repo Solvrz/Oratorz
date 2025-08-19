@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 
-import '/services/local_storage.dart';
+import 'autosave.dart';
+import 'committee.dart';
 
 class MotionsController extends GetxController {
   final RxMap<String, dynamic> _currentMotion = <String, dynamic>{}.obs;
 
-  final RxList<Map<String, dynamic>> _nextMotions =
+  final RxList<Map<String, dynamic>> _pastMotions =
       <Map<String, dynamic>>[].obs;
 
   final RxInt _mode = 0.obs;
@@ -14,16 +15,26 @@ class MotionsController extends GetxController {
   set currentMotion(Map<String, dynamic> motion) =>
       _currentMotion.value = motion;
 
-  List<Map<String, dynamic>> get nextMotions => _nextMotions;
+  List<Map<String, dynamic>> get nextMotions => _pastMotions;
   set nextMotions(List<Map<String, dynamic>> motions) =>
-      _nextMotions.value = motions;
+      _pastMotions.value = motions;
 
   int get mode => _mode.value;
   set mode(int newMode) => _mode.value = newMode;
 
-  void _saveMotions() {
-    LocalStorage.updateMotions("current", _currentMotion);
-    LocalStorage.updateMotions("next", _nextMotions);
+  @override
+  void onInit() {
+    super.onInit();
+
+    everAll([
+      _currentMotion,
+    ], (value) {
+      //TODO: Implement save motions to cloud storage
+      Get.find<AutoSaveController>()
+          .debounceSave("motions", () => print(toJson()));
+    });
+
+    Get.find<CommitteeController>().trackController(this);
   }
 
   bool isCurrentMotion(Map<String, dynamic> motion) {
@@ -32,49 +43,40 @@ class MotionsController extends GetxController {
   }
 
   void reorder(int oldIndex, int newIndex) {
-    final Map<String, dynamic> _old = _nextMotions[oldIndex];
+    final Map<String, dynamic> _old = _pastMotions[oldIndex];
 
-    _nextMotions.removeAt(oldIndex);
-    _nextMotions.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, _old);
-
-    _saveMotions();
+    _pastMotions.removeAt(oldIndex);
+    _pastMotions.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, _old);
   }
 
   void addMotion(Map<String, dynamic> motion) {
     if (_currentMotion.isEmpty) {
       _currentMotion.value = motion;
-      _saveMotions();
 
       return;
     }
 
-    _nextMotions.add(motion);
-    _saveMotions();
+    _pastMotions.add(motion);
   }
 
   void removeMotion(Map<String, dynamic> motion) {
-    _nextMotions.remove(motion);
-    _saveMotions();
+    _pastMotions.remove(motion);
   }
 
   void nextMotion({required bool passed}) {
     if (_currentMotion.isEmpty) return;
 
-    if (_nextMotions.isEmpty) {
+    if (_pastMotions.isEmpty) {
       _currentMotion.value = {};
     } else {
-      _currentMotion.value = _nextMotions.first;
-      _nextMotions.removeAt(0);
+      _currentMotion.value = _pastMotions.first;
+      _pastMotions.removeAt(0);
     }
-
-    _saveMotions();
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "mode": _mode.value,
-      "current": _currentMotion,
-      "next": _nextMotions,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        "mode": _mode.value,
+        "current": _currentMotion,
+        "next": _pastMotions,
+      };
 }

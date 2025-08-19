@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/services/local_storage.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/ui/pages/committee/widgets/body.dart';
 import './widgets/add_motion_card.dart';
@@ -16,12 +15,7 @@ class MotionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!Get.isRegistered<MotionsController>()) {
-      final bool exists = LocalStorage.loadMotions();
-
-      if (!exists) {
-        Get.put<MotionsController>(MotionsController());
-        LocalStorage.saveMotions();
-      }
+      Get.put<MotionsController>(MotionsController());
     }
 
     final MotionsController controller = Get.find<MotionsController>();
@@ -34,7 +28,7 @@ class MotionsPage extends StatelessWidget {
             children: [
               CurrentMotionCard(),
               SizedBox(height: 12),
-              FutureMotionsCard(),
+              Expanded(child: FutureMotionsCard()),
             ],
           ),
           const SizedBox(width: 36),

@@ -21,7 +21,7 @@ class CurrentMotionCard extends StatelessWidget {
 
     return GetBuilder<MotionsController>(
       builder: (_) => SizedBox(
-        height: context.height / 2.75,
+        height: context.height / 3.5,
         width: context.width / 3,
         child: Card(
           child: Container(
@@ -54,6 +54,7 @@ class CurrentMotionCard extends StatelessWidget {
                 ),
                 const Divider(height: 16),
                 const SizedBox(height: 20),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

@@ -13,7 +13,6 @@ class FutureMotionsCard extends StatelessWidget {
     final MotionsController _motionsController = Get.find<MotionsController>();
 
     return SizedBox(
-      height: context.height / 2.325,
       width: context.width / 3,
       child: Card(
         child: Container(
