@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/services/cloud_storage.dart';
 import '/tools/controllers/comittee/motions.dart';
-import '../../../../../services/cloud_storage.dart';
 import './motion_tile.dart';
 
 class PastMotionsCard extends StatelessWidget {

@@ -1,14 +1,23 @@
 import 'package:get/get.dart';
 
-import '/services/local_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 
 class VoteController extends GetxController {
+  VoteController() {
+    voters =
+        Get.find<CommitteeController>().committee.presentAndVotingDelegates;
+  }
+
   final RxString _topic = "Your Topic".obs;
   final RxInt _majority = 0.obs;
 
   final RxList<String> _voters = <String>[].obs;
   final RxList<Map<String, bool>> _pastVoters = <Map<String, bool>>[].obs;
+
+  final RxList<Map<String, dynamic>> _pastVotes = <Map<String, dynamic>>[].obs;
+
+  List<Map<String, dynamic>> get pastVotes => _pastVotes;
+  set pastVotes(List<Map<String, dynamic>> votes) => _pastVotes.value = votes;
 
   String get topic => _topic.value;
   set topic(String newTopic) => _topic.value = newTopic;
@@ -85,29 +94,17 @@ class VoteController extends GetxController {
     return false;
   }
 
-  void _saveVoters() {
-    LocalStorage.updateVote("voters", voters);
-    LocalStorage.updateVote("past", pastVoters);
-  }
-
   void reset() {
     _voters.value =
         Get.find<CommitteeController>().committee.presentAndVotingDelegates;
     _pastVoters.value = [];
-
-    _saveVoters();
   }
 
   void removeVoter(String delegate) {
     _voters.remove(delegate);
-
-    _saveVoters();
   }
 
-  void vote({
-    required bool vote,
-    String? voter,
-  }) {
+  void vote({required bool vote, String? voter}) {
     final String _voter = voter ?? _voters[0];
 
     if (!hasVoted(_voter)) {
@@ -117,16 +114,17 @@ class VoteController extends GetxController {
       _pastVoters.removeWhere((_vote) => _vote.keys.first == _voter);
       _pastVoters.add({_voter: vote});
     }
-
-    _saveVoters();
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "topic": _topic.value,
-      "majority": _majority.value,
-      "voters": _voters,
-      "past": _pastVoters,
-    };
+  void addVoteData(Map<String, dynamic> data) {
+    _pastVotes.add(data);
+    reset();
   }
+
+  Map<String, dynamic> toJson() => {
+        "topic": _topic.value,
+        "majority": _majority.value,
+        "voters": _voters,
+        "past": _pastVoters,
+      };
 }

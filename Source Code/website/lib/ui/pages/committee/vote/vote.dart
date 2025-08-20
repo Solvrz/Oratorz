@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/services/local_storage.dart';
-import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/pages/committee/widgets/body.dart';
-import './widgets/past_voters_card.dart';
+import './widgets/past_votes_card.dart';
 import './widgets/result_card.dart';
 import './widgets/voting_card.dart';
 
@@ -15,16 +13,7 @@ class VotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!Get.isRegistered<VoteController>()) {
-      final bool exists = LocalStorage.loadVote();
-
-      if (!exists) {
-        final VoteController controller = VoteController();
-        controller.voters =
-            Get.find<CommitteeController>().committee.presentAndVotingDelegates;
-
-        Get.put<VoteController>(controller, tag: "vote");
-        LocalStorage.saveVote(controller);
-      }
+      Get.put<VoteController>(VoteController(), tag: "vote");
     }
 
     return const Body(
@@ -35,7 +24,7 @@ class VotePage extends StatelessWidget {
             children: [
               ResultCard(),
               SizedBox(height: 12),
-              PastVotersCard(),
+              Expanded(child: PastVotesCard()),
             ],
           ),
           SizedBox(width: 36),

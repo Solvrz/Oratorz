@@ -14,7 +14,6 @@ class ResultCard extends StatelessWidget {
         Get.find<VoteController>(tag: "vote");
 
     return SizedBox(
-      height: context.height / 2.6,
       width: context.width / 4,
       child: Card(
         child: Container(

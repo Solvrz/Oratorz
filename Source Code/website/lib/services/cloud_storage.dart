@@ -15,6 +15,7 @@ import '../tools/controllers/comittee/committee.dart';
 import '../tools/controllers/comittee/motions.dart';
 import '../tools/controllers/comittee/scorecard.dart';
 import '../tools/controllers/comittee/speech.dart';
+import '../tools/controllers/comittee/vote.dart';
 import '../tools/controllers/route.dart';
 import '../tools/controllers/setup.dart';
 
@@ -247,5 +248,54 @@ class CloudStorage {
     );
 
     return motionsController.pastMotions;
+  }
+
+  static Future<void> uploadVote() async {
+    final CommitteeController controller = Get.find<CommitteeController>();
+    final VoteController voteController = Get.find<VoteController>(tag: "vote");
+
+    final Map<String, dynamic> data = voteController.toJson();
+
+    data["timestamp"] = Timestamp.now().millisecondsSinceEpoch;
+    data["result"] = voteController.inFavor >= voteController.majorityVal();
+
+    await FirebaseFirestore.instance
+        .collection("committees")
+        .doc(controller.committee.id)
+        .collection("days")
+        .doc(controller.committee.currDay.toString())
+        .collection("votes")
+        .add(data);
+
+    voteController.addVoteData(data);
+  }
+
+  static Future<List<Map<String, dynamic>>> fetchPastVotes() async {
+    final CommitteeController controller = Get.find<CommitteeController>();
+    final VoteController voteController = Get.find<VoteController>(tag: "vote");
+
+    if (voteController.pastVotes.isNotEmpty) {
+      return voteController.pastVotes;
+    }
+
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance
+            .collection("committees")
+            .doc(controller.committee.id)
+            .collection("days")
+            .doc(controller.committee.currDay.toString())
+            .collection("votes")
+            .get();
+
+    querySnapshot.docs.forEach(
+      (docSnapshot) {
+        final Map<String, dynamic> data = docSnapshot.data();
+        data["id"] = docSnapshot.id;
+
+        voteController.pastVotes.add(data);
+      },
+    );
+
+    return voteController.pastVotes;
   }
 }
