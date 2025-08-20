@@ -74,7 +74,7 @@ class CurrentMotionCard extends StatelessWidget {
                       color: Colors.redAccent,
                       onPressed: () async {
                         if (_motionsController.currentMotion.isNotEmpty) {
-                          _motionsController.nextMotion(passed: false);
+                          _motionsController.addMotion(passed: false);
                           _motionsController.update();
                         }
                       },
@@ -123,7 +123,7 @@ class _PassMotionDialog extends StatelessWidget {
               vertical: 4,
             ),
             onPressed: () {
-              _motionsController.nextMotion(passed: true);
+              _motionsController.addMotion(passed: true);
               _motionsController.update();
 
               context.pop();
@@ -139,7 +139,7 @@ class _PassMotionDialog extends StatelessWidget {
             onPressed: () {
               _onPass(context, _motionsController.currentMotion);
 
-              _motionsController.nextMotion(passed: true);
+              _motionsController.addMotion(passed: true);
               _motionsController.update();
 
               context.pop();

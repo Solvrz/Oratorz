@@ -2,8 +2,7 @@
 
 import 'package:get/get.dart';
 
-import 'autosave.dart';
-import 'committee.dart';
+import '/services/cloud_storage.dart';
 
 class MotionsController extends GetxController {
   final RxMap<String, dynamic> _currentMotion = <String, dynamic>{}.obs;
@@ -24,22 +23,6 @@ class MotionsController extends GetxController {
   int get mode => _mode.value;
   set mode(int newMode) => _mode.value = newMode;
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    everAll([
-      _currentMotion,
-      _pastMotions,
-    ], (value) {
-      //TODO: Implement save motions to cloud storage
-      Get.find<AutoSaveController>()
-          .debounceSave("motions", () => print(toJson()));
-    });
-
-    Get.find<CommitteeController>().trackController(this);
-  }
-
   bool isCurrentMotion(Map<String, dynamic> motion) {
     return _currentMotion["type"] == motion["type"] &&
         _currentMotion["delegate"] == _currentMotion["delegate"];
@@ -49,15 +32,16 @@ class MotionsController extends GetxController {
     _pastMotions.remove(motion);
   }
 
-  void nextMotion({required bool passed}) {
+  void addMotion({required bool passed}) {
     if (_currentMotion.isEmpty) return;
 
-    _pastMotions.add(Map.from(_currentMotion.value));
+    _currentMotion["status"] = passed;
+
+    final Map<String, dynamic> temp = Map.from(_currentMotion.value);
+
+    _pastMotions.add(temp);
+    CloudStorage.addMotion(temp);
+
     currentMotion = {};
   }
-
-  Map<String, dynamic> toJson() => {
-        "current": _currentMotion,
-        "past": _pastMotions,
-      };
 }

@@ -12,6 +12,7 @@ import '../models/scorecard.dart';
 import '../tools/controllers/app.dart';
 import '../tools/controllers/comittee/autosave.dart';
 import '../tools/controllers/comittee/committee.dart';
+import '../tools/controllers/comittee/motions.dart';
 import '../tools/controllers/comittee/scorecard.dart';
 import '../tools/controllers/comittee/speech.dart';
 import '../tools/controllers/route.dart';
@@ -205,5 +206,46 @@ class CloudStorage {
         .collection("caucus")
         .doc(tag)
         .set(speechController.toJson());
+  }
+
+  static Future<void> addMotion(Map<String, dynamic> motion) async {
+    final CommitteeController controller = Get.find<CommitteeController>();
+
+    await FirebaseFirestore.instance
+        .collection("committees")
+        .doc(controller.committee.id)
+        .collection("days")
+        .doc(controller.committee.currDay.toString())
+        .collection("motions")
+        .add(motion);
+  }
+
+  static Future<List<Map<String, dynamic>>> fetchPastMotions() async {
+    final CommitteeController controller = Get.find<CommitteeController>();
+    final MotionsController motionsController = Get.find<MotionsController>();
+
+    if (motionsController.pastMotions.isNotEmpty) {
+      return motionsController.pastMotions;
+    }
+
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance
+            .collection("committees")
+            .doc(controller.committee.id)
+            .collection("days")
+            .doc(controller.committee.currDay.toString())
+            .collection("motions")
+            .get();
+
+    querySnapshot.docs.forEach(
+      (docSnapshot) {
+        final Map<String, dynamic> data = docSnapshot.data();
+        data["id"] = docSnapshot.id;
+
+        motionsController.pastMotions.add(data);
+      },
+    );
+
+    return motionsController.pastMotions;
   }
 }
