@@ -24,63 +24,66 @@ class VoteSettingsDialog extends StatelessWidget {
 
     return DialogBox(
       heading: "Settings",
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (title) ...[
+      content: SizedBox(
+        width: context.width / 4,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title) ...[
+                  Text(
+                    "Topic",
+                    style: context.textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    child: TextField(
+                      autofocus: true,
+                      controller: _topicController,
+                      decoration: InputDecoration(
+                        hintText: _voteController.topic,
+                        prefixIcon: const Icon(Icons.edit_note),
+                      ),
+                      onSubmitted: (value) {
+                        _voteController.topic = _topicController.text.trim();
+
+                        context.pop();
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
                 Text(
-                  "Topic",
+                  "Majority",
                   style: context.textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 10),
-                Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  child: TextField(
-                    autofocus: true,
-                    controller: _topicController,
-                    decoration: InputDecoration(
-                      hintText: _voteController.topic,
-                      prefixIcon: const Icon(Icons.edit_note),
+                Column(
+                  children: [
+                    _Majority(
+                      tag: tag,
+                      value: 0,
+                      title: "Simple Majority",
                     ),
-                    onSubmitted: (value) {
-                      _voteController.topic = _topicController.text.trim();
-
-                      context.pop();
-                    },
-                  ),
+                    _Majority(
+                      tag: tag,
+                      value: 1,
+                      title: "Special Majority",
+                    ),
+                    _Majority(
+                      tag: tag,
+                      value: 2,
+                      title: "Unanimous Vote",
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
               ],
-              Text(
-                "Majority",
-                style: context.textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 10),
-              Column(
-                children: [
-                  _Majority(
-                    tag: tag,
-                    value: 0,
-                    title: "Simple Majority",
-                  ),
-                  _Majority(
-                    tag: tag,
-                    value: 1,
-                    title: "Special Majority",
-                  ),
-                  _Majority(
-                    tag: tag,
-                    value: 2,
-                    title: "Unanimous Vote",
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
       actions: [
         RoundedButton(
@@ -123,9 +126,8 @@ class _Majority extends StatelessWidget {
           Radio<int>(
             value: value,
             groupValue: _voteController.majority,
-            onChanged: (value) {
-              _voteController.majority = value!;
-            },
+            onChanged: (value) => _voteController.majority = value!,
+            activeColor: Colors.grey.shade700,
           ),
           Text(
             "$title (${_voteController.majorityVal(value: value)}/${_voteController.totalVoters})",
