@@ -30,9 +30,14 @@ class DayPicker extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Text(
-            "Day ${controller.selectedDay + 1}",
-            style: context.textTheme.titleLarge!.copyWith(color: Colors.white),
+          child: Obx(
+            () {
+              return Text(
+                "Day ${controller.selectedDay.value + 1}",
+                style:
+                    context.textTheme.titleLarge!.copyWith(color: Colors.white),
+              );
+            },
           ),
         ),
         InkWell(
@@ -41,7 +46,7 @@ class DayPicker extends StatelessWidget {
           focusColor: Colors.transparent,
           highlightColor: Colors.transparent,
           onTap: () {
-            controller.selectedDay += 1;
+            controller.selectedDay.value += 1;
 
             if (controller.selectedDay.value >
                 controller.committee.days.length - 1) {

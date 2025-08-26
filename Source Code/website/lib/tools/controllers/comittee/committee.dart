@@ -7,7 +7,7 @@ import 'autosave.dart';
 class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
   late final RxInt _tab;
-  late final RxInt selectedDay;
+  late RxInt selectedDay;
   bool refetch = false;
 
   final List<void Function()> _deletions = [];
