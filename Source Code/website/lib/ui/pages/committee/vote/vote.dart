@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/vote.dart';
 import '/ui/pages/committee/widgets/body.dart';
+import '../../../../tools/controllers/comittee/committee.dart';
 import './widgets/past_votes_card.dart';
 import './widgets/result_card.dart';
 import './widgets/voting_card.dart';
@@ -16,20 +17,29 @@ class VotePage extends StatelessWidget {
       Get.put<VoteController>(VoteController(), tag: "vote");
     }
 
-    return const Body(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: [
-              ResultCard(),
-              SizedBox(height: 12),
-              Expanded(child: PastVotesCard()),
-            ],
-          ),
-          SizedBox(width: 36),
-          VotingCard(),
-        ],
+    final CommitteeController controller = Get.find<CommitteeController>();
+
+    return Body(
+      child: Obx(
+        () => controller.readOnly
+            ? const Row(children: [PastVotesCard()])
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: context.width / 4,
+                    child: const Column(
+                      children: [
+                        ResultCard(),
+                        SizedBox(height: 12),
+                        PastVotesCard(),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 36),
+                  const VotingCard(),
+                ],
+              ),
       ),
     );
   }

@@ -36,25 +36,22 @@ class CommitteeController extends GetxController {
     super.onClose();
   }
 
+  Committee get committee => _committee.value;
+
+  int get tab => _tab.value;
+  set tab(int newTab) => _tab.value = newTab;
+
+  bool get readOnly => selectedDay.value != committee.currDay;
+
   void trackController<T extends GetxController>(T controller, {String? tag}) {
     _deletions.add(() => Get.delete<T>(tag: tag));
   }
 
-  Committee get committee => _committee.value;
-
-  void setAgenda(String agenda) {
-    _committee.update((committee) {
-      if (committee != null) committee.agenda = agenda;
-    });
-
-    //FIXME: Update Firebase Data
-    // LocalStorage.updateCommittee("committee", committee.toJson());
-  }
+  void setAgenda(String agenda) => _committee.update((committee) {
+        if (committee != null) committee.agenda = agenda;
+      });
 
   void _updateVoteControllers() {
-    //FIXME: Update Firebase Data
-    // LocalStorage.updateCommittee("rollCall", committee.rollCall);
-
     if (Get.isRegistered<VoteController>(tag: "vote")) {
       Get.find<VoteController>(tag: "vote").voters =
           _committee.value.presentAndVotingDelegates;
@@ -104,8 +101,17 @@ class CommitteeController extends GetxController {
     _updateVoteControllers();
   }
 
-  int get tab => _tab.value;
-  set tab(int newTab) => _tab.value = newTab;
+  void nextDay() {
+    selectedDay.value += 1;
+    selectedDay.value %= committee.currDay + 1;
+  }
+
+  void prevDay() {
+    selectedDay.value -= 1;
+    selectedDay.value %= committee.currDay + 1;
+  }
+
+  void resetDay() => selectedDay.value = committee.currDay;
 
   Map<String, dynamic> toJson() => _committee.value.toJson();
 }

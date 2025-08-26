@@ -62,7 +62,7 @@ class Router {
       path: "/gsl",
       title: "GSL",
       icon: Icons.groups,
-      builder: () => const GSLMode(),
+      builder: () => GSLMode(),
     ),
     Route(
       path: "/mod",

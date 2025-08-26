@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '/tools/controllers/comittee/motions.dart';
 import '/ui/pages/committee/widgets/body.dart';
+import '../../../../tools/controllers/comittee/committee.dart';
 import './widgets/add_motion_card.dart';
 import './widgets/current_motions_card.dart';
 import './widgets/debate_card.dart';
@@ -19,29 +20,38 @@ class MotionsPage extends StatelessWidget {
     }
 
     final MotionsController controller = Get.find<MotionsController>();
+    final CommitteeController committeeController =
+        Get.find<CommitteeController>();
 
     return Body(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Column(
-            children: [
-              CurrentMotionCard(),
-              SizedBox(height: 12),
-              Expanded(child: PastMotionsCard()),
-            ],
-          ),
-          const SizedBox(width: 36),
-          Obx(() {
-            if (controller.mode == 0) {
-              return const AddMotionCard();
-            } else if (controller.mode == 1) {
-              return const DebateCard();
-            } else {
-              return const VoteCard();
-            }
-          }),
-        ],
+      child: Obx(
+        () => committeeController.readOnly
+            ? const Row(children: [PastMotionsCard()])
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: context.width / 3,
+                    child: const Column(
+                      children: [
+                        CurrentMotionCard(),
+                        SizedBox(height: 12),
+                        PastMotionsCard(),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 36),
+                  Obx(() {
+                    if (controller.mode == 0) {
+                      return const AddMotionCard();
+                    } else if (controller.mode == 1) {
+                      return const DebateCard();
+                    } else {
+                      return const VoteCard();
+                    }
+                  }),
+                ],
+              ),
       ),
     );
   }

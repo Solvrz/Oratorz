@@ -36,13 +36,7 @@ class DayPicker extends StatelessWidget {
           focusColor: Colors.transparent,
           highlightColor: Colors.transparent,
           onTap: () {
-            controller.selectedDay -= 1;
-
-            if (controller.selectedDay.value < 0) {
-              controller.selectedDay.value =
-                  controller.committee.days.length - 1;
-            }
-
+            controller.prevDay();
             fetchNewScorecard();
           },
           child: const Icon(Icons.arrow_left_rounded, color: Colors.white),
@@ -65,13 +59,7 @@ class DayPicker extends StatelessWidget {
           focusColor: Colors.transparent,
           highlightColor: Colors.transparent,
           onTap: () {
-            controller.selectedDay.value += 1;
-
-            if (controller.selectedDay.value >
-                controller.committee.days.length - 1) {
-              controller.selectedDay.value = 0;
-            }
-
+            controller.nextDay();
             fetchNewScorecard();
           },
           child: const Icon(Icons.arrow_right_rounded, color: Colors.white),
@@ -82,7 +70,7 @@ class DayPicker extends StatelessWidget {
           focusColor: Colors.transparent,
           highlightColor: Colors.transparent,
           onTap: () {
-            controller.selectedDay.value = controller.committee.currDay;
+            controller.resetDay();
             fetchNewScorecard();
           },
           child: const Padding(

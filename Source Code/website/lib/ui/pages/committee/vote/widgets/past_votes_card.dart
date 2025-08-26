@@ -14,11 +14,10 @@ class PastVotesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final VoteController voteController = Get.find<VoteController>(tag: "vote");
 
-    return SizedBox(
-      width: context.width / 4,
+    return Expanded(
       child: Card(
-        child: Container(
-          margin: const EdgeInsets.all(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

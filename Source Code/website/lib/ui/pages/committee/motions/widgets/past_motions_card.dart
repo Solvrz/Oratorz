@@ -13,8 +13,7 @@ class PastMotionsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final MotionsController _motionsController = Get.find<MotionsController>();
 
-    return SizedBox(
-      width: context.width / 3,
+    return Expanded(
       child: Card(
         child: Container(
           margin: const EdgeInsets.all(16),

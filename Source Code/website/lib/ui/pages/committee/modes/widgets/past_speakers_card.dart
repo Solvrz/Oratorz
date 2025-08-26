@@ -17,9 +17,8 @@ class PastSpeakersCard extends StatelessWidget {
 
     return Expanded(
       child: Card(
-        child: Container(
-          height: context.height / 2.5,
-          margin: const EdgeInsets.all(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
