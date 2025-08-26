@@ -8,6 +8,7 @@ import '/services/cloud_storage.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/route.dart';
 import '/tools/functions.dart';
+import './widgets/day_picker.dart';
 import './widgets/dialogs/roll_call.dart';
 
 class CommitteePage extends StatefulWidget {
@@ -120,11 +121,7 @@ class _CommitteePageState extends State<CommitteePage> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text(
-                            "Day ${controller.committee.currDay + 1}",
-                            style: context.textTheme.titleLarge!
-                                .copyWith(color: Colors.white),
-                          ),
+                          const DayPicker(),
                           const SizedBox(height: 32),
                           ...List.generate(
                             Router.tabs.length,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Table;
 import 'package:get/get.dart';
 
 import '/services/cloud_storage.dart';
-import '/tools/controllers/comittee/autosave.dart';
 import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/scorecard.dart';
 import '/ui/pages/committee/widgets/body.dart';
@@ -42,46 +41,6 @@ class ScorecardPage extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Obx(
-              () => Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.grey.shade700),
-                ),
-                child: DropdownButton(
-                  value: committeeController.selectedDay.value,
-                  borderRadius: BorderRadius.circular(16),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  underline: const SizedBox(),
-                  focusColor: Colors.transparent,
-                  iconEnabledColor: Colors.grey.shade400,
-                  items: List.generate(
-                    committeeController.committee.days.length,
-                    (index) => DropdownMenuItem(
-                      value: index,
-                      child: Text("Day ${index + 1}"),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    if (value != null) {
-                      final AutoSaveController saveController =
-                          Get.find<AutoSaveController>();
-
-                      if (saveController.timers["scorecard"] != null) {
-                        saveController.timers["scorecard"]?.cancel();
-                        CloudStorage.saveScorecard(
-                          data:
-                              committeeController.committee.scorecard!.toJson(),
-                        );
-                      }
-
-                      committeeController.refetch = true;
-                      committeeController.selectedDay.value = value;
-                    }
-                  },
-                ),
-              ),
-            ),
             const SizedBox(width: 12),
             Obx(
               () => Row(
@@ -116,6 +75,7 @@ class ScorecardPage extends StatelessWidget {
           // NOTE: Do not remove the variable print
           // ignore: unnecessary_statements
           print(committeeController.selectedDay);
+          print(committeeController.committee.currDay);
 
           return FutureBuilder(
             future: CloudStorage.fetchDayData(),
