@@ -172,7 +172,14 @@ class CloudStorage {
   static Future<bool> fetchCaucus(String tag) async {
     final CommitteeController controller = Get.find<CommitteeController>();
 
-    if (Get.isRegistered<SpeechController>(tag: tag)) {
+    if (!Get.isRegistered<SpeechController>(tag: tag)) {
+      Get.put<SpeechController>(SpeechController(tag), tag: tag);
+    }
+
+    if (controller.hasData(tag)) {
+      print("FETCHING CACHED");
+      Get.find<SpeechController>(tag: tag)
+          .updateFromJson(controller.fetchData(tag));
       return true;
     }
 
@@ -181,19 +188,23 @@ class CloudStorage {
         .collection("committees")
         .doc(controller.committee.id)
         .collection("days")
-        .doc(controller.committee.currDay.toString())
+        .doc(controller.selectedDay.toString())
         .collection("caucus")
         .doc(tag)
         .get();
 
+    print("FETCHED");
+
     if (doc.exists) {
-      Get.put<SpeechController>(
-        SpeechController.fromJson(tag, doc.data()!),
-        tag: tag,
-      );
+      Get.find<SpeechController>(tag: tag).updateFromJson(doc.data()!);
+      print("UPDATED");
     } else {
-      Get.put<SpeechController>(SpeechController(tag), tag: tag);
+      Get.find<SpeechController>(tag: tag)
+          .updateFromJson(SpeechController(tag).toJson());
+      await saveCaucus(tag);
     }
+
+    controller.addData(tag, Get.find<SpeechController>(tag: tag).toJson());
 
     return true;
   }
@@ -203,13 +214,15 @@ class CloudStorage {
     final SpeechController speechController =
         Get.find<SpeechController>(tag: tag);
 
+    controller.addData(tag, speechController.toJson());
+
     print("SAVING CAUCUS-$tag");
 
     await FirebaseFirestore.instance
         .collection("committees")
         .doc(controller.committee.id)
         .collection("days")
-        .doc(controller.committee.currDay.toString())
+        .doc(controller.selectedDay.toString())
         .collection("caucus")
         .doc(tag)
         .set(speechController.toJson());

@@ -13,66 +13,68 @@ class GSLMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: CloudStorage.fetchCaucus("gsl"),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: SizedBox(
-              child: CircularProgressIndicator(
-                color: Color(0xff2a313b),
+    return GetBuilder<CommitteeController>(
+      builder: (controller) => FutureBuilder(
+        future: CloudStorage.fetchCaucus("gsl"),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(
+                  color: Color(0xff2a313b),
+                ),
               ),
-            ),
-          );
-        }
+            );
+          }
 
-        return Obx(() {
-          final CommitteeController controller =
-              Get.find<CommitteeController>();
+          return Obx(() {
+            final CommitteeController controller =
+                Get.find<CommitteeController>();
 
-          return controller.readOnly
-              ? const Row(children: [PastSpeakersCard(tag: "gsl")])
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: context.width / 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Card(
-                            child: Container(
-                              height: context.height / 2.25,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 18,
-                              ),
-                              child: const Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                    child: Hourglass(
-                                      tag: "gsl",
-                                      canYield: true,
+            return controller.readOnly
+                ? const Row(children: [PastSpeakersCard(tag: "gsl")])
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: context.width / 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Card(
+                              child: Container(
+                                height: context.height / 2.25,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 18,
+                                ),
+                                child: const Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Center(
+                                      child: Hourglass(
+                                        tag: "gsl",
+                                        canYield: true,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 48),
-                                  SpeakersInfo(tag: "gsl"),
-                                ],
+                                    SizedBox(width: 48),
+                                    SpeakersInfo(tag: "gsl"),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 12),
-                          const PastSpeakersCard(tag: "gsl"),
-                        ],
+                            const SizedBox(height: 12),
+                            const PastSpeakersCard(tag: "gsl"),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 36),
-                    const AddSpeakerCard(tag: "gsl"),
-                  ],
-                );
-        });
-      },
+                      const SizedBox(width: 36),
+                      const AddSpeakerCard(tag: "gsl"),
+                    ],
+                  );
+          });
+        },
+      ),
     );
   }
 }

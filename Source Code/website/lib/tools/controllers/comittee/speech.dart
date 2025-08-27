@@ -47,27 +47,6 @@ class SpeechController extends GetxController {
     }
   }
 
-  SpeechController.fromJson(this.tag, Map<String, dynamic> data) {
-    subtopic = Map<String, String>.from(data["subtopic"]);
-    overallDuration = Duration(seconds: data["overall"]);
-    duration = Duration(seconds: data["duration"]);
-    currentSpeaker = data["current"];
-
-    final List<Map<String, int>> past = data["past"]
-        .map<Map<String, int>>((element) => Map<String, int>.from(element))
-        .toList();
-
-    pastSpeakers.value = past
-        .map<Map<String, Duration>>(
-          (element) => <String, Duration>{
-            element.keys.first: Duration(seconds: element.values.first),
-          },
-        )
-        .toList();
-
-    nextSpeakers.value = List<String>.from(data["next"]);
-  }
-
   List<Map<String, int>> get pastSpeakersEncode => pastSpeakers
       .map<Map<String, int>>(
         (element) =>
@@ -165,6 +144,27 @@ class SpeechController extends GetxController {
     _overallStopwatch.value.stop();
 
     _stopwatch.value.reset();
+  }
+
+  void updateFromJson(Map<String, dynamic> data) {
+    subtopic = Map<String, String>.from(data["subtopic"]);
+    overallDuration = Duration(seconds: data["overall"]);
+    duration = Duration(seconds: data["duration"]);
+    currentSpeaker = data["current"];
+
+    final List<Map<String, int>> past = data["past"]
+        .map<Map<String, int>>((element) => Map<String, int>.from(element))
+        .toList();
+
+    pastSpeakers.value = past
+        .map<Map<String, Duration>>(
+          (element) => <String, Duration>{
+            element.keys.first: Duration(seconds: element.values.first),
+          },
+        )
+        .toList();
+
+    nextSpeakers.value = List<String>.from(data["next"]);
   }
 
   Map<String, dynamic> toJson() => {

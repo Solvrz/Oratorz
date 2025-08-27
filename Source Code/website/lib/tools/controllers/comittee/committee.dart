@@ -109,15 +109,18 @@ class CommitteeController extends GetxController {
   void nextDay() {
     selectedDay.value += 1;
     selectedDay.value %= committee.currDay + 1;
+    update();
   }
 
   void prevDay() {
     selectedDay.value -= 1;
     selectedDay.value %= committee.currDay + 1;
+    update();
   }
 
   void resetDay() {
     selectedDay.value = committee.currDay;
+    update();
   }
 
   bool hasData(String tag) => data[selectedDay.value]!.containsKey(tag);

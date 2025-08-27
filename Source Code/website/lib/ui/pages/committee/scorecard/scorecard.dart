@@ -18,8 +18,6 @@ class ScorecardPage extends StatelessWidget {
     }
 
     final ScorecardController controller = Get.find<ScorecardController>();
-    final CommitteeController committeeController =
-        Get.find<CommitteeController>();
 
     return Body(
       footer: Container(
@@ -68,34 +66,25 @@ class ScorecardPage extends StatelessWidget {
           ],
         ),
       ),
-      child: Obx(
-        () {
-          //FIXME: Find a better way to update this Obx
-
-          // NOTE: Do not remove the variable print
-          // ignore: unnecessary_statements
-          print(committeeController.selectedDay);
-          print(committeeController.committee.currDay);
-
-          return FutureBuilder(
-            future: CloudStorage.fetchDayData(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: SizedBox(
-                    child: CircularProgressIndicator(
-                      color: Color(0xff2a313b),
-                    ),
+      child: GetBuilder<CommitteeController>(
+        builder: (_) => FutureBuilder(
+          future: CloudStorage.fetchDayData(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: SizedBox(
+                  child: CircularProgressIndicator(
+                    color: Color(0xff2a313b),
                   ),
-                );
-              }
+                ),
+              );
+            }
 
-              // NOTE: Do not add const
-              // ignore: prefer_const_constructors
-              return Table();
-            },
-          );
-        },
+            // NOTE: Do not add const
+            // ignore: prefer_const_constructors
+            return Table();
+          },
+        ),
       ),
     );
   }
