@@ -19,8 +19,6 @@ class DayPicker extends StatelessWidget {
         data: committeeController.committee.scorecard!.toJson(),
       );
     }
-
-    committeeController.refetch = true;
   }
 
   @override

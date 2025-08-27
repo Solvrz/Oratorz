@@ -87,9 +87,7 @@ class CloudStorage {
 
     if (committee.currDay == -1) return false;
 
-    if (committee.rollCall.isEmpty ||
-        committee.scorecard == null ||
-        controller.refetch) {
+    if (!controller.hasData("scorecard") || !controller.hasData("rollCall")) {
       final DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
           .instance
           .collection("committees")
@@ -99,10 +97,14 @@ class CloudStorage {
           .get();
 
       if (doc.exists) {
-        if (!controller.refetch) {
+        if (!controller.hasData("rollCall")) {
           committee.rollCall = Map<String, int>.from(doc.data()!["rollCall"]);
         }
-        committee.scorecard = Scorecard.fromJson(doc.data()!["scorecard"]).obs;
+
+        if (!controller.hasData("scorecard")) {
+          committee.scorecard =
+              Scorecard.fromJson(doc.data()!["scorecard"]).obs;
+        }
       } else {
         committee.initRollCall();
         committee.scorecard = Scorecard(committee).obs;
@@ -118,18 +120,26 @@ class CloudStorage {
         });
       }
 
+      controller.addData("rollCall", committee.rollCall);
+      controller.addData("scorecard", committee.scorecard!.toJson());
+
       if (Get.isRegistered<ScorecardController>()) {
         Get.find<AutoSaveController>().timers.remove("scorecard");
         Get.find<ScorecardController>().onInit();
       }
+    } else {
+      committee.rollCall = controller.fetchData("rollCall") as Map<String, int>;
+      committee.scorecard =
+          Scorecard.fromJson(controller.fetchData("scorecard")).obs;
     }
 
-    controller.refetch = false;
     return true;
   }
 
   static Future<void> saveRollCall() async {
     final CommitteeController controller = Get.find<CommitteeController>();
+
+    controller.addData("rollCall", controller.committee.rollCall);
 
     await FirebaseFirestore.instance
         .collection("committees")
@@ -142,25 +152,21 @@ class CloudStorage {
   static Future<void> saveScorecard({Map<String, dynamic>? data}) async {
     final CommitteeController controller = Get.find<CommitteeController>();
 
+    controller.addData(
+      "scorecard",
+      data ?? controller.committee.scorecard!.value.toJson(),
+    );
+
     print("SAVING SCORECARD\tDAY: ${controller.selectedDay.value + 1}");
 
-    if (data != null) {
-      await FirebaseFirestore.instance
-          .collection("committees")
-          .doc(controller.committee.id)
-          .collection("days")
-          .doc(controller.selectedDay.toString())
-          .update({"scorecard": data});
-    } else {
-      await FirebaseFirestore.instance
-          .collection("committees")
-          .doc(controller.committee.id)
-          .collection("days")
-          .doc(controller.selectedDay.toString())
-          .update({
-        "scorecard": controller.committee.scorecard!.value.toJson(),
-      });
-    }
+    await FirebaseFirestore.instance
+        .collection("committees")
+        .doc(controller.committee.id)
+        .collection("days")
+        .doc(controller.selectedDay.toString())
+        .update({
+      "scorecard": data ?? controller.committee.scorecard!.value.toJson(),
+    });
   }
 
   static Future<bool> fetchCaucus(String tag) async {

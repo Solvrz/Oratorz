@@ -8,7 +8,8 @@ class CommitteeController extends GetxController {
   late final Rx<Committee> _committee;
   late final RxInt _tab;
   late RxInt selectedDay;
-  bool refetch = false;
+
+  Map<int, Map<String, dynamic>> data = {};
 
   final List<void Function()> _deletions = [];
 
@@ -16,6 +17,10 @@ class CommitteeController extends GetxController {
     _tab = tab.obs;
     _committee = committee.obs;
     selectedDay = committee.currDay.obs;
+
+    for (int i = 0; i <= selectedDay.value; i++) {
+      data[i] = <String, dynamic>{};
+    }
   }
 
   @override
@@ -111,7 +116,16 @@ class CommitteeController extends GetxController {
     selectedDay.value %= committee.currDay + 1;
   }
 
-  void resetDay() => selectedDay.value = committee.currDay;
+  void resetDay() {
+    selectedDay.value = committee.currDay;
+  }
+
+  bool hasData(String tag) => data[selectedDay.value]!.containsKey(tag);
+
+  void addData(String tag, Map<String, dynamic> data_) =>
+      data[selectedDay.value]![tag] = data_;
+
+  Map<String, dynamic> fetchData(String tag) => data[selectedDay.value]![tag];
 
   Map<String, dynamic> toJson() => _committee.value.toJson();
 }
