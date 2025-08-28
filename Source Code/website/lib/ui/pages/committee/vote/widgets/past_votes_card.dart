@@ -40,54 +40,51 @@ class PastVotesCard extends StatelessWidget {
                       );
                     }
 
-                    return Obx(() {
-                      final List<Map<String, dynamic>> pastVotes =
-                          voteController.pastVotes.sorted(
-                        (a, b) => a["timestamp"].compareTo(b["timestamp"]) * -1,
-                      );
+                    final List<Map<String, dynamic>> pastVotes =
+                        voteController.pastVotes.sorted(
+                      (a, b) => a["timestamp"].compareTo(b["timestamp"]) * -1,
+                    );
 
-                      return pastVotes.isNotEmpty
-                          ? ListView.separated(
-                              itemCount: pastVotes.length,
-                              separatorBuilder: (_, __) => Divider(
-                                height: 6,
-                                color: Colors.grey.shade400,
-                              ),
-                              itemBuilder: (_, index) => ListTile(
-                                title: RichText(
-                                  text: TextSpan(
-                                    text: "Topic: ",
-                                    style:
-                                        context.textTheme.bodyLarge?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: pastVotes[index]["topic"],
-                                        style: context.textTheme.bodySmall,
-                                      ),
-                                    ],
+                    return pastVotes.isNotEmpty
+                        ? ListView.separated(
+                            itemCount: pastVotes.length,
+                            separatorBuilder: (_, __) => Divider(
+                              height: 6,
+                              color: Colors.grey.shade400,
+                            ),
+                            itemBuilder: (_, index) => ListTile(
+                              title: RichText(
+                                text: TextSpan(
+                                  text: "Topic: ",
+                                  style: context.textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                subtitle: Text(
-                                  Timestamp.fromMillisecondsSinceEpoch(
-                                    pastVotes[index]["timestamp"],
-                                  ).toDate().to12Hour,
-                                  style: context.textTheme.bodySmall,
-                                ),
-                                trailing: CircleAvatar(
-                                  radius: 5,
-                                  backgroundColor: pastVotes[index]["result"]
-                                      ? Colors.green
-                                      : Colors.red,
+                                  children: [
+                                    TextSpan(
+                                      text: pastVotes[index]["topic"],
+                                      style: context.textTheme.bodySmall,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )
-                          : Text(
-                              "No motions added yet.",
-                              style: context.textTheme.bodyLarge,
-                            );
-                    });
+                              subtitle: Text(
+                                Timestamp.fromMillisecondsSinceEpoch(
+                                  pastVotes[index]["timestamp"],
+                                ).toDate().to12Hour,
+                                style: context.textTheme.bodySmall,
+                              ),
+                              trailing: CircleAvatar(
+                                radius: 5,
+                                backgroundColor: pastVotes[index]["result"]
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                            ),
+                          )
+                        : Text(
+                            "No motions added yet.",
+                            style: context.textTheme.bodyLarge,
+                          );
                   },
                 ),
               ),

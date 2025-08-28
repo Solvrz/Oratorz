@@ -241,12 +241,10 @@ class CloudStorage {
     final MotionsController motionsController = Get.find<MotionsController>();
 
     if (controller.hasData("motions")) {
-      print("FETCHING CACHED");
       return motionsController.pastMotions =
           controller.fetchData("motions")["pastMotions"];
     }
 
-    print("FETCHING FRESH");
     motionsController.pastMotions = [];
 
     final QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -271,8 +269,6 @@ class CloudStorage {
       "motions",
       {"pastMotions": motionsController.pastMotions.toList()},
     );
-
-    print("FETCHED: ${motionsController.pastMotions}");
 
     return motionsController.pastMotions.toList();
   }
@@ -301,16 +297,19 @@ class CloudStorage {
     final CommitteeController controller = Get.find<CommitteeController>();
     final VoteController voteController = Get.find<VoteController>(tag: "vote");
 
-    if (voteController.pastVotes.isNotEmpty) {
-      return voteController.pastVotes;
+    if (controller.hasData("votes")) {
+      return voteController.pastVotes =
+          controller.fetchData("votes")["pastVotes"];
     }
+
+    voteController.pastVotes = [];
 
     final QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await FirebaseFirestore.instance
             .collection("committees")
             .doc(controller.committee.id)
             .collection("days")
-            .doc(controller.committee.currDay.toString())
+            .doc(controller.selectedDay.toString())
             .collection("votes")
             .get();
 
@@ -321,6 +320,11 @@ class CloudStorage {
 
         voteController.pastVotes.add(data);
       },
+    );
+
+    controller.addData(
+      "vote",
+      {"pastVotes": voteController.pastVotes.toList()},
     );
 
     return voteController.pastVotes;
