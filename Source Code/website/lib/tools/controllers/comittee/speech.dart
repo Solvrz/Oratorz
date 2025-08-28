@@ -169,7 +169,7 @@ class SpeechController extends GetxController {
 
   Map<String, dynamic> toJson() => {
         "subtopic": _subtopic,
-        "overall": _overallDuration.value.inSeconds,
+        "overall": (overallDuration - overallStopwatch.elapsed).inSeconds,
         "duration": _duration.value.inSeconds,
         "current": _currentSpeaker.value,
         "past": pastSpeakersEncode,
