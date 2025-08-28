@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/tools/controllers/comittee/committee.dart';
 import '/tools/controllers/comittee/motions.dart';
 import '/ui/pages/committee/widgets/body.dart';
-import '../../../../tools/controllers/comittee/committee.dart';
 import './widgets/add_motion_card.dart';
 import './widgets/current_motions_card.dart';
 import './widgets/debate_card.dart';

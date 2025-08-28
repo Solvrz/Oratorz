@@ -11,7 +11,7 @@ class PastMotionsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MotionsController _motionsController = Get.find<MotionsController>();
+    final MotionsController controller = Get.find<MotionsController>();
 
     return Expanded(
       child: Card(
@@ -39,29 +39,28 @@ class PastMotionsCard extends StatelessWidget {
                       );
                     }
 
-                    return Obx(() {
-                      final List<Map<String, dynamic>> pastMotions =
-                          _motionsController.pastMotions.sorted(
-                        (a, b) => a["timestamp"].compareTo(b["timestamp"]) * -1,
-                      );
+                    final List<Map<String, dynamic>> pastMotions =
+                        controller.pastMotions.toList().sorted(
+                              (a, b) =>
+                                  a["timestamp"].compareTo(b["timestamp"]) * -1,
+                            );
 
-                      if (pastMotions.isNotEmpty) {
-                        return ListView.builder(
-                          itemCount: pastMotions.length,
-                          itemBuilder: (_, index) => Padding(
-                            padding: EdgeInsets.only(
-                              bottom: index != pastMotions.length - 1 ? 20 : 0,
-                            ),
-                            child: MotionTile(motion: pastMotions[index]),
+                    if (pastMotions.isNotEmpty) {
+                      return ListView.builder(
+                        itemCount: pastMotions.length,
+                        itemBuilder: (_, index) => Padding(
+                          padding: EdgeInsets.only(
+                            bottom: index != pastMotions.length - 1 ? 20 : 0,
                           ),
-                        );
-                      } else {
-                        return Text(
-                          "No motions added yet.",
-                          style: context.textTheme.bodyLarge,
-                        );
-                      }
-                    });
+                          child: MotionTile(motion: pastMotions[index]),
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        "No motions added yet.",
+                        style: context.textTheme.bodyLarge,
+                      );
+                    }
                   },
                 ),
               ),

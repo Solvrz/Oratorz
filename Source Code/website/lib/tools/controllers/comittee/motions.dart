@@ -16,7 +16,7 @@ class MotionsController extends GetxController {
   set currentMotion(Map<String, dynamic> motion) =>
       _currentMotion.value = motion;
 
-  List<Map<String, dynamic>> get pastMotions => _pastMotions;
+  RxList<Map<String, dynamic>> get pastMotions => _pastMotions;
   set pastMotions(List<Map<String, dynamic>> motions) =>
       _pastMotions.value = motions;
 

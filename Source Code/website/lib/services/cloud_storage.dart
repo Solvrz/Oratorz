@@ -240,16 +240,21 @@ class CloudStorage {
     final CommitteeController controller = Get.find<CommitteeController>();
     final MotionsController motionsController = Get.find<MotionsController>();
 
-    if (motionsController.pastMotions.isNotEmpty) {
-      return motionsController.pastMotions;
+    if (controller.hasData("motions")) {
+      print("FETCHING CACHED");
+      return motionsController.pastMotions =
+          controller.fetchData("motions")["pastMotions"];
     }
+
+    print("FETCHING FRESH");
+    motionsController.pastMotions = [];
 
     final QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await FirebaseFirestore.instance
             .collection("committees")
             .doc(controller.committee.id)
             .collection("days")
-            .doc(controller.committee.currDay.toString())
+            .doc(controller.selectedDay.toString())
             .collection("motions")
             .get();
 
@@ -262,7 +267,14 @@ class CloudStorage {
       },
     );
 
-    return motionsController.pastMotions;
+    controller.addData(
+      "motions",
+      {"pastMotions": motionsController.pastMotions.toList()},
+    );
+
+    print("FETCHED: ${motionsController.pastMotions}");
+
+    return motionsController.pastMotions.toList();
   }
 
   static Future<void> uploadVote() async {
