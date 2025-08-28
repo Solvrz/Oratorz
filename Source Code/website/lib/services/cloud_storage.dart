@@ -177,7 +177,6 @@ class CloudStorage {
     }
 
     if (controller.hasData(tag)) {
-      print("FETCHING CACHED");
       Get.find<SpeechController>(tag: tag)
           .updateFromJson(controller.fetchData(tag));
       return true;
@@ -193,11 +192,8 @@ class CloudStorage {
         .doc(tag)
         .get();
 
-    print("FETCHED");
-
     if (doc.exists) {
       Get.find<SpeechController>(tag: tag).updateFromJson(doc.data()!);
-      print("UPDATED");
     } else {
       Get.find<SpeechController>(tag: tag)
           .updateFromJson(SpeechController(tag).toJson());
