@@ -323,7 +323,7 @@ class CloudStorage {
     );
 
     controller.addData(
-      "vote",
+      "votes",
       {"pastVotes": voteController.pastVotes.toList()},
     );
 
