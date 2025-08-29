@@ -131,12 +131,17 @@ class CloudStorage {
           Scorecard.fromJson(controller.fetchData("scorecard")).obs;
     }
 
+    if (Get.isRegistered<ScorecardController>()) {
+      Get.find<ScorecardController>().onInit();
+    }
+
     return true;
   }
 
   static Future<void> saveRollCall() async {
     final CommitteeController controller = Get.find<CommitteeController>();
 
+    print("SAVING ROLL CALL\tDAY: ${controller.selectedDay.value + 1}");
     controller.addData("rollCall", controller.committee.rollCall);
 
     await FirebaseFirestore.instance
@@ -210,7 +215,7 @@ class CloudStorage {
 
     controller.addData(tag, speechController.toJson());
 
-    print("SAVING CAUCUS-$tag");
+    print("SAVING CAUCUS-$tag\tDAY: ${controller.selectedDay.value + 1}");
 
     await FirebaseFirestore.instance
         .collection("committees")
