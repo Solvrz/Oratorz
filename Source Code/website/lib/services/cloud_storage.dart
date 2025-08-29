@@ -85,8 +85,6 @@ class CloudStorage {
     final CommitteeController controller = Get.find<CommitteeController>();
     final Committee committee = controller.committee;
 
-    if (committee.currDay == -1) return false;
-
     if (!controller.hasData("scorecard") || !controller.hasData("rollCall")) {
       final DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
           .instance

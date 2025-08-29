@@ -16,7 +16,12 @@ class CommitteeController extends GetxController {
   CommitteeController({required Committee committee, int tab = 0}) {
     _tab = tab.obs;
     _committee = committee.obs;
-    selectedDay = committee.currDay.obs;
+
+    if (committee.currDay == -1 && committee.lastDay != -1) {
+      selectedDay = committee.lastDay.obs;
+    } else {
+      selectedDay = committee.currDay.obs;
+    }
 
     for (int i = 0; i <= selectedDay.value; i++) {
       data[i] = <String, dynamic>{};
@@ -108,18 +113,18 @@ class CommitteeController extends GetxController {
 
   void nextDay() {
     selectedDay.value += 1;
-    selectedDay.value %= committee.currDay + 1;
+    selectedDay.value %= committee.lastDay + 1;
     update();
   }
 
   void prevDay() {
     selectedDay.value -= 1;
-    selectedDay.value %= committee.currDay + 1;
+    selectedDay.value %= committee.lastDay + 1;
     update();
   }
 
   void resetDay() {
-    selectedDay.value = committee.currDay;
+    selectedDay.value = committee.lastDay;
     update();
   }
 

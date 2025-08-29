@@ -62,24 +62,25 @@ class DayPicker extends StatelessWidget {
           },
           child: const Icon(Icons.arrow_right_rounded, color: Colors.white),
         ),
-        InkWell(
-          borderRadius: BorderRadius.circular(50),
-          hoverColor: Colors.white10,
-          focusColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          onTap: () {
-            controller.resetDay();
-            fetchNewScorecard();
-          },
-          child: const Padding(
-            padding: EdgeInsets.all(2),
-            child: Icon(
-              Icons.restart_alt_rounded,
-              color: Colors.white,
-              size: 20,
+        if (controller.committee.currDay != -1)
+          InkWell(
+            borderRadius: BorderRadius.circular(50),
+            hoverColor: Colors.white10,
+            focusColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () {
+              controller.resetDay();
+              fetchNewScorecard();
+            },
+            child: const Padding(
+              padding: EdgeInsets.all(2),
+              child: Icon(
+                Icons.restart_alt_rounded,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

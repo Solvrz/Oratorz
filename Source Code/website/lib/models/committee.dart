@@ -24,6 +24,7 @@ class Committee {
   late List<DateTime?> days;
 
   int currDay = -1;
+  int lastDay = -1;
   Rx<Scorecard>? scorecard;
   Map<String, int> rollCall = {};
 
@@ -115,10 +116,13 @@ class Committee {
 
   void _currentDay() {
     for (int i = 0; i < days.length; i++) {
-      if (DateTime.now().isAfter(days[i]!) &&
-          DateTime.now().isBefore(days[i]!.add(const Duration(days: 1)))) {
-        currDay = i;
-        return;
+      if (DateTime.now().isAfter(days[i]!)) {
+        lastDay = i;
+
+        if (DateTime.now().isBefore(days[i]!.add(const Duration(days: 1)))) {
+          currDay = i;
+          return;
+        }
       }
     }
 

@@ -65,17 +65,16 @@ class _CommitteePageState extends State<CommitteePage> {
             final CommitteeController controller =
                 Get.find<CommitteeController>();
 
-            if (controller.selectedDay.value == -1) {
+            if (controller.committee.lastDay == -1 &&
+                controller.selectedDay.value == -1) {
               context.pushReplacement(Router.home.path);
 
               WidgetsBinding.instance.addPostFrameCallback(
                 (timeStamp) => snackbar(
                   context,
-                  Center(
+                  const Center(
                     child: Text(
-                      DateTime.now().isAfter(controller.committee.days.last!)
-                          ? "The committee has ended"
-                          : "The committee is not active today. Come back on the next day of the committee.",
+                      "The committee has not yet started",
                       textAlign: TextAlign.center,
                     ),
                   ),
