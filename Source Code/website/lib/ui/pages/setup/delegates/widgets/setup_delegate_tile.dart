@@ -30,29 +30,29 @@ class _SetupDelegateTileState extends State<SetupDelegateTile> {
       onEnter: (_) => setState(() => hovering = true),
       onExit: (_) => setState(() => hovering = false),
       child: ListTile(
-        onTap: () => setState(() => isExpanded = !isExpanded),
+        // onTap: () => setState(() => isExpanded = !isExpanded),
         leading: flag(widget.delegate),
-        subtitle: isExpanded
-            ? const Row(
-                children: [
-                  Text("Delegate E-mail:"),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        focusedBorder: UnderlineInputBorder(),
-                        fillColor: Colors.white,
-                        hoverColor: Colors.transparent,
-                        isDense: true,
-                      ),
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ),
-                  SizedBox(width: 36),
-                ],
-              )
-            : null,
+        // subtitle: isExpanded
+        //     ? const Row(
+        //         children: [
+        //           Text("Delegate E-mail:"),
+        //           SizedBox(width: 12),
+        //           Expanded(
+        //             child: TextField(
+        //               decoration: InputDecoration(
+        //                 border: UnderlineInputBorder(),
+        //                 focusedBorder: UnderlineInputBorder(),
+        //                 fillColor: Colors.white,
+        //                 hoverColor: Colors.transparent,
+        //                 isDense: true,
+        //               ),
+        //               style: TextStyle(fontSize: 12),
+        //             ),
+        //           ),
+        //           SizedBox(width: 36),
+        //         ],
+        //       )
+        //     : null,
         contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
         title: Row(
           children: [
