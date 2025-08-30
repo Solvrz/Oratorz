@@ -73,7 +73,9 @@ class User {
 
       final Committee committee = Committee.fromJson(doc.data()!);
 
-      committees.add(committee);
+      //FIXME: There are still extra calls at times but committee is not added due to this conditional
+      // Refactor so that no extra calls are made
+      if (!_isCommitteeLoaded(id)) committees.add(committee);
       Get.find<AppController>().update();
 
       return committee;
