@@ -6,6 +6,7 @@ import '/tools/controllers/app.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/input_field.dart';
 import '/ui/widgets/rounded_button.dart';
+import '../../../../services/cloud_storage.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({super.key});
@@ -34,7 +35,7 @@ class SettingsSection extends StatelessWidget {
                 ],
               ),
               RoundedButton(
-                onPressed: () {},
+                onPressed: () => CloudStorage.updateUser(),
                 child: const Text("Save"),
               ),
             ],

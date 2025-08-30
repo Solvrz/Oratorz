@@ -160,13 +160,12 @@ Future<void> submit(
     await Get.delete<SetupController>();
 
     final controller = Get.find<RouteController>();
-    final Route route = Router.modes.first;
 
-    controller.path = route.path;
-    controller.args = {"id": committee.id};
+    controller.path = Router.home.path;
+    controller.args = {};
 
     if (context.mounted) {
-      context.go("${route.path}?id=${committee.id}");
+      context.go(Router.home.path);
     }
   } else {
     if (error != null) error.value = false;

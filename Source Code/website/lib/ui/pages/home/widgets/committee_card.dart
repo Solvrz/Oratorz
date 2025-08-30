@@ -8,6 +8,8 @@ import '/services/cloud_storage.dart';
 import '/tools/controllers/app.dart';
 import '/tools/controllers/route.dart';
 import '/tools/extensions.dart';
+import '/ui/widgets/dialog_box.dart';
+import '/ui/widgets/rounded_button.dart';
 
 class CommitteeCard extends StatefulWidget {
   final Committee committee;
@@ -234,18 +236,64 @@ class _EditOptions extends StatelessWidget {
             ),
             InkWell(
               hoverColor: Colors.transparent,
-              onTap: () async {
-                onDelete(status: true);
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => DialogBox(
+                  heading: "Delete Committee",
+                  content: SizedBox(
+                    height: context.height / 6,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Center(
+                          child: Text(
+                            "Are you sure you want to delete this committee?",
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RoundedButton(
+                                onPressed: () => context.pop(),
+                                style: RoundedButtonStyle.border,
+                                child: const Text(
+                                  "No",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 32),
+                            Expanded(
+                              child: RoundedButton(
+                                onPressed: () async {
+                                  context.pop();
+                                  onDelete(status: true);
 
-                final AppController appController = Get.find<AppController>();
+                                  final AppController appController =
+                                      Get.find<AppController>();
 
-                appController.user!.deleteCommittee(committee);
+                                  appController.user!
+                                      .deleteCommittee(committee);
 
-                await CloudStorage.deleteCommittee(committee);
-                onDelete(status: false);
+                                  await CloudStorage.deleteCommittee(committee);
+                                  onDelete(status: false);
 
-                appController.update();
-              },
+                                  appController.update();
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               child: Icon(Icons.delete, color: Colors.red.shade400, size: 26),
             ),
           ],
