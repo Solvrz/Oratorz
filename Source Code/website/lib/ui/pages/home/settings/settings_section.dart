@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/services/cloud_storage.dart';
 import '/tools/controllers/app.dart';
 import '/tools/functions.dart';
 import '/ui/widgets/input_field.dart';
 import '/ui/widgets/rounded_button.dart';
-import '../../../../services/cloud_storage.dart';
+import '/ui/widgets/upload_image_dialog.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({super.key});
@@ -52,11 +53,15 @@ class SettingsSection extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.grey.shade800,
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.grey[400],
-                    size: 42,
-                  ),
+                  child: controller.user!.image != null
+                      ? ClipOval(
+                          child: controller.user!.image,
+                        )
+                      : Icon(
+                          Icons.person,
+                          color: Colors.grey[400],
+                          size: 42,
+                        ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -83,7 +88,14 @@ class SettingsSection extends StatelessWidget {
                         BorderSide.none,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => UploadImageDialog(
+                          callback: (_) {},
+                        ),
+                      );
+                    },
                     child: Text(
                       "Update",
                       style: context.textTheme.bodySmall?.copyWith(

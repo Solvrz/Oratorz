@@ -1,9 +1,8 @@
-import 'package:excel/excel.dart' hide Border;
+import 'package:excel/excel.dart' hide Border, TextSpan;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// import 'package:flutter_dropzone/flutter_dropzone.dart';
+import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart' as html;
@@ -24,8 +23,9 @@ class UploadFileDialog extends StatefulWidget {
 class UploadFileDialogState extends State<UploadFileDialog> {
   final SetupController _setupController = Get.find<SetupController>();
 
-  // late final DropzoneViewController _dropController;
-  final bool _dropzoneHovered = false;
+  late final DropzoneViewController _dropController;
+  bool _dropzoneHovered = false;
+  bool _error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,31 +43,31 @@ class UploadFileDialogState extends State<UploadFileDialog> {
         ),
         child: Stack(
           children: [
-            // TODO : Fix Dropdown File Menu
-            // DropzoneView(
-            //   operation: DragOperation.copy,
-            //   cursor: CursorType.grab,
-            //   onCreated: (controller) => _dropController = controller,
-            //   onDropMultiple: (files) async {
-            //     if (files != null) {
-            //       for (final dynamic file in files) {
-            //         loadData(
-            //           context: context,
-            //           data: await _dropController.getFileData(file),
-            //           extension:
-            //               (await _dropController.getFileMIME(file)).extension,
-            //         );
-            //       }
-            //     }
-            //     if (context.mounted && context.canPop()) {
-            //       context.pop();
-            //     }
-            //   },
-            //   onHover: () => setState(() => _dropzoneHovered = true),
-            //   onLeave: () => setState(() => _dropzoneHovered = false),
-            // ),
+            if (kIsWeb)
+              DropzoneView(
+                operation: DragOperation.copy,
+                cursor: CursorType.grab,
+                onCreated: (controller) => _dropController = controller,
+                onDropFiles: (files) async {
+                  if (files != null && context.mounted) {
+                    for (final DropzoneFileInterface file in files) {
+                      loadData(
+                        context: context,
+                        data: await _dropController.getFileData(file),
+                        extension:
+                            (await _dropController.getFileMIME(file)).extension,
+                      );
+                    }
+                  }
+
+                  context.pop();
+                },
+                onHover: () => setState(() => _dropzoneHovered = true),
+                onLeave: () => setState(() => _dropzoneHovered = false),
+              ),
             Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
@@ -77,20 +77,30 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                       color: context.theme.colorScheme.secondary,
                     ),
                   ),
-                  // RichText(
-                  //   text: TextSpan(
-                  //     text: "Drag & Drop Files Here",
-                  //     style: context.textTheme.bodyLarge?.copyWith(
-                  //       color: context.theme.colorScheme.secondary,
-                  //     ),
-                  //     children: [
-                  //       TextSpan(
-                  //         text: "\n(Suported: .xlsx & .xls)",
-                  //         style: context.textTheme.bodySmall,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  if (!_error)
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: "Drag & Drop Files Here",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          color: context.theme.colorScheme.secondary,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "\n(Suported: .xlsx & .xls)",
+                            style: context.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (_error)
+                    Text(
+                      "An Error Occured,\nPlease Check The File & Try Again",
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: context.theme.colorScheme.error,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                 ],
               ),
             ),
@@ -126,10 +136,6 @@ class UploadFileDialogState extends State<UploadFileDialog> {
               allowedExtensions: ["xlsx", "xls"],
             );
 
-            if (mounted && context.canPop()) {
-              context.pop();
-            }
-
             if (_result != null) {
               final PlatformFile _file = _result.files.first;
 
@@ -139,6 +145,8 @@ class UploadFileDialogState extends State<UploadFileDialog> {
                   data: _file.bytes,
                   extension: ".${_file.extension}",
                 );
+
+                context.pop();
               }
             }
           },
@@ -153,7 +161,11 @@ class UploadFileDialogState extends State<UploadFileDialog> {
     required String? extension,
   }) {
     try {
-      if ([".xlsx", ".xls"].contains(extension)) {
+      setState(() {
+        _error = false;
+      });
+
+      if ([".xlsx", ".xls", ".sheet"].contains(extension)) {
         final Excel excel = Excel.decodeBytes(data ?? []);
 
         for (final String table in excel.tables.keys) {
@@ -175,20 +187,15 @@ class UploadFileDialogState extends State<UploadFileDialog> {
             }
           }
         }
+
+        context.pop();
       } else {
         throw UnsupportedError("Invalid File");
       }
     } catch (e) {
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          builder: (_) => _ErrorDialog(
-            message: [FormatException, UnsupportedError].contains(e.runtimeType)
-                ? "Invalid File"
-                : "An Unkown Error",
-          ),
-        );
-      }
+      setState(() {
+        _error = true;
+      });
     }
   }
 
