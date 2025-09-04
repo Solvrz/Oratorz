@@ -17,12 +17,18 @@ import '../tools/controllers/comittee/scorecard.dart';
 import '../tools/controllers/comittee/speech.dart';
 import '../tools/controllers/comittee/vote.dart';
 import '../tools/controllers/route.dart';
+import '../tools/controllers/settings.dart';
 import '../tools/controllers/setup.dart';
 
 class CloudStorage {
   static AppController get appController => Get.find<AppController>();
 
   static Future<void> updateUser() async {
+    final SettingsController controller = Get.find<SettingsController>();
+
+    appController.user!.firstName = controller.firstName.value;
+    appController.user!.lastName = controller.lastName.value;
+
     await FirebaseFirestore.instance
         .collection("users")
         .doc(appController.user!.email)

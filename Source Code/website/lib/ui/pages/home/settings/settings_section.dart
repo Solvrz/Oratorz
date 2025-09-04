@@ -8,6 +8,7 @@ import '/tools/functions.dart';
 import '/ui/widgets/input_field.dart';
 import '/ui/widgets/rounded_button.dart';
 import '/ui/widgets/upload_image_dialog.dart';
+import '../../../../tools/controllers/settings.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({super.key});
@@ -15,6 +16,14 @@ class SettingsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppController controller = Get.find<AppController>();
+    late final SettingsController settingsController;
+
+    if (!Get.isRegistered<SettingsController>()) {
+      settingsController = SettingsController();
+      Get.put<SettingsController>(settingsController);
+    } else {
+      settingsController = Get.find<SettingsController>();
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -35,9 +44,30 @@ class SettingsSection extends StatelessWidget {
                   const Text("Manage your profile"),
                 ],
               ),
-              RoundedButton(
-                onPressed: () => CloudStorage.updateUser(),
-                child: const Text("Save"),
+              Obx(
+                () => RoundedButton(
+                  color:
+                      settingsController.status.value ? Colors.blueGrey : null,
+                  onPressed: settingsController.status.value
+                      ? null
+                      : () async {
+                          settingsController.status.value = true;
+                          await CloudStorage.updateUser();
+
+                          if (context.mounted) {
+                            snackbar(
+                              context,
+                              const Center(
+                                child:
+                                    Text("User details updated successfully!"),
+                              ),
+                            );
+                          }
+
+                          settingsController.status.value = false;
+                        },
+                  child: const Text("Save"),
+                ),
               ),
             ],
           ),
@@ -128,7 +158,7 @@ class SettingsSection extends StatelessWidget {
                 child: InputField(
                   padding: EdgeInsets.zero,
                   hintText: "First Name",
-                  text: controller.user!.firstName.obs,
+                  text: settingsController.firstName,
                   error: "".obs,
                   textInputType: TextInputType.name,
                 ),
@@ -138,7 +168,7 @@ class SettingsSection extends StatelessWidget {
                 child: InputField(
                   padding: EdgeInsets.zero,
                   hintText: "Last Name",
-                  text: controller.user!.lastName.obs,
+                  text: settingsController.lastName,
                   error: "".obs,
                   textInputType: TextInputType.name,
                 ),

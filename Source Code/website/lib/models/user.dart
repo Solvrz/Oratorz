@@ -8,8 +8,8 @@ import 'committee.dart';
 
 class User {
   late final String id;
-  final String firstName;
-  final String lastName;
+  String firstName;
+  String lastName;
   final String email;
   Image? image;
   late final Timestamp createdAt;
