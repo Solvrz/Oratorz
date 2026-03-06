@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:excel/excel.dart' hide Border, TextSpan;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -285,27 +287,5 @@ class UploadFileDialogState extends State<UploadFileDialog> {
     }
 
     return _delegates;
-  }
-}
-
-class _ErrorDialog extends StatelessWidget {
-  final String? message;
-
-  const _ErrorDialog({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return DialogBox(
-      heading: message ?? "",
-      content: const Text(
-        "An Error Occured while loading the file.\nPlease check the file & Try Again...",
-      ),
-      actions: [
-        RoundedButton(
-          child: const Text("Ok"),
-          onPressed: () => context.pop(),
-        ),
-      ],
-    );
   }
 }
