@@ -1,3 +1,5 @@
+import type { Timestamp } from "@firebase/firestore";
+
 export const RollCall = {
   presentAndVoting: 2,
   present: 1,
@@ -76,7 +78,7 @@ export function committeeToJson(committee: Committee): Record<string, unknown> {
 
 export function committeeFromJson(data: Record<string, unknown>): Committee {
   const delegates = (data.delegates as string[]) ?? [];
-  const rawDays = (data.days as unknown[]) ?? [];
+  const rawDays = (data.days as Timestamp[]) ?? [];
 
   return {
     id: (data.id as string) ?? "",
@@ -85,8 +87,8 @@ export function committeeFromJson(data: Record<string, unknown>): Committee {
     agenda: (data.agenda as string) ?? "Your Agenda",
     delegates,
     members: (data.members as string[]) ?? [],
-    days: rawDays.map((d) => Date.parse(d as string)) as any[],
-    createdAt: Date.parse(data.createdAt as any) as any,
+    days: rawDays.map((d) => new Date(d.seconds * 1000)) as any[],
+    createdAt: new Date((data.createdAt as Timestamp).seconds * 1000),
     rollCall: data.rollCall
       ? (data.rollCall as Record<string, RollCallValue>)
       : Object.fromEntries(delegates.map((d) => [d, RollCall.none])),

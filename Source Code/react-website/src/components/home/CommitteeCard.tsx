@@ -36,6 +36,7 @@ function datePlaceholder(days: (Date | null)[]): string {
   for (let i = 0; i < days.length; i++) {
     if (days[i] == null) continue;
     const dayDate = days[i]!;
+
     if (now > dayDate) {
       const nextDay = new Date(dayDate);
       nextDay.setDate(nextDay.getDate() + 1);
