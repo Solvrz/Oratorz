@@ -24,7 +24,14 @@ class CloudStorage {
   static AppController get appController => Get.find<AppController>();
 
   static Future<void> updateUser() async {
-    final SettingsController controller = Get.find<SettingsController>();
+    final SettingsController controller;
+
+    if (!Get.isRegistered<SettingsController>()) {
+      controller = SettingsController();
+      Get.put<SettingsController>(controller);
+    } else {
+      controller = Get.find<SettingsController>();
+    }
 
     appController.user!.firstName = controller.firstName.value;
     appController.user!.lastName = controller.lastName.value;
